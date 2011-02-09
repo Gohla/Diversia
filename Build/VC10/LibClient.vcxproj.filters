@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{99f09f29-d2e0-4b22-b2ad-470ec288ff51}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camp">
+      <UniqueIdentifier>{ad58c99c-50f1-4136-a67c-185074dc63fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClientServerPlugin">
+      <UniqueIdentifier>{66305802-0366-45ae-9513-c2da77b7b840}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{e3e6a0a6-8246-4003-9061-676331a2b80f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Permission">
+      <UniqueIdentifier>{6885dba3-82e7-4d2e-adc7-e676fcdd4a4b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Communication">
+      <UniqueIdentifier>{a1aafb06-d306-4eaa-8106-ae49a0fe9ae0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{2005bdb9-30b3-4c9a-ae6a-01cb824194e7}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Framework\Client\Platform\Prerequisites.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Platform\StableHeaders.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Camp\CampBindings.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\ClientServerPlugin\ServerPlugin.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\ClientServerPlugin\ServerPluginManager.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Object\ClientComponent.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Object\ClientObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Object\ClientObjectManager.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Permission\PermissionManager.h">
+      <Filter>Permission</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Communication\GridManager.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Communication\OfflineServer.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Communication\Server.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Communication\ServerAbstract.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Communication\ServerConnection.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Communication\ServerNeighborsPlugin.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Lua\LuaPlugin.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\ClientIncludes.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Framework\Client\Platform\src\StableHeaders.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Camp\src\CampBindings.cpp">
+      <Filter>Camp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\ClientServerPlugin\src\ServerPlugin.cpp">
+      <Filter>ClientServerPlugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\ClientServerPlugin\src\ServerPluginManager.cpp">
+      <Filter>ClientServerPlugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Object\src\ClientComponent.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Object\src\ClientObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Object\src\ClientObjectManager.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Permission\src\PermissionManager.cpp">
+      <Filter>Permission</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Communication\src\GridManager.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Communication\src\OfflineServer.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Communication\src\Server.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Communication\src\ServerConnection.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Communication\src\ServerNeighborsPlugin.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Lua\src\LuaPlugin.cpp">
+      <Filter>Lua</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

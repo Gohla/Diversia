@@ -1,0 +1,15 @@
+material Floor
+{
+	technique
+	{
+		pass
+		{
+			texture_unit
+			{
+				texture Objects/Floor/Floor.png
+				filtering anisotropic
+				max_anisotropy 16
+			}
+		}
+	}
+}

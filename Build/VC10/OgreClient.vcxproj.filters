@@ -1,0 +1,95 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="GameMode">
+      <UniqueIdentifier>{8c5e8cf7-24bb-4136-a054-901948b42cc9}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{c619c988-9c61-41de-a21e-5f5b5396ed2c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI">
+      <UniqueIdentifier>{44e47c15-a11c-4025-98af-586936e3dca3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{ba5cd780-b6c9-45d4-85be-a26c6d0a1fbb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camp">
+      <UniqueIdentifier>{159875a7-946e-4bfe-bb08-6b53695430e7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GUI\Input">
+      <UniqueIdentifier>{975043d0-a173-49dc-9f38-3cee914028d4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\GameMode\DefaultGameMode.cpp">
+      <Filter>GameMode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\GUI\GUIManager.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\GUI\LoginGUI.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\GUI\MenuGUI.cpp">
+      <Filter>GUI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\Input\OISInputManager.cpp">
+      <Filter>GUI\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\Platform\StableHeaders.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\State\LoadingState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\State\MenuState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\State\PlayState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\ClientGlobals.cpp" />
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\main.cpp" />
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\ClientApplication.cpp" />
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\Camp\CampBindings.cpp">
+      <Filter>Camp</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\GameMode\DefaultGameMode.h">
+      <Filter>GameMode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\GUI\GUIManager.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\GUI\LoginGUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\GUI\MenuGUI.h">
+      <Filter>GUI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Input\OISInputManager.h">
+      <Filter>GUI\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Platform\Prerequisites.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Platform\StableHeaders.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\State\LoadingState.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\State\MenuState.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\State\PlayState.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\ClientApplication.h" />
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\ClientGlobals.h" />
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Camp\CampBindings.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

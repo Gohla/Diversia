@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{fbcdd3d5-ebd3-478e-b632-94ad4e405e7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BtOgre">
+      <UniqueIdentifier>{0a794f46-5127-421c-b3e9-a3e9171f90af}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Ogre">
+      <UniqueIdentifier>{4c102a88-41e3-4019-9f70-e45ae6f70f1c}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\BulletMeshGenerator\source\Platform\Config.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\BulletMeshGenerator\source\Platform\Prerequisites.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\BulletMeshGenerator\source\Platform\StableHeaders.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\BtOgre\BtOgreExtras.h">
+      <Filter>BtOgre</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\BtOgre\BtOgreGP.h">
+      <Filter>BtOgre</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Libraries\BtOgre\BtOgrePG.h">
+      <Filter>BtOgre</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\BulletMeshGenerator\source\Ogre\StaticPluginLoader.h">
+      <Filter>Ogre</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\BulletMeshGenerator\source\Application.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\BulletMeshGenerator\source\Platform\StableHeaders.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Libraries\BtOgre\BtOgre.cpp">
+      <Filter>BtOgre</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\BulletMeshGenerator\source\Application.cpp" />
+    <ClCompile Include="..\..\BulletMeshGenerator\source\main.cpp" />
+  </ItemGroup>
+</Project>

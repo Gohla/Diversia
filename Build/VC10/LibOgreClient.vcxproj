@@ -1,0 +1,207 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseDebug|Win32">
+      <Configuration>ReleaseDebug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{68DFF992-9AEF-4118-807E-B20EA774D135}</ProjectGuid>
+    <RootNamespace>OgreClient</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Diversia.props" />
+    <Import Project="Diversia releasedebug.props" />
+    <Import Project="Diversia library.props" />
+    <Import Project="Diversia releasedebug library.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Diversia.props" />
+    <Import Project="Diversia release.props" />
+    <Import Project="Diversia library.props" />
+    <Import Project="Diversia release library.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Diversia.props" />
+    <Import Project="Diversia debug.props" />
+    <Import Project="Diversia library.props" />
+    <Import Project="Diversia debug library.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>OgreClient\Platform\StableHeaders.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>DIVERSIA_OGRECLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Lib />
+    <Link />
+    <Link />
+    <Link>
+      <AdditionalDependencies>LibUtil_d.lib;LibObject_d.lib;LibShared_d.lib;LibClient_d.lib;lua.lib;RakNetDLLDebug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>OgreClient\Platform\StableHeaders.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>DIVERSIA_OGRECLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Link />
+    <Link />
+    <Link>
+      <AdditionalDependencies>LibUtil.lib;LibObject.lib;LibShared.lib;LibClient.lib;lua.lib;RakNetDLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>OgreClient\Platform\StableHeaders.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>DIVERSIA_OGRECLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+    <Lib />
+    <Link />
+    <Link />
+    <Link>
+      <AdditionalDependencies>LibUtil_rd.lib;LibObject_rd.lib;LibShared_rd.lib;LibClient_rd.lib;BulletCollision.lib;BulletDynamics.lib;BulletFileLoader.lib;BulletWorldImporter.lib;cAudio.lib;caelum.lib;freetype2311.lib;libcurl.lib;LinearMath.lib;lua.lib;OgreMain.lib;OgreProcedural.lib;OgreRTShaderSystem.lib;OgreTerrain.lib;OpenAL32.lib;RakNetDLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Framework\OgreClient\ApplicationBase.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Audio\AudioManager.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Audio\AudioResourceLoader.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Camp\CampBindings.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\GameMode\GameModeBase.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\GameMode\GameModePlugin.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\GlobalsBase.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\Atlas.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\CameraManager.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\Canvas.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\Fader.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\GraphicsManager.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\QueryFlags.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\SceneManagerPlugin.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\SkyPlugin.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\StaticPluginLoader.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\Terrain.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\TextCanvasBatch.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Input\InputManager.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Input\MouseController.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Input\ObjectSelection.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Input\WindowsMouseController.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\Animation.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\AreaTrigger.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\Audio.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\Camera.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\CollisionShape.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\Entity.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\LuaObjectScript.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\Mesh.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\Particle.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\RigidBody.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\SceneNode.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\Text.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Physics\PhysicsManager.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Platform\Config.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Platform\Prerequisites.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Platform\StableHeaders.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Resource\GenericResource.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Resource\GenericResourceManager.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Resource\ResourceManager.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Resource\URLArchive.h" />
+    <ClInclude Include="..\..\Libraries\BtOgre\BtOgreExtras.h" />
+    <ClInclude Include="..\..\Libraries\BtOgre\BtOgreGP.h" />
+    <ClInclude Include="..\..\Libraries\BtOgre\BtOgrePG.h" />
+    <ClInclude Include="..\..\Libraries\MOC\CollisionTools.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Framework\OgreClient\Audio\AudioManager.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Audio\AudioResourceLoader.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Camp\CampBindings.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\GameMode\GameModePlugin.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\GlobalsBase.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\Atlas.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\CameraManager.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\Canvas.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\Fader.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\GraphicsManager.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\SceneManagerPlugin.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\SkyPlugin.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\Terrain.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\TextCanvasBatch.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Input\InputManager.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Input\MouseController.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Input\ObjectSelection.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Input\WindowsMouseController.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\Animation.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\AreaTrigger.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\Audio.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\Camera.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\CollisionShape.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\Entity.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\LuaObjectScript.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\Mesh.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\Particle.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\RigidBody.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\SceneNode.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\Text.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Platform\StableHeaders.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\OgreClient\Resource\GenericResource.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Resource\GenericResourceManager.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Resource\ResourceManager.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Resource\URLArchive.cpp" />
+    <ClCompile Include="..\..\Libraries\BtOgre\BtOgre.cpp" />
+    <ClCompile Include="..\..\Libraries\MOC\CollisionTools.cpp" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

@@ -1,0 +1,230 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{d8b29f0e-64be-48bd-b773-8a08d273448a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camp">
+      <UniqueIdentifier>{574f5973-49ad-4fcc-91ea-39195ef7ab31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClientServerPlugin">
+      <UniqueIdentifier>{7e124d92-266d-4708-bff8-b7f7b9c2c8d4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Communication">
+      <UniqueIdentifier>{f2fc092e-0983-46fd-99b0-f243f6800493}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{ad51bf99-40ce-442c-938d-7a8988f5ee92}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Permission">
+      <UniqueIdentifier>{2d3c5ea9-8522-4e8e-b8d8-92d2ebbcffda}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="User">
+      <UniqueIdentifier>{c702faaa-c69a-4aca-adfc-e7f21a96c0d0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameMode">
+      <UniqueIdentifier>{0f5cbe28-1985-409f-bdff-9a617e642b27}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{84b58ae0-a5a2-4156-8787-894860ee31a1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{f7d85961-9624-468e-af92-8b6769394145}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Server\source\Platform\Config.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Platform\Prerequisites.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Platform\StableHeaders.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Camp\CampBindings.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\ClientServerPlugin\ClientPlugin.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\ClientServerPlugin\ClientPluginManager.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\ClientServerPlugin\ResourceManagerPlugin.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\ClientServerPlugin\SkyPlugin.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\ClientServerPlugin\Terrain.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Communication\ClientConnection.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Communication\ServerNeighborsPlugin.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\Animation.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\Audio.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\CollisionShape.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\Entity.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\LuaObjectScript.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\Mesh.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\Particle.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\RigidBody.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\ServerComponent.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\ServerObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\ServerObjectManager.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Object\Text.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Permission\PermissionManager.h">
+      <Filter>Permission</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\User\Group.h">
+      <Filter>User</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\User\Session.h">
+      <Filter>User</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\User\SessionManager.h">
+      <Filter>User</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\User\User.h">
+      <Filter>User</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\User\UserManager.h">
+      <Filter>User</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\GameMode\GameModePlugin.h">
+      <Filter>GameMode</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Physics\PhysicsManager.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Resource\LocalResourceManager.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Server\source\Application.h" />
+    <ClInclude Include="..\..\Server\source\Globals.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Server\source\Platform\StableHeaders.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Camp\CampBindings.cpp">
+      <Filter>Camp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\ClientServerPlugin\ClientPlugin.cpp">
+      <Filter>ClientServerPlugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\ClientServerPlugin\ClientPluginManager.cpp">
+      <Filter>ClientServerPlugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\ClientServerPlugin\ResourceManagerPlugin.cpp">
+      <Filter>ClientServerPlugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\ClientServerPlugin\SkyPlugin.cpp">
+      <Filter>ClientServerPlugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\ClientServerPlugin\Terrain.cpp">
+      <Filter>ClientServerPlugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Communication\ClientConnection.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Communication\ServerNeighborsPlugin.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\Animation.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\Audio.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\CollisionShape.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\Entity.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\LuaObjectScript.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\Mesh.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\Particle.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\RigidBody.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\ServerComponent.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\ServerObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\ServerObjectManager.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Object\Text.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Permission\PermissionManager.cpp">
+      <Filter>Permission</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\User\Group.cpp">
+      <Filter>User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\User\Session.cpp">
+      <Filter>User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\User\SessionManager.cpp">
+      <Filter>User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\User\User.cpp">
+      <Filter>User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\User\UserManager.cpp">
+      <Filter>User</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\GameMode\GameModePlugin.cpp">
+      <Filter>GameMode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Physics\PhysicsManager.cpp">
+      <Filter>Physics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Resource\LocalResourceManager.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Application.cpp" />
+    <ClCompile Include="..\..\Server\source\Globals.cpp" />
+    <ClCompile Include="..\..\Server\source\main.cpp" />
+  </ItemGroup>
+</Project>

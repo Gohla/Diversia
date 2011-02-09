@@ -1,0 +1,179 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseDebug|Win32">
+      <Configuration>ReleaseDebug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{2503893E-1F9F-43B2-AAC2-CE2E7442ABE9}</ProjectGuid>
+    <RootNamespace>LibUtil</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <CharacterSet>MultiByte</CharacterSet>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Diversia.props" />
+    <Import Project="Diversia library.props" />
+    <Import Project="Diversia releasedebug.props" />
+    <Import Project="Diversia releasedebug library.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Diversia.props" />
+    <Import Project="Diversia library.props" />
+    <Import Project="Diversia release.props" />
+    <Import Project="Diversia release library.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Diversia.props" />
+    <Import Project="Diversia library.props" />
+    <Import Project="Diversia debug.props" />
+    <Import Project="Diversia debug library.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Util\Platform\StableHeaders.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>DIVERSIA_UTIL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Util\Platform\StableHeaders.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>DIVERSIA_UTIL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Util\Platform\StableHeaders.h</PrecompiledHeaderFile>
+      <PreprocessorDefinitions>DIVERSIA_UTIL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Framework\Util\Helper\src\ConsoleInput.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Helper\src\Exception.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Helper\src\StringUtil.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Log\src\Log.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Log\src\Logger.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Math\src\BoundingBox.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Math\src\Colour.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Math\src\Math.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Math\src\Matrix3.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Math\src\Matrix4.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Math\src\Node.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Math\src\Plane.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Math\src\Quaternion.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Math\src\Vector2.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Math\src\Vector3.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Math\src\Vector4.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Platform\src\StableHeaders.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\State\src\StateMachine.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Job\src\Job.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Job\src\Request.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Job\src\RequestManager.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Camp\src\CampBindings.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Config\src\ConfigManager.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Signal\DelayedCall.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Signal\UserObjectChange.cpp" />
+    <ClCompile Include="..\..\Framework\Util\Serialization\src\XMLSerializationFile.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Framework\Util\Helper\ConsoleInput.h" />
+    <ClInclude Include="..\..\Framework\Util\Helper\ContainerInitializer.h" />
+    <ClInclude Include="..\..\Framework\Util\Helper\Exception.h" />
+    <ClInclude Include="..\..\Framework\Util\Helper\Kbhit.h" />
+    <ClInclude Include="..\..\Framework\Util\Helper\STLHelpers.h" />
+    <ClInclude Include="..\..\Framework\Util\Helper\StringUtil.h" />
+    <ClInclude Include="..\..\Framework\Util\Helper\Transition.h" />
+    <ClInclude Include="..\..\Framework\Util\Log\Log.h" />
+    <ClInclude Include="..\..\Framework\Util\Log\Logger.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\AsmMath.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\BoundingBox.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\Colour.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\Math.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\Matrix3.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\Matrix4.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\Node.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\Plane.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\Quaternion.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\Ray.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\Vector2.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\Vector3.h" />
+    <ClInclude Include="..\..\Framework\Util\Math\Vector4.h" />
+    <ClInclude Include="..\..\Framework\Util\Platform\Prerequisites.h" />
+    <ClInclude Include="..\..\Framework\Util\Platform\StableHeaders.h" />
+    <ClInclude Include="..\..\Framework\Util\XML\rapidxml.hpp" />
+    <ClInclude Include="..\..\Framework\Util\XML\rapidxml_iterators.hpp" />
+    <ClInclude Include="..\..\Framework\Util\XML\rapidxml_print.hpp" />
+    <ClInclude Include="..\..\Framework\Util\XML\rapidxml_utils.hpp" />
+    <ClInclude Include="..\..\Framework\Util\Build\Config.h" />
+    <ClInclude Include="..\..\Framework\Util\Build\Platform.h" />
+    <ClInclude Include="..\..\Framework\Util\Build\StdHeaders.h" />
+    <ClInclude Include="..\..\Framework\Util\State\State.h" />
+    <ClInclude Include="..\..\Framework\Util\State\StateMachine.h" />
+    <ClInclude Include="..\..\Framework\Util\Job\Job.h" />
+    <ClInclude Include="..\..\Framework\Util\Job\Request.h" />
+    <ClInclude Include="..\..\Framework\Util\Job\RequestManager.h" />
+    <ClInclude Include="..\..\Framework\Util\Camp\BindingsPrinter.h" />
+    <ClInclude Include="..\..\Framework\Util\Camp\CampBindings.h" />
+    <ClInclude Include="..\..\Framework\Util\Camp\ValueMapper.h" />
+    <ClInclude Include="..\..\Framework\Util\Config\ConfigManager.h" />
+    <ClInclude Include="..\..\Framework\Util\Signal\DelayedCall.h" />
+    <ClInclude Include="..\..\Framework\Util\Signal\SignalStopper.h" />
+    <ClInclude Include="..\..\Framework\Util\Signal\SortedSignal.h" />
+    <ClInclude Include="..\..\Framework\Util\Signal\UserObjectChange.h" />
+    <ClInclude Include="..\..\Framework\Util\Serialization\SerializationFile.h" />
+    <ClInclude Include="..\..\Framework\Util\Serialization\XMLSerializationFile.h" />
+    <ClInclude Include="..\..\Framework\Util\UtilIncludes.h" />
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

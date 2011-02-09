@@ -1,0 +1,262 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Helper">
+      <UniqueIdentifier>{a50156b2-e987-4524-a555-938d5446eb5d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{b6c73f3a-9537-4533-b179-1d563446e670}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Math">
+      <UniqueIdentifier>{7220bbfd-49d4-4e2a-854f-9d5cf729e646}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{e96d24ce-f7fd-40ab-b6f9-5e51b8f6250f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="XML">
+      <UniqueIdentifier>{ca2aa719-d9a0-4bc5-bb2f-3aae35d50cb6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Build">
+      <UniqueIdentifier>{75b6e034-7689-418d-b0b5-ae3126e8522c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{c0eac8ff-9e9f-4f23-948e-07df2068eee4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Job">
+      <UniqueIdentifier>{583378fb-6047-481b-ab17-bc9aea3f2f40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camp">
+      <UniqueIdentifier>{6012ca84-81a0-4d67-b98a-93e9557ad814}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Config">
+      <UniqueIdentifier>{3941f6ab-94dd-4676-bb8e-273f40fcb598}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Signal">
+      <UniqueIdentifier>{4f0cb2e4-6137-48ad-bf02-f9a0aadc19d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Serialization">
+      <UniqueIdentifier>{c2cb140f-b5b7-4d6a-b565-37303ee798e4}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Framework\Util\Helper\src\ConsoleInput.cpp">
+      <Filter>Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Helper\src\Exception.cpp">
+      <Filter>Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Helper\src\StringUtil.cpp">
+      <Filter>Helper</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Log\src\Log.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Log\src\Logger.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Math\src\BoundingBox.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Math\src\Colour.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Math\src\Math.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Math\src\Matrix3.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Math\src\Matrix4.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Math\src\Node.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Math\src\Plane.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Math\src\Quaternion.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Math\src\Vector2.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Math\src\Vector3.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Math\src\Vector4.cpp">
+      <Filter>Math</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Platform\src\StableHeaders.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\State\src\StateMachine.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Job\src\Job.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Job\src\Request.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Job\src\RequestManager.cpp">
+      <Filter>Job</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Camp\src\CampBindings.cpp">
+      <Filter>Camp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Config\src\ConfigManager.cpp">
+      <Filter>Config</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Signal\DelayedCall.cpp">
+      <Filter>Signal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Signal\UserObjectChange.cpp">
+      <Filter>Signal</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Serialization\src\XMLSerializationFile.cpp">
+      <Filter>Serialization</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Framework\Util\Helper\ConsoleInput.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Helper\ContainerInitializer.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Helper\Exception.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Helper\Kbhit.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Helper\STLHelpers.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Helper\StringUtil.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Helper\Transition.h">
+      <Filter>Helper</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Log\Log.h">
+      <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Log\Logger.h">
+      <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\AsmMath.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\BoundingBox.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\Colour.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\Math.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\Matrix3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\Matrix4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\Node.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\Plane.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\Quaternion.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\Ray.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\Vector2.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\Vector3.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Math\Vector4.h">
+      <Filter>Math</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Platform\Prerequisites.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Platform\StableHeaders.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\XML\rapidxml.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\XML\rapidxml_iterators.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\XML\rapidxml_print.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\XML\rapidxml_utils.hpp">
+      <Filter>XML</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Build\Config.h">
+      <Filter>Build</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Build\Platform.h">
+      <Filter>Build</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Build\StdHeaders.h">
+      <Filter>Build</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\State\State.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\State\StateMachine.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Job\Job.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Job\Request.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Job\RequestManager.h">
+      <Filter>Job</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Camp\BindingsPrinter.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Camp\CampBindings.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Camp\ValueMapper.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Config\ConfigManager.h">
+      <Filter>Config</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Signal\DelayedCall.h">
+      <Filter>Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Signal\SignalStopper.h">
+      <Filter>Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Signal\SortedSignal.h">
+      <Filter>Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Signal\UserObjectChange.h">
+      <Filter>Signal</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Serialization\SerializationFile.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Serialization\XMLSerializationFile.h">
+      <Filter>Serialization</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\UtilIncludes.h" />
+  </ItemGroup>
+</Project>

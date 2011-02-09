@@ -1,0 +1,199 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="ReleaseDebug|Win32">
+      <Configuration>ReleaseDebug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{C7DAEFAB-9398-49FF-BCA5-C0ACFFAC7EF7}</ProjectGuid>
+    <RootNamespace>Server</RootNamespace>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Diversia.props" />
+    <Import Project="Diversia application.props" />
+    <Import Project="Diversia releasedebug.props" />
+    <Import Project="Diversia releasedebug application.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Diversia.props" />
+    <Import Project="Diversia application.props" />
+    <Import Project="Diversia release.props" />
+    <Import Project="Diversia release application.props" />
+  </ImportGroup>
+  <ImportGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+    <Import Project="Diversia.props" />
+    <Import Project="Diversia application.props" />
+    <Import Project="Diversia debug.props" />
+    <Import Project="Diversia debug application.props" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.30319.1</_ProjectFileVersion>
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'" />
+    <CodeAnalysisRuleSet Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">AllRules.ruleset</CodeAnalysisRuleSet>
+    <CodeAnalysisRules Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+    <CodeAnalysisRuleAssemblies Condition="'$(Configuration)|$(Platform)'=='Release|Win32'" />
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Platform\StableHeaders.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LibUtil_d.lib;LibObject_d.lib;LibShared_d.lib;BulletCollision.lib;BulletDynamics.lib;BulletFileLoader.lib;BulletWorldImporter.lib;dbghelp.lib;LinearMath.lib;lua.lib;RakNetDLLDebug.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)dependencies\lib\$(Configuration)$(Platform);$(ProjectDir)lib\$(Configuration)$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Platform\StableHeaders.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LibUtil.lib;LibObject.lib;LibShared.lib;BulletCollision.lib;BulletDynamics.lib;BulletFileLoader.lib;BulletWorldImporter.lib;dbghelp.lib;LinearMath.lib;lua.lib;RakNetDLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)dependencies\lib\$(Configuration)$(Platform);$(ProjectDir)lib\$(Configuration)$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">
+    <ClCompile>
+      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>Platform\StableHeaders.h</PrecompiledHeaderFile>
+    </ClCompile>
+    <Link>
+      <AdditionalDependencies>LibUtil_rd.lib;LibObject_rd.lib;LibShared_rd.lib;BulletCollision.lib;BulletDynamics.lib;BulletFileLoader.lib;BulletWorldImporter.lib;dbghelp.lib;LinearMath.lib;lua.lib;RakNetDLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)dependencies\lib\ReleaseWin32;$(ProjectDir)lib\$(Configuration)$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <SubSystem>Console</SubSystem>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Server\source\Platform\Config.h" />
+    <ClInclude Include="..\..\Server\source\Platform\Prerequisites.h" />
+    <ClInclude Include="..\..\Server\source\Platform\StableHeaders.h" />
+    <ClInclude Include="..\..\Server\source\Camp\CampBindings.h" />
+    <ClInclude Include="..\..\Server\source\ClientServerPlugin\ClientPlugin.h" />
+    <ClInclude Include="..\..\Server\source\ClientServerPlugin\ClientPluginManager.h" />
+    <ClInclude Include="..\..\Server\source\ClientServerPlugin\ResourceManagerPlugin.h" />
+    <ClInclude Include="..\..\Server\source\ClientServerPlugin\SkyPlugin.h" />
+    <ClInclude Include="..\..\Server\source\ClientServerPlugin\Terrain.h" />
+    <ClInclude Include="..\..\Server\source\Communication\ClientConnection.h" />
+    <ClInclude Include="..\..\Server\source\Communication\ServerNeighborsPlugin.h" />
+    <ClInclude Include="..\..\Server\source\Object\Animation.h" />
+    <ClInclude Include="..\..\Server\source\Object\Audio.h" />
+    <ClInclude Include="..\..\Server\source\Object\CollisionShape.h" />
+    <ClInclude Include="..\..\Server\source\Object\Entity.h" />
+    <ClInclude Include="..\..\Server\source\Object\LuaObjectScript.h" />
+    <ClInclude Include="..\..\Server\source\Object\Mesh.h" />
+    <ClInclude Include="..\..\Server\source\Object\Particle.h" />
+    <ClInclude Include="..\..\Server\source\Object\RigidBody.h" />
+    <ClInclude Include="..\..\Server\source\Object\ServerComponent.h" />
+    <ClInclude Include="..\..\Server\source\Object\ServerObject.h" />
+    <ClInclude Include="..\..\Server\source\Object\ServerObjectManager.h" />
+    <ClInclude Include="..\..\Server\source\Object\Text.h" />
+    <ClInclude Include="..\..\Server\source\Permission\PermissionManager.h" />
+    <ClInclude Include="..\..\Server\source\User\Group.h" />
+    <ClInclude Include="..\..\Server\source\User\Session.h" />
+    <ClInclude Include="..\..\Server\source\User\SessionManager.h" />
+    <ClInclude Include="..\..\Server\source\User\User.h" />
+    <ClInclude Include="..\..\Server\source\User\UserManager.h" />
+    <ClInclude Include="..\..\Server\source\GameMode\GameModePlugin.h" />
+    <ClInclude Include="..\..\Server\source\Physics\PhysicsManager.h" />
+    <ClInclude Include="..\..\Server\source\Resource\LocalResourceManager.h" />
+    <ClInclude Include="..\..\Server\source\Application.h" />
+    <ClInclude Include="..\..\Server\source\Globals.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Server\source\Platform\StableHeaders.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="..\..\Server\source\Camp\CampBindings.cpp" />
+    <ClCompile Include="..\..\Server\source\ClientServerPlugin\ClientPlugin.cpp" />
+    <ClCompile Include="..\..\Server\source\ClientServerPlugin\ClientPluginManager.cpp" />
+    <ClCompile Include="..\..\Server\source\ClientServerPlugin\ResourceManagerPlugin.cpp" />
+    <ClCompile Include="..\..\Server\source\ClientServerPlugin\SkyPlugin.cpp" />
+    <ClCompile Include="..\..\Server\source\ClientServerPlugin\Terrain.cpp" />
+    <ClCompile Include="..\..\Server\source\Communication\ClientConnection.cpp" />
+    <ClCompile Include="..\..\Server\source\Communication\ServerNeighborsPlugin.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\Animation.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\Audio.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\CollisionShape.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\Entity.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\LuaObjectScript.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\Mesh.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\Particle.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\RigidBody.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\ServerComponent.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\ServerObject.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\ServerObjectManager.cpp" />
+    <ClCompile Include="..\..\Server\source\Object\Text.cpp" />
+    <ClCompile Include="..\..\Server\source\Permission\PermissionManager.cpp" />
+    <ClCompile Include="..\..\Server\source\User\Group.cpp" />
+    <ClCompile Include="..\..\Server\source\User\Session.cpp" />
+    <ClCompile Include="..\..\Server\source\User\SessionManager.cpp" />
+    <ClCompile Include="..\..\Server\source\User\User.cpp" />
+    <ClCompile Include="..\..\Server\source\User\UserManager.cpp" />
+    <ClCompile Include="..\..\Server\source\GameMode\GameModePlugin.cpp" />
+    <ClCompile Include="..\..\Server\source\Physics\PhysicsManager.cpp" />
+    <ClCompile Include="..\..\Server\source\Resource\LocalResourceManager.cpp" />
+    <ClCompile Include="..\..\Server\source\Application.cpp" />
+    <ClCompile Include="..\..\Server\source\Globals.cpp" />
+    <ClCompile Include="..\..\Server\source\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="LibObject.vcxproj">
+      <Project>{06d7362e-5da4-4437-9b2a-87822b15ee9a}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="LibShared.vcxproj">
+      <Project>{31cbd0d9-4397-4b05-bbd6-56286846aa35}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+    <ProjectReference Include="LibUtil.vcxproj">
+      <Project>{2503893e-1f9f-43b2-aac2-ce2e7442abe9}</Project>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

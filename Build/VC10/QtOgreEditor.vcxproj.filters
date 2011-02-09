@@ -1,0 +1,306 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{5154ad60-d3df-4ddc-82e9-4b023c173a21}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{df3ba6e0-d247-4c8e-87e7-aa7bfcfc72e0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="UI">
+      <UniqueIdentifier>{c638fa70-56ea-4c44-9264-0eb7a541d719}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Generated Files">
+      <UniqueIdentifier>{71ED8ED8-ACB9-4CE9-BBE1-E00B30144E11}</UniqueIdentifier>
+      <Extensions>moc;h;cpp</Extensions>
+    </Filter>
+    <Filter Include="Generated Files\Release">
+      <UniqueIdentifier>{1907f94d-8160-4fc5-9f4b-67e2061d7a46}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\Debug">
+      <UniqueIdentifier>{b66279ea-bb1f-4ff3-a471-b511af12bdfa}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Generated Files\ReleaseDebug">
+      <UniqueIdentifier>{3df37f6d-6912-4533-af6b-473a57230c4e}</UniqueIdentifier>
+      <Extensions>cpp;moc</Extensions>
+      <SourceControlFiles>False</SourceControlFiles>
+    </Filter>
+    <Filter Include="Forms">
+      <UniqueIdentifier>{99349809-55BA-4b9d-BF79-8FDBB0286EB3}</UniqueIdentifier>
+      <Extensions>ui</Extensions>
+    </Filter>
+    <Filter Include="Resources">
+      <UniqueIdentifier>{D9D6E242-F8AF-46E4-B9FD-80ECBC20BA3E}</UniqueIdentifier>
+      <Extensions>qrc;*</Extensions>
+      <ParseFiles>false</ParseFiles>
+    </Filter>
+    <Filter Include="State">
+      <UniqueIdentifier>{2d2ef001-7d29-4379-82c3-4a9fb50b9215}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="GameMode">
+      <UniqueIdentifier>{b2eb1ef2-f6c1-4c44-a3b0-c203ccccde16}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Model">
+      <UniqueIdentifier>{fd51058e-ec95-4a9b-92d4-6035398075d3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camp">
+      <UniqueIdentifier>{b19ca2b8-d400-4062-af4c-51d6fce83791}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Input">
+      <UniqueIdentifier>{42e1d979-4d64-417b-89d0-efeaadf3bb06}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\QtOgreEditor\source\Platform\Config.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\Platform\Prerequisites.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\Platform\StableHeaders.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\Generated\ui_ConnectDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\Generated\ui_MainWindow.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\Generated\ui_NewGameDialog.h">
+      <Filter>Generated Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\State\EditState.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\State\InitialState.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\State\LoadingState.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\Camp\CampBindings.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\Input\QtInputManager.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\Input\QtMouseController.h">
+      <Filter>Input</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\EditorGlobals.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\QtOgreEditor\source\Platform\StableHeaders.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Graphics\OgreWidget.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\UI\ConnectDialog.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\UI\MainWindow.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\UI\NewGameDialog.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\UI\ObjectTreeView.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\UI\PluginTreeView.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\UI\PropertyBrowser.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_CampPropertyManager.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ClientServerPluginModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ConnectDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_EditorApplication.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_MainWindow.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_NewGameDialog.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ObjectComponentModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ObjectTreeView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_OgreWidget.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_PluginTreeView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_CampPropertyManager.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_ClientServerPluginModel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_ConnectDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_EditorApplication.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_MainWindow.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_NewGameDialog.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_ObjectComponentModel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_ObjectTreeView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_OgreWidget.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_PluginTreeView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_CampPropertyManager.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_ClientServerPluginModel.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_ConnectDialog.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_EditorApplication.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_MainWindow.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_NewGameDialog.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_ObjectComponentModel.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_ObjectTreeView.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_OgreWidget.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_PluginTreeView.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\State\EditState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\State\InitialState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\State\LoadingState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\GameMode\EditorGameMode.cpp">
+      <Filter>GameMode</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Model\ClientServerPluginModel.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Model\ObjectComponentModel.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Camp\CampBindings.cpp">
+      <Filter>Camp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Camp\CampPropertyManager.cpp">
+      <Filter>Camp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Input\QtInputManager.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Input\QtMouseController.cpp">
+      <Filter>Input</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\EditorApplication.cpp" />
+    <ClCompile Include="..\..\QtOgreEditor\source\main.cpp" />
+    <ClCompile Include="..\..\QtOgreEditor\source\EditorGlobals.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="..\..\QtOgreEditor\qt\Icon.ico">
+      <Filter>Resources</Filter>
+    </None>
+    <None Include="..\..\QtOgreEditor\qt\MainWindow.rcc">
+      <Filter>Resources</Filter>
+    </None>
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="..\..\QtOgreEditor\qt\MainWindow.rc">
+      <Filter>Resources</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\QtOgreEditor\source\Graphics\OgreWidget.h">
+      <Filter>Graphics</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\UI\ConnectDialog.h">
+      <Filter>UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\UI\MainWindow.h">
+      <Filter>UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\UI\NewGameDialog.h">
+      <Filter>UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\UI\ObjectTreeView.h">
+      <Filter>UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\UI\PluginTreeView.h">
+      <Filter>UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\UI\PropertyBrowser.h">
+      <Filter>UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\qt\ConnectDialog.ui">
+      <Filter>Forms</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\qt\MainWindow.ui">
+      <Filter>Forms</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\qt\NewGameDialog.ui">
+      <Filter>Forms</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\qt\MainWindow.qrc">
+      <Filter>Resources</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\GameMode\EditorGameMode.h">
+      <Filter>GameMode</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\Model\ClientServerPluginModel.h">
+      <Filter>Model</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\Model\ObjectComponentModel.h">
+      <Filter>Model</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\Camp\CampPropertyManager.h">
+      <Filter>Camp</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\EditorApplication.h" />
+  </ItemGroup>
+</Project>

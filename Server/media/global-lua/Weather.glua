@@ -1,0 +1,48 @@
+RainAudioObject = ObjectManager:CreateObject( "RainSound", NetworkingType.Remote );
+RainAudioComponent = RainAudioObject:CreateComponent( ComponentType.Audio, "Audio", false );
+RainAudioComponent.File = "sounds/rainloop.ogg";
+RainAudioComponent.Volume = 0.0;
+RainAudioComponent.VolumeSmoothTimescale = 0.05;
+RainAudioComponent.Loop = true;
+RainAudioComponent.AutoPlay = true;
+
+function SetWeather( WeatherType )
+  if WeatherType == "Clear" then
+    Sky.CloudCoverage = 0.0;
+    Sky.PrecipitationIntensity = 0.0;
+    RainAudioComponent.VolumeSmooth = 0.0;
+  elseif WeatherType == "Normal" then
+    Sky.CloudCoverage = 0.3;
+    Sky.PrecipitationIntensity = 0.0;
+    RainAudioComponent.VolumeSmooth = 0.0;
+  elseif WeatherType == "Cloudy" then
+    Sky.CloudCoverage = 0.8;
+    Sky.PrecipitationIntensity = 0.0;
+    RainAudioComponent.VolumeSmooth = 0.0;
+  elseif WeatherType == "Drizzle" then
+    Sky.CloudCoverage = 0.6;
+    Sky.PrecipitationType = 0;
+    Sky.PrecipitationIntensity = 0.4;
+    Sky.PrecipitationSpeed = 0.4;
+    RainAudioComponent.VolumeSmooth = 0.5;
+  elseif WeatherType == "Rain" then
+    Sky.CloudCoverage = 0.8;
+    Sky.PrecipitationType = 1;
+    Sky.PrecipitationIntensity = 0.5;
+    Sky.PrecipitationSpeed = 0.5;
+    RainAudioComponent.VolumeSmooth = 0.75;
+  elseif WeatherType == "Storm" then
+    Sky.CloudCoverage = 1.0;
+    Sky.PrecipitationType = 1;
+    Sky.PrecipitationIntensity = 0.6;
+    Sky.PrecipitationSpeed = 0.6;
+    RainAudioComponent.VolumeSmooth = 1.0;
+  else
+    print( "Weather type " .. WeatherType .. " does not exist" );
+    return nil;
+  end
+  
+    print( "Setting weather type to " .. WeatherType );
+end
+
+SetWeather( "Normal" );

@@ -1,0 +1,196 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{c99fcf6b-4fc4-449d-9f30-7402b6136617}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Communication">
+      <UniqueIdentifier>{86990828-ac9a-4482-8f64-5af0998ecf7a}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{dbcc3100-e86f-4cf7-9821-50959dcf8ee5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Permission">
+      <UniqueIdentifier>{d9ddadf1-058b-4d8d-ad6d-ef3d3d7dc7a4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClientServerPlugin">
+      <UniqueIdentifier>{d07aa243-125b-4143-a329-8b42d143d9d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="ClientServerPlugin\Factories">
+      <UniqueIdentifier>{1af18111-cb8f-4a22-b270-9fe92f9436fe}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camp">
+      <UniqueIdentifier>{317ec6b2-3993-4120-b322-8ccc31464d40}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Resource">
+      <UniqueIdentifier>{c4b48022-e0b1-4bcc-85e1-987c70e1c7b5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Terrain">
+      <UniqueIdentifier>{b51c8857-c80d-4c3e-a629-950623a51ba0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Lua">
+      <UniqueIdentifier>{edb79750-922e-4295-a62e-db1efc15cbc3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Physics">
+      <UniqueIdentifier>{23f88dd4-37ac-4e52-b850-1b76cf149e71}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Crash">
+      <UniqueIdentifier>{9e498d58-e52c-43d8-b40b-19935320b4b8}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Graphics">
+      <UniqueIdentifier>{140ff2bf-ae96-4969-9c3e-fc21e3a91681}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Framework\Shared\Platform\Prerequisites.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Platform\StableHeaders.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Communication\BitStream.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Communication\GridPosition.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Communication\ReplicaConnection.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Communication\ReplicaManager.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Communication\ServerDirection.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Communication\ServerInfo.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Communication\ServerNeighbors.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Communication\ServerPosition.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Communication\UserInfo.h">
+      <Filter>Communication</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Object\TemplateComponentFactory.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Permission\Permission.h">
+      <Filter>Permission</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\ClientServerPlugin.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\ClientServerPluginFactory.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\ClientServerPluginFactoryManager.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\ClientServerPluginManager.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\ClientServerPluginTemplate.h">
+      <Filter>ClientServerPlugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\Factories\ObjectManagerFactory.h">
+      <Filter>ClientServerPlugin\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\Factories\TemplatePluginFactory.h">
+      <Filter>ClientServerPlugin\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Camp\CampBindings.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Camp\CampBitStream.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Camp\CampStringInterpreter.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Camp\PropertySynchronization.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Camp\PropertyTransaction.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Resource\ResourceInfo.h">
+      <Filter>Resource</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Terrain\Terrain.h">
+      <Filter>Terrain</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Lua\LuaManager.h">
+      <Filter>Lua</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Physics\Physics.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Physics\PhysicsHeightfield.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Crash\CrashReporter.h">
+      <Filter>Crash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Crash\WindowsCrashReporter.h">
+      <Filter>Crash</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Graphics\Graphics.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\SharedIncludes.h" />
+    <ClInclude Include="..\..\Framework\Shared\Physics\AreaTriggerCallback.h">
+      <Filter>Physics</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Framework\Shared\Platform\src\StableHeaders.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Communication\src\GridPosition.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Communication\src\ReplicaConnection.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Communication\src\ServerNeighbors.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Communication\src\ServerPosition.cpp">
+      <Filter>Communication</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\ClientServerPlugin\src\ClientServerPlugin.cpp">
+      <Filter>ClientServerPlugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\ClientServerPlugin\src\ClientServerPluginFactoryManager.cpp">
+      <Filter>ClientServerPlugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\ClientServerPlugin\src\ClientServerPluginManager.cpp">
+      <Filter>ClientServerPlugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Camp\src\CampBindings.cpp">
+      <Filter>Camp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Camp\src\PropertyTransaction.cpp">
+      <Filter>Camp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Resource\src\ResourceInfo.cpp">
+      <Filter>Resource</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Lua\LuaManager.cpp">
+      <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Crash\src\CrashReporter.cpp">
+      <Filter>Crash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Crash\src\WindowsCrashReporter.cpp">
+      <Filter>Crash</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Camp\src\PropertySynchronization.cpp">
+      <Filter>Camp</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

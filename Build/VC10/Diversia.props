@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ImportGroup Label="PropertySheets" />
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <EnableEnhancedInstructionSet>StreamingSIMDExtensions2</EnableEnhancedInstructionSet>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <FloatingPointModel>Fast</FloatingPointModel>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\Framework;$(SolutionDir)..\..\Libraries;$(SolutionDir)dependencies\include\;$(SolutionDir)dependencies\include\curlpp;$(SolutionDir)dependencies\include\Ogre;$(SolutionDir)dependencies\include\Ogre\Plugins\CgProgramManager;$(SolutionDir)dependencies\include\Ogre\Plugins\OctreeSceneManager;$(SolutionDir)dependencies\include\Ogre\Plugins\ParticleFX;$(SolutionDir)dependencies\include\Ogre\RenderSystems\Direct3D9;$(SolutionDir)dependencies\include\Ogre\RenderSystems\GL;$(SolutionDir)dependencies\include\lua;$(SolutionDir)dependencies\include\bullet;$(SolutionDir)dependencies\include\cAudio\Headers;$(SolutionDir)dependencies\include\cAudio\include;$(SolutionDir)dependencies\include\ogre-procedural</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>WIN32;_WIN32;_WINDOWS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <MinimalRebuild>true</MinimalRebuild>
+    </ClCompile>
+    <Link />
+    <Link>
+      <AdditionalLibraryDirectories>$(ProjectDir)lib\$(Configuration)$(Platform);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalDependencies>libsigc++.lib;dbghelp.lib;%(AdditionalDependencies)</AdditionalDependencies>
+    </Link>
+  </ItemDefinitionGroup>
+  <ItemGroup />
+</Project>

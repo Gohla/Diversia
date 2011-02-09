@@ -1,0 +1,52 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{63904fab-a6cd-4ee6-9b6c-d8e644fac690}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Camp">
+      <UniqueIdentifier>{d869615f-5e58-4a7e-a18c-ae4f0b1f5a8e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="RPC3">
+      <UniqueIdentifier>{13fee8c8-675f-44cb-b010-804aeba0d469}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Framework\Object\Platform\Prerequisites.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Object\Platform\StableHeaders.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Object\Camp\CampBindings.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Object\RPC3\RPC3.h">
+      <Filter>RPC3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Object\RPC3\RPC3_Boost.h">
+      <Filter>RPC3</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Object\Component.h" />
+    <ClInclude Include="..\..\Framework\Object\ComponentFactory.h" />
+    <ClInclude Include="..\..\Framework\Object\ComponentFactoryManager.h" />
+    <ClInclude Include="..\..\Framework\Object\Object.h" />
+    <ClInclude Include="..\..\Framework\Object\ObjectIncludes.h" />
+    <ClInclude Include="..\..\Framework\Object\ObjectManager.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Framework\Object\Platform\src\StableHeaders.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Object\Camp\src\CampBindings.cpp">
+      <Filter>Camp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Object\RPC3\src\RPC3.cpp">
+      <Filter>RPC3</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Object\src\Component.cpp" />
+    <ClCompile Include="..\..\Framework\Object\src\ComponentFactoryManager.cpp" />
+    <ClCompile Include="..\..\Framework\Object\src\Object.cpp" />
+    <ClCompile Include="..\..\Framework\Object\src\ObjectManager.cpp" />
+  </ItemGroup>
+</Project>

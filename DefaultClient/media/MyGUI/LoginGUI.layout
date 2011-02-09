@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout">
+    <Widget type="Window" skin="WindowC" position="0 0 680 175" align="ALIGN_CENTER" layer="Back" name="windowServerLogin">
+        <Property key="Widget_Caption" value="Server Login"/>
+        <Widget type="Edit" skin="Edit" position="180 10 390 22" name="editServerAddress">
+            <Property key="Edit_ReadOnly" value="false"/>
+            <Property key="Edit_Password" value="false"/>
+            <Property key="Edit_MultiLine" value="false"/>
+            <Property key="Widget_Caption" value=""/>
+        </Widget>
+        <Widget type="Edit" skin="Edit" position="180 35 480 22" name="editUserName">
+            <Property key="Widget_Caption" value=""/>
+            <Property key="Widget_Enabled" value="false"/>
+        </Widget>
+        <Widget type="StaticText" skin="StaticText" position="7 10 173 22" name="textServAddress">
+            <Property key="Widget_Caption" value="Server address"/>
+        </Widget>
+        <Widget type="StaticText" skin="StaticText" position="7 35 173 22" name="textUserName">
+            <Property key="Widget_Caption" value="Username"/>
+        </Widget>
+        <Widget type="Edit" skin="Edit" position="180 60 480 22" name="editUserPassword">
+            <Property key="Edit_Password" value="true"/>
+            <Property key="Widget_Enabled" value="false"/>
+        </Widget>
+        <Widget type="StaticText" skin="StaticText" position="7 60 173 16" name="textUserPassword">
+            <Property key="Widget_Caption" value="Password"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="180 110 157 22" name="buttonLogin">
+            <Property key="Widget_Caption" value="Login"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="353 110 306 22" name="buttonAddServerFavorite">
+            <Property key="Widget_Caption" value="Add Server To Favorite"/>
+            <Property key="Widget_Enabled" value="false"/>
+        </Widget>
+        <Widget type="Edit" skin="Edit" position="573 10 87 22" name="editServerPort">
+            <Property key="Widget_Caption" value=""/>
+        </Widget>
+        <Widget type="StaticText" skin="StaticText" position="7 85 173 22" name="textNickname">
+            <Property key="Widget_Caption" value="Nickname"/>
+        </Widget>
+        <Widget type="Edit" skin="Edit" position="180 85 480 22" name="editNickname"/>
+    </Widget>
+</MyGUI>

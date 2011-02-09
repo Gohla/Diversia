@@ -1,0 +1,15 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<MyGUI type="Layout">
+    <Widget type="Window" skin="WindowC" position="425 194 219 126" align="ALIGN_HCENTER ALIGN_VCENTER" layer="Overlapped" name="TopMenu">
+        <Property key="Widget_Caption" value="Menu"/>
+        <Widget type="Button" skin="Button" position="2 59 206 26" name="Exit">
+            <Property key="Widget_Caption" value="Exit"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="2 30 206 26" name="Logout">
+            <Property key="Widget_Caption" value="Logout"/>
+        </Widget>
+        <Widget type="Button" skin="Button" position="2 2 206 26" name="ReturnToGame">
+            <Property key="Widget_Caption" value="Return to Game"/>
+        </Widget>
+    </Widget>
+</MyGUI>

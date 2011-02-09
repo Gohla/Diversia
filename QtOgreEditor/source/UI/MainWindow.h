@@ -1,0 +1,78 @@
+/*
+-----------------------------------------------------------------------------
+Copyright (c) 2008-2010 Diversia
+
+This file is part of Diversia.
+-----------------------------------------------------------------------------
+*/
+
+#ifndef DIVERSIA_QTOGREEDITOR_MAINWINDOW_H
+#define DIVERSIA_QTOGREEDITOR_MAINWINDOW_H
+
+#include "Platform/Prerequisites.h"
+
+#include "UI/ConnectDialog.h"
+#include "UI/NewGameDialog.h"
+#include "ui_MainWindow.h"
+#include <QProxyStyle>
+
+namespace Diversia
+{
+namespace QtOgreEditor
+{
+//------------------------------------------------------------------------------
+
+class MainWindow : public QMainWindow
+{
+    Q_OBJECT
+
+public:
+    MainWindow( QWidget* pParent = 0, Qt::WFlags flags = 0 );
+    ~MainWindow();
+
+    /**
+    Initializes the main window. 
+    **/
+    void init();
+    /**
+    Gets the connect dialog. 
+    **/
+    inline ConnectDialog& getConnectDialog() { return mConnectDialog; }
+
+    Ui::MainWindowClass mUI;
+
+private slots:
+    void exit();
+    void disconnect();
+    void save();
+    void saveAs();
+    void load();
+    void logSettingsChanged();
+
+private:
+    ConnectDialog       mConnectDialog;
+    NewGameDialog       mNewGameDialog;
+
+};
+
+//------------------------------------------------------------------------------
+
+class IconDockStyle: public QProxyStyle
+{
+    Q_OBJECT
+
+public:
+    IconDockStyle( const QIcon& rIcon, QStyle* pStyle = 0 );
+
+    void drawControl( ControlElement element, const QStyleOption* pOption, QPainter* pPainter, 
+        const QWidget* pWidget = 0 ) const;
+
+private:
+    QIcon mIcon;
+};
+
+//------------------------------------------------------------------------------
+} // Namespace QtOgreEditor
+} // Namespace Diversia
+
+#endif // DIVERSIA_QTOGREEDITOR_MAINWINDOW_H
