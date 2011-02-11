@@ -59,10 +59,9 @@ EditorApplication::EditorApplication( int argc, char* argv[] ):
     QApplication( argc, argv ),
     mLogFormatter
     (
-        boost::log::formatters::format( "[%1%] [%2%] <%3%> %4%" )
+        boost::log::formatters::format( "[%1%] [%2%] %3%" )
             % boost::log::formatters::date_time( "TimeStamp", "%H:%M:%S" )
             % boost::log::formatters::attr< String >( "Channel" )
-            % boost::log::formatters::attr< LogLevel >( "Severity" )
             % boost::log::formatters::message()
     ),
     mLogLevel( LOG_INFO ),
@@ -264,11 +263,21 @@ void EditorApplication::writeLogRecord( const boost::log::basic_record<char>& rR
     boost::mutex::scoped_lock lock( logRecordMutex );
 
     LogLevel logLevel = LOG_INFO;
+    String channel;
     if( boost::log::extract<LogLevel>( "Severity", rRecord.attribute_values(), 
-        boost::lambda::var( logLevel ) = boost::lambda::_1 ) )
+        boost::lambda::var( logLevel ) = boost::lambda::_1 ) && 
+        boost::log::extract<String>( "Channel", rRecord.attribute_values(), 
+        boost::lambda::var( channel ) = boost::lambda::_1 ) )
     {
+
         // Send log message to log list widget.
         QListWidgetItem* item = new QListWidgetItem( message, mMainWindow->mUI.logListWidget );
+        item->setData( Qt::UserRole, logLevel ); // Log level
+        item->setData( Qt::UserRole + 1, QString::fromStdString( channel ) ); // Log channel
+        item->setData( Qt::UserRole + 2, mMainWindow->isSeverityChecked( logLevel ) ); // Shown because of severity?
+        item->setData( Qt::UserRole + 3, mMainWindow->isSourceChecked( channel ) ); // Shown because of source?
+        mMainWindow->checkLogItem( mMainWindow->mUI.logListWidget->model()->index( 
+            mMainWindow->mUI.logListWidget->row( item ), 0 ) );
         mMainWindow->mUI.logListWidget->scrollToItem( item, QAbstractItemView::PositionAtBottom );
 
         // Select color
@@ -277,8 +286,20 @@ void EditorApplication::writeLogRecord( const boost::log::basic_record<char>& rR
             case LOG_CRITICAL: item->setForeground( QBrush( Qt::darkRed ) ); break;
             case LOG_ERROR: item->setForeground( QBrush( Qt::red ) ); break;
             case LOG_WARNING: item->setForeground( QBrush( Qt::darkYellow ) ); break;
+            case LOG_INFO: item->setForeground( QBrush( Qt::black ) ); break;
             case LOG_DEBUG: item->setForeground( QBrush( Qt::gray ) ); break;
             case LOG_ENTRYEXIT: item->setForeground( QBrush( Qt::lightGray ) ); break;
+        }
+
+        // Select icon
+        switch( logLevel )
+        {
+            case LOG_CRITICAL: item->setIcon( QIcon( ":/Icons/Icons/status/dialog-error.png" ) ); break;
+            case LOG_ERROR: item->setIcon( QIcon( ":/Icons/Icons/status/dialog-error.png" ) ); break;
+            case LOG_WARNING: item->setIcon( QIcon( ":/Icons/Icons/status/dialog-warning.png" ) ); break;
+            case LOG_INFO: item->setIcon( QIcon( ":/Icons/Icons/status/dialog-info.png" ) ); break;
+            case LOG_DEBUG: item->setIcon( QIcon( ":/Icons/Icons/status/dialog-question.png" ) );break;
+            case LOG_ENTRYEXIT: item->setIcon( QIcon( ":/Icons/Icons/status/dialog-question.png" ) ); break;
         }
 
         // Send errors to status bar.

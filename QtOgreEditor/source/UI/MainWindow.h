@@ -47,9 +47,17 @@ private slots:
     void save();
     void saveAs();
     void load();
-    void logSettingsChanged();
+    void logSeverityChange( QWidget* pWidget );
+    void logSourceChange( QWidget* pWidget );
 
 private:
+    friend class EditorApplication;
+
+    void checkLogItem( const QModelIndex& rIndex );
+    bool isSeverityChecked( LogLevel logLevel );
+    bool isSourceChecked( const String& rSource );
+    void closeEvent( QCloseEvent* pEvent );
+
     ConnectDialog       mConnectDialog;
     NewGameDialog       mNewGameDialog;
 

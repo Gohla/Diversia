@@ -22,6 +22,7 @@ This file is part of Diversia.
 #include "Util/State/StateMachine.h"
 #include <QFileDialog>
 #include <QPainter>
+#include <QSignalMapper>
 
 namespace Diversia
 {
@@ -65,6 +66,80 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     QObject::connect( mUI.actionConnect, SIGNAL( triggered() ), &mConnectDialog, SLOT( show() ) );
     QObject::connect( mUI.actionNew, SIGNAL( triggered() ), &mNewGameDialog, SLOT( show() ) );
 
+    // Setup log severity controls.
+    QSignalMapper* severitySignalMapper = new QSignalMapper( this );
+
+    mUI.logSeverityDebugCheckBox->setProperty( "LogLevel", LOG_DEBUG );
+    QObject::connect( mUI.logSeverityDebugCheckBox, SIGNAL( stateChanged(int) ), severitySignalMapper, SLOT( map() ) );
+    severitySignalMapper->setMapping( mUI.logSeverityDebugCheckBox, mUI.logSeverityDebugCheckBox );
+
+    mUI.logSeverityInfoCheckBox->setProperty( "LogLevel", LOG_INFO );
+    QObject::connect( mUI.logSeverityInfoCheckBox, SIGNAL( stateChanged(int) ), severitySignalMapper, SLOT( map() ) );
+    severitySignalMapper->setMapping( mUI.logSeverityInfoCheckBox, mUI.logSeverityInfoCheckBox );
+
+    mUI.logSeverityWarningCheckBox->setProperty( "LogLevel", LOG_WARNING );
+    QObject::connect( mUI.logSeverityWarningCheckBox, SIGNAL( stateChanged(int) ), severitySignalMapper, SLOT( map() ) );
+    severitySignalMapper->setMapping( mUI.logSeverityWarningCheckBox, mUI.logSeverityWarningCheckBox );
+
+    mUI.logSeverityErrorCheckBox->setProperty( "LogLevel", LOG_ERROR );
+    QObject::connect( mUI.logSeverityErrorCheckBox, SIGNAL( stateChanged(int) ), severitySignalMapper, SLOT( map() ) );
+    severitySignalMapper->setMapping( mUI.logSeverityErrorCheckBox, mUI.logSeverityErrorCheckBox );
+
+    mUI.logSeverityCriticalCheckBox->setProperty( "LogLevel", LOG_CRITICAL );
+    QObject::connect( mUI.logSeverityCriticalCheckBox, SIGNAL( stateChanged(int) ), severitySignalMapper, SLOT( map() ) );
+    severitySignalMapper->setMapping( mUI.logSeverityCriticalCheckBox, mUI.logSeverityCriticalCheckBox );
+
+    QObject::connect( severitySignalMapper, SIGNAL( mapped(QWidget*) ), this, SLOT( logSeverityChange(QWidget*) ) );
+
+    // Setup log source controls.
+    QSignalMapper* sourcesSignalMapper = new QSignalMapper( this );
+
+    QObject::connect( mUI.logSourceUtilCheckBox, SIGNAL( stateChanged(int) ), sourcesSignalMapper, SLOT( map() ) );
+    sourcesSignalMapper->setMapping( mUI.logSourceUtilCheckBox, mUI.logSourceUtilCheckBox );
+
+    QObject::connect( mUI.logSourceObjectCheckBox, SIGNAL( stateChanged(int) ), sourcesSignalMapper, SLOT( map() ) );
+    sourcesSignalMapper->setMapping( mUI.logSourceObjectCheckBox, mUI.logSourceObjectCheckBox );
+
+    QObject::connect( mUI.logSourceSharedCheckBox, SIGNAL( stateChanged(int) ), sourcesSignalMapper, SLOT( map() ) );
+    sourcesSignalMapper->setMapping( mUI.logSourceSharedCheckBox, mUI.logSourceSharedCheckBox );
+
+    QObject::connect( mUI.logSourceClientCheckBox, SIGNAL( stateChanged(int) ), sourcesSignalMapper, SLOT( map() ) );
+    sourcesSignalMapper->setMapping( mUI.logSourceClientCheckBox, mUI.logSourceClientCheckBox );
+
+    QObject::connect( mUI.logSourceOgreClientCheckBox, SIGNAL( stateChanged(int) ), sourcesSignalMapper, SLOT( map() ) );
+    sourcesSignalMapper->setMapping( mUI.logSourceOgreClientCheckBox, mUI.logSourceOgreClientCheckBox );
+
+    QObject::connect( mUI.logSourceOgreCheckBox, SIGNAL( stateChanged(int) ), sourcesSignalMapper, SLOT( map() ) );
+    sourcesSignalMapper->setMapping( mUI.logSourceOgreCheckBox, mUI.logSourceOgreCheckBox );
+
+    QObject::connect( mUI.logSourceQtOgreEditorCheckBox, SIGNAL( stateChanged(int) ), sourcesSignalMapper, SLOT( map() ) );
+    sourcesSignalMapper->setMapping( mUI.logSourceQtOgreEditorCheckBox, mUI.logSourceQtOgreEditorCheckBox );
+
+    QObject::connect( mUI.logSourceLuaCheckBox, SIGNAL( stateChanged(int) ), sourcesSignalMapper, SLOT( map() ) );
+    sourcesSignalMapper->setMapping( mUI.logSourceLuaCheckBox, mUI.logSourceLuaCheckBox );
+
+    QObject::connect( sourcesSignalMapper, SIGNAL( mapped(QWidget*) ), this, SLOT( logSourceChange(QWidget*) ) );
+
+    // Restore state
+    QSettings settings( "Diversia", "QtOgreEditor" );
+    QMainWindow::restoreGeometry( settings.value( "MainWindow/Geometry" ).toByteArray() );
+    QMainWindow::restoreState( settings.value( "MainWindow/State" ).toByteArray() );
+
+    mUI.logSeverityDebugCheckBox->setChecked( settings.value( "MainWindow/logSeverityDebugCheckBox", false ).toBool() );
+    mUI.logSeverityInfoCheckBox->setChecked( settings.value( "MainWindow/logSeverityInfoCheckBox", true ).toBool() );
+    mUI.logSeverityWarningCheckBox->setChecked( settings.value( "MainWindow/logSeverityWarningCheckBox", true ).toBool() );
+    mUI.logSeverityErrorCheckBox->setChecked( settings.value( "MainWindow/logSeverityErrorCheckBox", true ).toBool() );
+    mUI.logSeverityCriticalCheckBox->setChecked( settings.value( "MainWindow/logSeverityCriticalCheckBox", true ).toBool() );
+
+    mUI.logSourceUtilCheckBox->setChecked( settings.value( "MainWindow/logSourceUtilCheckBox", true ).toBool() );
+    mUI.logSourceObjectCheckBox->setChecked( settings.value( "MainWindow/logSourceObjectCheckBox", true ).toBool() );
+    mUI.logSourceSharedCheckBox->setChecked( settings.value( "MainWindow/logSourceSharedCheckBox", true ).toBool() );
+    mUI.logSourceClientCheckBox->setChecked( settings.value( "MainWindow/logSourceClientCheckBox", true ).toBool() );
+    mUI.logSourceOgreClientCheckBox->setChecked( settings.value( "MainWindow/logSourceOgreClientCheckBox", true ).toBool() );
+    mUI.logSourceOgreCheckBox->setChecked( settings.value( "MainWindow/logSourceOgreCheckBox", true ).toBool() );
+    mUI.logSourceQtOgreEditorCheckBox->setChecked( settings.value( "MainWindow/logSourceQtOgreEditorCheckBox", true ).toBool() );
+    mUI.logSourceLuaCheckBox->setChecked( settings.value( "MainWindow/logSourceLuaCheckBox", true ).toBool() );
+
     EditorGlobals::mMainWindow = this;
 }
 
@@ -82,12 +157,6 @@ void MainWindow::init()
 
 void MainWindow::exit()
 {
-    LOGE << "TestError";
-    LOGW << "TestWarning";
-    LOGI << "TestInfo";
-    LOGD << "TestDebug";
-    LOGC << "TestCritical";
-
     QMessageBox msgBox;
     msgBox.setText( "Are you sure you want to exit?" );
     msgBox.setIcon( QMessageBox::Warning );
@@ -184,9 +253,98 @@ void MainWindow::load()
     }
 }
 
-void MainWindow::logSettingsChanged()
+void MainWindow::logSeverityChange( QWidget* pWidget )
 {
+    QCheckBox* checkbox = qobject_cast<QCheckBox*>( pWidget );
+    QAbstractItemModel* model = mUI.logListWidget->model();
+    QModelIndexList list = model->match( model->index( 0, 0 ), Qt::UserRole, 
+        checkbox->property( "LogLevel" ), -1 );
 
+    for( QModelIndexList::iterator i = list.begin();i != list.end(); ++i )
+    {
+        model->setData( *i, checkbox->isChecked(), Qt::UserRole + 2 );
+        MainWindow::checkLogItem( *i );
+    }
+
+    if( !list.empty() ) mUI.logListWidget->scrollToBottom();
+}
+
+void MainWindow::logSourceChange( QWidget* pWidget )
+{
+    QCheckBox* checkbox = qobject_cast<QCheckBox*>( pWidget );
+    QAbstractItemModel* model = mUI.logListWidget->model();
+    QModelIndexList list = model->match( model->index( 0, 0 ), Qt::UserRole + 1, 
+        checkbox->text(), -1 );
+
+    for( QModelIndexList::iterator i = list.begin();i != list.end(); ++i )
+    {
+        model->setData( *i, checkbox->isChecked(), Qt::UserRole + 3 );
+        MainWindow::checkLogItem( *i );
+    }
+
+    if( !list.empty() ) mUI.logListWidget->scrollToBottom();
+}
+
+void MainWindow::checkLogItem( const QModelIndex& rIndex )
+{
+    QAbstractItemModel* model = mUI.logListWidget->model();
+    if( !model->data( rIndex, Qt::UserRole + 2 ).toBool() || 
+        !model->data( rIndex, Qt::UserRole + 3 ).toBool() )
+        mUI.logListWidget->item( rIndex.row() )->setHidden( true );
+    else
+        mUI.logListWidget->item( rIndex.row() )->setHidden( false );
+}
+
+bool MainWindow::isSeverityChecked( LogLevel logLevel )
+{
+    switch( logLevel )
+    {
+        case LOG_DEBUG: return mUI.logSeverityDebugCheckBox->isChecked();
+        case LOG_INFO: return mUI.logSeverityInfoCheckBox->isChecked();
+        case LOG_WARNING: return mUI.logSeverityWarningCheckBox->isChecked();
+        case LOG_ERROR: return mUI.logSeverityErrorCheckBox->isChecked();
+        case LOG_CRITICAL: return mUI.logSeverityCriticalCheckBox->isChecked();
+    }
+
+    return false;
+}
+
+bool MainWindow::isSourceChecked( const String& rSource )
+{
+    if( rSource == "Util" ) return mUI.logSourceUtilCheckBox->isChecked();
+    else if( rSource == "Object" ) return mUI.logSourceObjectCheckBox->isChecked();
+    else if( rSource == "Shared" ) return mUI.logSourceSharedCheckBox->isChecked();
+    else if( rSource == "Client" ) return mUI.logSourceClientCheckBox->isChecked();
+    else if( rSource == "OgreClient" ) return mUI.logSourceOgreClientCheckBox->isChecked();
+    else if( rSource == "Ogre" ) return mUI.logSourceOgreCheckBox->isChecked();
+    else if( rSource == "QtOgreEditor" ) return mUI.logSourceQtOgreEditorCheckBox->isChecked();
+    else if( rSource == "Lua" ) return mUI.logSourceLuaCheckBox->isChecked();
+
+    return false;
+}
+
+void MainWindow::closeEvent( QCloseEvent* pEvent )
+{
+    QSettings settings( "Diversia", "QtOgreEditor" );
+    settings.setValue( "MainWindow/Geometry", QMainWindow::saveGeometry() );
+    settings.setValue( "MainWindow/State", QMainWindow::saveState() );
+
+    settings.setValue( "MainWindow/logSeverityDebugCheckBox", mUI.logSeverityDebugCheckBox->isChecked() );
+    settings.setValue( "MainWindow/logSeverityInfoCheckBox", mUI.logSeverityInfoCheckBox->isChecked() );
+    settings.setValue( "MainWindow/logSeverityWarningCheckBox", mUI.logSeverityWarningCheckBox->isChecked() );
+    settings.setValue( "MainWindow/logSeverityErrorCheckBox", mUI.logSeverityErrorCheckBox->isChecked() );
+    settings.setValue( "MainWindow/logSeverityCriticalCheckBox", mUI.logSeverityCriticalCheckBox->isChecked() );
+
+    settings.setValue( "MainWindow/logSourceUtilCheckBox", mUI.logSourceUtilCheckBox->isChecked() );
+    settings.setValue( "MainWindow/logSourceObjectCheckBox", mUI.logSourceObjectCheckBox->isChecked() );
+    settings.setValue( "MainWindow/logSourceSharedCheckBox", mUI.logSourceSharedCheckBox->isChecked() );
+    settings.setValue( "MainWindow/logSourceClientCheckBox", mUI.logSourceClientCheckBox->isChecked() );
+    settings.setValue( "MainWindow/logSourceOgreClientCheckBox", mUI.logSourceOgreClientCheckBox->isChecked() );
+    settings.setValue( "MainWindow/logSourceOgreCheckBox", mUI.logSourceOgreCheckBox->isChecked() );
+    settings.setValue( "MainWindow/logSourceQtOgreEditorCheckBox", mUI.logSourceQtOgreEditorCheckBox->isChecked() );
+    settings.setValue( "MainWindow/logSourceLuaCheckBox", mUI.logSourceLuaCheckBox->isChecked() );
+
+    QMainWindow::closeEvent( pEvent );
 }
 
 //------------------------------------------------------------------------------

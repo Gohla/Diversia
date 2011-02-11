@@ -357,13 +357,7 @@
   <widget class="QDockWidget" name="consoleDock">
    <property name="minimumSize">
     <size>
-     <width>924</width>
-     <height>180</height>
-    </size>
-   </property>
-   <property name="maximumSize">
-    <size>
-     <width>524287</width>
+     <width>0</width>
      <height>180</height>
     </size>
    </property>
@@ -587,9 +581,29 @@
          </widget>
         </item>
         <item>
+         <widget class="QCheckBox" name="logSourceOgreCheckBox">
+          <property name="text">
+           <string>Ogre</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
          <widget class="QCheckBox" name="logSourceQtOgreEditorCheckBox">
           <property name="text">
            <string>QtOgreEditor</string>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QCheckBox" name="logSourceLuaCheckBox">
+          <property name="text">
+           <string>Lua</string>
           </property>
           <property name="checked">
            <bool>true</bool>
@@ -1042,22 +1056,6 @@
     <hint type="destinationlabel">
      <x>559</x>
      <y>770</y>
-    </hint>
-   </hints>
-  </connection>
-  <connection>
-   <sender>logSeverityCriticalCheckBox</sender>
-   <signal>stateChanged(int)</signal>
-   <receiver>MainWindowClass</receiver>
-   <slot>logSettingsChanged()</slot>
-   <hints>
-    <hint type="sourcelabel">
-     <x>668</x>
-     <y>850</y>
-    </hint>
-    <hint type="destinationlabel">
-     <x>559</x>
-     <y>440</y>
     </hint>
    </hints>
   </connection>
