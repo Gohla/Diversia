@@ -1134,7 +1134,7 @@ void CampBindings::bindSceneManagerPlugin()
             &SceneManagerPlugin::setSky<bool, &SceneManagerPlugin::mSkyEnabled> )
         .property( "SkyMaterial", 
             &SceneManagerPlugin::mSkyMaterial, 
-            &SceneManagerPlugin::setSky<const String&, &SceneManagerPlugin::mSkyMaterial> )
+            &SceneManagerPlugin::setSkyMaterial )
         .property( "SkyDistance", 
             &SceneManagerPlugin::mSkyDistance, 
             &SceneManagerPlugin::setSky<Real, &SceneManagerPlugin::mSkyDistance> )

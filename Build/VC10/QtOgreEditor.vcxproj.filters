@@ -53,6 +53,9 @@
     <Filter Include="Input">
       <UniqueIdentifier>{42e1d979-4d64-417b-89d0-efeaadf3bb06}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Log">
+      <UniqueIdentifier>{9f10cf73-5e3d-4e70-834f-48bc16436f39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\QtOgreEditor\source\Platform\Config.h">
@@ -92,6 +95,9 @@
       <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\QtOgreEditor\source\EditorGlobals.h" />
+    <ClInclude Include="..\..\QtOgreEditor\source\Log\QtLogger.h">
+      <Filter>Log</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\QtOgreEditor\source\Platform\StableHeaders.cpp">
@@ -241,6 +247,9 @@
     <ClCompile Include="..\..\QtOgreEditor\source\EditorApplication.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\main.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\EditorGlobals.cpp" />
+    <ClCompile Include="..\..\QtOgreEditor\source\Log\QtLogger.cpp">
+      <Filter>Log</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\QtOgreEditor\qt\Icon.ico">

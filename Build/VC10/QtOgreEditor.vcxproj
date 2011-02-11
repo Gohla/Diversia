@@ -121,6 +121,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\QtOgreEditor\source\Log\QtLogger.h" />
     <ClInclude Include="..\..\QtOgreEditor\source\Platform\Config.h" />
     <ClInclude Include="..\..\QtOgreEditor\source\Platform\Prerequisites.h" />
     <ClInclude Include="..\..\QtOgreEditor\source\Platform\StableHeaders.h" />
@@ -316,6 +317,7 @@
     <ClInclude Include="..\..\QtOgreEditor\source\EditorGlobals.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\QtOgreEditor\source\Log\QtLogger.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Platform\StableHeaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>

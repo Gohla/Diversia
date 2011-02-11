@@ -19,9 +19,6 @@ namespace QtOgreEditor
 {
 //------------------------------------------------------------------------------
 
-typedef std::map< LogLevel, boost::log::basic_record<char> > LogRecords;
-typedef boost::log::formatters::fmt_format<char> LogFormatter;
-
 class EditorApplication : public QApplication, public ApplicationBase
 {
     Q_OBJECT
@@ -34,7 +31,6 @@ public:
     void run();
     inline void quitSoon() { QApplication::quit(); }
     inline void quit() { QApplication::quit(); }
-    void writeLogRecord( const boost::log::basic_record<char>& rRecord );
 
 private slots:
     void update();
@@ -45,10 +41,6 @@ private:
 
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
-    LogRecords mLogRecords;
-    boost::mutex    logRecordMutex;
-    LogFormatter    mLogFormatter;
-
     QTimer*         mUpdateTimer;
     boost::timer    mTimer;
 
@@ -56,6 +48,7 @@ private:
     boost::scoped_ptr<ConfigManager>    mConfigManager;
     boost::scoped_ptr<CrashReporter>    mCrashReporter;
     boost::scoped_ptr<MainWindow>       mMainWindow;
+    boost::shared_ptr<QtLogger>         mQtLogger;
     boost::scoped_ptr<GraphicsManager>  mGraphicsManager;
     boost::scoped_ptr<PhysicsManager>   mPhysicsManager;
     boost::scoped_ptr<AudioManager>     mAudioManager;
@@ -75,20 +68,6 @@ private:
     LogLevel        mLogLevel;
     Real            mUpdateRate;
 
-};
-
-//------------------------------------------------------------------------------
-
-/**
-Boost logging sink backend for writing log messages to a Qt text stream.
-**/
-class TextEditLogger : public boost::log::sinks::basic_formatting_sink_backend<char>
-{
-public:
-    TextEditLogger( LogLevel logLevel ): mLogLevel( logLevel ) {}
-    void do_consume( record_type const& rRecord, target_string_type const& rMessage );
-
-    LogLevel mLogLevel;
 };
 
 //------------------------------------------------------------------------------

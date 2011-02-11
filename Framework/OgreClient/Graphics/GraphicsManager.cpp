@@ -22,13 +22,17 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "OgreClient/Platform/StableHeaders.h"
 
+#include "OgreClient/Graphics/Atlas.h"
+#include "OgreClient/Graphics/Fader.h"
 #include "OgreClient/Graphics/GraphicsManager.h"
 #include "OgreClient/Graphics/StaticPluginLoader.h"
-#include "OgreClient/Graphics/Fader.h"
-#include "OgreClient/Graphics/Atlas.h"
-#include "OgreClient/Resource/URLArchive.h"
 #include "OgreClient/Resource/GenericResourceManager.h"
+#include "OgreClient/Resource/URLArchive.h"
 #include "Util/Helper/Transition.h"
+#include <Ogre/OgreMaterial.h>
+#include <Ogre/OgrePass.h>
+#include <Ogre/OgreTechnique.h>
+#include <Ogre/OgreTextureUnitState.h>
 
 namespace Diversia
 {
@@ -239,6 +243,41 @@ directory or set the correct directory in config.xml under 'RootResourceLocation
 void GraphicsManager::addResourceLocation( const OgreResourceParams& rParams )
 {
     mResourceLocations.push_back( rParams );
+}
+
+ResourceSet GraphicsManager::getTextureNamesFromMaterial( const String& rMaterialName,
+    const String& rGroupName )
+{
+    ResourceSet textureNames;
+
+    Ogre::MaterialPtr material = Ogre::MaterialManager::getSingletonPtr()->getByName( 
+        rMaterialName, rGroupName );
+    material->load();
+
+    Ogre::Material::TechniqueIterator ti = material->getSupportedTechniqueIterator();
+    while( ti.hasMoreElements() )
+    {
+        Ogre::Technique* technique = ti.getNext();
+        Ogre::Technique::PassIterator pi = technique->getPassIterator();
+        while( pi.hasMoreElements() )
+        {
+            const Ogre::Pass* pass = pi.getNext();
+            Ogre::Pass::ConstTextureUnitStateIterator tui = pass->getTextureUnitStateIterator();
+            while( tui.hasMoreElements() )
+            {
+                Ogre::TextureUnitState* textureUnitState = tui.getNext();
+                textureNames.insert( ResourceInfo( textureUnitState->getTextureName(), "Texture" ) );
+
+                for( unsigned int i = 0; i < textureUnitState->getNumFrames(); ++i )
+                {
+                    textureNames.insert( ResourceInfo( textureUnitState->getFrameTextureName( i ), 
+                        "Texture" ) );
+                }
+            }
+        }
+    }
+
+    return textureNames;
 }
 
 void GraphicsManager::windowMoved( Ogre::RenderWindow* pRenderWindow )

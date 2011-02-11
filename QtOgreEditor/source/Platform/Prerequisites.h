@@ -47,6 +47,9 @@ class ComponentItem;
 class ClientServerPluginModel;
 class PluginItem;
 
+// Log
+class QtLogger;
+
 // State
 class EditState;
 class InitialState;

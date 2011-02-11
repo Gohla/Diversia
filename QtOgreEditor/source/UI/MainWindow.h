@@ -51,7 +51,7 @@ private slots:
     void logSourceChange( QWidget* pWidget );
 
 private:
-    friend class EditorApplication;
+    friend class QtLogger;
 
     void checkLogItem( const QModelIndex& rIndex );
     bool isSeverityChecked( LogLevel logLevel );

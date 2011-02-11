@@ -136,6 +136,12 @@ public:
     @param  rResourceList   List of resources. 
     **/
     static std::set<ResourceInfo> toResourceSet( const std::vector<ResourceInfo>& rResourceList );
+    /**
+    Converts a resource set to a resource list. 
+    
+    @param  rResourceList   Set of resources. 
+    **/
+    static std::vector<ResourceInfo> toResourceList( const std::set<ResourceInfo>& rResourceList );
 
     Path    mFile;
     String  mType;

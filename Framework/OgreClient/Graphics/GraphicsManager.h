@@ -101,6 +101,9 @@ public:
     **/
     void addResourceLocation( const OgreResourceParams& rParams );
 
+    static ResourceSet getTextureNamesFromMaterial( const String& rMaterialName, 
+        const String& rGroupName );
+
     inline Ogre::Root* getRoot() const { return mRoot; }
     inline Ogre::SceneManager* getSceneMgr() const { return mSceneMgr; }
     inline Ogre::RenderWindow* getWindow() const { return mWindow; }

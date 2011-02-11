@@ -22,6 +22,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "OgreClient/Platform/StableHeaders.h"
 
+#include "OgreClient/Graphics/GraphicsManager.h"
 #include "OgreClient/Graphics/SceneManagerPlugin.h"
 #include "OgreClient/Resource/ResourceManager.h"
 #include "Shared/ClientServerPlugin/ClientServerPlugin.h"
@@ -37,6 +38,8 @@ SceneManagerPlugin::SceneManagerPlugin( Mode mode, ServerPluginManager& rPluginM
     RakNet::NetworkIDManager& rNetworkIDManager ):
     ServerPlugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mResourceManager( ClientServerPlugin::getPluginManager().getPlugin<ResourceManager>() ),
+    mCreated( false ),
+    mLoaded( false ),
     mSkyType( SKYTYPE_BOX ),
     mSkyEnabled( false ),
     mSkyDistance( 5000 ),
@@ -53,34 +56,85 @@ SceneManagerPlugin::SceneManagerPlugin( Mode mode, ServerPluginManager& rPluginM
 
 SceneManagerPlugin::~SceneManagerPlugin()
 {
+    GlobalsBase::mScene->setSkyDome( false, "" );
+    GlobalsBase::mScene->setSkyBox( false, "" );
+}
 
+void SceneManagerPlugin::setSkyMaterial( const String& rMaterial )
+{
+    if( rMaterial.empty() || mSkyMaterial == rMaterial ) return;
+    mSkyMaterial = rMaterial;
+
+    if( mCreated )
+    {
+        SceneManagerPlugin::insertTexturesIntoResourceList();
+
+        // TODO: Store and load properties when reloading the mesh so all the properties from the 
+        // previous entity also get set onto the new entity.
+
+        try
+        {
+            mLoaded = false;
+
+            mResourceManager.loadResources( mResourceList, sigc::mem_fun( this, 
+                &SceneManagerPlugin::resourcesLoaded ) );
+        }
+        catch( Exception e )
+        {
+            CLOGE << "Could not load resources for scene manager plugin: " << e.what();
+        }
+    }
 }
 
 void SceneManagerPlugin::create()
 {
-    SceneManagerPlugin::updateSky();
-    ServerPlugin::mLoadingCompletedSignal( *this );
+    mCreated = true;
+
+    try
+    {
+        if( !mSkyMaterial.empty() )
+        {
+            SceneManagerPlugin::insertTexturesIntoResourceList();
+
+            mResourceManager.loadResources( mResourceList, sigc::mem_fun( this, 
+                &SceneManagerPlugin::resourcesLoaded ) );
+        }
+    }
+    catch( Exception e )
+    {
+        CLOGE << "Could not load resources for scene manager plugin: " << e.what();
+    }
 }
 
 void SceneManagerPlugin::setServerState( ServerState serverState )
 {
-    
+    // TODO: Only set sky for active server.
+}
+
+void SceneManagerPlugin::resourcesLoaded()
+{
+    mLoaded = true;
+
+    SceneManagerPlugin::updateSky();
+    ServerPlugin::mLoadingCompletedSignal( *this );
 }
 
 void SceneManagerPlugin::updateSky()
 {
+    if( !mCreated || !mLoaded || mSkyMaterial.empty() ) return;
+
     try
     {
         switch( mSkyType )
         {
             case SKYTYPE_BOX:
-                GlobalsBase::mScene->setSkyDome( false, mSkyMaterial );
+                GlobalsBase::mScene->setSkyDome( false, "" );
                 GlobalsBase::mScene->setSkyBox( mSkyEnabled, mSkyMaterial, mSkyDistance, 
                     mSkyDrawFirst, toQuaternion<Ogre::Quaternion>( mSkyOrientation ), 
                     mResourceManager.getGroup() );
                 break;
             case SKYTYPE_DOME:
-                GlobalsBase::mScene->setSkyBox( false, mSkyMaterial );
+                GlobalsBase::mScene->setSkyBox( false, "" );
                 GlobalsBase::mScene->setSkyDome( mSkyEnabled, mSkyMaterial, mSkyDomeCurvature, 
                     mSkyDomeTiling, mSkyDistance, mSkyDrawFirst, 
                     toQuaternion<Ogre::Quaternion>( mSkyOrientation ), mSkyDomeXSegments,
@@ -92,6 +146,14 @@ void SceneManagerPlugin::updateSky()
     {
         CLOGE << "Cannot load sky: " << e.what();
     }
+}
+
+void SceneManagerPlugin::insertTexturesIntoResourceList()
+{
+    // Insert texture names into resource list.
+    ResourceSet textures = GraphicsManager::getTextureNamesFromMaterial( mSkyMaterial, 
+        mResourceManager.getGroup() );
+    mResourceList.swap( ResourceInfo::toResourceList( textures ) );
 }
 
 //------------------------------------------------------------------------------

@@ -94,5 +94,13 @@ ResourceSet ResourceInfo::toResourceSet( const ResourceList& rResourceList )
     return set;
 }
 
+ResourceList ResourceInfo::toResourceList( const std::set<ResourceInfo>& rResourceList )
+{
+    ResourceList list;
+    std::insert_iterator<ResourceList> ii( list, list.begin() );
+    std::copy( rResourceList.begin(), rResourceList.end(), ii );
+    return list;
+}
+
 //------------------------------------------------------------------------------
 } // Namespace Diversia

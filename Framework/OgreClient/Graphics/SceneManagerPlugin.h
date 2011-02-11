@@ -58,6 +58,10 @@ public:
     static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_SCENEMANAGER; }
 
     /**
+    Sets the sky material.
+    **/
+    void setSkyMaterial( const String& rMaterial );
+    /**
     Sets a sky parameter. 
     **/
     template<typename DataType, typename boost::remove_const<typename boost::remove_reference<DataType>::type>::type SceneManagerPlugin::*MemberVar>
@@ -79,10 +83,15 @@ private:
     Notifies the plugin about a server state change.
     **/
     void setServerState( ServerState serverState );
+    void resourcesLoaded();
     void updateSky();
+    void insertTexturesIntoResourceList();
 
-    ResourceManager& mResourceManager;
+    ResourceManager&    mResourceManager;
+    ResourceList        mResourceList;
 
+    bool        mCreated;
+    bool        mLoaded;
     SkyType     mSkyType;
     bool        mSkyEnabled;
     String      mSkyMaterial;
