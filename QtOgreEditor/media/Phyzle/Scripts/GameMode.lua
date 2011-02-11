@@ -21,8 +21,8 @@ function Create()
   Ball.Entity = Ball.Object:CreateComponent( ComponentType.Entity, "Entity", false );
   Ball.Entity.Material = "Ball";
   -- Light
-  Ball.Light = Ball.Object:CreateComponent( ComponentType.Light, "Light", false );
-  Ball.Light.Type = LightType.Spot;
+  --Ball.Light = Ball.Object:CreateComponent( ComponentType.Light, "Light", false );
+  --Ball.Light.Type = LightType.Spot;
   
   -- CollisionShape
   Ball.CollisionShape = Ball.Object:CreateComponent( ComponentType.CollisionShape, "CollisionShape", false );
@@ -30,6 +30,7 @@ function Create()
   Ball.CollisionShape.ShapeParameters = Vector3.new( 0.3, 1, 1 );
   -- RigidBody
   Ball.RigidBody = Ball.Object:CreateComponent( ComponentType.RigidBody, "RigidBody", false );
+  Ball.RigidBody.PhysicsType = PhysicsType.Dynamic;
   Ball.RigidBody.Restitution = 0.3;
   Ball.RigidBody.LinearDampening = 0.7;
   Ball.RigidBody.AngularDampening = 0.7;

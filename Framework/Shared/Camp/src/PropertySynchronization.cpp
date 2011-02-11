@@ -264,7 +264,7 @@ void PropertySynchronization::processQueuedConstruction()
     }
 }
 
-void PropertySynchronization::storeState( const camp::Value& tag, bool include )
+void PropertySynchronization::storeState( const camp::Args& tags, bool include )
 {
     // Clear existing state.
     PropertySynchronization::clearStoredState();
@@ -274,9 +274,11 @@ void PropertySynchronization::storeState( const camp::Value& tag, bool include )
     {
         const camp::Property& prop = metaclass.property( i );
 
-        // If the property has the exclude tag, ignore it.
-        if ( ( tag != camp::Value::nothing ) && include ? !prop.hasTag( tag ) : prop.hasTag( tag ) ) 
-            continue;
+        // If the property has an exclude tag, ignore it.
+        bool skip = false;
+        for( std::size_t i = 0; i < tags.count(); ++i )
+            if ( include ? !prop.hasTag( tags[i] ) : prop.hasTag( tags[i] ) ) { skip = true; break; }
+        if( skip ) continue;
 
         // Ignore array and dictionary types for now.
         if( prop.type() == camp::arrayType || prop.type() == camp::dictionaryType )

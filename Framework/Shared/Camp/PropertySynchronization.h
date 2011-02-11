@@ -130,7 +130,14 @@ public:
     @param tag      Tag to include or exclude properties from the storage process.
     @param include  Set this to true to make the tag an including tag, false for excluding tag.
     **/
-    void storeState( const camp::Value& tag, bool include = false );
+    inline void storeState( const camp::Value& tag, bool include = false ) { storeState( camp::Args( tag ), include ); }
+    /**
+    Stores the state of all properties. Previous state will be cleared.
+    
+    @param tags     Tags to include or exclude properties from the storage process.
+    @param include  Set this to true to make the tag an including tag, false for excluding tag.
+    **/
+    void storeState( const camp::Args& tags, bool include = false );
     /**
     Loads the stored state. 
     **/

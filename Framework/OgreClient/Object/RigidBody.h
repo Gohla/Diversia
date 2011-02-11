@@ -125,12 +125,17 @@ public:
     **/
     inline void setAngularSleepingThreshold( Real treshhold ) { mRigidBody->setSleepingThresholds( 
         RigidBody::getLinearSleepingThreshold(), treshhold ); }
+    /**
+    Sets the physics type. 
+    **/
+    inline void setPhysicsType( PhysicsType type ) { mPhysicsType = type; if( mCreated ) RigidBody::createRigidBody(); }
 
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
     void create();
     void collisionShapeLoaded( CollisionShape& rCollisionShape );
+    void createRigidBody();
     void destroyRigidBody();
     inline bool delayedDestruction() { return false; }
     void componentChange( Component& rComponent, bool created );

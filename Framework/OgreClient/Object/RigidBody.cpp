@@ -39,7 +39,7 @@ RigidBody::RigidBody( const String& rName, Mode mode, NetworkingType networkingT
         rObject ),
     mRigidBody( 0 ),
     mCollisionShape( 0 ),
-    mPhysicsType( PHYSICSTYPE_DYNAMIC ),
+    mPhysicsType( PHYSICSTYPE_KINEMATIC ),
     mMass( 1.0 ),
     mCreated( false )
 {
@@ -59,18 +59,17 @@ RigidBody::~RigidBody()
 
 void RigidBody::setMass( Real mass )
 {
-    if( !( mPhysicsType == PHYSICSTYPE_STATIC || mPhysicsType == PHYSICSTYPE_KINEMATIC ) &&
-        mMass != mass )
+    if( mMass != mass )
     {
         mMass = mass;
 
-        if( mRigidBody && mCollisionShape )
+        if( mRigidBody && mCollisionShape && mCreated )
         {
             btVector3 inertia;
             mCollisionShape->calculateLocalInertia( mMass, inertia );
             mRigidBody->setMassProps( mMass, inertia );
+            RigidBody::createRigidBody();
         }
-        // TODO: Probably have to recreate the body.
     }
 }
 
@@ -92,18 +91,30 @@ Rigid body component will become active once a collision shape component is adde
 
 void RigidBody::collisionShapeLoaded( CollisionShape& rCollisionShape )
 {
+    if( !rCollisionShape.isLoaded() ) 
+    {
+        mCollisionShape = 0;
+        return;
+    }
+    mCollisionShape = rCollisionShape.getCollisionShape();
+
+    RigidBody::createRigidBody();
+}
+
+void RigidBody::createRigidBody()
+{
+    if( !mCollisionShape ) return;
+
     try
     {
-        if( !rCollisionShape.isLoaded() ) 
+        if( mRigidBody )
         {
-            mCollisionShape = 0;
-            return;
+            PropertySynchronization::storeState( camp::Args( "NoRestore", "NoBitStream" ) );
+            RigidBody::destroyRigidBody();
         }
-        mCollisionShape = rCollisionShape.getCollisionShape();
-        RigidBody::destroyRigidBody();
 
         // Check mass
-        if( mPhysicsType == PHYSICSTYPE_STATIC || mPhysicsType == PHYSICSTYPE_KINEMATIC ) mMass = 0;
+        //if( mPhysicsType == PHYSICSTYPE_STATIC || mPhysicsType == PHYSICSTYPE_KINEMATIC ) mMass = 0;
 
         // Calculate inertia
         btVector3 inertia;
@@ -138,11 +149,11 @@ void RigidBody::collisionShapeLoaded( CollisionShape& rCollisionShape )
         // Delay this call to the next tick, bullet doesn't do some things well immediately after
         // adding the body to the world.
         DelayedCall::create( sigc::mem_fun( this, &PropertySynchronization::processQueue ), 0 );
+        DelayedCall::create( sigc::mem_fun( this, &PropertySynchronization::loadStoredState ), 0 );
     }
     catch( Exception e )
     {
         CLOGW << "Rigid body could not be created: " << e.what();
-        Component::destroyComponentLocally();
     }
 }
 
