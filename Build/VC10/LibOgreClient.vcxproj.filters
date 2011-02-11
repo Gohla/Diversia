@@ -164,6 +164,9 @@
     <ClInclude Include="..\..\Framework\OgreClient\Object\AreaTrigger.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Framework\OgreClient\Object\ForceField.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Libraries\BtOgre\BtOgre.cpp">
@@ -276,6 +279,9 @@
       <Filter>Object</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Framework\OgreClient\Object\Mesh.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\OgreClient\Object\ForceField.cpp">
       <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>

@@ -69,6 +69,7 @@ void AreaTrigger::destroyGhostObject()
 {
     if( mGhostObject )
     {
+        mObjectsInArea.clear();
         mTransformConnection.disconnect();
         GlobalsBase::mPhysics->removeCollisionObject( *mGhostObject );
         delete mGhostObject;
@@ -121,11 +122,13 @@ void AreaTrigger::componentChange( Component& rComponent, bool created )
 
 void AreaTrigger::enterArea( Object& rObject )
 {
+    mObjectsInArea.insert( std::make_pair( rObject.getName(), &rObject ) );
     mAreaTriggerSignal( rObject, true );
 }
 
 void AreaTrigger::leaveArea( Object& rObject )
 {
+    mObjectsInArea.erase( rObject.getName() );
     mAreaTriggerSignal( rObject, false );
 }
 

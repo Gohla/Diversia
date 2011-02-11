@@ -37,6 +37,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Object/Camera.h"
 #include "OgreClient/Object/CollisionShape.h"
 #include "OgreClient/Object/Entity.h"
+#include "OgreClient/Object/ForceField.h"
 #include "OgreClient/Object/LuaObjectScript.h"
 #include "OgreClient/Object/Mesh.h"
 #include "OgreClient/Object/Particle.h"
@@ -1179,6 +1180,23 @@ void CampBindings::bindAreaTrigger()
     	// Functions
     	// Static functions
     	// Operators
+}
+
+void CampBindings::bindForceField()
+{
+    camp::Class::declare<ForceField>( "ForceField" )
+        .tag( "ComponentType", COMPONENTTYPE_FORCEFIELD )
+        .tag( "QtIcon", ":/Icons/Icons/apps/gtk-recordmydesktop.png" )
+        .base<ClientComponent>()
+	    // Constructors
+	    // Properties (read-only)
+	    // Properties (read/write)
+        .property( "Enabled", &ForceField::mEnabled, &ForceField::setEnabled )
+        .property( "Force", &ForceField::getForce, &ForceField::setForce )
+            .tag( "DeserializeCopySet" );
+	    // Functions
+	    // Static functions
+	    // Operators
 }
 
 //------------------------------------------------------------------------------

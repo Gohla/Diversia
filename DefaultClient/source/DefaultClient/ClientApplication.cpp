@@ -49,6 +49,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Object/Camera.h"
 #include "OgreClient/Object/CollisionShape.h"
 #include "OgreClient/Object/Entity.h"
+#include "OgreClient/Object/ForceField.h"
 #include "OgreClient/Object/LuaObjectScript.h"
 #include "OgreClient/Object/Mesh.h"
 #include "OgreClient/Object/Particle.h"
@@ -142,6 +143,7 @@ void ClientApplication::init()
         TemplateComponentFactory<CollisionShape, ClientObject, false>::registerFactory();
         TemplateComponentFactory<RigidBody, ClientObject, false>::registerFactory();
         TemplateComponentFactory<AreaTrigger, ClientObject, false>::registerFactory();
+        TemplateComponentFactory<ForceField, ClientObject, false>::registerFactory();
         TemplateComponentFactory<Audio, ClientObject, true>::registerFactory();
         TemplateComponentFactory<LuaObjectScript, ClientObject, true>::registerFactory();
         TemplateComponentFactory<Particle, ClientObject, true>::registerFactory();

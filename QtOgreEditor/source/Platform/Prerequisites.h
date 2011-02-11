@@ -75,7 +75,7 @@ namespace Log
 static boost::log::sources::severity_channel_logger_mt< Diversia::Util::LogLevel > lg
 (
     boost::log::keywords::severity = Diversia::Util::LOG_INFO,
-    boost::log::keywords::channel = "QTOgreEditor"
+    boost::log::keywords::channel = "QtOgreEditor"
 );
 
 // Easy logging defines.

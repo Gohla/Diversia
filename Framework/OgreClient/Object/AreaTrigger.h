@@ -34,6 +34,8 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
+typedef std::map<String, Object*> ObjectsInArea;
+
 class DIVERSIA_OGRECLIENT_API AreaTrigger : public ClientComponent, public sigc::trackable
 {
 public:
@@ -45,6 +47,10 @@ public:
     Gets the ghost object
     **/
     inline btGhostObject* getGhostObject() const { return mGhostObject; }
+    /**
+    Gets the objects that are inside the collision shape of this area trigger.
+    **/
+    inline const ObjectsInArea& getObjectsInArea() const { return mObjectsInArea; }
     /**
     Query if the area trigger is loaded.
     **/
@@ -85,6 +91,7 @@ private:
 
     btGhostObject*      mGhostObject;
     btCollisionShape*   mCollisionShape;
+    ObjectsInArea       mObjectsInArea;
 
     sigc::connection                    mTransformConnection;
     sigc::signal<void, Object&, bool>   mAreaTriggerSignal;

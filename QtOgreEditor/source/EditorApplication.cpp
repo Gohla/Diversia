@@ -31,6 +31,7 @@ This file is part of Diversia.
 #include "OgreClient/Object/Camera.h"
 #include "OgreClient/Object/CollisionShape.h"
 #include "OgreClient/Object/Entity.h"
+#include "OgreClient/Object/ForceField.h"
 #include "OgreClient/Object/LuaObjectScript.h"
 #include "OgreClient/Object/Mesh.h"
 #include "OgreClient/Object/Particle.h"
@@ -145,6 +146,8 @@ void EditorApplication::init()
         camp::classByType<RigidBody>();
         TemplateComponentFactory<AreaTrigger, ClientObject, false>::registerFactory();
         camp::classByType<AreaTrigger>();
+        TemplateComponentFactory<ForceField, ClientObject, false>::registerFactory();
+        camp::classByType<ForceField>();
         TemplateComponentFactory<Audio, ClientObject, true>::registerFactory();
         camp::classByType<Audio>();
         TemplateComponentFactory<LuaObjectScript, ClientObject, true>::registerFactory();

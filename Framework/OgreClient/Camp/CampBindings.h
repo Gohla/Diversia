@@ -72,6 +72,7 @@ public:
     static void bindCollisionShape();
     static void bindSceneManagerPlugin();
     static void bindAreaTrigger();
+    static void bindForceField();
 
 };
 

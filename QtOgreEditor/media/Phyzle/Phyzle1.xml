@@ -134,7 +134,7 @@
 								</item>
 								<item>
 									<key>
-										<Type>5</Type>
+										<Type>6</Type>
 										<Name>CollisionShape</Name>
 									</key>
 									<value>
@@ -153,7 +153,7 @@
 								</item>
 								<item>
 									<key>
-										<Type>6</Type>
+										<Type>7</Type>
 										<Name>RigidBody</Name>
 									</key>
 									<value>
@@ -209,7 +209,7 @@
 								</item>
 								<item>
 									<key>
-										<Type>5</Type>
+										<Type>6</Type>
 										<Name>CollisionShape</Name>
 									</key>
 									<value>
@@ -228,7 +228,7 @@
 								</item>
 								<item>
 									<key>
-										<Type>7</Type>
+										<Type>8</Type>
 										<Name>AreaTrigger</Name>
 									</key>
 									<value>
@@ -238,7 +238,7 @@
 								</item>
 								<item>
 									<key>
-										<Type>18</Type>
+										<Type>13</Type>
 										<Name>LuaObjectScript</Name>
 									</key>
 									<value>
