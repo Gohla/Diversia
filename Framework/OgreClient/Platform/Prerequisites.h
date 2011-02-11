@@ -115,6 +115,8 @@ class Audio;
 class Camera;
 class CollisionShape;
 class Entity;
+class ForceField;
+class Light;
 class LuaObjectScript;
 class Mesh;
 class Particle;

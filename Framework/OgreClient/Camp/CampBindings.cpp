@@ -38,6 +38,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Object/CollisionShape.h"
 #include "OgreClient/Object/Entity.h"
 #include "OgreClient/Object/ForceField.h"
+#include "OgreClient/Object/Light.h"
 #include "OgreClient/Object/LuaObjectScript.h"
 #include "OgreClient/Object/Mesh.h"
 #include "OgreClient/Object/Particle.h"
@@ -1120,7 +1121,7 @@ void CampBindings::bindCollisionShape()
 void CampBindings::bindSceneManagerPlugin()
 {
     camp::Class::declare<SceneManagerPlugin>( "SceneManager" )
-        .tag( "QtIcon", ":/Icons/Icons/categories/applications-games.png" )
+        .tag( "QtIcon", ":/Icons/Icons/categories/gnome-settings.png" )
         .base<ServerPlugin>()
         // Constructors
         // Properties (read-only)
@@ -1194,6 +1195,57 @@ void CampBindings::bindForceField()
         .property( "Enabled", &ForceField::mEnabled, &ForceField::setEnabled )
         .property( "Force", &ForceField::getForce, &ForceField::setForce )
             .tag( "DeserializeCopySet" );
+	    // Functions
+	    // Static functions
+	    // Operators
+}
+
+void CampBindings::bindLight()
+{
+    camp::Class::declare<Light>( "Light" )
+        .tag( "ComponentType", COMPONENTTYPE_FORCEFIELD )
+        .tag( "QtIcon", ":/Icons/Icons/categories/package_graphics.png" )
+        .base<ClientComponent>()
+	    // Constructors
+	    // Properties (read-only)
+	    // Properties (read/write)
+        .property( "Type", &Light::mType, &Light::setType )
+        .property( "DiffuseColour", 
+            boost::bind( &toColour<Colour, Ogre::ColourValue>, boost::bind( &Ogre::Light::getDiffuseColour, _1 ) ), 
+            boost::bind( &Ogre::Light::setDiffuseColour, _1, boost::bind( &toColour<Ogre::ColourValue, Colour>, _2 ) ), 
+            &Light::getLight )
+                .readable( &Light::isLoaded )
+                .writable( &Light::isLoaded )
+        .property( "SpecularColour", 
+            boost::bind( &toColour<Colour, Ogre::ColourValue>, boost::bind( &Ogre::Light::getSpecularColour, _1 ) ), 
+            boost::bind( &Ogre::Light::setSpecularColour, _1, boost::bind( &toColour<Ogre::ColourValue, Colour>, _2 ) ), 
+            &Light::getLight )
+                .readable( &Light::isLoaded )
+                .writable( &Light::isLoaded )
+        .property( "PowerScale", 
+            &Ogre::Light::getPowerScale, 
+            &Ogre::Light::setPowerScale, 
+            &Light::getLight )
+                .readable( &Light::isLoaded )
+                .writable( &Light::isLoaded )
+        .property( "SpotlightFalloff", 
+            &Ogre::Light::getSpotlightFalloff, 
+            &Ogre::Light::setSpotlightFalloff, 
+                &Light::getLight )
+                .readable( &Light::isLoaded )
+                .writable( &Light::isLoaded )
+        .property( "SpotlightInnerAngle", 
+            boost::bind( &toRadian<Radian, Ogre::Radian>, boost::bind( &Ogre::Light::getSpotlightInnerAngle, _1 ) ), 
+            boost::bind( &Ogre::Light::setSpotlightInnerAngle, _1, boost::bind( &toRadian<Ogre::Radian, Radian>, _2 ) ), 
+                &Light::getLight )
+                .readable( &Light::isLoaded )
+                .writable( &Light::isLoaded )
+        .property( "SpotlightOuterAngle", 
+            boost::bind( &toRadian<Radian, Ogre::Radian>, boost::bind( &Ogre::Light::getSpotlightOuterAngle, _1 ) ), 
+            boost::bind( &Ogre::Light::setSpotlightOuterAngle, _1, boost::bind( &toRadian<Ogre::Radian, Radian>, _2 ) ), 
+                &Light::getLight )
+                .readable( &Light::isLoaded )
+                .writable( &Light::isLoaded );
 	    // Functions
 	    // Static functions
 	    // Operators

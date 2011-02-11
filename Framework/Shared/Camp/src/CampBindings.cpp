@@ -168,6 +168,7 @@ void CampBindings::bindComponentTypeEnum()
         .value( COMPONENTNAME_SCENENODE, COMPONENTTYPE_SCENENODE )
         .value( COMPONENTNAME_ENTITY, COMPONENTTYPE_ENTITY )
         .value( COMPONENTNAME_MESH, COMPONENTTYPE_MESH )
+        .value( COMPONENTNAME_LIGHT, COMPONENTTYPE_LIGHT )
         .value( COMPONENTNAME_ANIMATION, COMPONENTTYPE_ANIMATION )
         .value( COMPONENTNAME_PARTICLE, COMPONENTTYPE_PARTICLE )
         .value( COMPONENTNAME_COLLISIONSHAPE, COMPONENTTYPE_COLLISIONSHAPE )
@@ -398,6 +399,14 @@ void CampBindings::bindSkyType()
         .value( "Box", SKYTYPE_BOX )
         .value( "Dome", SKYTYPE_DOME )
         .value( "Plane", SKYTYPE_PLANE );
+}
+
+void CampBindings::bindLightType()
+{
+    camp::Enum::declare<LightType>( "LightType" )
+        .value( "Point", LIGHTTYPE_POINT )
+        .value( "Spot", LIGHTTYPE_SPOT)
+        .value( "Directional", LIGHTTYPE_DIRECTIONAL );
 }
 
 //------------------------------------------------------------------------------

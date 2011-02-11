@@ -48,6 +48,13 @@ enum GraphicsShape
     GRAPHICSSHAPE_MESH
 };
 
+enum LightType
+{
+    LIGHTTYPE_POINT,
+    LIGHTTYPE_SPOT,
+    LIGHTTYPE_DIRECTIONAL
+};
+
 enum SkyType
 {
     SKYTYPE_BOX,
@@ -62,5 +69,7 @@ CAMP_AUTO_TYPE( Diversia::GraphicsShape,
     &Diversia::Shared::Bindings::CampBindings::bindGraphicsShape );
 
 CAMP_AUTO_TYPE( Diversia::SkyType, &Diversia::Shared::Bindings::CampBindings::bindSkyType );
+
+CAMP_AUTO_TYPE( Diversia::LightType, &Diversia::Shared::Bindings::CampBindings::bindLightType );
 
 #endif // DIVERSIA_SHARED_GRAPHICS_H

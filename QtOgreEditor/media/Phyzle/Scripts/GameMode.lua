@@ -20,6 +20,10 @@ function Create()
   -- Entity
   Ball.Entity = Ball.Object:CreateComponent( ComponentType.Entity, "Entity", false );
   Ball.Entity.Material = "Ball";
+  -- Light
+  Ball.Light = Ball.Object:CreateComponent( ComponentType.Light, "Light", false );
+  Ball.Light.Type = LightType.Spot;
+  
   -- CollisionShape
   Ball.CollisionShape = Ball.Object:CreateComponent( ComponentType.CollisionShape, "CollisionShape", false );
   Ball.CollisionShape.ShapeType = "Sphere";

@@ -73,6 +73,7 @@ public:
     static void bindSceneManagerPlugin();
     static void bindAreaTrigger();
     static void bindForceField();
+    static void bindLight();
 
 };
 

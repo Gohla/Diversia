@@ -132,6 +132,7 @@ void LuaManager::registerDefaultEnums()
     LuaManager::registerEnum<PhysicsShape>( "PhysicsShape" );
     LuaManager::registerEnum<PhysicsType>( "PhysicsType" );
     LuaManager::registerEnum<GraphicsShape>( "GraphicsShape" );
+    LuaManager::registerEnum<LightType>( "LightType" );
     LuaManager::registerEnum<Node::TransformSpace>( "TransformSpace" );
 }
 

@@ -65,6 +65,7 @@ public:
     static void bindGraphicsShape();
     static void bindResourceLocationType();
     static void bindSkyType();
+    static void bindLightType();
 
 };
 

@@ -139,6 +139,7 @@
     <ClInclude Include="..\..\Framework\OgreClient\Object\CollisionShape.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\Entity.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\ForceField.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\Light.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\LuaObjectScript.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\Mesh.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\Particle.h" />
@@ -184,6 +185,7 @@
     <ClCompile Include="..\..\Framework\OgreClient\Object\CollisionShape.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\Entity.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\ForceField.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\Light.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\LuaObjectScript.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\Mesh.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\Particle.cpp" />
