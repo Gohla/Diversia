@@ -22,14 +22,10 @@ namespace Bindings
 
 void CampBindings::bindEditorApplication()
 {
-    camp::Class::declare<EditorApplication>( "EditorApplication" )
+    camp::Class::declare<EditorApplication>( "EditorApplication" );
     	// Constructors
     	// Properties (read-only)
     	// Properties (read/write)
-        .property( "LogLevel", &EditorApplication::mLogLevel )
-            .tag( "Configurable" )
-        .property( "UpdateRate", &EditorApplication::mUpdateRate )
-            .tag( "Configurable" );
     	// Functions
     	// Static functions
     	// Operators

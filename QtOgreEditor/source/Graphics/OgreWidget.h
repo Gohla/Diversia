@@ -30,6 +30,9 @@ public:
     inline QPaintEngine* paintEngine() const { return NULL; }
 
 private:
+    friend class EditorApplication;	///< Give access to update(). 
+
+    void update();
     void paintEvent( QPaintEvent* pEvent );
     void resizeEvent( QResizeEvent* pEvent );
     void mouseMoveEvent( QMouseEvent* pEvent );
@@ -44,6 +47,9 @@ private:
     Ogre::Root*         mRoot;
     Ogre::RenderWindow* mRenderWindow;
     QTimer*             mTimer;
+    unsigned int        mTargetRenderCount;
+    unsigned int        mLastTime;
+    unsigned int        mRenderDelta;
     int                 mKeyCounter;
 
 };

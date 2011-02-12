@@ -12,6 +12,7 @@ This file is part of Diversia.
 #include "Input/QtInputManager.h"
 #include "Input/QtMouseController.h"
 #include "OgreClient/Graphics/GraphicsManager.h"
+#include <QTime>
 
 namespace Diversia
 {
@@ -21,6 +22,9 @@ namespace QtOgreEditor
 
 OgreWidget::OgreWidget( QWidget* pParentWidget /*= 0*/, Qt::WindowFlags flags /*= 0*/ ):
     QWidget( pParentWidget, flags | Qt::MSWindowsOwnDC ),
+    mTargetRenderCount( 60 ),
+    mLastTime( 0 ),
+    mRenderDelta( 0 ),
     mKeyCounter( 0 )
 {
     QWidget::setAcceptDrops( true );
@@ -29,11 +33,6 @@ OgreWidget::OgreWidget( QWidget* pParentWidget /*= 0*/, Qt::WindowFlags flags /*
     QWidget::setMouseTracking( true );
     QWidget::setAttribute( Qt::WA_NoBackground );
     QWidget::setAttribute( Qt::WA_PaintOnScreen );
-    
-    // Update timer
-    /*mTimer = new QTimer( this );
-    mTimer->start( 1.0 / 60.0 * 1000 );
-    QObject::connect( mTimer, SIGNAL( timeout() ), this, SLOT( update() ) );*/
 
     // Input manager
     mInputManager.reset( new QtInputManager( QWidget::width(), QWidget::height() ) );
@@ -69,6 +68,32 @@ Diversia::Util::String OgreWidget::getWidgetHandle()
 #endif
 
     return "";
+}
+
+void OgreWidget::update()
+{
+    QTime time = QTime::currentTime();
+    unsigned int curtime = time.hour() * 60 + time.minute();
+    curtime = (curtime * 60) + time.second();
+    curtime = (curtime * 1000) + time.msec();
+
+    unsigned int timediff = curtime - mLastTime;
+    mLastTime = curtime;
+
+    mRenderDelta += timediff;
+
+    unsigned int targetDelta;
+
+    if (mTargetRenderCount > 0)
+        targetDelta = 1000 / mTargetRenderCount;
+    else
+        targetDelta = 1000000;
+
+    if (mRenderDelta >= targetDelta)
+    {
+        mRenderDelta = mRenderDelta % targetDelta;
+        QWidget::update();
+    }
 }
 
 void OgreWidget::paintEvent( QPaintEvent* pEvent )

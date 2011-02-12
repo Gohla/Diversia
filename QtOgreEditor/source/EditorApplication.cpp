@@ -58,9 +58,7 @@ namespace QtOgreEditor
 //------------------------------------------------------------------------------
 
 EditorApplication::EditorApplication( int argc, char* argv[] ):
-    QApplication( argc, argv ),
-    mLogLevel( LOG_INFO ),
-    mUpdateRate( 1.0 / 60.0 * 1000.0 )
+    QApplication( argc, argv )
 {
     if( !QResource::registerResource( "../../qt/MainWindow.rcc" ) )
     {
@@ -98,10 +96,8 @@ void EditorApplication::init()
 
     try
     {
-        mConfigManager->registerObject( this );
-
         // Initialize logging
-        mLogger.reset( new Logger( mLogLevel, false, true ) );
+        mLogger.reset( new Logger( LOG_DEBUG, false, true ) );
 
         // Initialize crash reporter
         CrashReporter* reporter = CrashReporter::createCrashReporter();
@@ -117,7 +113,7 @@ void EditorApplication::init()
 
         // Initialize Qt logger
         boost::shared_ptr<boost::log::core> core = boost::log::core::get();
-        mQtLogger = boost::make_shared<QtLogger>( mLogLevel );
+        mQtLogger = boost::make_shared<QtLogger>();
         typedef boost::log::sinks::synchronous_sink<QtLogger> SinkType;
         boost::shared_ptr<SinkType> sink( new SinkType( mQtLogger ) );
         core->add_sink( sink );
@@ -234,10 +230,9 @@ void EditorApplication::run()
     // Start the update timer.
     mTimer.restart();
     QObject::connect( mUpdateTimer, SIGNAL( timeout() ), this, SLOT( update() ) );
-    if( mUpdateRate )
-        mUpdateTimer->start( mUpdateRate );
-    else
-        mUpdateTimer->start();
+    mUpdateTimer->setSingleShot( false );
+    mUpdateTimer->setInterval( 0 );
+    mUpdateTimer->start();
 
     // Push menu state to the state machine.
     mStateMachine.reset( new StateMachine() );

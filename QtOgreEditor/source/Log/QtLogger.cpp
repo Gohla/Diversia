@@ -40,9 +40,8 @@ LogMessage::LogMessage( boost::log::basic_record<char> const& rRecord )
 
 //------------------------------------------------------------------------------
 
-QtLogger::QtLogger( LogLevel logLevel ):
-    boost::log::sinks::basic_formatting_sink_backend<char>(),
-    mLogLevel( logLevel )
+QtLogger::QtLogger():
+    boost::log::sinks::basic_formatting_sink_backend<char>()
 {
     GlobalsBase::mLateUpdateSignal->connect( sigc::mem_fun( this, &QtLogger::update ) );
 }

@@ -37,13 +37,12 @@ typedef std::vector<LogMessage> LogRecords;
 class QtLogger : public boost::log::sinks::basic_formatting_sink_backend<char>
 {
 public:
-    QtLogger( LogLevel logLevel );
+    QtLogger();
     
 private:
     void do_consume( record_type const& rRecord, target_string_type const& rMessage );
     void update();
 
-    LogLevel        mLogLevel;
     LogRecords      mLogRecords;
     boost::mutex    mLogRecordMutex;
 

@@ -122,23 +122,31 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
 
     // Restore state
     QSettings settings( "Diversia", "QtOgreEditor" );
-    QMainWindow::restoreGeometry( settings.value( "MainWindow/Geometry" ).toByteArray() );
-    QMainWindow::restoreState( settings.value( "MainWindow/State" ).toByteArray() );
+    settings.beginGroup( "MainWindow" );
+    QMainWindow::restoreGeometry( settings.value( "Geometry" ).toByteArray() );
+    QMainWindow::restoreState( settings.value( "State" ).toByteArray() );
 
-    mUI.logSeverityDebugCheckBox->setChecked( settings.value( "MainWindow/logSeverityDebugCheckBox", false ).toBool() );
-    mUI.logSeverityInfoCheckBox->setChecked( settings.value( "MainWindow/logSeverityInfoCheckBox", true ).toBool() );
-    mUI.logSeverityWarningCheckBox->setChecked( settings.value( "MainWindow/logSeverityWarningCheckBox", true ).toBool() );
-    mUI.logSeverityErrorCheckBox->setChecked( settings.value( "MainWindow/logSeverityErrorCheckBox", true ).toBool() );
-    mUI.logSeverityCriticalCheckBox->setChecked( settings.value( "MainWindow/logSeverityCriticalCheckBox", true ).toBool() );
+    settings.beginGroup( "Log" );
+    settings.beginGroup( "Severity" );
+    mUI.logSeverityDebugCheckBox->setChecked( settings.value( "DebugCheckBox", false ).toBool() );
+    mUI.logSeverityInfoCheckBox->setChecked( settings.value( "InfoCheckBox", true ).toBool() );
+    mUI.logSeverityWarningCheckBox->setChecked( settings.value( "WarningCheckBox", true ).toBool() );
+    mUI.logSeverityErrorCheckBox->setChecked( settings.value( "ErrorCheckBox", true ).toBool() );
+    mUI.logSeverityCriticalCheckBox->setChecked( settings.value( "CriticalCheckBox", true ).toBool() );
+    settings.endGroup(); // Severity
 
-    mUI.logSourceUtilCheckBox->setChecked( settings.value( "MainWindow/logSourceUtilCheckBox", true ).toBool() );
-    mUI.logSourceObjectCheckBox->setChecked( settings.value( "MainWindow/logSourceObjectCheckBox", true ).toBool() );
-    mUI.logSourceSharedCheckBox->setChecked( settings.value( "MainWindow/logSourceSharedCheckBox", true ).toBool() );
-    mUI.logSourceClientCheckBox->setChecked( settings.value( "MainWindow/logSourceClientCheckBox", true ).toBool() );
-    mUI.logSourceOgreClientCheckBox->setChecked( settings.value( "MainWindow/logSourceOgreClientCheckBox", true ).toBool() );
-    mUI.logSourceOgreCheckBox->setChecked( settings.value( "MainWindow/logSourceOgreCheckBox", true ).toBool() );
-    mUI.logSourceQtOgreEditorCheckBox->setChecked( settings.value( "MainWindow/logSourceQtOgreEditorCheckBox", true ).toBool() );
-    mUI.logSourceLuaCheckBox->setChecked( settings.value( "MainWindow/logSourceLuaCheckBox", true ).toBool() );
+    settings.beginGroup( "Source" );
+    mUI.logSourceUtilCheckBox->setChecked( settings.value( "UtilCheckBox", true ).toBool() );
+    mUI.logSourceObjectCheckBox->setChecked( settings.value( "ObjectCheckBox", true ).toBool() );
+    mUI.logSourceSharedCheckBox->setChecked( settings.value( "SharedCheckBox", true ).toBool() );
+    mUI.logSourceClientCheckBox->setChecked( settings.value( "ClientCheckBox", true ).toBool() );
+    mUI.logSourceOgreClientCheckBox->setChecked( settings.value( "OgreClientCheckBox", true ).toBool() );
+    mUI.logSourceOgreCheckBox->setChecked( settings.value( "OgreCheckBox", true ).toBool() );
+    mUI.logSourceQtOgreEditorCheckBox->setChecked( settings.value( "QtOgreEditorCheckBox", true ).toBool() );
+    mUI.logSourceLuaCheckBox->setChecked( settings.value( "LuaCheckBox", true ).toBool() );
+    settings.endGroup(); // Source
+    settings.endGroup(); // Log
+    settings.endGroup(); // MainWindow
 
     EditorGlobals::mMainWindow = this;
 }
@@ -326,23 +334,31 @@ bool MainWindow::isSourceChecked( const String& rSource )
 void MainWindow::closeEvent( QCloseEvent* pEvent )
 {
     QSettings settings( "Diversia", "QtOgreEditor" );
-    settings.setValue( "MainWindow/Geometry", QMainWindow::saveGeometry() );
-    settings.setValue( "MainWindow/State", QMainWindow::saveState() );
+    settings.beginGroup( "MainWindow" );
+    settings.setValue( "Geometry", QMainWindow::saveGeometry() );
+    settings.setValue( "State", QMainWindow::saveState() );
 
-    settings.setValue( "MainWindow/logSeverityDebugCheckBox", mUI.logSeverityDebugCheckBox->isChecked() );
-    settings.setValue( "MainWindow/logSeverityInfoCheckBox", mUI.logSeverityInfoCheckBox->isChecked() );
-    settings.setValue( "MainWindow/logSeverityWarningCheckBox", mUI.logSeverityWarningCheckBox->isChecked() );
-    settings.setValue( "MainWindow/logSeverityErrorCheckBox", mUI.logSeverityErrorCheckBox->isChecked() );
-    settings.setValue( "MainWindow/logSeverityCriticalCheckBox", mUI.logSeverityCriticalCheckBox->isChecked() );
+    settings.beginGroup( "Log" );
+    settings.beginGroup( "Severity" );
+    settings.setValue( "DebugCheckBox", mUI.logSeverityDebugCheckBox->isChecked() );
+    settings.setValue( "InfoCheckBox", mUI.logSeverityInfoCheckBox->isChecked() );
+    settings.setValue( "WarningCheckBox", mUI.logSeverityWarningCheckBox->isChecked() );
+    settings.setValue( "ErrorCheckBox", mUI.logSeverityErrorCheckBox->isChecked() );
+    settings.setValue( "CriticalCheckBox", mUI.logSeverityCriticalCheckBox->isChecked() );
+    settings.endGroup(); // Severity
 
-    settings.setValue( "MainWindow/logSourceUtilCheckBox", mUI.logSourceUtilCheckBox->isChecked() );
-    settings.setValue( "MainWindow/logSourceObjectCheckBox", mUI.logSourceObjectCheckBox->isChecked() );
-    settings.setValue( "MainWindow/logSourceSharedCheckBox", mUI.logSourceSharedCheckBox->isChecked() );
-    settings.setValue( "MainWindow/logSourceClientCheckBox", mUI.logSourceClientCheckBox->isChecked() );
-    settings.setValue( "MainWindow/logSourceOgreClientCheckBox", mUI.logSourceOgreClientCheckBox->isChecked() );
-    settings.setValue( "MainWindow/logSourceOgreCheckBox", mUI.logSourceOgreCheckBox->isChecked() );
-    settings.setValue( "MainWindow/logSourceQtOgreEditorCheckBox", mUI.logSourceQtOgreEditorCheckBox->isChecked() );
-    settings.setValue( "MainWindow/logSourceLuaCheckBox", mUI.logSourceLuaCheckBox->isChecked() );
+    settings.beginGroup( "Source" );
+    settings.setValue( "UtilCheckBox", mUI.logSourceUtilCheckBox->isChecked() );
+    settings.setValue( "ObjectCheckBox", mUI.logSourceObjectCheckBox->isChecked() );
+    settings.setValue( "SharedCheckBox", mUI.logSourceSharedCheckBox->isChecked() );
+    settings.setValue( "ClientCheckBox", mUI.logSourceClientCheckBox->isChecked() );
+    settings.setValue( "OgreClientCheckBox", mUI.logSourceOgreClientCheckBox->isChecked() );
+    settings.setValue( "OgreCheckBox", mUI.logSourceOgreCheckBox->isChecked() );
+    settings.setValue( "QtOgreEditorCheckBox", mUI.logSourceQtOgreEditorCheckBox->isChecked() );
+    settings.setValue( "LuaCheckBox", mUI.logSourceLuaCheckBox->isChecked() );
+    settings.endGroup(); // Source
+    settings.endGroup(); // Log
+    settings.endGroup(); // MainWindow
 
     QMainWindow::closeEvent( pEvent );
 }

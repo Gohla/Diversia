@@ -64,10 +64,6 @@ private:
     sigc::signal<void>          mLateUpdateSignal;
     sigc::signal<void, Real>    mLateFrameSignal;
 
-    // Settings
-    LogLevel        mLogLevel;
-    Real            mUpdateRate;
-
 };
 
 //------------------------------------------------------------------------------
