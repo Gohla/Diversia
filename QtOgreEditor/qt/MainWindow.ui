@@ -111,6 +111,12 @@
    <property name="windowTitle">
     <string>Default toolbar</string>
    </property>
+   <property name="iconSize">
+    <size>
+     <width>24</width>
+     <height>24</height>
+    </size>
+   </property>
    <property name="toolButtonStyle">
     <enum>Qt::ToolButtonTextUnderIcon</enum>
    </property>
@@ -132,6 +138,9 @@
    <addaction name="actionLoad"/>
    <addaction name="actionSave"/>
    <addaction name="actionSave_as"/>
+   <addaction name="separator"/>
+   <addaction name="actionUndo"/>
+   <addaction name="actionRedo"/>
   </widget>
   <widget class="QDockWidget" name="objectsDock">
    <property name="sizePolicy">
@@ -804,6 +813,30 @@
     <string>Create a new game</string>
    </property>
   </action>
+  <action name="actionUndo">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/actions/media-skip-backward.png</normaloff>:/Icons/Icons/actions/media-skip-backward.png</iconset>
+   </property>
+   <property name="text">
+    <string>Undo</string>
+   </property>
+   <property name="toolTip">
+    <string>Undo last action</string>
+   </property>
+  </action>
+  <action name="actionRedo">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/actions/media-skip-forward.png</normaloff>:/Icons/Icons/actions/media-skip-forward.png</iconset>
+   </property>
+   <property name="text">
+    <string>Redo</string>
+   </property>
+   <property name="toolTip">
+    <string>Redo last undone action</string>
+   </property>
+  </action>
   <zorder>propertyBrowserDock</zorder>
   <zorder>objectsDock</zorder>
   <zorder>pluginsDock</zorder>
@@ -1091,6 +1124,38 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionUndo</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>undo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>559</x>
+     <y>440</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionRedo</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>redo()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>559</x>
+     <y>440</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>exit()</slot>
@@ -1099,5 +1164,7 @@
   <slot>start()</slot>
   <slot>saveAs()</slot>
   <slot>logSettingsChanged()</slot>
+  <slot>undo()</slot>
+  <slot>redo()</slot>
  </slots>
 </ui>

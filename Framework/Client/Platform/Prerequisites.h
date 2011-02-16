@@ -92,6 +92,12 @@ class ClientComponent;
 // Permission
 class PermissionManager;
 
+// Undo
+class FunctionCommand;
+class PropertyChangeCommand;
+class UndoCommand;
+class UndoStack;
+
 } // namespace Client
 } // namespace Diversia
 

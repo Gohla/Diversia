@@ -13,6 +13,7 @@ This file is part of Diversia.
 #include "Client/Lua/LuaPlugin.h"
 #include "Client/Object/ClientObjectManager.h"
 #include "Client/Permission/PermissionManager.h"
+#include "Client/Undo/UndoStack.h"
 #include "EditorApplication.h"
 #include "GameMode/EditorGameMode.h"
 #include "Graphics/OgreWidget.h"
@@ -107,6 +108,9 @@ void EditorApplication::init()
         mCrashReporter->setAppName( "Diversia_QtOgreEditor" );
         mCrashReporter->setAppVersion( "trunk" ); // TODO: Get revision number
         mConfigManager->registerObject( reporter );
+
+        // Initialize undo
+        GlobalsBase::mUndoStack = new UndoStack();
 
         // Initialize main window
         mMainWindow.reset( new MainWindow() );

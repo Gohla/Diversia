@@ -56,6 +56,7 @@ public:
     static AudioManager*            mAudio;
     static InputManager*            mInput;
     static ObjectSelection*         mSelection;
+    static UndoStack*               mUndoStack;
     static bool                     mOffline;
 
     static sigc::signal<void>*          mEarlyUpdateSignal;

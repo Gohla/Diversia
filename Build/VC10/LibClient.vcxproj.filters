@@ -22,6 +22,9 @@
     <Filter Include="Lua">
       <UniqueIdentifier>{2005bdb9-30b3-4c9a-ae6a-01cb824194e7}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Undo">
+      <UniqueIdentifier>{10b9fb36-7d06-49e1-8c5d-6cbdc118a018}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Framework\Client\Platform\Prerequisites.h">
@@ -73,6 +76,18 @@
       <Filter>Lua</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Framework\Client\ClientIncludes.h" />
+    <ClInclude Include="..\..\Framework\Client\Undo\PropertyChangeCommand.h">
+      <Filter>Undo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Undo\FunctionCommand.h">
+      <Filter>Undo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Undo\UndoStack.h">
+      <Filter>Undo</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Undo\UndoCommand.h">
+      <Filter>Undo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Framework\Client\Platform\src\StableHeaders.cpp">
@@ -116,6 +131,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Framework\Client\Lua\src\LuaPlugin.cpp">
       <Filter>Lua</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Undo\PropertyChangeCommand.cpp">
+      <Filter>Undo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Undo\UndoStack.cpp">
+      <Filter>Undo</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

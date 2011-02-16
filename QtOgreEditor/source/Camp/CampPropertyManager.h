@@ -11,6 +11,9 @@ This file is part of Diversia.
 
 #include "Platform/Prerequisites.h"
 
+#include "Client/Undo/UndoStack.h"
+#include "Client/Undo/PropertyChangeCommand.h"
+
 namespace Diversia
 {
 namespace QtOgreEditor
@@ -26,6 +29,7 @@ struct CampPropertyData
         mProperty( rProperty ), mObject( rObject ) {}
 
     inline void set( camp::Value value ) { mProperty.set( mObject, value ); }
+    inline void setWithUndo( camp::Value value ) { GlobalsBase::mUndoStack->push( new PropertyChangeCommand( mProperty, mObject, value ) ); }
     inline camp::Value get() const { return mProperty.get( mObject ); }
 
     const camp::Property&   mProperty;
@@ -65,7 +69,7 @@ public:
                 subProperty.set( object, val );
 
                 // TODO: No need to set if 'object' is not a copy but a reference?
-                i->second->set( object );
+                i->second->setWithUndo( object );
 
                 // TODO: Revert value back if set fails?
             }

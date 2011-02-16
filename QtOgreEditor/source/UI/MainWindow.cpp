@@ -13,6 +13,7 @@ This file is part of Diversia.
 #include "Client/Communication/ServerAbstract.h"
 #include "Client/Object/ClientObjectManager.h"
 #include "Client/Permission/PermissionManager.h"
+#include "Client/Undo/UndoStack.h"
 #include "GameMode/EditorGameMode.h"
 #include "OgreClient/Graphics/SceneManagerPlugin.h"
 #include "State/LoadingState.h"
@@ -291,6 +292,16 @@ void MainWindow::logSourceChange( QWidget* pWidget )
     }
 
     if( !list.empty() ) mUI.logListWidget->scrollToBottom();
+}
+
+void MainWindow::undo()
+{
+    GlobalsBase::mUndoStack->undo();
+}
+
+void MainWindow::redo()
+{
+    GlobalsBase::mUndoStack->redo();
 }
 
 void MainWindow::checkLogItem( const QModelIndex& rIndex )

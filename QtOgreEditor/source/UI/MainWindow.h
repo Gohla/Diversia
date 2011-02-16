@@ -49,6 +49,8 @@ private slots:
     void load();
     void logSeverityChange( QWidget* pWidget );
     void logSourceChange( QWidget* pWidget );
+    void undo();
+    void redo();
 
 private:
     friend class QtLogger;

@@ -127,6 +127,10 @@
     <ClInclude Include="..\..\Framework\Client\Communication\ServerNeighborsPlugin.h" />
     <ClInclude Include="..\..\Framework\Client\Lua\LuaPlugin.h" />
     <ClInclude Include="..\..\Framework\Client\ClientIncludes.h" />
+    <ClInclude Include="..\..\Framework\Client\Undo\FunctionCommand.h" />
+    <ClInclude Include="..\..\Framework\Client\Undo\PropertyChangeCommand.h" />
+    <ClInclude Include="..\..\Framework\Client\Undo\UndoCommand.h" />
+    <ClInclude Include="..\..\Framework\Client\Undo\UndoStack.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Framework\Client\Platform\src\StableHeaders.cpp">
@@ -147,6 +151,8 @@
     <ClCompile Include="..\..\Framework\Client\Communication\src\ServerConnection.cpp" />
     <ClCompile Include="..\..\Framework\Client\Communication\src\ServerNeighborsPlugin.cpp" />
     <ClCompile Include="..\..\Framework\Client\Lua\src\LuaPlugin.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Undo\PropertyChangeCommand.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Undo\UndoStack.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

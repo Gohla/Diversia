@@ -44,6 +44,7 @@ btAxisSweep3*               GlobalsBase::mBroadphase = 0;
 AudioManager*               GlobalsBase::mAudio = 0;
 InputManager*               GlobalsBase::mInput = 0;
 ObjectSelection*            GlobalsBase::mSelection = 0;
+UndoStack*                  GlobalsBase::mUndoStack = 0;
 bool                        GlobalsBase::mOffline = false;
 
 sigc::signal<void>*         GlobalsBase::mEarlyUpdateSignal = 0;
