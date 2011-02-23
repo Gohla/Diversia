@@ -83,6 +83,7 @@ private:
     Notifies the plugin about a server state change.
     **/
     void setServerState( ServerState serverState );
+    void resourcesInitialized( ResourceManager& rResourceManager );
     void resourcesLoaded();
     void updateSky();
     void insertTexturesIntoResourceList();
@@ -91,6 +92,7 @@ private:
     ResourceList        mResourceList;
 
     bool        mCreated;
+    bool        mResourcesInitialized;
     bool        mLoaded;
     SkyType     mSkyType;
     bool        mSkyEnabled;

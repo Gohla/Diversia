@@ -252,6 +252,7 @@ ResourceSet GraphicsManager::getTextureNamesFromMaterial( const String& rMateria
 
     Ogre::MaterialPtr material = Ogre::MaterialManager::getSingletonPtr()->getByName( 
         rMaterialName, rGroupName );
+    if( material.isNull() ) return textureNames;
     material->load();
 
     Ogre::Material::TechniqueIterator ti = material->getSupportedTechniqueIterator();

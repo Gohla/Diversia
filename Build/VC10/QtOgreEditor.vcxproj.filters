@@ -250,6 +250,30 @@
     <ClCompile Include="..\..\QtOgreEditor\source\Log\QtLogger.cpp">
       <Filter>Log</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Model\UndoModel.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_UndoModel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_UndoModel.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_UndoModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\UI\UndoListView.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_UndoListView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_UndoListView.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_UndoListView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\QtOgreEditor\qt\Icon.ico">
@@ -311,5 +335,11 @@
       <Filter>Camp</Filter>
     </CustomBuild>
     <CustomBuild Include="..\..\QtOgreEditor\source\EditorApplication.h" />
+    <CustomBuild Include="..\..\QtOgreEditor\source\Model\UndoModel.h">
+      <Filter>Model</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\UI\UndoListView.h">
+      <Filter>UI</Filter>
+    </CustomBuild>
   </ItemGroup>
 </Project>

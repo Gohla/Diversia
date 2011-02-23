@@ -252,7 +252,9 @@ void CampPropertyManager::setPropertyBrowser( QtTreePropertyBrowser* pBrowser )
 }
 
 QtProperty* CampPropertyManager::addProperty( const camp::Property& rCampProperty, 
-    const camp::UserObject& rObject, QtProperty* pProperty /*= 0*/ )
+    const camp::UserObject& rObject, QtProperty* pProperty /*= 0*/, 
+    const camp::Property* pParentProperty /*= 0*/, 
+    const camp::UserObject& rParentObject /*= camp::UserObject::nothing*/ )
 {
     // Ignore properties with the NoPropertyBrowser tag.
     if( rCampProperty.hasTag( "NoPropertyBrowser" ) || !rCampProperty.readable( rObject ) ) 
@@ -266,17 +268,20 @@ QtProperty* CampPropertyManager::addProperty( const camp::Property& rCampPropert
         case camp::boolType:
             prop = mBoolManager->addProperty( QString( name.c_str() ) );
             mBoolManager->setValue( prop, rCampProperty.get( rObject ).to<bool>() );
-            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject ) ) );
+            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject, 
+                pParentProperty, rParentObject ) ) );
             break;
         case camp::intType:  
             prop = mIntManager->addProperty( QString( name.c_str() ) );
             mIntManager->setValue( prop, rCampProperty.get( rObject ).to<int>() );
-            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject ) ) );
+            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject, 
+                pParentProperty, rParentObject ) ) );
             break;
         case camp::realType: 
             prop = mDoubleManager->addProperty( QString( name.c_str() ) );
             mDoubleManager->setValue( prop, rCampProperty.get( rObject ).to<double>() );
-            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject ) ) );
+            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject, 
+                pParentProperty, rParentObject ) ) );
 
             if( rCampProperty.hasTag( "QtDoublePrecicion" ) )
                 mDoubleManager->setDecimals( prop, rCampProperty.tag( "QtDoublePrecicion" ).to<unsigned int>() );
@@ -293,7 +298,8 @@ QtProperty* CampPropertyManager::addProperty( const camp::Property& rCampPropert
             prop = mStringManager->addProperty( QString( name.c_str() ) );
             mStringManager->setValue( prop, QString( rCampProperty.get( 
                 rObject ).to<String>().c_str() ) );
-            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject ) ) );
+            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject, 
+                pParentProperty, rParentObject ) ) );
             break;
         case camp::enumType:
         {
@@ -311,7 +317,8 @@ QtProperty* CampPropertyManager::addProperty( const camp::Property& rCampPropert
             mEnumManager->setEnumNames( prop, names );
 
             mEnumManager->setValue( prop, rCampProperty.get( rObject ).to<int>() );
-            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject ) ) );
+            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject, 
+                pParentProperty, rParentObject ) ) );
             break;
         }
         case camp::userType:
@@ -329,7 +336,7 @@ QtProperty* CampPropertyManager::addProperty( const camp::Property& rCampPropert
             // Do recursion by calling addClassInternal on user type.
             std::set<String> ignore;
             prop = CampPropertyManager::addClassInternal( subClass, object, name, ignore, 
-                compoundProperty );
+                compoundProperty, &userProp, rObject );
             break;
         }
         case camp::arrayType:
@@ -378,7 +385,8 @@ QtProperty* CampPropertyManager::addClass( const camp::Class& rClass,
 
 QtProperty* CampPropertyManager::addClassInternal( const camp::Class& rClass, 
     const camp::UserObject& rObject, const String& rName, std::set<String>& rAddedProperties, 
-    QtProperty* pCompoundProperty /*= 0*/ )
+    QtProperty* pCompoundProperty /*= 0*/, const camp::Property* pParentProperty /*= 0*/, 
+    const camp::UserObject& rParentObject /*= camp::UserObject::nothing*/ )
 {
     QtProperty* prop;
 
@@ -394,7 +402,7 @@ QtProperty* CampPropertyManager::addClassInternal( const camp::Class& rClass,
         if( !rAddedProperties.count( property.name() ) )
         {
             QtProperty* subProp = CampPropertyManager::addProperty( rClass.property( i ), rObject, 
-                prop );
+                prop, pParentProperty, rParentObject );
             if( subProp ) prop->addSubProperty( subProp );
             rAddedProperties.insert( property.name() );
         }

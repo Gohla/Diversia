@@ -39,6 +39,7 @@ SceneManagerPlugin::SceneManagerPlugin( Mode mode, ServerPluginManager& rPluginM
     ServerPlugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mResourceManager( ClientServerPlugin::getPluginManager().getPlugin<ResourceManager>() ),
     mCreated( false ),
+    mResourcesInitialized( false ),
     mLoaded( false ),
     mSkyType( SKYTYPE_BOX ),
     mSkyEnabled( false ),
@@ -65,7 +66,7 @@ void SceneManagerPlugin::setSkyMaterial( const String& rMaterial )
     if( rMaterial.empty() || mSkyMaterial == rMaterial ) return;
     mSkyMaterial = rMaterial;
 
-    if( mCreated )
+    if( mCreated && mResourcesInitialized )
     {
         SceneManagerPlugin::insertTexturesIntoResourceList();
 
@@ -90,6 +91,19 @@ void SceneManagerPlugin::create()
 {
     mCreated = true;
 
+    mResourceManager.connectInitialized( sigc::mem_fun( this, 
+        &SceneManagerPlugin::resourcesInitialized ) );
+}
+
+void SceneManagerPlugin::setServerState( ServerState serverState )
+{
+    // TODO: Only set sky for active server.
+}
+
+void SceneManagerPlugin::resourcesInitialized( ResourceManager& rResourceManager )
+{
+    mResourcesInitialized = true;
+
     try
     {
         if( !mSkyMaterial.empty() )
@@ -104,11 +118,6 @@ void SceneManagerPlugin::create()
     {
         CLOGE << "Could not load resources for scene manager plugin: " << e.what();
     }
-}
-
-void SceneManagerPlugin::setServerState( ServerState serverState )
-{
-    // TODO: Only set sky for active server.
 }
 
 void SceneManagerPlugin::resourcesLoaded()

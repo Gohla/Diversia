@@ -42,7 +42,7 @@ void UndoStack::push( UndoCommand* pUndoCommand )
     while( i != mCurrentCommand )
     {
         LCLOGD << "Removing undo command " << (*i)->getName();
-        undoCommandRemoved( *i );
+        mChangeSignal( *i, false );
         delete *i;
         mUndoCommands.erase( i++ );
     }
@@ -50,9 +50,37 @@ void UndoStack::push( UndoCommand* pUndoCommand )
     mUndoCommands.push_front( pUndoCommand );
     mCurrentCommand = mUndoCommands.begin();
     mCurrentCommandReverse = mUndoCommands.rend();
+    pUndoCommand->mIterator = mCurrentCommand;
+    pUndoCommand->mReverseIterator = mCurrentCommandReverse;
+    pUndoCommand->mUndoStack = this;
     pUndoCommand->redo();
-    undoCommandAdded( pUndoCommand );
-    currentCommandChanged( pUndoCommand );
+    mChangeSignal( pUndoCommand, true );
+    mCurrentChangedSignal( pUndoCommand );
+}
+
+void UndoStack::remove( UndoCommand* pUndoCommand )
+{
+    if( !pUndoCommand ) return;
+
+    if( pUndoCommand->mIterator == mCurrentCommand )
+    {
+        if( mCurrentCommandReverse != mUndoCommands.rbegin() )
+        {
+            ++mCurrentCommand;
+            --mCurrentCommandReverse;
+        }
+        else
+        {
+            --mCurrentCommand;
+            ++mCurrentCommandReverse;
+        }
+        mCurrentChangedSignal( *mCurrentCommand );
+    }
+
+    mChangeSignal( pUndoCommand, false );
+    delete pUndoCommand;
+    mUndoCommands.erase( pUndoCommand->mIterator );
+    
 }
 
 void UndoStack::undo()
@@ -67,9 +95,25 @@ void UndoStack::undo()
         --mCurrentCommandReverse;
 
         if( mCurrentCommand == mUndoCommands.end() )
-            currentCommandChanged( 0 );
+            mCurrentChangedSignal( 0 );
         else
-            currentCommandChanged( *mCurrentCommand );
+            mCurrentChangedSignal( *mCurrentCommand );
+    }
+}
+
+void UndoStack::undoTo( UndoCommand* pUndoCommand )
+{
+    while( mCurrentCommand != pUndoCommand->mIterator && mCurrentCommand != mUndoCommands.end() )
+    {
+        UndoStack::undo();
+    }
+}
+
+void UndoStack::undoAll()
+{
+    while( mCurrentCommand != mUndoCommands.end() )
+    {
+        UndoStack::undo();
     }
 }
 
@@ -86,26 +130,43 @@ void UndoStack::redo()
         ++mCurrentCommandReverse;
 
         if( mCurrentCommandReverse == mUndoCommands.rend() )
-            currentCommandChanged( 0 );
+            mCurrentChangedSignal( 0 );
         else
-            currentCommandChanged( *mCurrentCommandReverse );
+            mCurrentChangedSignal( *mCurrentCommandReverse );
+    }
+}
+
+void UndoStack::redoTo( UndoCommand* pUndoCommand )
+{
+    while( mCurrentCommandReverse != pUndoCommand->mReverseIterator && 
+        mCurrentCommandReverse != mUndoCommands.rend() )
+    {
+        UndoStack::redo();
+    }
+}
+
+void UndoStack::redoAll()
+{
+    while( mCurrentCommandReverse != mUndoCommands.rend() )
+    {
+        UndoStack::redo();
     }
 }
 
 void UndoStack::clear()
 {
+    mCurrentCommand = mUndoCommands.end();
+    mCurrentCommandReverse = mUndoCommands.rend();
+    mCurrentChangedSignal( 0 );
+
     UndoCommands::iterator i = mUndoCommands.begin();
     while( i != mUndoCommands.end() )
     {
         LCLOGD << "Removing undo command " << (*i)->getName();
-        undoCommandRemoved( *i );
+        mChangeSignal( *i, false );
         delete *i;
         mUndoCommands.erase( i++ );
     }
-
-    mCurrentCommand = mUndoCommands.end();
-    mCurrentCommandReverse = mUndoCommands.rend();
-    currentCommandChanged( 0 );
 }
 
 //------------------------------------------------------------------------------

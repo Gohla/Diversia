@@ -144,6 +144,16 @@ public:
     **/
     void loadResources( const ResourceList& rResources, 
         const SimpleResourceCallback& rCallbackSlot );
+    /**
+    Connects a slot to the resources initialized signal. If the resources are already initialized, 
+    the slot will be called immediately.
+    
+    @param [in,out] rSlot   The slot (signature: void func(ResourceManager&)) to connect. 
+    
+    @return Connection object to block or disconnect the connection, or an empty connection when
+            the entity is already loaded.
+    **/
+    sigc::connection connectInitialized( sigc::slot<void, ResourceManager&> rSlot );
 
     void operationCompleted( Ogre::BackgroundProcessTicket ticket, 
         const Ogre::BackgroundProcessResult& rResult );
@@ -197,6 +207,7 @@ private:
     Ogre::BackgroundProcessTicket mInitializationTicket;
     bool mCreated;
     bool mInitializing;
+    sigc::signal<void, ResourceManager&> mInitializedSignal;
     TicketCallbacks mTicketCallbacks;
     HandleTickets mHandleTickets;
     TicketResources mTicketResources;

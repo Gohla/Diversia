@@ -230,6 +230,12 @@ void ResourceManager::loadResources( const ResourceList& rResources,
     }
 }
 
+sigc::connection ResourceManager::connectInitialized( sigc::slot<void, ResourceManager&> rSlot )
+{
+    if( !mInitializing ) rSlot( *this );
+    return mInitializedSignal.connect( rSlot );
+}
+
 void ResourceManager::create()
 {
     if( !mResourceLocation.empty() )
@@ -314,6 +320,7 @@ void ResourceManager::operationCompleted( Ogre::BackgroundProcessTicket ticket,
         if( ticket == mInitializationTicket )
         {
             mInitializing = false;
+            mInitializedSignal( *this );
             ServerPlugin::mLoadingCompletedSignal( *this );
         }
         else

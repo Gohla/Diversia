@@ -11,6 +11,8 @@ This file is part of Diversia.
 
 #include "Client/Platform/Prerequisites.h"
 
+#include "Client/Undo/UndoStack.h"
+
 namespace Diversia
 {
 namespace Client
@@ -20,7 +22,7 @@ namespace Client
 class UndoCommand
 {
 public:
-    UndoCommand( const String& rName ): mName( rName ) {}
+    UndoCommand( const String& rName ): mName( rName ), mUndoStack( 0 ) {}
     virtual ~UndoCommand() {}
 
     virtual int id() const = 0;
@@ -29,8 +31,16 @@ public:
     virtual void undo() = 0;
     virtual inline const String& getName() const { return mName; }
     
+protected:
+    inline void remove() { if( mUndoStack ) mUndoStack->remove( this ); }
+
 private:
-    String mName;
+    friend class UndoStack;
+
+    String                          mName;
+    UndoStack*                      mUndoStack;
+    UndoCommands::iterator          mIterator;
+    UndoCommands::reverse_iterator  mReverseIterator;
 
 };
 

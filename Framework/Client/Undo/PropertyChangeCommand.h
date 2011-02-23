@@ -23,9 +23,11 @@ class PropertyChangeCommand : public UndoCommand
 {
 public:
     PropertyChangeCommand( const String& rPropertyName, const camp::UserObject& rUserObject, 
-        const camp::Value& rNewValue );
+        const camp::Value& rNewValue, const camp::Property* pParentProperty = 0, 
+        const camp::UserObject& rParentObject = camp::UserObject::nothing );
     PropertyChangeCommand( const camp::Property& rProperty, const camp::UserObject& rUserObject, 
-        const camp::Value& rNewValue );
+        const camp::Value& rNewValue, const camp::Property* pParentProperty = 0, 
+        const camp::UserObject& rParentObject = camp::UserObject::nothing );
     
     inline int id() const { return 0; }
     bool mergeWith( const UndoCommand* pCommand );
@@ -33,12 +35,14 @@ public:
     void undo();
     
 private:
-    static String name( const String& rPropertyName );
+    static String name( const String& rPropertyName, const camp::Property* pParentProperty = 0 );
     String name();
     void storeCurrentValue();
 
     const camp::Property&   mProperty;
     camp::UserObject        mUserObject;
+    const camp::Property*   mParentProperty;
+    camp::UserObject        mParentUserObject;
     camp::Value             mRedoValue;
     camp::Value             mUndoValue;
 

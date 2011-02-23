@@ -26,19 +26,31 @@ public:
     ~UndoStack();
 
 	void push( UndoCommand* pUndoCommand );
+    void remove( UndoCommand* pUndoCommand );
     void undo();
+    void undoTo( UndoCommand* pUndoCommand );
+    void undoAll();
     void redo();
+    void redoTo( UndoCommand* pUndoCommand );
+    void redoAll();
     void clear();
 
-protected:
-    inline virtual void undoCommandAdded( UndoCommand* pUndoCommand ) {}
-    inline virtual void undoCommandRemoved( UndoCommand* pUndoCommand ) {}
-    inline virtual void currentCommandChanged( UndoCommand* pCurrentCommand ) {}
+    inline sigc::connection connectChange( const sigc::slot<void, UndoCommand*, bool>& rSlot ) 
+    {
+        return mChangeSignal.connect( rSlot );
+    }
+    inline sigc::connection connectCurrentChanged( const sigc::slot<void, UndoCommand*>& rSlot )
+    {
+        return mCurrentChangedSignal.connect( rSlot );
+    }
     
 private:
     UndoCommands mUndoCommands;
     UndoCommands::iterator mCurrentCommand;
     UndoCommands::reverse_iterator mCurrentCommandReverse;
+
+    sigc::signal<void, UndoCommand*, bool> mChangeSignal;
+    sigc::signal<void, UndoCommand*> mCurrentChangedSignal;
 
 };
 

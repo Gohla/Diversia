@@ -17,10 +17,14 @@ namespace Client
 //------------------------------------------------------------------------------
 
 PropertyChangeCommand::PropertyChangeCommand( const String& rPropertyName, 
-    const camp::UserObject& rUserObject, const camp::Value& rNewValue ):
-    UndoCommand( PropertyChangeCommand::name( rPropertyName ) ),
+    const camp::UserObject& rUserObject, const camp::Value& rNewValue, 
+    const camp::Property* pParentProperty /*= 0*/, 
+    const camp::UserObject& rParentObject /*= camp::UserObject::nothing*/ ):
+    UndoCommand( PropertyChangeCommand::name( rPropertyName, pParentProperty ) ),
     mProperty( rUserObject.getClass().property( rPropertyName ) ),
     mUserObject( rUserObject ),
+    mParentProperty( pParentProperty ),
+    mParentUserObject( rParentObject ),
     mRedoValue( rNewValue )
 {
     // Copy the value for user types.
@@ -30,10 +34,14 @@ PropertyChangeCommand::PropertyChangeCommand( const String& rPropertyName,
 }
 
 PropertyChangeCommand::PropertyChangeCommand( const camp::Property& rProperty, 
-    const camp::UserObject& rUserObject, const camp::Value& rNewValue ):
-    UndoCommand( PropertyChangeCommand::name( rProperty.name() ) ),
+    const camp::UserObject& rUserObject, const camp::Value& rNewValue, 
+    const camp::Property* pParentProperty /*= 0*/, 
+    const camp::UserObject& rParentObject /*= camp::UserObject::nothing*/ ):
+    UndoCommand( PropertyChangeCommand::name( rProperty.name(), pParentProperty ) ),
     mProperty( rProperty ),
     mUserObject( rUserObject ),
+    mParentProperty( pParentProperty ),
+    mParentUserObject( rParentObject ),
     mRedoValue( rNewValue )
 {
     // Copy the value for user types.
@@ -52,6 +60,14 @@ void PropertyChangeCommand::redo()
     try
     {
         mProperty.set( mUserObject, mRedoValue );
+
+        // Re set the property if it has the DeserializeReSet tag
+        if( mParentProperty && mParentUserObject != camp::UserObject::nothing && 
+            mParentProperty->hasTag( "DeserializeReSet" ) )
+        {
+            camp::Value val = mParentProperty->get( mParentUserObject );
+            mParentProperty->set( mParentUserObject, val );
+        }
     }
     catch( Exception e )
     {
@@ -68,6 +84,14 @@ void PropertyChangeCommand::undo()
     try
     {
         mProperty.set( mUserObject, mUndoValue );
+
+        // Re set the property if it has the DeserializeReSet tag
+        if( mParentProperty && mParentUserObject != camp::UserObject::nothing && 
+            mParentProperty->hasTag( "DeserializeReSet" ) )
+        {
+            camp::Value val = mParentProperty->get( mParentUserObject );
+            mParentProperty->set( mParentUserObject, val );
+        }
     }
     catch( Exception e )
     {
@@ -79,14 +103,17 @@ void PropertyChangeCommand::undo()
     }
 }
 
-String PropertyChangeCommand::name( const String& rPropertyName )
+String PropertyChangeCommand::name( const String& rPropertyName, 
+    const camp::Property* pParentProperty /*= 0*/ )
 {
-    return String( "Set " ) + rPropertyName + " property";
+    return String( "Set " ) + ( pParentProperty ? pParentProperty->name() + "." : "" )  + 
+        rPropertyName + " property";
 }
 
 String PropertyChangeCommand::name()
 {
-    return String( "Set " ) + mProperty.name() + " property";
+    return String( "Set " ) + ( mParentProperty ? mParentProperty->name() + "." : "" ) + 
+        mProperty.name() + " property";
 }
 
 void PropertyChangeCommand::storeCurrentValue()

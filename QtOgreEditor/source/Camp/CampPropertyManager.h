@@ -25,15 +25,21 @@ Data class to keep track of camp properties.
 **/
 struct CampPropertyData
 {
-    CampPropertyData( const camp::Property& rProperty, const camp::UserObject& rObject ):
-        mProperty( rProperty ), mObject( rObject ) {}
+    CampPropertyData( const camp::Property& rProperty, const camp::UserObject& rObject,
+        const camp::Property* pParentProperty = 0, 
+        const camp::UserObject& rParentObject = camp::UserObject::nothing ):
+        mProperty( rProperty ), mObject( rObject ), mParentProperty( pParentProperty ),
+        mParentObject( rParentObject ) {}
 
     inline void set( camp::Value value ) { mProperty.set( mObject, value ); }
-    inline void setWithUndo( camp::Value value ) { GlobalsBase::mUndoStack->push( new PropertyChangeCommand( mProperty, mObject, value ) ); }
+    inline void setWithUndo( camp::Value value ) { GlobalsBase::mUndoStack->push( 
+        new PropertyChangeCommand( mProperty, mObject, value, mParentProperty, mParentObject ) ); }
     inline camp::Value get() const { return mProperty.get( mObject ); }
 
     const camp::Property&   mProperty;
     camp::UserObject        mObject;
+    const camp::Property*   mParentProperty;
+    camp::UserObject        mParentObject;
 };
 
 //------------------------------------------------------------------------------
@@ -69,7 +75,7 @@ public:
                 subProperty.set( object, val );
 
                 // TODO: No need to set if 'object' is not a copy but a reference?
-                i->second->setWithUndo( object );
+                i->second->set( object );
 
                 // TODO: Revert value back if set fails?
             }
@@ -186,7 +192,8 @@ public:
     @return Created property or 0 if the property could not be created.
     **/
     QtProperty* addProperty( const camp::Property& rProperty, const camp::UserObject& rObject, 
-        QtProperty* pProperty = 0 );
+        QtProperty* pProperty = 0, const camp::Property* pParentProperty = 0, 
+        const camp::UserObject& rParentObject = camp::UserObject::nothing );
     /**
     Adds a whole class to the manager as properties and returns the root property.
     
@@ -227,7 +234,8 @@ private:
 
     QtProperty* addClassInternal( const camp::Class& rClass, const camp::UserObject& rObject, 
         const String& rName, std::set<String>& rAddedProperties, 
-        QtProperty* pCompoundProperty = 0 );
+        QtProperty* pCompoundProperty = 0, const camp::Property* pParentProperty = 0, 
+        const camp::UserObject& rParentObject = camp::UserObject::nothing );
     void addClassTreeInternal( const camp::Class& rClass, const camp::UserObject& rObject,
         std::set<String>& rAddedProperties, std::list<QtProperty*>& rRootProperties );
     void setBlockSlots( bool block );
@@ -245,7 +253,7 @@ private:
             try
             {
                 currentVal = i->second->get();
-                i->second->set( val );
+                i->second->setWithUndo( val );
             }
             catch( camp::Error e )
             {
