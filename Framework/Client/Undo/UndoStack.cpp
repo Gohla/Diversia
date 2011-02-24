@@ -74,13 +74,16 @@ void UndoStack::remove( UndoCommand* pUndoCommand )
             --mCurrentCommand;
             ++mCurrentCommandReverse;
         }
-        mCurrentChangedSignal( *mCurrentCommand );
+
+        if( mCurrentCommand == mUndoCommands.end() )
+            mCurrentChangedSignal( 0 );
+        else
+            mCurrentChangedSignal( *mCurrentCommand );
     }
 
     mChangeSignal( pUndoCommand, false );
-    delete pUndoCommand;
     mUndoCommands.erase( pUndoCommand->mIterator );
-    
+    delete pUndoCommand;
 }
 
 void UndoStack::undo()

@@ -37,7 +37,11 @@ public:
 private:
     static String name( const String& rPropertyName, const camp::Property* pParentProperty = 0 );
     String name();
+    static bool hasBase( const camp::Class& rClass, const camp::Class& rBaseClass );
     void storeCurrentValue();
+    void connectDestruction();
+    void componentDestroyed( Component& rComponent );
+    void objectDestroyed( Object& rObject );
 
     const camp::Property&   mProperty;
     camp::UserObject        mUserObject;
