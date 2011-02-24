@@ -46,6 +46,7 @@ void InitialState::wake()
     EditorGlobals::mMainWindow->mUI.propertyBrowser->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.graphicsView->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.propertyBrowser->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.listViewUndo->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionConnect->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionDisconnect->setEnabled( false );
     EditorGlobals::mOffline = false;

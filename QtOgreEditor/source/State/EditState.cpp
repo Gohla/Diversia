@@ -29,11 +29,6 @@ EditState::EditState():
 EditState::~EditState()
 {
     EditorGlobals::mGrid->clear();
-    EditorGlobals::mMainWindow->mUI.objectsDockWidgetContents->setEnabled( false );
-    EditorGlobals::mMainWindow->mUI.pluginsDockWidgetContents->setEnabled( false );
-    EditorGlobals::mMainWindow->mUI.propertyBrowser->setEnabled( false );
-    EditorGlobals::mMainWindow->mUI.graphicsView->setEnabled( false );
-    EditorGlobals::mMainWindow->mUI.propertyBrowser->setEnabled( false );
 }
 
 void EditState::start()
@@ -44,6 +39,7 @@ void EditState::start()
     EditorGlobals::mMainWindow->mUI.pluginsDockWidgetContents->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.graphicsView->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.propertyBrowser->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.listViewUndo->setEnabled( true );
 }
 
 void EditState::suspend()

@@ -46,6 +46,8 @@ class ObjectItem;
 class ComponentItem;
 class ClientServerPluginModel;
 class PluginItem;
+class UndoModel;
+class UndoItem;
 
 // Log
 class QtLogger;
@@ -56,9 +58,13 @@ class InitialState;
 class LoadingState;
 
 // UI
-class MainWindow;
 class ConnectDialog;
+class MainWindow;
+class NewGameDialog;
 class ObjectTreeView;
+class PluginTreeView;
+class PropertyBrowser;
+class UndoListView;
 
 } // namespace QTOgreEditor
 } // namespace Diversia

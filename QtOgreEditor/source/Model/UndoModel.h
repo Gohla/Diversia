@@ -20,11 +20,13 @@ namespace QtOgreEditor
 class UndoItem : public QStandardItem
 {
 public:
-    UndoItem( UndoCommand& rUndoCommand );
+    UndoItem( UndoCommand* pUndoCommand );
     ~UndoItem();
 
+    void setCurrent( bool current );
+
 private:
-    UndoCommand& mUndoCommand;
+    UndoCommand* mUndoCommand;
 
 };
 
@@ -42,9 +44,12 @@ public:
     
 private:
     void undoCommandChange( UndoCommand* pUndoCommand, bool created );
+    void currentCommandChanged( UndoCommand* pUndoCommand );
 
-    UndoStack&  mUndoStack;
-    UndoItems   mUndoItems;
+    UndoStack&      mUndoStack;
+    UndoItems       mUndoItems;
+    UndoItem*       mCurrentItem;
+
 };
 
 //------------------------------------------------------------------------------

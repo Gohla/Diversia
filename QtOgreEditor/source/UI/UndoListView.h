@@ -18,15 +18,25 @@ namespace QtOgreEditor
 {
 //------------------------------------------------------------------------------
 
-class UndoListView : public QListView, public sigc::trackable
+class UndoListView : public QListView
 {
     Q_OBJECT
 
 public:
     UndoListView( QWidget* pParent = 0 );
     ~UndoListView();
+
+    /**
+    Gets an undo item. 
+    
+    @param  rObjectName Name of the object.
+    **/
+    ObjectItem& getUndoItem( const String& rObjectName ) const;
     
 private:
+    void mousePressEvent( QMouseEvent* pEvent );
+
+    UndoModel* mModel;
 
 };
 

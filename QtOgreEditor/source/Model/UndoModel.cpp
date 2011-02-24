@@ -18,11 +18,14 @@ namespace QtOgreEditor
 {
 //------------------------------------------------------------------------------
 
-UndoItem::UndoItem( UndoCommand& rUndoCommand ):
+UndoItem::UndoItem( UndoCommand* pUndoCommand ):
     QStandardItem(),
-    mUndoCommand( rUndoCommand )
+    mUndoCommand( pUndoCommand )
 {
-    QStandardItem::setText( QString::fromStdString( mUndoCommand.getName() ) );
+    if( mUndoCommand ) QStandardItem::setText( QString::fromStdString( mUndoCommand->getName() ) );
+    else QStandardItem::setText( "<None>" );
+    QStandardItem::setEditable( false );
+    QStandardItem::setData( qVariantFromValue( (void*) pUndoCommand ), Qt::UserRole + 1 );
 }
 
 UndoItem::~UndoItem()
@@ -30,13 +33,28 @@ UndoItem::~UndoItem()
 
 }
 
+void UndoItem::setCurrent( bool current )
+{
+    if( current )
+    {
+        QStandardItem::setIcon( QIcon( ":/Icons/Icons/actions/reload.png" ) );
+    }
+    else
+    {
+        QStandardItem::setIcon( QIcon() );
+    }
+}
+
 //------------------------------------------------------------------------------
 
 UndoModel::UndoModel( UndoStack& rUndoStack, QObject* pParent /*= 0*/ ):
     QStandardItemModel( pParent ),
-    mUndoStack( rUndoStack )
+    mUndoStack( rUndoStack ),
+    mCurrentItem( 0 )
 {
     mUndoStack.connectChange( sigc::mem_fun( this, &UndoModel::undoCommandChange ) );
+    mUndoStack.connectCurrentChanged( sigc::mem_fun( this, &UndoModel::currentCommandChanged ) );
+    UndoModel::undoCommandChange( 0, true );
 }
 
 UndoModel::~UndoModel()
@@ -48,7 +66,7 @@ void UndoModel::undoCommandChange( UndoCommand* pUndoCommand, bool created )
 {
     if( created )
     {
-        UndoItem* item = new UndoItem( *pUndoCommand );
+        UndoItem* item = new UndoItem( pUndoCommand );
         mUndoItems.insert( std::make_pair( pUndoCommand, item ) );
         QStandardItemModel::appendRow( item );
     }
@@ -61,6 +79,16 @@ void UndoModel::undoCommandChange( UndoCommand* pUndoCommand, bool created )
             mUndoItems.erase( i );
         }
     }
+}
+
+void UndoModel::currentCommandChanged( UndoCommand* pUndoCommand )
+{
+    if( mCurrentItem ) mCurrentItem->setCurrent( false );
+
+    UndoItems::iterator i = mUndoItems.find( pUndoCommand );
+    if( i != mUndoItems.end() ) mCurrentItem = i->second;
+
+    if( mCurrentItem ) mCurrentItem->setCurrent( true );
 }
 
 //------------------------------------------------------------------------------

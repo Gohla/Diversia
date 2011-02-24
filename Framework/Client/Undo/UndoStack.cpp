@@ -107,24 +107,19 @@ void UndoStack::undo()
 void UndoStack::undoTo( UndoCommand* pUndoCommand )
 {
     while( mCurrentCommand != pUndoCommand->mIterator && mCurrentCommand != mUndoCommands.end() )
-    {
         UndoStack::undo();
-    }
 }
 
 void UndoStack::undoAll()
 {
     while( mCurrentCommand != mUndoCommands.end() )
-    {
         UndoStack::undo();
-    }
 }
 
 void UndoStack::redo()
 {
     if( mCurrentCommandReverse != mUndoCommands.rend() )
     {
-
         LCLOGD << "Redoing command with id " << (*mCurrentCommandReverse)->id() << " and name " << 
             (*mCurrentCommandReverse)->getName();
         (*mCurrentCommandReverse)->redo();
@@ -132,10 +127,10 @@ void UndoStack::redo()
         --mCurrentCommand;
         ++mCurrentCommandReverse;
 
-        if( mCurrentCommandReverse == mUndoCommands.rend() )
+        if( mCurrentCommand == mUndoCommands.end() )
             mCurrentChangedSignal( 0 );
         else
-            mCurrentChangedSignal( *mCurrentCommandReverse );
+            mCurrentChangedSignal( *mCurrentCommand );
     }
 }
 
@@ -143,17 +138,24 @@ void UndoStack::redoTo( UndoCommand* pUndoCommand )
 {
     while( mCurrentCommandReverse != pUndoCommand->mReverseIterator && 
         mCurrentCommandReverse != mUndoCommands.rend() )
-    {
-        UndoStack::redo();
-    }
+            UndoStack::redo();
 }
 
 void UndoStack::redoAll()
 {
     while( mCurrentCommandReverse != mUndoCommands.rend() )
-    {
         UndoStack::redo();
-    }
+}
+
+void UndoStack::undoOrRedoTo( UndoCommand* pUndoCommand )
+{
+    // Iterator operator< and operator> does not work on list iterators, so have to use find.
+    // Find pUndoCommand from current command to end. If found it should undo, otherwise redo if
+    // pUndoCommand's iterator does not match mCurrentCommand
+    if( std::find( mCurrentCommand, mUndoCommands.end(), pUndoCommand ) != mUndoCommands.end() )
+        UndoStack::undoTo( pUndoCommand );
+    else if( pUndoCommand->mIterator != mCurrentCommand ) 
+        UndoStack::redoTo( pUndoCommand );
 }
 
 void UndoStack::clear()

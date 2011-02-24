@@ -33,6 +33,7 @@ public:
     void redo();
     void redoTo( UndoCommand* pUndoCommand );
     void redoAll();
+    void undoOrRedoTo( UndoCommand* pUndoCommand );
     void clear();
 
     inline sigc::connection connectChange( const sigc::slot<void, UndoCommand*, bool>& rSlot ) 
