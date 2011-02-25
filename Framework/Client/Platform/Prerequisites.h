@@ -93,6 +93,8 @@ class ClientComponent;
 class PermissionManager;
 
 // Undo
+class ComponentCommand;
+class ObjectCommand;
 class FunctionCommand;
 class PropertyChangeCommand;
 class UndoCommand;

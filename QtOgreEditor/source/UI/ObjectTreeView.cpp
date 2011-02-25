@@ -14,7 +14,7 @@ This file is part of Diversia.
 #include "Client/Object/ClientComponent.h"
 #include "Client/Object/ClientObject.h"
 #include "Client/Object/ClientObjectManager.h"
-#include "Client/Undo/DestroyComponentCommand.h"
+#include "Client/Undo/ComponentCommand.h"
 #include "Client/Undo/UndoStack.h"
 #include "Model/ObjectComponentModel.h"
 #include "Object/Component.h"
@@ -365,7 +365,8 @@ void ObjectTreeView::createComponent( int componentType )
                 }
             }
             
-            object.createComponent( componentType, componentName );
+            GlobalsBase::mUndoStack->push( new ComponentCommand( object, componentType, 
+                componentName ) );
         }
         catch( Exception e )
         {
@@ -446,9 +447,8 @@ void ObjectTreeView::destroyComponent( const QModelIndex& rIndex )
     {
         try
         {
-            GlobalsBase::mUndoStack->push( new DestroyComponentCommand( 
+            GlobalsBase::mUndoStack->push( new ComponentCommand( 
                 ObjectTreeView::getComponent( rIndex ) ) );
-            //ObjectTreeView::getComponent( rIndex ).destroyComponent();
         }
         catch( Exception e )
         {

@@ -24,8 +24,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_CLIENT_DESTROYCOMPONENTCOMMAND_H
-#define DIVERSIA_CLIENT_DESTROYCOMPONENTCOMMAND_H
+#ifndef DIVERSIA_CLIENT_COMPONENTCOMMAND_H
+#define DIVERSIA_CLIENT_COMPONENTCOMMAND_H
 
 #include "Client/Platform/Prerequisites.h"
 
@@ -37,11 +37,13 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_CLIENT_API DestroyComponentCommand : public UndoCommand
+class DIVERSIA_CLIENT_API ComponentCommand : public UndoCommand
 {
 public:
-    DestroyComponentCommand( Component& rComponent );
-    virtual ~DestroyComponentCommand();
+    ComponentCommand( Component& rComponent );
+    ComponentCommand( Object& rObject, ComponentType type, const String& rName, 
+        bool localOverride = false, RakNet::RakNetGUID source = RakNet::RakNetGUID( 0 ) );
+    virtual ~ComponentCommand();
 
     inline int id() const { return 2; }
     bool mergeWith( const UndoCommand* pCommand );
@@ -51,8 +53,8 @@ public:
 private:
     boost::scoped_ptr<SerializationFile>    mSerializationFile;
     Component*                              mComponent;
-    String                                  mComponentName;
     ComponentType                           mComponentType;
+    String                                  mComponentName;
     bool                                    mComponentLocalOverride;
     RakNet::RakNetGUID                      mComponentSource;
     Object&                                 mObject;
@@ -63,4 +65,4 @@ private:
 } // Namespace Client
 } // Namespace Diversia
 
-#endif // DIVERSIA_CLIENT_DESTROYCOMPONENTCOMMAND_H
+#endif // DIVERSIA_CLIENT_COMPONENTCOMMAND_H

@@ -26,7 +26,7 @@ THE SOFTWARE.
 
 #include "Client/Platform/StableHeaders.h"
 
-#include "Client/Undo/DestroyComponentCommand.h"
+#include "Client/Undo/ComponentCommand.h"
 #include "Object/Component.h"
 #include "Util/Serialization/XMLSerializationFile.h"
 
@@ -36,12 +36,12 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-DestroyComponentCommand::DestroyComponentCommand( Component& rComponent ):
+ComponentCommand::ComponentCommand( Component& rComponent ):
     UndoCommand( "Destroyed " + rComponent.getName() + " component" ),
     mSerializationFile( new XMLSerializationFile( "", "NoSerialization", false, true ) ),
     mComponent( &rComponent ),
-    mComponentName( rComponent.getName() ),
     mComponentType( rComponent.getType() ),
+    mComponentName( rComponent.getName() ),
     mComponentLocalOverride( rComponent.getLocalOverride() ),
     mComponentSource( rComponent.getSource() ),
     mObject( rComponent.getObject() )
@@ -56,35 +56,66 @@ DestroyComponentCommand::DestroyComponentCommand( Component& rComponent ):
     }
 }
 
-DestroyComponentCommand::~DestroyComponentCommand()
+ComponentCommand::ComponentCommand( Object& rObject, ComponentType type, 
+    const String& rName, bool localOverride /*= false*/, 
+    RakNet::RakNetGUID source /*= RakNet::RakNetGUID( 0 )*/ ):
+    UndoCommand( "Created " + rName + " component" ),
+    mSerializationFile( 0 ),
+    mComponent( 0 ),
+    mComponentType( type ),
+    mComponentName( rName ),
+    mComponentLocalOverride( localOverride ),
+    mComponentSource( source ),
+    mObject( rObject )
 {
 
 }
 
-bool DestroyComponentCommand::mergeWith( const UndoCommand* pCommand )
+ComponentCommand::~ComponentCommand()
+{
+
+}
+
+bool ComponentCommand::mergeWith( const UndoCommand* pCommand )
 {
     return false;
 }
 
-void DestroyComponentCommand::redo()
+void ComponentCommand::redo()
 {
-    if( mComponent ) mComponent->destroyComponent();
-    mComponent = 0;
+    if( !mSerializationFile )
+    {
+        if( !mComponent ) mComponent = &mObject.createComponent( mComponentType, mComponentName, 
+            mComponentLocalOverride, mComponentSource );
+    }
+    else
+    {
+        if( mComponent ) mComponent->destroyComponent();
+        mComponent = 0;
+    }
 }
 
-void DestroyComponentCommand::undo()
+void ComponentCommand::undo()
 {
-    if( !mComponent ) 
+    if( !mSerializationFile )
     {
-        try
+        if( mComponent ) mComponent->destroyComponent();
+        mComponent = 0;
+    }
+    else 
+    {
+        if( !mComponent ) 
         {
-            mComponent = &mObject.createComponent( mComponentType, mComponentName, 
-                mComponentLocalOverride, mComponentSource );
-            mSerializationFile->deserialize( mComponent, false );
-        }
-        catch( Exception e )
-        {
-            LCLOGC << "Could not deserialize component in DestroyComponentCommand: " << e.what();
+            try
+            {
+                mComponent = &mObject.createComponent( mComponentType, mComponentName, 
+                    mComponentLocalOverride, mComponentSource );
+                mSerializationFile->deserialize( mComponent, false );
+            }
+            catch( Exception e )
+            {
+                LCLOGC << "Could not deserialize component in DestroyComponentCommand: " << e.what();
+            }
         }
     }
 }

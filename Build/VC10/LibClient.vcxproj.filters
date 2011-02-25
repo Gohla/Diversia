@@ -88,7 +88,7 @@
     <ClInclude Include="..\..\Framework\Client\Undo\UndoCommand.h">
       <Filter>Undo</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Framework\Client\Undo\DestroyComponentCommand.h">
+    <ClInclude Include="..\..\Framework\Client\Undo\ComponentCommand.h">
       <Filter>Undo</Filter>
     </ClInclude>
   </ItemGroup>
@@ -144,7 +144,7 @@
     <ClCompile Include="..\..\Framework\Client\Undo\FunctionCommand.cpp">
       <Filter>Undo</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Client\Undo\DestroyComponentCommand.cpp">
+    <ClCompile Include="..\..\Framework\Client\Undo\ComponentCommand.cpp">
       <Filter>Undo</Filter>
     </ClCompile>
   </ItemGroup>
