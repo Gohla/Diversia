@@ -19,13 +19,16 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-class FunctionCommand : public UndoCommand
+class DIVERSIA_CLIENT_API FunctionCommand : public UndoCommand
 {
 public:
     FunctionCommand();
     virtual ~FunctionCommand();
 
-	
+    inline int id() const { return 1; }
+    bool mergeWith( const UndoCommand* pCommand );
+    void redo();
+    void undo();
     
 private:
 

@@ -39,9 +39,11 @@ namespace Util
 //------------------------------------------------------------------------------
 
 XMLSerializationFile::XMLSerializationFile( const Path& rFile, 
-    const camp::Value& rTag /*= camp::Value::nothing*/, bool include /*= false*/ ):
+    const camp::Value& rTag /*= camp::Value::nothing*/, bool include /*= false*/, 
+    bool serializeOneDocument /*= false*/ ):
     SerializationFile( rTag, include ),
-    mFile( rFile )
+    mFile( rFile ),
+    mSerializeOneDocument( serializeOneDocument )
 {
 
 }
@@ -69,12 +71,16 @@ void XMLSerializationFile::deserialize( const camp::UserObject& rObject,
 void XMLSerializationFile::serialize( const camp::UserObject& rObject,
     bool throwExceptions /*= true*/ )
 {
+    rapidxml::xml_document<>* doc;
+    if( mSerializeOneDocument ) doc = &mXMLDocument;
+    else doc = &mXMLSaveDocument;
+
     // Create a node for this object by using its metaclass name.
-    char* node_name = mXMLSaveDocument.allocate_string( rObject.getClass().name().c_str() ); 
-    rapidxml::xml_node<>* node = mXMLSaveDocument.allocate_node( rapidxml::node_element, 
+    char* node_name = doc->allocate_string( rObject.getClass().name().c_str() ); 
+    rapidxml::xml_node<>* node = doc->allocate_node( rapidxml::node_element, 
         node_name );
 
-    mXMLSaveDocument.append_node( node );
+    doc->append_node( node );
 
     // Deserialize the object to XML.
     camp::xml::serialize( rObject, node, mTag, mInclude, throwExceptions );

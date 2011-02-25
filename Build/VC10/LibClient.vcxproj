@@ -127,6 +127,7 @@
     <ClInclude Include="..\..\Framework\Client\Communication\ServerNeighborsPlugin.h" />
     <ClInclude Include="..\..\Framework\Client\Lua\LuaPlugin.h" />
     <ClInclude Include="..\..\Framework\Client\ClientIncludes.h" />
+    <ClInclude Include="..\..\Framework\Client\Undo\DestroyComponentCommand.h" />
     <ClInclude Include="..\..\Framework\Client\Undo\FunctionCommand.h" />
     <ClInclude Include="..\..\Framework\Client\Undo\PropertyChangeCommand.h" />
     <ClInclude Include="..\..\Framework\Client\Undo\UndoCommand.h" />
@@ -151,6 +152,8 @@
     <ClCompile Include="..\..\Framework\Client\Communication\src\ServerConnection.cpp" />
     <ClCompile Include="..\..\Framework\Client\Communication\src\ServerNeighborsPlugin.cpp" />
     <ClCompile Include="..\..\Framework\Client\Lua\src\LuaPlugin.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Undo\DestroyComponentCommand.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Undo\FunctionCommand.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\PropertyChangeCommand.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\UndoStack.cpp" />
   </ItemGroup>

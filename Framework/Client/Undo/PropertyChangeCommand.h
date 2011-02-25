@@ -19,7 +19,7 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-class PropertyChangeCommand : public UndoCommand, public sigc::trackable
+class DIVERSIA_CLIENT_API PropertyChangeCommand : public UndoCommand, public sigc::trackable
 {
 public:
     PropertyChangeCommand( const String& rPropertyName, const camp::UserObject& rUserObject, 

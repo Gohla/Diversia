@@ -8,22 +8,24 @@ This file is part of Diversia.
 
 #include "Platform/StableHeaders.h"
 
-#include "UI/ObjectTreeView.h"
-#include "UI/MainWindow.h"
-#include "UI/PropertyBrowser.h"
-#include "Model/ObjectComponentModel.h"
-#include "Shared/ClientServerPlugin/ClientServerPlugin.h"
+#include "Client/ClientServerPlugin/ServerPluginManager.h"
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/Server.h"
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
-#include "Client/Object/ClientObjectManager.h"
-#include "Client/Object/ClientObject.h"
 #include "Client/Object/ClientComponent.h"
-#include "OgreClient/Input/ObjectSelection.h"
-#include "Object/Object.h"
-#include "Object/ComponentFactoryManager.h"
-#include "Object/ComponentFactory.h"
+#include "Client/Object/ClientObject.h"
+#include "Client/Object/ClientObjectManager.h"
+#include "Client/Undo/DestroyComponentCommand.h"
+#include "Client/Undo/UndoStack.h"
+#include "Model/ObjectComponentModel.h"
 #include "Object/Component.h"
+#include "Object/ComponentFactory.h"
+#include "Object/ComponentFactoryManager.h"
+#include "Object/Object.h"
+#include "OgreClient/Input/ObjectSelection.h"
+#include "Shared/ClientServerPlugin/ClientServerPlugin.h"
+#include "UI/MainWindow.h"
+#include "UI/ObjectTreeView.h"
+#include "UI/PropertyBrowser.h"
 #include "qsignalmapper.h"
 
 namespace Diversia
@@ -444,7 +446,9 @@ void ObjectTreeView::destroyComponent( const QModelIndex& rIndex )
     {
         try
         {
-            ObjectTreeView::getComponent( rIndex ).destroyComponent();
+            GlobalsBase::mUndoStack->push( new DestroyComponentCommand( 
+                ObjectTreeView::getComponent( rIndex ) ) );
+            //ObjectTreeView::getComponent( rIndex ).destroyComponent();
         }
         catch( Exception e )
         {

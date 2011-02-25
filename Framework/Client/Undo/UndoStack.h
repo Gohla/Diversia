@@ -19,7 +19,7 @@ namespace Client
 
 typedef std::list<UndoCommand*> UndoCommands;
 
-class UndoStack
+class DIVERSIA_CLIENT_API UndoStack
 {
 public:
     UndoStack();

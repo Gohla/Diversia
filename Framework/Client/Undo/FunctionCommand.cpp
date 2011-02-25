@@ -16,12 +16,28 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-FunctionCommand::FunctionCommand()
+FunctionCommand::FunctionCommand():
+    UndoCommand( "" )
 {
 
 }
 
 FunctionCommand::~FunctionCommand()
+{
+
+}
+
+bool FunctionCommand::mergeWith( const UndoCommand* pCommand )
+{
+    return false;
+}
+
+void FunctionCommand::redo()
+{
+
+}
+
+void FunctionCommand::undo()
 {
 
 }

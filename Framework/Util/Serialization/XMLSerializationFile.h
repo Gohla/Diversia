@@ -40,14 +40,18 @@ class DIVERSIA_UTIL_API XMLSerializationFile : public SerializationFile
 {
 public:
     /**
-    Constructor.
-
-    @param  rFile   The file to load from and save to.
-    @param  rTag    The tag to include or exclude properties with. Defaults to nothing.
-    @param  include True to include properties, false to exclude properties. Defaults to false.
+    Constructor. 
+    
+    @param  rFile                   The file to load from and save to. 
+    @param  rTag                    The tag to include or exclude properties with. Defaults to
+                                    nothing. 
+    @param  include                 True to include properties, false to exclude properties.
+                                    Defaults to false. 
+    @param  serializeOneDocument    True to serialize into one xml document instead of a separate
+                                    xml document for saving.
     **/
     XMLSerializationFile( const Path& rFile, const camp::Value& rTag = camp::Value::nothing,
-        bool include = false );
+        bool include = false, bool serializeOneDocument = false );
     /**
     Destructor.
     **/
@@ -84,6 +88,7 @@ public:
 
 private:
     Path                        mFile;
+    bool                        mSerializeOneDocument;
     std::vector<char>           mXMLData;
     rapidxml::xml_document<>    mXMLDocument;
     rapidxml::xml_document<>    mXMLSaveDocument;
