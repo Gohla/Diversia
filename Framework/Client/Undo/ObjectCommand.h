@@ -24,8 +24,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_CLIENT_COMPONENTCOMMAND_H
-#define DIVERSIA_CLIENT_COMPONENTCOMMAND_H
+#ifndef DIVERSIA_CLIENT_OBJECTCOMMAND_H
+#define DIVERSIA_CLIENT_OBJECTCOMMAND_H
 
 #include "Client/Platform/Prerequisites.h"
 
@@ -37,44 +37,49 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_CLIENT_API ComponentCommand : public UndoCommand, public sigc::trackable
+class DIVERSIA_CLIENT_API ObjectCommand : public UndoCommand, public sigc::trackable
 {
 public:
     /**
-    Constructor for component destruction.
+    Constructor for object destruction.
     
-    @param [in,out] rComponent  The component to destroy.
+    @param [in,out] rObject The object to destroy.
     **/
-    ComponentCommand( Component& rComponent );
+    ObjectCommand( Object& rObject );
     /**
-    Constructor for component creation.
+    Constructor for object creation
     
-    @param [in,out] rObject The object on which the component should be created. 
-    @param  type            The component type. 
-    @param  rName           The name of the component, must be unique within the object. 
-    @param  localOverride   True to override component to local mode even if the object is a
-                            remote object. 
-    @param  source          Source of the construction request. Defaults to this system. 
+    @param [in,out] rObjectManager  The object manager where the object should be created at.
+    @param  rName                   The name of the object. 
+    @param  type                    The (local/remote) type of the object, defaults to local. 
+    @param  rDisplayName            The display name of the object, defaults to the name of the
+                                    object. 
+    @param  source                  Source of the construction request. Leave blank to use this
+                                    system's GUID. 
     **/
-    ComponentCommand( Object& rObject, ComponentType type, const String& rName, 
-        bool localOverride = false, RakNet::RakNetGUID source = RakNet::RakNetGUID( 0 ) );
-    virtual ~ComponentCommand();
+    ObjectCommand( ObjectManager& rObjectManager, const String& rName, NetworkingType type = LOCAL,
+        const String& rDisplayName = "", Object* pParentObject = 0, 
+        RakNet::RakNetGUID source = RakNet::RakNetGUID( 0 ) );
+    virtual ~ObjectCommand();
 
-    inline int id() const { return 2; }
+    inline int id() const { return 3; }
     bool mergeWith( const UndoCommand* pCommand );
     void redo();
     void undo();
     
 private:
     void objectDestroyed( Object& rObject );
+    void parentObjectDestroyed( Object& rObject );
 
     boost::scoped_ptr<SerializationFile>    mSerializationFile;
-    Component*                              mComponent;
-    ComponentType                           mComponentType;
-    String                                  mComponentName;
-    bool                                    mComponentLocalOverride;
-    RakNet::RakNetGUID                      mComponentSource;
-    Object&                                 mObject;
+    Object*                                 mObject;
+    Object*                                 mParentObject;
+    ObjectManager&                          mObjectManager;
+    String                                  mObjectName;
+    NetworkingType                          mObjectNetworkingType;
+    String                                  mObjectDisplayName;
+    RakNet::RakNetGUID                      mObjectSource;
+    sigc::connection                        mObjectConnection;
 
 };
 
@@ -82,4 +87,4 @@ private:
 } // Namespace Client
 } // Namespace Diversia
 
-#endif // DIVERSIA_CLIENT_COMPONENTCOMMAND_H
+#endif // DIVERSIA_CLIENT_OBJECTCOMMAND_H

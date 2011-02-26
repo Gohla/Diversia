@@ -149,12 +149,6 @@
      <verstretch>3</verstretch>
     </sizepolicy>
    </property>
-   <property name="minimumSize">
-    <size>
-     <width>220</width>
-     <height>206</height>
-    </size>
-   </property>
    <property name="maximumSize">
     <size>
      <width>440</width>
@@ -190,12 +184,6 @@
      </item>
      <item row="2" column="0">
       <widget class="Diversia::QtOgreEditor::ObjectTreeView" name="treeViewObjects">
-       <property name="minimumSize">
-        <size>
-         <width>220</width>
-         <height>150</height>
-        </size>
-       </property>
        <property name="maximumSize">
         <size>
          <width>440</width>
@@ -241,12 +229,6 @@
      <verstretch>3</verstretch>
     </sizepolicy>
    </property>
-   <property name="minimumSize">
-    <size>
-     <width>220</width>
-     <height>172</height>
-    </size>
-   </property>
    <property name="maximumSize">
     <size>
      <width>440</width>
@@ -281,12 +263,6 @@
          <verstretch>2</verstretch>
         </sizepolicy>
        </property>
-       <property name="minimumSize">
-        <size>
-         <width>220</width>
-         <height>150</height>
-        </size>
-       </property>
        <property name="maximumSize">
         <size>
          <width>440</width>
@@ -304,12 +280,6 @@
      <horstretch>1</horstretch>
      <verstretch>1</verstretch>
     </sizepolicy>
-   </property>
-   <property name="minimumSize">
-    <size>
-     <width>220</width>
-     <height>206</height>
-    </size>
    </property>
    <property name="maximumSize">
     <size>
@@ -346,12 +316,6 @@
      </item>
      <item row="1" column="0">
       <widget class="Diversia::QtOgreEditor::PluginTreeView" name="treeViewPlugins">
-       <property name="minimumSize">
-        <size>
-         <width>220</width>
-         <height>150</height>
-        </size>
-       </property>
        <property name="maximumSize">
         <size>
          <width>440</width>

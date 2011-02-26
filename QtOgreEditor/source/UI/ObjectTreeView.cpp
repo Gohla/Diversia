@@ -15,6 +15,7 @@ This file is part of Diversia.
 #include "Client/Object/ClientObject.h"
 #include "Client/Object/ClientObjectManager.h"
 #include "Client/Undo/ComponentCommand.h"
+#include "Client/Undo/ObjectCommand.h"
 #include "Client/Undo/UndoStack.h"
 #include "Model/ObjectComponentModel.h"
 #include "Object/Component.h"
@@ -311,8 +312,11 @@ void ObjectTreeView::createNewObject()
 {
     try
     {
-        mObjectManager->createObject( String( "EditorObject" ) + mObjectManager->getGUIDString() + 
-            boost::lexical_cast<String>( ++mObjectCounter ), LOCAL, "EditorObject" );
+        /*mObjectManager->createObject( String( "EditorObject" ) + mObjectManager->getGUIDString() + 
+            boost::lexical_cast<String>( ++mObjectCounter ), LOCAL, "EditorObject" );*/
+        GlobalsBase::mUndoStack->push( new ObjectCommand( *mObjectManager, 
+            String( "EditorObject" ) + mObjectManager->getGUIDString() + 
+            boost::lexical_cast<String>( ++mObjectCounter ), LOCAL, "EditorObject" ) );
     }
     catch( Exception e )
     {
@@ -329,10 +333,14 @@ void ObjectTreeView::createChildObject()
         {
             Object& rootObject = mObjectManager->getObject( index.data( Qt::UserRole + 2 
                 ).toString().toStdString() );
-            Object& object = mObjectManager->createObject( String( "EditorObject" ) + 
+            /*Object& object = mObjectManager->createObject( String( "EditorObject" ) + 
                 mObjectManager->getGUIDString() + boost::lexical_cast<String>( ++mObjectCounter ), 
                 rootObject.getNetworkingType(), "EditorObject" );
-            object.parent( &rootObject );
+            object.parent( &rootObject );*/
+            GlobalsBase::mUndoStack->push( new ObjectCommand( *mObjectManager, 
+                String( "EditorObject" ) + mObjectManager->getGUIDString() + 
+                boost::lexical_cast<String>( ++mObjectCounter ), rootObject.getNetworkingType(), 
+                "EditorObject", &rootObject ) );
         }
         catch( Exception e )
         {
@@ -432,7 +440,8 @@ void ObjectTreeView::destroyObject( const QModelIndex& rIndex )
     {
         try
         {
-            mObjectManager->destroyObjectTree( ObjectTreeView::getObject( rIndex ) );
+            //mObjectManager->destroyObjectTree( ObjectTreeView::getObject( rIndex ) );
+            GlobalsBase::mUndoStack->push( new ObjectCommand( ObjectTreeView::getObject( rIndex ) ) );
         }
         catch( Exception e )
         {

@@ -28,6 +28,7 @@ THE SOFTWARE.
 
 #include "Client/Undo/ComponentCommand.h"
 #include "Object/Component.h"
+#include "Object/Object.h"
 #include "Util/Serialization/XMLSerializationFile.h"
 
 namespace Diversia
@@ -37,7 +38,7 @@ namespace Client
 //------------------------------------------------------------------------------
 
 ComponentCommand::ComponentCommand( Component& rComponent ):
-    UndoCommand( "Destroyed " + rComponent.getName() + " component" ),
+UndoCommand( "Destroyed " + rComponent.getName() + " component" ),
     mSerializationFile( new XMLSerializationFile( "", "NoSerialization", false, true ) ),
     mComponent( &rComponent ),
     mComponentType( rComponent.getType() ),
@@ -52,8 +53,10 @@ ComponentCommand::ComponentCommand( Component& rComponent ):
     }
     catch( Exception e )
     {
-        LCLOGC << "Could not serialize component in DestroyComponentCommand: " << e.what();
+        LCLOGE << "Could not serialize component in ComponentCommand: " << e.what();
     }
+
+    mObject.connectDestruction( sigc::mem_fun( this, &ComponentCommand::objectDestroyed ) );
 }
 
 ComponentCommand::ComponentCommand( Object& rObject, ComponentType type, 
@@ -68,7 +71,7 @@ ComponentCommand::ComponentCommand( Object& rObject, ComponentType type,
     mComponentSource( source ),
     mObject( rObject )
 {
-
+    mObject.connectDestruction( sigc::mem_fun( this, &ComponentCommand::objectDestroyed ) );
 }
 
 ComponentCommand::~ComponentCommand()
@@ -85,13 +88,27 @@ void ComponentCommand::redo()
 {
     if( !mSerializationFile )
     {
-        if( !mComponent ) mComponent = &mObject.createComponent( mComponentType, mComponentName, 
-            mComponentLocalOverride, mComponentSource );
+        try
+        {
+            if( !mComponent ) mComponent = &mObject.createComponent( mComponentType, mComponentName, 
+                mComponentLocalOverride, mComponentSource );
+        }
+        catch( Exception e )
+        {
+            LCLOGE << "Could not create component in ComponentCommand: " << e.what();
+        }
     }
     else
     {
-        if( mComponent ) mComponent->destroyComponent();
-        mComponent = 0;
+        try
+        {
+            if( mComponent ) mComponent->destroyComponent();
+            mComponent = 0;
+        }
+        catch( Exception e )
+        {
+            LCLOGE << "Could not destroy component in ComponentCommand: " << e.what();
+        }
     }
 }
 
@@ -99,8 +116,15 @@ void ComponentCommand::undo()
 {
     if( !mSerializationFile )
     {
-        if( mComponent ) mComponent->destroyComponent();
-        mComponent = 0;
+        try
+        {
+            if( mComponent ) mComponent->destroyComponent();
+            mComponent = 0;
+        }
+        catch( Exception e )
+        {
+            LCLOGE << "Could not destroy component in ComponentCommand: " << e.what();
+        }
     }
     else 
     {
@@ -114,10 +138,16 @@ void ComponentCommand::undo()
             }
             catch( Exception e )
             {
-                LCLOGC << "Could not deserialize component in DestroyComponentCommand: " << e.what();
+                LCLOGE << "Could not create and deserialize component in ComponentCommand: " << 
+                    e.what();
             }
         }
     }
+}
+
+void ComponentCommand::objectDestroyed( Object& rObject )
+{
+    UndoCommand::remove();
 }
 
 //------------------------------------------------------------------------------
