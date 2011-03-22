@@ -1,0 +1,16 @@
+module DiversiaScript.main
+
+imports DiversiaScript-Builders DiversiaScript-Colorer DiversiaScript-Completions DiversiaScript-Folding DiversiaScript-Outliner DiversiaScript-References DiversiaScript-Syntax
+
+language General properties
+                  
+  name          : DiversiaScript
+  id            : DiversiaScript
+  extends       : Root
+                  
+  description   : "Spoofax/IMP-generated editor for the DiversiaScript language"
+  url           : http://strategoxt.org
+                  
+  extensions    : div
+  table         : include/DiversiaScript.tbl
+  start symbols : Start

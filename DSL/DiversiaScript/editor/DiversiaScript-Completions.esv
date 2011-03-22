@@ -1,0 +1,10 @@
+module DiversiaScript-Completions
+
+imports DiversiaScript-Completions.generated
+
+completions
+                                                                   
+  // This file is used to define content completion.               
+  //                                                               
+  // See the imported file for a brief introduction and examples.
+  

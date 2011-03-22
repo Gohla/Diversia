@@ -1,0 +1,15 @@
+module DiversiaScript
+
+imports Common
+
+exports
+
+  context-free start-symbols
+    Start
+
+  context-free syntax
+  
+    "module" ID Definition*       -> Start {cons("Module")}
+    "entity" ID "{" Property* "}" -> Definition {cons("Entity")}
+    ID ":" Type                   -> Property {cons("Property")}
+    ID                            -> Type {cons("Type")}

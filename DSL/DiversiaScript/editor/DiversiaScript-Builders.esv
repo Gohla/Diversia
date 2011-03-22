@@ -1,0 +1,19 @@
+
+module DiversiaScript-Builders
+
+imports DiversiaScript-Builders.generated
+
+builders
+                                                                      
+  // This file can be used for custom analysis and builder rules.     
+  //                                                                  
+  // See the imported file for a brief introduction and examples.     
+
+builders
+                                                                                                                               
+  provider                  : include/diversiascript.ctree                                                                     
+  provider                  : include/diversiascript-java.jar
+  
+  builder                   : "Show abstract syntax" = generate-aterm (openeditor) (realtime) (meta) (source)                                                                                                                               
+  builder                   : "Generate Lua code"   = generate-lua (openeditor) (realtime)
+  builder                   : "Generate C++ code"   = generate-cpp (openeditor) (realtime)                                                                                           

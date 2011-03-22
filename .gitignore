@@ -31,3 +31,13 @@
 /QtOgreEditor/qtpropertybrowser-2.5_1/Makefile
 /QtOgreEditor/qtpropertybrowser-2.5_1/qtpropertybrowser.pro
 /QtOgreEditor/qtpropertybrowser-2.5_1/src/images
+/DSL/.metadata
+/DSL/DiversiaScript/.cache
+/DSL/DiversiaScript/bin
+/DSL/DiversiaScript/editor/DiversiaScript-Syntax.generated.esv
+/DSL/DiversiaScript/editor/DiversiaScript-Builders.generated.esv
+/DSL/DiversiaScript/editor/DiversiaScript-Colorer.generated.esv
+/DSL/DiversiaScript/editor/DiversiaScript-Completions.generated.esv
+/DSL/DiversiaScript/editor/DiversiaScript-Folding.generated.esv
+/DSL/DiversiaScript/editor/DiversiaScript-Outliner.generated.esv
+/DSL/DiversiaScript/editor/DiversiaScript-References.generated.esv

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<?eclipse version="3.0"?>
+
+<plugin>
+       <extension point="org.eclipse.imp.runtime.languageDescription">
+          <language extensions="div" description="DiversiaScript" language="DiversiaScript" derivedFrom="DynamicRoot" validator="DiversiaScript.DiversiaScriptValidator" validatorClass="DiversiaScript.DiversiaScriptValidator"></language>
+       </extension>
+       <extension id="DiversiaScript.parser" name="DiversiaScript Parser" point="org.eclipse.imp.runtime.parser">
+          <parser class="DiversiaScript.DiversiaScriptParseController" language="DiversiaScript">
+          </parser>
+       </extension>    
+    </plugin>
