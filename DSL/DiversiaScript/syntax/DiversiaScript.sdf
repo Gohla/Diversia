@@ -1,6 +1,6 @@
 module DiversiaScript
 
-imports Common
+imports Lexical
 
 exports
 
@@ -8,8 +8,30 @@ exports
     Start
 
   context-free syntax
-  
-    "module" ID Definition*       -> Start {cons("Module")}
-    "entity" ID "{" Property* "}" -> Definition {cons("Entity")}
-    ID ":" Type                   -> Property {cons("Property")}
-    ID                            -> Type {cons("Type")}
+  	ObjectDef* -> Start {cons("Start")}
+  	
+  	"def" Id "{" InsideDef*  "}" -> ObjectDef {cons("ObjectDef")}
+  	
+  	"component" Id "{" PropertyAssignment* "}" -> InsideDef {cons("ComponentDef")}
+  	"state" Id "{" InsideDef* "}" -> InsideDef {cons("StateDef")}
+  	"default" "state" Id "{" InsideDef* "}" -> InsideDef {cons("DefaultStateDef")}
+  	"on" Id "{" "}" -> InsideDef {cons("ReactionDef")}
+  	"on" Id "(" {Param ","}* ")" "{" "}" -> InsideDef {cons("ParameterizedReactionDef")}
+  	
+  	Id "=" Exp -> PropertyAssignment {cons("PropertyAssingment")}
+  	
+  	Id -> Exp {cons("Identifier")}
+  	BoolConst -> Exp {cons("BoolConst")}
+  	IntConst -> Exp {cons("IntConst")}
+  	FloatConst -> Exp {cons("FloatConst")}
+  	StrConst -> Exp
+  	
+  	"Int" -> Type {cons("IntType")}
+  	"Float" -> Type {cons("FloatType")}
+  	"Bool" -> Type {cons("BoolType")}
+  	Id -> Type {cons("CustomType")}
+  	
+  	Id -> Param {cons("Param")}
+  	Id ":" Type -> Param {cons("TypedParam")}
+  	
+

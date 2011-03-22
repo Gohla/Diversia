@@ -1,0 +1,102 @@
+module Lexical
+
+exports
+
+  lexical syntax
+  
+  	%% Identifier
+    [a-zA-Z][a-zA-Z0-9\_]* -> Id
+    
+    %% Reject keywords as identifiers.
+    "this" -> Id {reject}
+    "true" -> Id {reject}
+    "false" -> Id {reject}
+    "boolean" -> Id {reject}
+    "class" -> Id {reject}
+    "else" -> Id {reject}
+    "if" -> Id {reject}
+    "int" -> Id {reject}
+    "new" -> Id {reject}
+    "public" -> Id {reject}
+    "return" -> Id {reject}
+    "static" -> Id {reject}
+    "void" -> Id {reject}
+    "while" -> Id {reject}
+    
+    %% Boolean
+    "true"					-> BoolConst
+    "false"					-> BoolConst
+    
+    %% Numbers
+    [0-9]+					-> IntConst
+    IntConst "." IntConst 	-> FloatConst
+    
+    %% Strings
+	"\"" StrChar* "\""		-> StrConst
+	
+	~[\\\"\n]				-> StrChar
+	[\\] [n]				-> StrChar
+	[\\] [t]				-> StrChar
+	[\\] [\^] [A-Z]			-> StrChar
+	[\\] [0-9][0-9][0-9]	-> StrChar
+	[\\] [\"]				-> StrChar
+	[\\] [\\]				-> StrChar
+	[\\] [\ \t\n]+ [\\]		-> StrChar
+    
+    %% Spacing
+    [\ \t\n\r] -> LAYOUT
+    
+    %% Block comments
+	BlockComment			-> LAYOUT
+	"/*" CommentPart* "*/"	-> BlockComment
+	~[\/\*]      			-> CommentPart
+	Asterisk     			-> CommentPart
+	Slash        			-> CommentPart
+	BlockComment 			-> CommentPart
+	[\/] 					-> Slash
+	[\*] 					-> Asterisk
+
+	%% Comments
+	"//" ~[\n\r]* ([\n\r] | EOF)     -> LAYOUT
+
+    -> EOF
+  
+  lexical restrictions
+  
+    %% Ensure greedy matching for lexicals.
+  
+    IntConst      -/- [0-9]
+    FloatConst    -/- [0-9]
+    Id            -/- [a-zA-Z0-9\_]
+    
+    %% Ensure greedy matching for keywords.
+    
+    "this"      -/- [a-zA-Z0-9\_]
+	"true"      -/- [a-zA-Z0-9\_]
+	"false"     -/- [a-zA-Z0-9\_]
+	"boolean"   -/- [a-zA-Z0-9\_]
+	"class"     -/- [a-zA-Z0-9\_]
+	"else"      -/- [a-zA-Z0-9\_]
+	"if"      	-/- [a-zA-Z0-9\_]
+	"int"     	-/- [a-zA-Z0-9\_]
+	"new"		-/- [a-zA-Z0-9\_]
+	"public"    -/- [a-zA-Z0-9\_]
+	"return"    -/- [a-zA-Z0-9\_]
+	"static"    -/- [a-zA-Z0-9\_]
+	"void"      -/- [a-zA-Z0-9\_]
+	"while"     -/- [a-zA-Z0-9\_]
+    
+	Asterisk -/- [\/]
+	Slash    -/- [\*]
+    
+    %% EOF may not be followed by any char
+    
+    EOF           -/- ~[]
+
+  context-free restrictions
+  
+    %% Ensure greedy matching for comments
+
+    LAYOUT? -/- [\ \t\n\r]
+    LAYOUT? -/- [\/].[\/]
+    LAYOUT? -/- [\/].[\*]

@@ -1,0 +1,44 @@
+// Landmine object definition
+def Mine {
+    component Mesh {
+        ShapeType = Mesh
+        ShapeFile = "Landmine.mesh"
+    }
+    component Entity {
+        Material = "Landmine"
+    }
+    component CollisionShape {
+        ShapeType = Mesh
+        ShapeFile = "Landmine.bullet"
+    }
+    component RigidBody {
+        PhysicsType = Dynamic
+        Restitution = 0.3
+        LinearDampening = 0.7
+        AngularDampening = 0.7
+    }
+    
+    default state Armed {
+        on Collision(OtherObject) {
+            // Explode mine if another object hits this.
+            //setstate Exploding;
+        }
+    }
+    state Exploding {
+        component Particles {
+            Template = "Explosion.particle"
+            Active = true
+        }
+        component Sound {
+            SoundFile = "Explosion.ogg"
+            AutoPlay = true
+        }
+        
+        on StateEnter { // Event is fired after state is entered.
+            // Destroy this object after 2 seconds of explosion.
+            //in 2 seconds {
+            //    this.Destroy();
+            //}
+        }
+    }
+}

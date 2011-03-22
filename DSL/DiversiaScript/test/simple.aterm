@@ -1,0 +1,38 @@
+Start(
+  [ ObjectDef(
+      "Mine"
+    , [ ComponentDef(
+          "Mesh"
+        , [PropertyAssingment("ShapeType", Identifier("Mesh")), PropertyAssingment("ShapeFile", "\"Landmine.mesh\"")]
+        )
+      , ComponentDef("Entity", [PropertyAssingment("Material", "\"Landmine\"")])
+      , ComponentDef(
+          "CollisionShape"
+        , [PropertyAssingment("ShapeType", Identifier("Mesh")), PropertyAssingment("ShapeFile", "\"Landmine.bullet\"")]
+        )
+      , ComponentDef(
+          "RigidBody"
+        , [ PropertyAssingment("PhysicsType", Identifier("Dynamic"))
+          , PropertyAssingment("Restitution", FloatConst("0.3"))
+          , PropertyAssingment("LinearDampening", FloatConst("0.7"))
+          , PropertyAssingment("AngularDampening", FloatConst("0.7"))
+          ]
+        )
+      , DefaultStateDef("Armed", [ParameterizedReactionDef("Collision", [Param("OtherObject")])])
+      , StateDef(
+          "Exploding"
+        , [ ComponentDef(
+              "Particles"
+            , [PropertyAssingment("Template", "\"Explosion.particle\""), PropertyAssingment("Active", BoolConst("true"))]
+            )
+          , ComponentDef(
+              "Sound"
+            , [PropertyAssingment("SoundFile", "\"Explosion.ogg\""), PropertyAssingment("AutoPlay", BoolConst("true"))]
+            )
+          , ReactionDef("StateEnter")
+          ]
+        )
+      ]
+    )
+  ]
+)
