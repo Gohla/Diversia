@@ -1,5 +1,7 @@
 // Landmine object definition
 def Mine {
+	Position = [0, 0.5, 0] // Standard position offset
+	
     component Mesh {
         ShapeType = Mesh
         ShapeFile = "Landmine.mesh"

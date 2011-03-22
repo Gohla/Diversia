@@ -3,8 +3,8 @@ def CameraYaw {
     Position = [0, 0.5, 0] // Standard position offset
 
     // Child objects
-    object CameraPitch {
-        object Camera {
+    def CameraPitch {
+        def Camera {
             Position = [0, 0, 5]
             component Camera {
                 Active = true
@@ -13,8 +13,8 @@ def CameraYaw {
     }
 
     // Variable definitions
-    var mRMB = false;
-    var mMouseState : MouseState = null;
+    var mRMB = false
+    var mMouseState : MouseState = null
     
     // States
     default state Alive {
@@ -31,19 +31,19 @@ def CameraYaw {
         on Update() {
             if(mRMB) { // If right mouse button is pressed
                 // Yaw the camera
-                this.Yaw(Radian(Degree(-mMouseState.X.Relative)));
+                //this.Yaw(Radian(Degree(-mMouseState.X.Relative)));
 
                 // Pitch the camera
-                local Pitch = CameraPitch.Orientation.Pitch;
-                local DegreeChange = Degree(-mMouseState.Y.Relative);
-                local NewPitch = DegreeChange + Pitch;
+                var Pitch = CameraPitch.Orientation.Pitch;
+                var DegreeChange = Degree(-mMouseState.Y.Relative);
+                var NewPitch = DegreeChange + Pitch;
                 if(NewPitch < Degree(85) && NewPitch > Degree(-85)) {
                     CameraPitch.Pitch(Radian(DegreeChange));
                 }
             }
             if(mMouseState != null) {
                 // Camera distance
-                local Distance = CameraPitch.Camera.Position.Z;
+                var Distance = CameraPitch.Camera.Position.Z;
                 if(mMouseState.Z.Relative > 0) {
                      Distance = Distance - Distance / 12;
                      if(Distance < 5) Distance = 5;
@@ -88,7 +88,7 @@ def Ball {
     }
     
     // Child objects
-    external object CameraYaw // Add the CameraYaw object definition as a child object.
+    external def CameraYaw // Add the CameraYaw object definition as a child object.
 
     default state Alive {
         var mMove = 0

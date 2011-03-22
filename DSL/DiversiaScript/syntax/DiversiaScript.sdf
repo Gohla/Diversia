@@ -8,30 +8,151 @@ exports
     Start
 
   context-free syntax
-  	ObjectDef* -> Start {cons("Start")}
+  	%% Start
+  	GlobalDef* -> Start {cons("Start")}
   	
+  	%% Object
   	"def" Id "{" InsideDef*  "}" -> ObjectDef {cons("ObjectDef")}
+  	"external" "def" Id -> ObjectDef {cons("ExternalObjectDef")}
+  	ObjectDef -> GlobalDef
+  	ObjectDef -> InsideDef
   	
-  	"component" Id "{" PropertyAssignment* "}" -> InsideDef {cons("ComponentDef")}
-  	"state" Id "{" InsideDef* "}" -> InsideDef {cons("StateDef")}
-  	"default" "state" Id "{" InsideDef* "}" -> InsideDef {cons("DefaultStateDef")}
-  	"on" Id "{" "}" -> InsideDef {cons("ReactionDef")}
-  	"on" Id "(" {Param ","}* ")" "{" "}" -> InsideDef {cons("ParameterizedReactionDef")}
+  	%% Component
+  	"component" Id "{" PropAssign* "}" -> InsideDef {cons("ComponentDef")}
   	
-  	Id "=" Exp -> PropertyAssignment {cons("PropertyAssingment")}
+  	%% State
+  	"state" Id "{" InsideDef* "}" -> StateDef {cons("StateDef")}
+  	"default" "state" Id "{" InsideDef* "}" -> StateDef {cons("DefaultStateDef")}
+  	StateDef -> InsideDef
   	
-  	Id -> Exp {cons("Identifier")}
-  	BoolConst -> Exp {cons("BoolConst")}
-  	IntConst -> Exp {cons("IntConst")}
-  	FloatConst -> Exp {cons("FloatConst")}
-  	StrConst -> Exp
+  	%% Event reaction
+  	"on" Id "{" Statement* "}" -> EventDef {cons("EventDef")}
+  	"on" Id "(" {Param ","}* ")" "{" Statement* "}" -> EventDef {cons("EventDef")}
+  	EventDef -> GlobalDef
+  	EventDef -> InsideDef
   	
+  	%% Property
+  	Id "=" Exp -> PropAssign {cons("PropAssign")}
+  	PropAssign -> InsideDef
+  	
+  	%% Parameter
+  	Id -> Param {cons("Param")}
+  	TypeId -> Param {cons("Param")}
+  	
+  	%% Variable
+  	"var" TypeId -> VarDef {cons("VarDef")}
+  	"var" IdOrTypeId "=" Exp -> VarDef {cons("VarDef")}
+  	VarDef -> InsideDef
+  	VarDef ";" -> Statement {cons("VarDef")}
+  	Id -> VarRef {cons("VarRef")}
+  	
+  	%% Expressions
+  	%% Constants
+  	BoolConst 							-> Exp {cons("BoolConst")}
+  	IntConst 							-> IntOrFloatConst {cons("IntConst")}
+  	FloatConst 							-> IntOrFloatConst {cons("FloatConst")}
+  	IntOrFloatConst						-> Exp
+  	StrConst 							-> Exp
+  	"[" Exp "," Exp "]" 				-> Exp {cons("Vector2Const")}
+  	"[" Exp "," Exp "," Exp "]" 		-> Exp {cons("Vector3Const")}
+  	"[" Exp "," Exp "," Exp "," Exp "]" -> Exp {cons("Vector4Const")}
+  	%% Other
+  	Id 									-> Exp {cons("VarRef")}
+  	"this" 								-> Exp {cons("This")}
+  	Id "(" {Exp ","}* ")" 				-> Exp {cons("New")}
+  	"new" Id "{" PropAssign* "}" 		-> ObjectNew {cons("ObjectNew")}
+  	ObjectNew							-> Exp
+	Exp "." Exp							-> Exp {cons("Access"), left, avoid}
+	Exp "." Id "(" {Exp ","}* ")" ";"	-> Call {cons("Call"), left}
+	Call								-> Exp
+  	"(" Exp ")" 						-> Exp {bracket}
+  	
+	%% Operators
+	"!" Exp			-> Exp {cons("Not"), right}
+	"-" Exp			-> Exp {cons("Umin"), right}
+	"++" Exp		-> Exp {cons("PreInc"), right}
+	Exp "++"		-> Exp {cons("PostInc"), right}
+	"--" Exp		-> Exp {cons("PreDec"), right}
+	Exp "--"		-> Exp {cons("PostDec"), right}
+	Exp "+" Exp 	-> Exp {cons("Add"), left}
+	Exp "-" Exp 	-> Exp {cons("Sub"), left}
+	Exp "*" Exp 	-> Exp {cons("Mul"), left}
+	Exp "/" Exp 	-> Exp {cons("Div"), left}
+	Exp "==" Exp 	-> Exp {cons("Eq"), left}
+	Exp "!=" Exp 	-> Exp {cons("Neq"), left}
+	Exp "<" Exp 	-> Exp {cons("Lt"), left}
+	Exp "<=" Exp 	-> Exp {cons("Lte"), left}
+	Exp ">" Exp 	-> Exp {cons("Gt"), left}
+	Exp ">=" Exp 	-> Exp {cons("Gte"), left}
+	Exp "&&" Exp 	-> Exp {cons("And"), left}
+	Exp "||" Exp 	-> Exp {cons("Or"), left}
+  	
+  	%% Statements
+	"{" Statement* "}" 									-> Statement {cons("Statements")}
+	"else" "if" "(" Exp ")" Statement					-> ElseIfPart {cons("ElseIfPart")}
+	"else" "(" Exp ")" Statement						-> ElsePart {cons("ElsePart")}
+	"if" "(" Exp ")" Statement ElseIfPart* ElsePart?	-> Statement {cons("If")}
+	"while" "(" Exp ")" Statement 						-> Statement {cons("While")}
+	Exp "=" Exp ";" 									-> Statement {cons("Assign")}
+	Call												-> Statement {cons("Call")}
+	"setstate" Id ";"									-> Statement {cons("StateChange")}
+	"in" IntOrFloatConst TimeUnit "{" Statement* "}"	-> Statement {cons("Delay")}
+	ObjectNew											-> Statement
+	"switch" "(" Exp ")" "{" Case* "}"					-> Statement {cons("Switch")}
+	"case" Exp ":" Statement ";"?						-> Case {cons("Case")}
+	
+  	%% Types
   	"Int" -> Type {cons("IntType")}
   	"Float" -> Type {cons("FloatType")}
   	"Bool" -> Type {cons("BoolType")}
   	Id -> Type {cons("CustomType")}
+  	Id ":" Type -> TypeId {cons("TypeId")}
+  	Id -> IdOrTypeId
+  	TypeId -> IdOrTypeId
   	
-  	Id -> Param {cons("Param")}
-  	Id ":" Type -> Param {cons("TypedParam")}
-  	
-
+	context-free priorities
+		%% Operators, following the operator predecence from: http://www.uni-bonn.de/~manfear/javaoperators.php
+		{
+			left:
+			Call -> Exp
+			Exp "." Exp -> Exp
+			Call -> Statement
+		}
+		>
+		{
+			right:
+			"!" Exp -> Exp
+			"-" Exp -> Exp
+			"++" Exp -> Exp
+			Exp "++" -> Exp
+			"--" Exp -> Exp
+			Exp "--" -> Exp
+		}
+		>
+		{
+			left:
+			Exp "*" Exp -> Exp
+			Exp "/" Exp -> Exp
+		} 
+		> 
+		{
+			left: 
+			Exp "+" Exp -> Exp
+			Exp "-" Exp -> Exp
+		}
+		>
+		{
+			left:
+			Exp "==" Exp -> Exp
+			Exp "!=" Exp -> Exp
+			Exp "<" Exp -> Exp
+			Exp "<=" Exp -> Exp
+			Exp ">" Exp -> Exp
+			Exp ">=" Exp -> Exp
+		}
+		>
+		{
+			left:
+			Exp "&&" Exp -> Exp
+			Exp "||" Exp -> Exp
+		}
