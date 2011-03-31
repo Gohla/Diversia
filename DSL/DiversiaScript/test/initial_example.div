@@ -31,7 +31,7 @@ def CameraYaw {
         on Update() {
             if(mRMB) { // If right mouse button is pressed
                 // Yaw the camera
-                //this.Yaw(Radian(Degree(-mMouseState.X.Relative)));
+                this.Yaw(Radian(Degree(-mMouseState.X.Relative)));
 
                 // Pitch the camera
                 var Pitch = CameraPitch.Orientation.Pitch;
@@ -165,7 +165,7 @@ def Mine {
     }
     
     default state Armed {
-        on Collision(OtherObject) {
+        on Collision(OtherObject: Object) {
             // Explode mine if another object hits this.
             setstate Exploding;
         }
@@ -185,6 +185,7 @@ def Mine {
             in 2 seconds {
                 this.Destroy();
             }
+            interpolate Particles.Speed linearly from 5.0 to 1.0 over 2 seconds; 
         }
     }
 }
@@ -214,7 +215,7 @@ def Floor {
 on Create() {
     // Create an object of type Floor at position 0, 0, 0.
     new Floor {
-        Position = [0, 0, 0] 
+        Position = [0, 0, 0]
     }
     new Ball {
         Position = [0, 10, 0]

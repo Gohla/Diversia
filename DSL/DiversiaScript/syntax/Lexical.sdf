@@ -52,6 +52,10 @@ exports
 	"m"				-> TimeUnit
 	"hours"			-> TimeUnit
 	"h"				-> TimeUnit
+	
+	%% Interpolation
+	"linearly"		-> InterpolationType
+	"exponentially"	-> InterpolationType
     
     %% Spacing
     [\ \t\n\r] -> LAYOUT
