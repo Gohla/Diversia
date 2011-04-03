@@ -65,8 +65,11 @@ namespace ObjectSystem
 // Forward declarations
 class Component;
 class ComponentFactory;
+class ComponentTemplate;
 class Object;
 class ObjectManager;
+class ObjectTemplate;
+class ObjectTemplateManager;
 
 // Used namespaces
 using namespace Diversia::Util;
@@ -101,8 +104,11 @@ enum NetworkingType
 
 // Defines
 // Replica type
-#define REPLICATYPE_OBJECT      0x00
-#define REPLICATYPE_COMPONENT   0x01
+#define REPLICATYPE_OBJECT                  0x00
+#define REPLICATYPE_COMPONENT               0x01
+//#define REPLICATYPE_CLIENTSERVERPLUGIN    0x02
+#define REPLICATYPE_OBJECTTEMPLATE          0x03
+#define REPLICATYPE_COMPONENTTEMPLATE       0x04
 
 } // namespace ObjectSystem
 } // namespace Diversia

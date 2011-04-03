@@ -251,6 +251,21 @@ void CampBindings::bindComponentHandle()
     	// Operators
 }
 
+void CampBindings::bindObjectTemplate()
+{
+
+}
+
+void CampBindings::bindObjectTemplateManager()
+{
+
+}
+
+void CampBindings::bindComponentTemplate()
+{
+
+}
+
 //------------------------------------------------------------------------------
 } // Namespace Bindings
 } // Namespace ObjectSystem

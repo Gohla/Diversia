@@ -107,6 +107,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Framework\Object\ComponentTemplate.h" />
+    <ClInclude Include="..\..\Framework\Object\ObjectTemplate.h" />
+    <ClInclude Include="..\..\Framework\Object\ObjectTemplateManager.h" />
     <ClInclude Include="..\..\Framework\Object\Platform\Prerequisites.h" />
     <ClInclude Include="..\..\Framework\Object\Platform\StableHeaders.h" />
     <ClInclude Include="..\..\Framework\Object\Camp\CampBindings.h" />
@@ -120,6 +123,9 @@
     <ClInclude Include="..\..\Framework\Object\ObjectManager.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Framework\Object\ComponentTemplate.cpp" />
+    <ClCompile Include="..\..\Framework\Object\ObjectTemplate.cpp" />
+    <ClCompile Include="..\..\Framework\Object\ObjectTemplateManager.cpp" />
     <ClCompile Include="..\..\Framework\Object\Platform\src\StableHeaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>

@@ -47,6 +47,9 @@ public:
     static void bindObject();
     static void bindComponent();
     static void bindComponentHandle();
+    static void bindObjectTemplate();
+    static void bindObjectTemplateManager();
+    static void bindComponentTemplate();
 
 };
 

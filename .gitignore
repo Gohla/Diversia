@@ -41,3 +41,5 @@
 /DSL/DiversiaScript/editor/DiversiaScript-Folding.generated.esv
 /DSL/DiversiaScript/editor/DiversiaScript-Outliner.generated.esv
 /DSL/DiversiaScript/editor/DiversiaScript-References.generated.esv
+/DSL/DiversiaScript/include
+/DSL/DiversiaScript/syntax/DiversiaScript.generated.pp

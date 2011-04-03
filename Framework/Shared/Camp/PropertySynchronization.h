@@ -45,7 +45,6 @@ public:
     Constructor.
 
     @param  mode                The mode (Client/Server) to run in.
-    @param  userObject          The user object to manage property synchronization for.
     @param  nextSerializeDelay  A serialization delay in milliseconds after a property is changed
                                 or a value is inserted into a property. Defaults to 0.
     **/

@@ -106,6 +106,8 @@ class ResourceInfo;
 //#define REPLICATYPE_OBJECT            0x00
 //#define REPLICATYPE_COMPONENT         0x01
 #define REPLICATYPE_CLIENTSERVERPLUGIN  0x02
+//#define REPLICATYPE_OBJECTTEMPLATE    0x03
+//#define REPLICATYPE_COMPONENTTEMPLATE 0x04
 
 // Client-server plugins
 typedef unsigned char ClientServerPluginType;

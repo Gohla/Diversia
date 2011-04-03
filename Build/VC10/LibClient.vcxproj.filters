@@ -94,6 +94,9 @@
     <ClInclude Include="..\..\Framework\Client\Undo\ObjectCommand.h">
       <Filter>Undo</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Undo\ParentChangeCommand.h">
+      <Filter>Undo</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Framework\Client\Platform\src\StableHeaders.cpp">
@@ -151,6 +154,9 @@
       <Filter>Undo</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Framework\Client\Undo\ObjectCommand.cpp">
+      <Filter>Undo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Undo\ParentChangeCommand.cpp">
       <Filter>Undo</Filter>
     </ClCompile>
   </ItemGroup>

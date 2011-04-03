@@ -33,6 +33,9 @@
     <ClInclude Include="..\..\Framework\Object\Object.h" />
     <ClInclude Include="..\..\Framework\Object\ObjectIncludes.h" />
     <ClInclude Include="..\..\Framework\Object\ObjectManager.h" />
+    <ClInclude Include="..\..\Framework\Object\ComponentTemplate.h" />
+    <ClInclude Include="..\..\Framework\Object\ObjectTemplate.h" />
+    <ClInclude Include="..\..\Framework\Object\ObjectTemplateManager.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Framework\Object\Platform\src\StableHeaders.cpp">
@@ -48,5 +51,8 @@
     <ClCompile Include="..\..\Framework\Object\src\ComponentFactoryManager.cpp" />
     <ClCompile Include="..\..\Framework\Object\src\Object.cpp" />
     <ClCompile Include="..\..\Framework\Object\src\ObjectManager.cpp" />
+    <ClCompile Include="..\..\Framework\Object\ComponentTemplate.cpp" />
+    <ClCompile Include="..\..\Framework\Object\ObjectTemplate.cpp" />
+    <ClCompile Include="..\..\Framework\Object\ObjectTemplateManager.cpp" />
   </ItemGroup>
 </Project>

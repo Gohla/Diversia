@@ -130,6 +130,7 @@
     <ClInclude Include="..\..\Framework\Client\Undo\ComponentCommand.h" />
     <ClInclude Include="..\..\Framework\Client\Undo\FunctionCommand.h" />
     <ClInclude Include="..\..\Framework\Client\Undo\ObjectCommand.h" />
+    <ClInclude Include="..\..\Framework\Client\Undo\ParentChangeCommand.h" />
     <ClInclude Include="..\..\Framework\Client\Undo\PropertyChangeCommand.h" />
     <ClInclude Include="..\..\Framework\Client\Undo\UndoCommand.h" />
     <ClInclude Include="..\..\Framework\Client\Undo\UndoStack.h" />
@@ -156,6 +157,7 @@
     <ClCompile Include="..\..\Framework\Client\Undo\ComponentCommand.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\FunctionCommand.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\ObjectCommand.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Undo\ParentChangeCommand.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\PropertyChangeCommand.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\UndoStack.cpp" />
   </ItemGroup>

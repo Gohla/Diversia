@@ -63,7 +63,6 @@ ObjectManager::~ObjectManager()
 Object& ObjectManager::createObject( const String& rName, NetworkingType type /*= LOCAL*/, 
     const String& rDisplayName /*= ""*/, RakNet::RakNetGUID source /*= RakNet::RakNetGUID( 0 )*/ )
 {
-    // TODO: Append Local to local objects to prevent naming conflicts.
     if( !hasObject( rName ) )
     {
         // Default to own GUID as source.
@@ -88,7 +87,6 @@ Object& ObjectManager::createObject( const String& rName, NetworkingType type /*
 
 Object& ObjectManager::getObject( const String& rName ) const
 {
-    // TODO: Append Local to local objects to prevent naming conflicts.
     Objects::const_iterator i = mObjects.find( rName );
     if( i != mObjects.end() )
     {
@@ -103,10 +101,8 @@ Object& ObjectManager::getObject( const String& rName ) const
 
 bool ObjectManager::hasObject( const String& rName ) const
 {
-    // TODO: Append Local to local objects to prevent naming conflicts.
     return mObjects.find( rName ) != mObjects.end();
 }
-
 
 void ObjectManager::destroyObject( Object& rObject, RakNet::RakNetGUID source /*= RakNet::RakNetGUID( 0 ) */ )
 {
