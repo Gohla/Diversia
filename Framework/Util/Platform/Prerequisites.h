@@ -171,6 +171,11 @@ typedef std::vector<Path> Paths;
 } // namespace Util
 } // namespace Diversia
 
+// Camp class macro
+#define CAMP_CLASS(className) CAMP_RTTI() \
+    friend class Bindings::CampBindings; \
+    friend void camp::detail::destroy<className>( const UserObject& object );
+
 // Camp bindings
 #include "Util/Camp/CampBindings.h"
 

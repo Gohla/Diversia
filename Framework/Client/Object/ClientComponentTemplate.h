@@ -62,8 +62,6 @@ public:
     }
 
 private:
-    friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
-    friend void camp::detail::destroy<ClientComponentTemplate>( const UserObject& object );  ///< Allow private access for camp.
     friend class ClientObjectTemplate;	///< Only ClientObjectTemplate may construct component templates. 
 
     ClientComponentTemplate( const String& rName, Mode mode, NetworkingType networkingType, 
@@ -93,7 +91,7 @@ private:
 
     PermissionManager& mPermissionManager;
 
-    CAMP_RTTI()
+    CAMP_CLASS(ClientComponentTemplate)
 
 };
 

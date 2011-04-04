@@ -56,8 +56,6 @@ public:
     inline PermissionManager& getPermissionManager() const { return mPermissionManager; }
 
 private:
-    friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
-    friend void camp::detail::destroy<ClientObjectTemplate>( const UserObject& object );  ///< Allow private access for camp.
     friend class ClientObjectTemplateManager;	///< Only ClientObjectTemplateManager may create object templates. 
 
     ClientObjectTemplate( const String& rName, Mode mode, NetworkingType type,
@@ -94,6 +92,8 @@ private:
     void Deserialize( RakNet::DeserializeParameters* pDeserializeParameters );
 
     PermissionManager& mPermissionManager;
+
+    CAMP_CLASS(ClientObjectTemplate)
 
 };
 

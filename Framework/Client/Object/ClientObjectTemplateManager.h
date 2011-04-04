@@ -55,9 +55,6 @@ public:
     static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_OBJECTTEMPLATEMANAGER; }
 	
 private:
-    friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
-    friend void camp::detail::destroy<ClientObjectTemplateManager>( const UserObject& object );  ///< Allow private access for camp.
-
     ClientObjectTemplateManager( Mode mode, sigc::signal<void>& rUpdateSignal, 
         sigc::signal<void>& rLateUpdateSignal, ServerPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
@@ -74,7 +71,7 @@ private:
 
     PermissionManager&  mPermissionManager;
 
-    CAMP_RTTI()
+    CAMP_CLASS(ClientObjectTemplateManager)
 
 };
 

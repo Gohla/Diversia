@@ -59,7 +59,6 @@ public:
 
 private:
     friend class ClientObjectManager;	///< Only the ClientObjectManager class may construct objects. 
-    friend void camp::detail::destroy<ClientObject>( const UserObject& object );  ///< Allow private access for camp.
 
     ClientObject( const String& rName, Mode mode, NetworkingType type, const String& rDisplayName, 
         RakNet::RakNetGUID source, RakNet::RakNetGUID ownGUID, RakNet::RakNetGUID serverGUID, 
@@ -85,7 +84,8 @@ private:
 
     bool mSelected;
 
-    CAMP_RTTI()
+    CAMP_CLASS(ClientObject)
+
 };
 
 //------------------------------------------------------------------------------

@@ -57,15 +57,12 @@ public:
     }
 
 protected:
+    friend class ClientObject;
+
     ClientComponent( const String& rName, Mode mode, NetworkingType networkingType, 
         ComponentType type, RakNet::RakNetGUID source, bool localOverride, ClientObject& rObject );
     virtual ~ClientComponent();
 
-    void setNetworkingTypeImpl( NetworkingType type );
-    void querySetNetworkingTypeImpl( NetworkingType type );
-    void cleanupQuerySetNetworkingType( NetworkingType type );
-    void querySetProperty( const String& rQuery, camp::Value& rValue );
-    void queryInsertProperty( const String& rQuery, camp::Value& rValue );
     /**
     Notification when object is selected.
     **/
@@ -100,13 +97,15 @@ protected:
     ResourceList mResourceList;
 
 private:
-    friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
-    friend void camp::detail::destroy<ClientComponent>( const UserObject& object );  ///< Allow private access for camp.
-    friend class ClientObject;
+    void setNetworkingTypeImpl( NetworkingType type );
+    void querySetNetworkingTypeImpl( NetworkingType type );
+    void cleanupQuerySetNetworkingType( NetworkingType type );
+    void querySetProperty( const String& rQuery, camp::Value& rValue );
+    void queryInsertProperty( const String& rQuery, camp::Value& rValue );
 
     PermissionManager& mPermissionManager;
 
-    CAMP_RTTI()
+    CAMP_CLASS(ClientComponent)
 
 };
 

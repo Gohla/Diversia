@@ -91,7 +91,7 @@ private:
 
     PermissionManager&  mPermissionManager;
 
-    CAMP_RTTI()
+    CAMP_CLASS(ClientObjectManager)
 
 };
 
