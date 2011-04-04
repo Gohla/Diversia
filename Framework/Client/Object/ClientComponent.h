@@ -41,27 +41,7 @@ class DIVERSIA_CLIENT_API ClientComponent : public Component, public PropertySyn
 {
 public:
     /**
-    Constructor. 
-    
-    @param  rName           The name of the component. 
-    @param  mode            The mode (Client/Server) the component will run in. 
-    @param  networkingType  If the component should be a remote or local object. (Local means the
-                            component will not be propagated to the client/server) 
-    @param  type            Component type. 
-    @param  source          The source of this component. 
-    @param  localOverride   True to override component to local mode even if the object is a
-                            remote object. 
-    @param [in,out] rObject The object that created this component. 
-    **/
-    ClientComponent( const String& rName, Mode mode, NetworkingType networkingType, 
-        ComponentType type, RakNet::RakNetGUID source, bool localOverride, ClientObject& rObject );
-    /**
-    Destructor. 
-    **/
-    virtual ~ClientComponent();
-
-    /**
-    Gets the client object that owns this component.
+    Gets the object that owns this component.
     **/
     inline ClientObject& getClientObject() const
     {
@@ -77,27 +57,12 @@ public:
     }
 
 protected:
-    /**
-    Sets this component to local or remote mode.
+    ClientComponent( const String& rName, Mode mode, NetworkingType networkingType, 
+        ComponentType type, RakNet::RakNetGUID source, bool localOverride, ClientObject& rObject );
+    virtual ~ClientComponent();
 
-    @param  type    Local or remote.
-
-    @throws Exception   When not all components can be set to the given networking type.
-    **/
     void setNetworkingTypeImpl( NetworkingType type );
-    /**
-    Query if this component can be set to local or remote mode.
-
-    @param  type    Local or remote.
-
-    @throws Exception   When networking type cannot be set.
-    **/
     void querySetNetworkingTypeImpl( NetworkingType type );
-    /**
-    Cleanup the changes made by querySetNetworkingTypeImpl.
-
-    @param  type    Local or remote.
-    **/
     void cleanupQuerySetNetworkingType( NetworkingType type );
     void querySetProperty( const String& rQuery, camp::Value& rValue );
     void queryInsertProperty( const String& rQuery, camp::Value& rValue );
@@ -136,6 +101,7 @@ protected:
 
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
+    friend void camp::detail::destroy<ClientComponent>( const UserObject& object );  ///< Allow private access for camp.
     friend class ClientObject;
 
     PermissionManager& mPermissionManager;

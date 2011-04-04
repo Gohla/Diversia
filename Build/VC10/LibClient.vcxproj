@@ -110,6 +110,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Framework\Client\Object\ClientComponentTemplate.h" />
+    <ClInclude Include="..\..\Framework\Client\Object\ClientObjectTemplate.h" />
+    <ClInclude Include="..\..\Framework\Client\Object\ClientObjectTemplateManager.h" />
     <ClInclude Include="..\..\Framework\Client\Platform\Prerequisites.h" />
     <ClInclude Include="..\..\Framework\Client\Platform\StableHeaders.h" />
     <ClInclude Include="..\..\Framework\Client\Camp\CampBindings.h" />
@@ -136,6 +139,9 @@
     <ClInclude Include="..\..\Framework\Client\Undo\UndoStack.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Framework\Client\Object\src\ClientComponentTemplate.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Object\src\ClientObjectTemplate.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Object\src\ClientObjectTemplateManager.cpp" />
     <ClCompile Include="..\..\Framework\Client\Platform\src\StableHeaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>

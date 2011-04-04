@@ -219,7 +219,7 @@ ObjectTemplate& ObjectTemplate::createChildObjectTemplate( const String& rName )
 }
 
 ComponentTemplate& ObjectTemplate::createComponentTemplate( ComponentType type, const String& rName,
-    RakNet::RakNetGUID source /*= RakNet::RakNetGUID( 0 )*/ )
+    bool localOverride /*= false*/, RakNet::RakNetGUID source /*= RakNet::RakNetGUID( 0 )*/ )
 {
     if( !ObjectTemplate::hasComponentTemplate( rName ) && 
         ( !ObjectTemplate::hasComponentTemplate( type ) ||
@@ -228,15 +228,16 @@ ComponentTemplate& ObjectTemplate::createComponentTemplate( ComponentType type, 
         // Default to own GUID as source.
         if( source == RakNet::RakNetGUID( 0 ) ) source = mOwnGUID;
 
-        queryCreateComponentTemplate( type, source );
-        ComponentTemplate& componentTemplate = createComponentTemplateImpl( type, rName, source );
+        queryCreateComponentTemplate( type, localOverride, source );
+        ComponentTemplate* componentTemplate = createComponentTemplateImpl( type, rName, 
+            localOverride, source );
 
-        mComponentTemplatesByType.insert( std::make_pair( type, &componentTemplate ) );
-        mComponentTemplatesByName.insert( std::make_pair( rName, &componentTemplate ) );
+        mComponentTemplatesByType.insert( std::make_pair( type, componentTemplate ) );
+        mComponentTemplatesByName.insert( std::make_pair( rName, componentTemplate ) );
         mComponentTemplatesByHandle.insert( std::make_pair( ComponentHandle( type, rName ), 
-            &componentTemplate ) );
+            componentTemplate ) );
 
-        return componentTemplate;
+        return *componentTemplate;
     } 
     else 
     {

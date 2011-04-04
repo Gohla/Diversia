@@ -97,6 +97,15 @@
     <ClInclude Include="..\..\Framework\Client\Undo\ParentChangeCommand.h">
       <Filter>Undo</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Object\ClientObjectTemplateManager.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Object\ClientComponentTemplate.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Object\ClientObjectTemplate.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Framework\Client\Platform\src\StableHeaders.cpp">
@@ -158,6 +167,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Framework\Client\Undo\ParentChangeCommand.cpp">
       <Filter>Undo</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Object\src\ClientObjectTemplate.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Object\src\ClientObjectTemplateManager.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Object\src\ClientComponentTemplate.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

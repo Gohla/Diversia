@@ -27,11 +27,13 @@ THE SOFTWARE.
 #include "Object/Platform/StableHeaders.h"
 
 #include "Object/Camp/CampBindings.h"
-#include "Util/Camp/ValueMapper.h"
-
-#include "Object/ObjectManager.h"
-#include "Object/Object.h"
 #include "Object/Component.h"
+#include "Object/ComponentTemplate.h"
+#include "Object/Object.h"
+#include "Object/ObjectManager.h"
+#include "Object/ObjectTemplate.h"
+#include "Object/ObjectTemplateManager.h"
+#include "Util/Camp/ValueMapper.h"
 #include "Util/Math/Node.h"
 
 namespace Diversia
@@ -253,17 +255,35 @@ void CampBindings::bindComponentHandle()
 
 void CampBindings::bindObjectTemplate()
 {
-
+    camp::Class::declare<ObjectTemplate>( "ObjectTemplate" );
+	    // Constructors
+	    // Properties (read-only)
+	    // Properties (read/write)
+	    // Functions
+	    // Static functions
+	    // Operators
 }
 
 void CampBindings::bindObjectTemplateManager()
 {
-
+    camp::Class::declare<ObjectTemplateManager>( "ObjectTemplateManager" );
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        // Functions
+        // Static functions
+        // Operators
 }
 
 void CampBindings::bindComponentTemplate()
 {
-
+    camp::Class::declare<ComponentTemplate>( "ComponentTemplate" );
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        // Functions
+        // Static functions
+        // Operators
 }
 
 //------------------------------------------------------------------------------

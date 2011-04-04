@@ -23,18 +23,20 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "Client/Platform/StableHeaders.h"
 
 #include "Client/Camp/CampBindings.h"
-#include "Util/Camp/ValueMapper.h"
-
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
-#include "Client/Object/ClientObjectManager.h"
-#include "Client/Object/ClientObject.h"
-#include "Client/Object/ClientComponent.h"
 #include "Client/ClientServerPlugin/ServerPlugin.h"
-#include "Client/Permission/PermissionManager.h"
+#include "Client/ClientServerPlugin/ServerPluginManager.h"
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/ServerConnection.h"
 #include "Client/Communication/ServerNeighborsPlugin.h"
 #include "Client/Lua/LuaPlugin.h"
+#include "Client/Object/ClientComponent.h"
+#include "Client/Object/ClientComponentTemplate.h"
+#include "Client/Object/ClientObject.h"
+#include "Client/Object/ClientObjectManager.h"
+#include "Client/Object/ClientObjectTemplate.h"
+#include "Client/Object/ClientObjectTemplateManager.h"
+#include "Client/Permission/PermissionManager.h"
+#include "Util/Camp/ValueMapper.h"
 
 namespace Diversia
 {
@@ -187,6 +189,45 @@ void CampBindings::bindLuaPlugin()
             .tag( "NoBitStream" )
             .tag( "QtPopupMenu" )
             .tag( "QtIcon", ":/Icons/Icons/mimetypes/application-x-trash.png" );
+        // Static functions
+        // Operators
+}
+
+void CampBindings::bindClientComponentTemplate()
+{
+    camp::Class::declare<ClientComponentTemplate>( "ClientComponentTemplate" )
+        .base<ComponentTemplate>()
+        .base<PropertySynchronization>();
+	    // Constructors
+	    // Properties (read-only)
+	    // Properties (read/write)
+	    // Functions
+	    // Static functions
+	    // Operators
+}
+
+void CampBindings::bindClientObjectTemplateManager()
+{
+    camp::Class::declare<ClientObjectTemplateManager>( "ClientObjectTemplateManager" )
+        .base<ObjectTemplateManager>()
+        .base<ServerPlugin>();
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        // Functions
+        // Static functions
+        // Operators
+}
+
+void CampBindings::bindClientObjectTemplate()
+{
+    camp::Class::declare<ClientObjectTemplate>( "ClientObjectTemplate" )
+        .base<ObjectTemplate>()
+        .base<PropertySynchronization>();
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        // Functions
         // Static functions
         // Operators
 }

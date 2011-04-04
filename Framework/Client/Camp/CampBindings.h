@@ -46,6 +46,9 @@ public:
     static void bindServerConnectionSettings();
     static void bindServerNeighborsPlugin();
     static void bindLuaPlugin();
+    static void bindClientComponentTemplate();
+    static void bindClientObjectTemplateManager();
+    static void bindClientObjectTemplate();
 
 };
 

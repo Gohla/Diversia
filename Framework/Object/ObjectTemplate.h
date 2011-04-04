@@ -167,27 +167,31 @@ public:
     @param  type            The type of the component template to create.
     @param  rName           The name of the component template, must be unique within the object 
                             template.
+    @param  localOverride   True to override component template to local mode even if the 
+                            object template is set to remote.
     @param  source          Source of the construction request. Defaults to this system.
 
     @throw  Exception   When this object template already has a component template with the same 
                         name or type, or a client defined exception.
     **/
 	ComponentTemplate& createComponentTemplate( ComponentType type, const String& rName,
-        RakNet::RakNetGUID source = RakNet::RakNetGUID( 0 ) );
+        bool localOverride = false, RakNet::RakNetGUID source = RakNet::RakNetGUID( 0 ) );
     /**
     Creates a component template.
 
     @param  rName           The name of the component template, must be unique within the object 
                             template.
+    @param  localOverride   True to override component template to local mode even if the 
+                            object template is set to remote.
     @param  source          Source of the construction request. Defaults to this system.
 
     @throw  Exception   When this object template already has a component template with the same 
                         name or type, or a client defined exception.
     **/
     template <class T> ComponentTemplate& createComponentTemplate( const String& rName,
-        RakNet::RakNetGUID source = RakNet::RakNetGUID( 0 ) ) {
+        bool localOverride = false, RakNet::RakNetGUID source = RakNet::RakNetGUID( 0 ) ) {
         return static_cast<T&>( ObjectTemplate::createComponentTemplate( T::getTypeStatic(), 
-            rName ) );
+            rName, localOverride, source ) );
     }
     /**
     Creates a component template using a handle.
@@ -356,47 +360,56 @@ protected:
     virtual RakNet::RM3ConstructionState QueryConstruction(
         RakNet::Connection_RM3* pDestinationConnection,
         RakNet::ReplicaManager3* pReplicaManager3 ) = 0;
-    virtual bool QueryRemoteConstruction ( RakNet::Connection_RM3* pSourceConnection ) = 0;
+    virtual bool QueryRemoteConstruction( RakNet::Connection_RM3* pSourceConnection ) = 0;
+    virtual RakNet::RM3QuerySerializationResult QuerySerialization(
+        RakNet::Connection_RM3* pDestinationConnection ) = 0;
     virtual void SerializeConstruction( RakNet::BitStream* pConstructionBitstream,
         RakNet::Connection_RM3* pDestinationConnection ) = 0;
     virtual bool DeserializeConstruction( RakNet::BitStream* pConstructionBitstream,
         RakNet::Connection_RM3* pSourceConnection ) = 0;
-    inline void SerializeDestruction( RakNet::BitStream* pDestructionBitstream,
+    inline virtual void SerializeDestruction( RakNet::BitStream* pDestructionBitstream,
         RakNet::Connection_RM3* pDestinationConnection ) {}
-    virtual bool DeserializeDestruction( RakNet::BitStream* pDestructionBitstream,
-        RakNet::Connection_RM3* pSourceConnection ) = 0;
-    inline RakNet::RM3ActionOnPopConnection QueryActionOnPopConnection(
-        RakNet::Connection_RM3* pDroppedConnection ) const { return RakNet::RM3AOPC_DO_NOTHING; }
-    virtual RakNet::RM3QuerySerializationResult QuerySerialization(
-        RakNet::Connection_RM3* pDestinationConnection ) = 0;
+    inline virtual bool DeserializeDestruction( RakNet::BitStream* pDestructionBitstream,
+        RakNet::Connection_RM3* pSourceConnection ) { return true; }
     virtual RakNet::RM3SerializationResult Serialize(
         RakNet::SerializeParameters* pSerializeParameters ) = 0;
     virtual void Deserialize( RakNet::DeserializeParameters* pDeserializeParameters ) = 0;
 
     /**
+    Not used in ObjectTemplate.
+    **/
+    inline virtual RakNet::RM3ActionOnPopConnection QueryActionOnPopConnection(
+        RakNet::Connection_RM3* pDroppedConnection ) const { return RakNet::RM3AOPC_DO_NOTHING; }
+
+    /**
     Query if a component template may be created.
 
-    @param  type    The type of the component template.
-    @param  source  Source of the creation request, if it was made on the client or remotely 
-                    created by the server.
+    @param  type            The type of the component template.
+    @param  localOverride   True to override component template to local mode even if the 
+                            object template is set to remote.
+    @param  source          Source of the creation request, if it was made on the client or remotely 
+                            created by the server.
 
     @note   Override this in a parent class to stop creation of component templates. Throw an 
             exception if the template may not be created, the exception will be thrown back to the 
             caller of createComponentTemplate().
     **/
-    virtual void queryCreateComponentTemplate( ComponentType type, RakNet::RakNetGUID source ) = 0;
+    virtual void queryCreateComponentTemplate( ComponentType type, bool localOverride, 
+        RakNet::RakNetGUID source ) = 0;
     /**
-    Implementation for creating a component template
+    Implementation for creating a component template.
 
-    @param  type    The type of the component template.
-    @param  rName   The name of the component template.
-    @param  source  Source of the creation request, if it was made on the client or remotely 
-                    created by the server.
+    @param  type            The type of the component template.
+    @param  rName           The name of the component template.
+    @param  localOverride   True to override component template to local mode even if the 
+                            object template is set to remote.
+    @param  source          Source of the creation request, if it was made on the client or remotely 
+                            created by the server.
 
     @note   Override this in a parent class to create your own types of component templates.
     **/
-    virtual ComponentTemplate& createComponentTemplateImpl( ComponentType type, const String& rName, 
-        RakNet::RakNetGUID source ) = 0;
+    virtual ComponentTemplate* createComponentTemplateImpl( ComponentType type, const String& rName, 
+        bool localOverride, RakNet::RakNetGUID source ) = 0;
     /**
     Query if a component template may be destroyed.
 

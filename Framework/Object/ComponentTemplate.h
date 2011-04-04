@@ -74,11 +74,11 @@ public:
     /**
     Gets the type for this component template.
     **/
-    virtual ComponentType getType() const = 0;
+    inline ComponentType getType() const { return mType; }
     /**
     Gets the type name for this component template.
     **/
-    virtual String getTypeName() const = 0;
+    String getTypeName() const;
     /**
     Gets our own unique identifier.
     **/
@@ -208,10 +208,10 @@ protected:
         RakNet::Connection_RM3* pDestinationConnection ) = 0;
     virtual bool DeserializeConstruction( RakNet::BitStream* pConstructionBitstream,
         RakNet::Connection_RM3* pSourceConnection ) = 0;
-    virtual void SerializeDestruction( RakNet::BitStream* pDestructionBitstream,
-        RakNet::Connection_RM3* pDestinationConnection ) = 0;
-    virtual bool DeserializeDestruction( RakNet::BitStream* pDestructionBitstream,
-        RakNet::Connection_RM3* pSourceConnection ) = 0;
+    inline virtual void SerializeDestruction( RakNet::BitStream* pDestructionBitstream,
+        RakNet::Connection_RM3* pDestinationConnection ) {}
+    inline virtual bool DeserializeDestruction( RakNet::BitStream* pDestructionBitstream,
+        RakNet::Connection_RM3* pSourceConnection ) { return true; }
     virtual RakNet::RM3SerializationResult Serialize(
         RakNet::SerializeParameters* pSerializeParameters ) = 0;
     virtual void Deserialize( RakNet::DeserializeParameters* pDeserializeParameters ) = 0;

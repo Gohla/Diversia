@@ -85,9 +85,12 @@ class ServerConnection;
 class LuaPlugin;
 
 // Object
-class ClientObjectManager;
-class ClientObject;
 class ClientComponent;
+class ClientComponentTemplate;
+class ClientObject;
+class ClientObjectTemplate;
+class ClientObjectManager;
+class ClientObjectTemplateManager;
 
 // Permission
 class PermissionManager;

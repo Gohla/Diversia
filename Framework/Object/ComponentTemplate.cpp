@@ -70,6 +70,11 @@ ComponentTemplate::~ComponentTemplate()
     mDestructionSignal( *this );
 }
 
+String ComponentTemplate::getTypeName() const
+{
+    return mFactory.getTypeName();
+}
+
 void ComponentTemplate::setLocalOverride( bool localOverride )
 {
     if( mLocalOverride != localOverride )
