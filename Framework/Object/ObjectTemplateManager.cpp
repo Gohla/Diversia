@@ -67,17 +67,27 @@ ObjectTemplate& ObjectTemplateManager::createObjectTemplate( const String& rName
         // Set to local if in offline mode.
         if( mOfflineMode ) type = LOCAL;
 
-        ObjectTemplate& object = createObjectTemplateImpl( rName, type, 
+        ObjectTemplate& objectTemplate = createObjectTemplateImpl( rName, type, 
             rDisplayName.empty()? rName : rDisplayName, source );
-        mObjectTemplates.insert( std::make_pair( rName, &object ) );
-        mObjectTemplateSignal( object, true );
-        return object;
+        mObjectTemplates.insert( std::make_pair( rName, &objectTemplate ) );
+        mObjectTemplateSignal( objectTemplate, true );
+        return objectTemplate;
     }
     else
     {
         DIVERSIA_EXCEPT( Exception::ERR_DUPLICATE_ITEM, "Object template already exists.", 
             "ObjectTemplateManager::createObjectTemplate" );
     }
+}
+
+ObjectTemplate& ObjectTemplateManager::createObjectTemplate( const Object& rObject, 
+    NetworkingType type /*= LOCAL */ )
+{
+    ObjectTemplate& objectTemplate = ObjectTemplateManager::createObjectTemplate( rObject.getName(), 
+        type, rObject.getDisplayName().empty()? rObject.getName() : rObject.getDisplayName(), 
+        mOwnGUID );
+    objectTemplate.createComponentTemplates( rObject );
+    return objectTemplate;
 }
 
 ObjectTemplate& ObjectTemplateManager::getObjectTemplate( const String& rName ) const

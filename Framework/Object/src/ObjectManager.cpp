@@ -130,8 +130,8 @@ void ObjectManager::destroyObjectTree( Object& rObject,
     // Destroy all childs.
     if( !rObject.hasParent() || redirectToChilds )
     {
-        ObjectChildrens childs = rObject.getChildrenObjects();
-        for( ObjectChildrens::iterator i = childs.begin(); i != childs.end(); ++i )
+        ObjectChilds childs = rObject.getChildObjects();
+        for( ObjectChilds::iterator i = childs.begin(); i != childs.end(); ++i )
         {
             // Set redirectToChilds to true so that the call is forwarded to all childs.
             ObjectManager::destroyWholeObjectTree( *i->second, source, true );
@@ -155,8 +155,8 @@ void ObjectManager::destroyWholeObjectTree( Object& rObject,
     // Destroy all childs.
     if( !rObject.hasParent() || redirectToChilds )
     {
-        ObjectChildrens childs = rObject.getChildrenObjects();
-        for( ObjectChildrens::iterator i = childs.begin(); i != childs.end(); ++i )
+        ObjectChilds childs = rObject.getChildObjects();
+        for( ObjectChilds::iterator i = childs.begin(); i != childs.end(); ++i )
         {
             // Set redirectToChilds to true so that the call is forwarded to all childs.
             ObjectManager::destroyWholeObjectTree( *i->second, source, true );

@@ -154,8 +154,8 @@ void Object::setNetworkingType( NetworkingType type, bool redirectToChilds /*=fa
         // type for all childs.
         if( !Node::hasParent() || redirectToChilds )
         {
-            ObjectChildrens childrens = Object::getChildrenObjects();
-            for( ObjectChildrens::iterator i = childrens.begin(); i != childrens.end(); ++i )
+            ObjectChilds childs = Object::getChildObjects();
+            for( ObjectChilds::iterator i = childs.begin(); i != childs.end(); ++i )
             {
                 // Set redirectToChilds to true so that the networking type will be set across the
                 // whole tree of objects.
@@ -208,8 +208,8 @@ void Object::querySetNetworkingType( NetworkingType type, bool redirectToChilds 
         // type can be changed for all childs.
         if( !Node::hasParent() || redirectToChilds )
         {
-            ObjectChildrens childrens = Object::getChildrenObjects();
-            for( ObjectChildrens::iterator j = childrens.begin(); j != childrens.end(); ++j )
+            ObjectChilds childs = Object::getChildObjects();
+            for( ObjectChilds::iterator j = childs.begin(); j != childs.end(); ++j )
             {
                 // Set redirectToChilds to true so that the networking type will be set across the
                 // whole tree of objects.

@@ -24,6 +24,7 @@ THE SOFTWARE.
 
 #include "Object/Platform/StableHeaders.h"
 
+#include "Object/Component.h"
 #include "Object/ComponentFactory.h"
 #include "Object/ComponentFactoryManager.h"
 #include "Object/ComponentTemplate.h"
@@ -144,6 +145,24 @@ void ComponentTemplate::destroyComponentTemplateLocally()
     catch ( Exception e )
     {
         DivAssert( 0, e.what() );
+    }
+}
+
+void ComponentTemplate::setTemplateProperty( const String& rPropertyName, 
+    const camp::Value& rValue )
+{
+    // TODO: Set template properties.
+}
+
+void ComponentTemplate::setTemplateProperties( const Component& rComponent )
+{
+    camp::UserObject userObject = rComponent;
+    const camp::Class& metaclass = userObject.getClass();
+    std::size_t count = metaclass.propertyCount( true );
+    for( std::size_t i = 0; i < count; ++i )
+    {
+        const camp::Property& prop = metaclass.property( i, true );
+        ComponentTemplate::setTemplateProperty( prop.name(), prop.get( userObject ) );
     }
 }
 

@@ -125,6 +125,21 @@ public:
     Gets the network unique identifier as a string.
     **/
     inline String getGUIDString() { return boost::lexical_cast<String>( GetNetworkID() ); }
+
+    /**
+    Sets a template property. 
+    
+    @param  rPropertyName   Name of the property. 
+    @param  rValue          The value to set the property to.
+    **/
+    void setTemplateProperty( const String& rPropertyName, const camp::Value& rValue );
+    /**
+    Sets template properties using properties from given component.
+    
+    @param  rComponent  The component. 
+    **/
+    void setTemplateProperties( const Component& rComponent );
+
     /**
     Convenience function for destroying this component template.
     **/

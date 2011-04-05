@@ -26,6 +26,7 @@ THE SOFTWARE.
 
 #include "Object/Platform/StableHeaders.h"
 
+#include "Object/Component.h"
 #include "Object/ComponentFactory.h"
 #include "Object/ComponentFactoryManager.h"
 #include "Object/ComponentTemplate.h"
@@ -244,6 +245,31 @@ ComponentTemplate& ObjectTemplate::createComponentTemplate( ComponentType type, 
         DIVERSIA_EXCEPT( Exception::ERR_DUPLICATE_ITEM,
             "Component template of this type already exists in this object template.", 
             "ObjectTemplate::createComponentTemplate" );
+    }
+}
+
+ComponentTemplate& ObjectTemplate::createComponentTemplate( const Component& rComponent )
+{
+    ComponentTemplate& componentTemplate = ObjectTemplate::createComponentTemplate( 
+        rComponent.getType(), rComponent.getName(), rComponent.getLocalOverride(), mOwnGUID );
+    componentTemplate.setTemplateProperties( rComponent );
+    return componentTemplate;
+}
+
+void ObjectTemplate::createComponentTemplates( const Object& rObject )
+{
+    // Recursively go trough all child objects.
+    ObjectChilds childs = rObject.getChildObjects();
+    for( ObjectChilds::iterator i = childs.begin(); i != childs.end(); ++i )
+    {
+        ObjectTemplate::createChildObjectTemplate( i->first ).createComponentTemplates( *i->second );
+    }
+
+    // Create all components in object as component templates.
+    const ComponentsByName& components = rObject.getComponentsByName();
+    for( ComponentsByName::const_iterator i = components.begin(); i != components.end(); ++i )
+    {
+        ObjectTemplate::createComponentTemplate( *i->second );
     }
 }
 

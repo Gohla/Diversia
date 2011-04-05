@@ -205,6 +205,21 @@ public:
         return ObjectTemplate::createComponentTemplate( rHandle.mType, rHandle.mName );
     }
     /**
+    Creates a component template using from a component.
+
+    @param  rHandle     Component to create a component template for.
+
+    @throw  Exception   When this object template already has a component template with the same 
+                        name or type, or a client defined exception.
+    **/
+    ComponentTemplate& createComponentTemplate( const Component& rComponent );
+    /**
+    Creates component templates for all components that are in given object.
+    
+    @param  rObject The object to get components from.
+    **/
+    void createComponentTemplates( const Object& rObject );
+    /**
     Gets a component template using a component type. This will only return the first found 
     component template if are allowed for the given type, use ObjectTemplate::getComponentTemplates 
     to get all templates.

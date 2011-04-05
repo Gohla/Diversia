@@ -78,6 +78,19 @@ public:
     ObjectTemplate& createObjectTemplate( const String& rName, NetworkingType type = LOCAL,
         const String& rDisplayName = "", RakNet::RakNetGUID source = RakNet::RakNetGUID( 0 ) );
     /**
+    Creates an object template from an existing object. This will also create component templates
+    inside the created object template.
+
+    @param  rObject     The object to create a template from.
+    @param  type        The (local/remote) type of the object template, defaults to local.
+
+    @throw  Exception   When an object template with that name already exists, or a client defined 
+                        exception.
+
+    @return The created object template.
+    **/
+    ObjectTemplate& createObjectTemplate( const Object& rObject, NetworkingType type = LOCAL );
+    /**
     Gets an object template by name.
 
     @param  rName   The name of the object template.

@@ -36,7 +36,7 @@ namespace ObjectSystem
 {
 //------------------------------------------------------------------------------
 
-typedef DiversiaHashMap<String, Object*> ObjectChildrens;
+typedef DiversiaHashMap<String, Object*> ObjectChilds;
 typedef std::multimap<ComponentType, Component*> ComponentsByType;
 typedef std::map<String, Component*> ComponentsByName;
 
@@ -426,15 +426,15 @@ public:
     /**
     Gets a copy of the childs map.
     **/
-    inline ObjectChildrens getChildrenObjects() const
+    inline ObjectChilds getChildObjects() const
     {
-        ChildNodeMap children = Node::getChildren();
-        ObjectChildrens objectChildren;
-        for( ChildNodeMap::iterator i = children.begin(); i != children.end(); ++i )
+        ChildNodeMap childs = Node::getChildren();
+        ObjectChilds objectChilds;
+        for( ChildNodeMap::iterator i = childs.begin(); i != childs.end(); ++i )
         {
-            objectChildren.insert( std::make_pair( i->first, static_cast<Object*>( i->second ) ) );
+            objectChilds.insert( std::make_pair( i->first, static_cast<Object*>( i->second ) ) );
         }
-        return objectChildren;
+        return objectChilds;
     }
     /**
     Sets the parent object for this object using a pointer to the parent object.
