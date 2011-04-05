@@ -247,6 +247,36 @@ ComponentTemplate& ObjectTemplate::createComponentTemplate( ComponentType type, 
     }
 }
 
+ComponentTemplate& ObjectTemplate::getComponentTemplate( ComponentType type ) const
+{
+    ComponentTemplatesByType::const_iterator i = mComponentTemplatesByType.find( type );
+    if( i != mComponentTemplatesByType.end() )
+    {
+        return *i->second;
+    }
+    else
+    {
+        DIVERSIA_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, 
+            "Component template not found in this object template.",
+            "ObjectTemplate::getComponentTemplate" );
+    }
+}
+
+ComponentTemplate& ObjectTemplate::getComponentTemplate( const String& rName ) const 
+{
+    ComponentTemplatesByName::const_iterator i = mComponentTemplatesByName.find( rName );
+    if( i != mComponentTemplatesByName.end() )
+    {
+        return *i->second;
+    }
+    else
+    {
+        DIVERSIA_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, 
+            "Component template not found in this object template.",
+            "ObjectTemplate::getComponentTemplate" );
+    }
+}
+
 bool ObjectTemplate::hasComponentTemplate( ComponentType type ) const
 {
     return mComponentTemplatesByType.find( type ) != mComponentTemplatesByType.end();

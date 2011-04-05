@@ -205,6 +205,73 @@ public:
         return ObjectTemplate::createComponentTemplate( rHandle.mType, rHandle.mName );
     }
     /**
+    Gets a component template using a component type. This will only return the first found 
+    component template if are allowed for the given type, use ObjectTemplate::getComponentTemplates 
+    to get all templates.
+
+    @param  type    The type of the component.
+
+    @throw  Exception   When the component cannot be found in this object.
+    **/
+    ComponentTemplate& getComponentTemplate( ComponentType type ) const;
+    /**
+    Gets a component template using a component C++ type. This will only return the first found 
+    component template if are allowed for the given type, use ObjectTemplate::getComponentTemplates 
+    to get all templates.
+
+    @throw  Exception   When the component cannot be found in this object.
+    **/
+    template<class T> inline T& getComponentTemplate() const
+    {
+        return static_cast<T&>( ObjectTemplate::getComponentTemplate( T::getTypeStatic() ) );
+    }
+    /**
+    Gets a component template by name.
+
+    @param  rName   The name of the component.
+
+    @throw  Exception   When the component cannot be found in this object.
+    **/
+    ComponentTemplate& getComponentTemplate( const String& rName ) const;
+    /**
+    Gets a component template by name and cast it to the correct type.
+
+    @param  rName   The name of the component.
+
+    @throw  Exception   When the component cannot be found in this object.
+    **/
+    template<class T> inline T& getComponentCast( const String& rName ) const
+    {
+        return static_cast<T&>( ObjectTemplate::getComponent( rName ) );
+    }
+    /**
+    Gets multiple components using the component's C++ type as template parameter.
+
+    @return A beginning and end iterator to go through the found components.
+    **/
+    template<class T> inline std::pair<ComponentTemplatesByType::iterator, ComponentTemplatesByType::iterator>
+        getComponentTemplates()
+    {
+        return mComponentTemplatesByType.equal_range( T::getTypeStatic() );
+    }
+    /**
+    Gets multiple component templates using a component type
+
+    @param  type    The type of the component.
+
+    @return A beginning and end iterator to go through the found component templates.
+    **/
+    inline std::pair<ComponentTemplatesByType::iterator, ComponentTemplatesByType::iterator> getComponentTemplates(
+        ComponentType type ) { return mComponentTemplatesByType.equal_range( type ); }
+    /**
+    Gets the component templates by type map.
+    **/
+    inline const ComponentTemplatesByType& getComponentTemplatesByType() const { return mComponentTemplatesByType; }
+    /**
+    Gets the component templates by name map.
+    **/
+    inline const ComponentTemplatesByName& getComponentTemplatesByName() const { return mComponentTemplatesByName; }
+    /**
     Query if this object template has a component template using the component's type.
 
     @param  type    The type of the component.

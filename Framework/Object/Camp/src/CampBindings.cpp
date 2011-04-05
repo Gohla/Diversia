@@ -255,33 +255,164 @@ void CampBindings::bindComponentHandle()
 
 void CampBindings::bindObjectTemplate()
 {
-    camp::Class::declare<ObjectTemplate>( "ObjectTemplate" );
-	    // Constructors
-	    // Properties (read-only)
-	    // Properties (read/write)
-	    // Functions
-	    // Static functions
-	    // Operators
+    camp::Class::declare<ObjectTemplate>( "ObjectTemplate" )
+        .tag( "QtIcon", ":/Icons/Icons/mimetypes/gnome-package.png" )
+        .base<Node>()
+        // Constructors
+        // Member variables
+        // Static member variables
+        // Properties (read-only)
+        .property( "Name", &ObjectTemplate::getName )
+            .tag( "NoBitStream" )
+            .tag( "NoSerialization" )
+        .property( "ObjectTemplateManager", &ObjectTemplate::getObjectTemplateManager )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "Mode", &ObjectTemplate::getMode )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "Source", &ObjectTemplate::getSource )
+            .tag( "NoBitStream" )
+            .tag( "NoSerialization" )
+        .property( "SourceGUID", &ObjectTemplate::getSourceGUID )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+            .tag( "NoSerialization" )
+        .property( "OwnGUID", &ObjectTemplate::getOwnGUID )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "ServerGUID", &ObjectTemplate::getServerGUID )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "IsCreatedByOwnGUID", &ObjectTemplate::isCreatedByOwnGUID )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "IsCreatedByServer", &ObjectTemplate::isCreatedByServer )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        // Properties (read/write)
+        .property( "DisplayName", &ObjectTemplate::getDisplayName, &ObjectTemplate::setDisplayName )
+            .tag( "NoBitStream" )
+        .property( "NetworkingType", &ObjectTemplate::getNetworkingType, boost::bind( &ObjectTemplate::setNetworkingType, _1, _2, false ) )
+            .tag( "NoBitStream" )
+        .property( "ParentName", &ObjectTemplate::getParentName, (void(ObjectTemplate::*)(const String&))&ObjectTemplate::parent )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "ComponentTemplates", &ObjectTemplate::mComponentTemplatesByHandle )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+            .tag( "AddFunction", "CreateComponentTemplateByHandle" )
+        // Functions
+        .function( "IsCreatedBy", &ObjectTemplate::isCreatedBy )
+        .function( "IsCreatedBySource", &ObjectTemplate::isCreatedBySource )
+        .function( "CreateChildObjectTemplate", &ObjectTemplate::createChildObjectTemplate )
+        .function( "CreateComponentTemplate", boost::function<ComponentTemplate&(ObjectTemplate&, ComponentType, const String&, bool)>( boost::bind( &ObjectTemplate::createComponentTemplate, _1, _2, _3, _4, RakNet::RakNetGUID( 0 ) ) ) )
+        .function( "CreateComponentTemplateByHandle", (ComponentTemplate&(ObjectTemplate::*)(const ComponentHandle&))&ObjectTemplate::createComponentTemplate )
+        .function( "GetComponentTemplate", (ComponentTemplate&(ObjectTemplate::*)(const String&) const)&ObjectTemplate::getComponentTemplate )
+        .function( "HasComponentTemplate", (bool(ObjectTemplate::*)(const String&) const)&ObjectTemplate::hasComponentTemplate )
+        .function( "DestroyComponentTemplate", boost::function<void(ObjectTemplate&, const String&)>( boost::bind( (void(ObjectTemplate::*)(const String&, RakNet::RakNetGUID))&ObjectTemplate::destroyComponentTemplate, _1, _2, RakNet::RakNetGUID( 0 ) ) ) )
+        .function( "Destroy", &ObjectTemplate::destroyObjectTemplate );
+        // Static functions
+        // Operators
 }
 
 void CampBindings::bindObjectTemplateManager()
 {
-    camp::Class::declare<ObjectTemplateManager>( "ObjectTemplateManager" );
+    camp::Class::declare<ObjectTemplateManager>( "ObjectTemplateManager" )
+        .tag( "QtIcon", ":/Icons/Icons/mimetypes/gnome-package.png" )
         // Constructors
         // Properties (read-only)
+        .property( "Mode", &ObjectTemplateManager::getMode )
+            .tag( "NoPropertyBrowser" )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+        .property( "OwnGUID", &ObjectTemplateManager::getOwnGUID )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "ServerGUID", &ObjectTemplateManager::getServerGUID )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
         // Properties (read/write)
+        .property( "ObjectTemplates", &ObjectTemplateManager::mObjectTemplates )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+            .tag( "AddFunction", "CreateLocalObjectTemplate" )
         // Functions
+        .function( "CreateLocalObjectTemplate", boost::function<ObjectTemplate&(ObjectTemplateManager&, const String&)>( boost::bind( &ObjectTemplateManager::createObjectTemplate, _1, _2, LOCAL, "", RakNet::RakNetGUID( 0 ) ) ) )
+        .function( "CreateRemoteObjectTemplate", boost::function<ObjectTemplate&(ObjectTemplateManager&, const String&)>( boost::bind( &ObjectTemplateManager::createObjectTemplate, _1, _2, REMOTE, "", RakNet::RakNetGUID( 0 ) ) ) )
+        .function( "CreateObjectTemplate", boost::function<ObjectTemplate&(ObjectTemplateManager&, const String&, NetworkingType)>( boost::bind( &ObjectTemplateManager::createObjectTemplate, _1, _2, _3, "", RakNet::RakNetGUID( 0 ) ) ) )
+        .function( "GetObjectTemplate", &ObjectTemplateManager::getObjectTemplate )
+        .function( "HasObjectTemplate", &ObjectTemplateManager::hasObjectTemplate )
+        .function( "DestroyObjectTemplate", boost::function<void (ObjectTemplateManager&, const String&)>( boost::bind( (void(ObjectTemplateManager::*)(const String&, RakNet::RakNetGUID))&ObjectTemplateManager::destroyObjectTemplate, _1, _2, RakNet::RakNetGUID( 0 ) ) ) )
+        .function( "DestroyObjectTemplateTree", boost::function<void (ObjectTemplateManager&, const String&)>( boost::bind( (void(ObjectTemplateManager::*)(const String&, RakNet::RakNetGUID, bool))&ObjectTemplateManager::destroyObjectTemplateTree, _1, _2, RakNet::RakNetGUID( 0 ), false ) ) )
+        .function( "DestroyWholeObjectTemplateTree", boost::function<void (ObjectTemplateManager&, const String&)>( boost::bind( (void(ObjectTemplateManager::*)(const String&, RakNet::RakNetGUID, bool))&ObjectTemplateManager::destroyWholeObjectTemplateTree, _1, _2, RakNet::RakNetGUID( 0 ), false ) ) );
         // Static functions
         // Operators
 }
 
 void CampBindings::bindComponentTemplate()
 {
-    camp::Class::declare<ComponentTemplate>( "ComponentTemplate" );
+    camp::Class::declare<ComponentTemplate>( "ComponentTemplate" )
         // Constructors
+        // Member variables
+        // Static member variables
         // Properties (read-only)
+        .property( "Type", &ComponentTemplate::getType )
+            .tag( "NoBitStream" )
+            .tag( "NoSerialization" )
+        .property( "TypeName", &ComponentTemplate::getTypeName )
+            .tag( "NoBitStream" )
+            .tag( "NoSerialization" )
+        .property( "ObjectTemplate", &ComponentTemplate::getObjectTemplate )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "Mode", &ComponentTemplate::getMode )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "NetworkingType", &ComponentTemplate::getNetworkingType )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "Source", &ComponentTemplate::getSource )
+            .tag( "NoBitStream" )
+            .tag( "NoSerialization" )
+        .property( "SourceGUID", &ComponentTemplate::getSourceGUID )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "OwnGUID", &ComponentTemplate::getOwnGUID )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "ServerGUID", &ComponentTemplate::getServerGUID )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "IsCreatedByOwnGUID", &ComponentTemplate::isCreatedByOwnGUID )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "IsCreatedByServer", &ComponentTemplate::isCreatedByServer )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
         // Properties (read/write)
+        .property( "LocalOverride", &ComponentTemplate::getLocalOverride, &ComponentTemplate::setLocalOverride )
+            .tag( "NoBitStream" )
         // Functions
+        .function( "IsCreatedBy", &ComponentTemplate::isCreatedBy )
+        .function( "IsCreatedBySource", &ComponentTemplate::isCreatedBySource )
+        .function( "Destroy", &ComponentTemplate::destroyComponentTemplate );
         // Static functions
         // Operators
 }
