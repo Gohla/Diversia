@@ -274,6 +274,30 @@
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_UndoListView.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Model\ObjectComponentTemplateModel.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_ObjectComponentTemplateModel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_ObjectComponentTemplateModel.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ObjectComponentTemplateModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\UI\ObjectTemplateTreeView.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_ObjectTemplateTreeView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_ObjectTemplateTreeView.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ObjectTemplateTreeView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\QtOgreEditor\qt\Icon.ico">
@@ -339,6 +363,12 @@
       <Filter>Model</Filter>
     </CustomBuild>
     <CustomBuild Include="..\..\QtOgreEditor\source\UI\UndoListView.h">
+      <Filter>UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\Model\ObjectComponentTemplateModel.h">
+      <Filter>Model</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\UI\ObjectTemplateTreeView.h">
       <Filter>UI</Filter>
     </CustomBuild>
   </ItemGroup>

@@ -31,6 +31,7 @@ THE SOFTWARE.
 
 #include "Client/ClientServerPlugin/ServerPlugin.h"
 #include "Object/ObjectTemplateManager.h"
+#include "Shared/ClientServerPlugin/Factories/TemplatePluginFactory.h"
 
 namespace Diversia
 {
@@ -42,7 +43,6 @@ class DIVERSIA_CLIENT_API ClientObjectTemplateManager : public ObjectTemplateMan
     public ServerPlugin
 {
 public:
-
     /**
     Gets the plugin type.
     **/
@@ -55,8 +55,9 @@ public:
     static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_OBJECTTEMPLATEMANAGER; }
 	
 private:
-    ClientObjectTemplateManager( Mode mode, sigc::signal<void>& rUpdateSignal, 
-        sigc::signal<void>& rLateUpdateSignal, ServerPluginManager& rPluginManager, 
+    friend class TemplatePluginFactory<ClientObjectTemplateManager, ServerPluginManager>;
+
+    ClientObjectTemplateManager( Mode mode, ServerPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     virtual ~ClientObjectTemplateManager();

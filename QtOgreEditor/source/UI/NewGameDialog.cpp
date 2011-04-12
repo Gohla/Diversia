@@ -12,6 +12,7 @@ This file is part of Diversia.
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/ServerAbstract.h"
 #include "Client/Object/ClientObjectManager.h"
+#include "Client/Object/ClientObjectTemplateManager.h"
 #include "Client/Permission/PermissionManager.h"
 #include "OgreClient/Resource/ResourceManager.h"
 #include "State/LoadingState.h"
@@ -41,6 +42,7 @@ void NewGameDialog::accept()
     EditorGlobals::mGrid->createOfflineServer();
     ServerPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
     pluginManager.createPlugin<PermissionManager>();
+    pluginManager.createPlugin<ClientObjectTemplateManager>();
     pluginManager.createPlugin<ClientObjectManager>();
     ResourceManager& resourceManager = pluginManager.createPlugin<ResourceManager>();
     resourceManager.set( "ResourceLocation", mUI.editResourceLocation->text() );

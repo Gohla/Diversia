@@ -222,6 +222,86 @@
     </layout>
    </widget>
   </widget>
+  <widget class="QDockWidget" name="objectTemplatesDock">
+   <property name="sizePolicy">
+    <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
+     <horstretch>1</horstretch>
+     <verstretch>3</verstretch>
+    </sizepolicy>
+   </property>
+   <property name="maximumSize">
+    <size>
+     <width>440</width>
+     <height>524287</height>
+    </size>
+   </property>
+   <property name="features">
+    <set>QDockWidget::AllDockWidgetFeatures</set>
+   </property>
+   <property name="allowedAreas">
+    <set>Qt::LeftDockWidgetArea|Qt::RightDockWidgetArea</set>
+   </property>
+   <property name="windowTitle">
+    <string>Object templates</string>
+   </property>
+   <attribute name="dockWidgetArea">
+    <number>1</number>
+   </attribute>
+   <widget class="QWidget" name="objectTemplatesDockWidgetContents">
+    <layout class="QGridLayout" name="gridLayout">
+     <property name="margin">
+      <number>0</number>
+     </property>
+     <property name="spacing">
+      <number>1</number>
+     </property>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="editObjectTemplateSearch">
+       <property name="placeholderText">
+        <string>Search</string>
+       </property>
+      </widget>
+     </item>
+     <item row="2" column="0">
+      <widget class="Diversia::QtOgreEditor::ObjectTemplateTreeView" name="treeViewObjectTemplates">
+       <property name="maximumSize">
+        <size>
+         <width>440</width>
+         <height>16777215</height>
+        </size>
+       </property>
+      </widget>
+     </item>
+     <item row="0" column="0">
+      <widget class="QToolBar" name="toolBarObjectTemplate">
+       <property name="font">
+        <font>
+         <pointsize>7</pointsize>
+        </font>
+       </property>
+       <property name="windowTitle">
+        <string>Object toolbar</string>
+       </property>
+       <property name="movable">
+        <bool>false</bool>
+       </property>
+       <property name="iconSize">
+        <size>
+         <width>16</width>
+         <height>16</height>
+        </size>
+       </property>
+       <property name="toolButtonStyle">
+        <enum>Qt::ToolButtonFollowStyle</enum>
+       </property>
+       <property name="floatable">
+        <bool>false</bool>
+       </property>
+      </widget>
+     </item>
+    </layout>
+   </widget>
+  </widget>
   <widget class="QDockWidget" name="propertyBrowserDock">
    <property name="sizePolicy">
     <sizepolicy hsizetype="Minimum" vsizetype="Minimum">
@@ -866,6 +946,11 @@
     <slot>showContextMenu(QPoint)</slot>
     <slot>destroySelected()</slot>
    </slots>
+  </customwidget>
+  <customwidget>
+   <class>Diversia::QtOgreEditor::ObjectTemplateTreeView</class>
+   <extends>QTreeView</extends>
+   <header>UI/ObjectTemplateTreeView.h</header>
   </customwidget>
   <customwidget>
    <class>Diversia::QtOgreEditor::PluginTreeView</class>

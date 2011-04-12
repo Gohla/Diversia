@@ -391,7 +391,8 @@ public:
 
     @return Connection object to block or disconnect the connection.
     **/
-    inline sigc::connection connectComponentChange( const sigc::slot<void, ComponentTemplate&, bool>& rSlot )
+    inline sigc::connection connectComponentTemplateChange( 
+        const sigc::slot<void, ComponentTemplate&, bool>& rSlot )
     {
         return mComponentTemplateSignal.connect( rSlot );
     }

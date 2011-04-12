@@ -39,7 +39,6 @@ namespace Client
 //------------------------------------------------------------------------------
 
 ClientObjectTemplateManager::ClientObjectTemplateManager( Mode mode, 
-    sigc::signal<void>& rUpdateSignal, sigc::signal<void>& rLateUpdateSignal, 
     ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     ObjectTemplateManager( mode, rRakPeer.GetMyGUID(), rRakPeer.GetGUIDFromIndex( 0 ), rReplicaManager, 

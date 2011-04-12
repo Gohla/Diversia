@@ -12,6 +12,7 @@ This file is part of Diversia.
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/ServerAbstract.h"
 #include "Client/Object/ClientObjectManager.h"
+#include "Client/Object/ClientObjectTemplateManager.h"
 #include "Client/Permission/PermissionManager.h"
 #include "Client/Undo/UndoStack.h"
 #include "GameMode/EditorGameMode.h"
@@ -43,6 +44,8 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     // Dock icons
     mUI.objectsDock->setStyle( new IconDockStyle( 
         QIcon( ":/Icons/Icons/mimetypes/gnome-package.png" ), mUI.objectsDock->style() ) );
+    mUI.objectTemplatesDock->setStyle( new IconDockStyle( 
+        QIcon( ":/Icons/Icons/mimetypes/gnome-package.png" ), mUI.objectsDock->style() ) );
     mUI.pluginsDock->setStyle( new IconDockStyle( 
         QIcon( ":/Icons/Icons/status/nm-device-wired.png"), mUI.pluginsDock->style() ) );
     mUI.propertyBrowserDock->setStyle( new IconDockStyle( 
@@ -52,6 +55,8 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     // View action icons
     mUI.objectsDock->toggleViewAction()->setIcon( 
         QIcon( ":/Icons/Icons/mimetypes/gnome-package.png" ) );
+    mUI.objectTemplatesDock->toggleViewAction()->setIcon( 
+        QIcon( ":/Icons/Icons/mimetypes/gnome-package.png" ) );
     mUI.pluginsDock->toggleViewAction()->setIcon( 
         QIcon( ":/Icons/Icons/status/nm-device-wired.png" ) );
     mUI.propertyBrowserDock->toggleViewAction()->setIcon( 
@@ -60,6 +65,7 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
         QIcon( ":/Icons/Icons/apps/utilities-terminal.png" ) );
     // View menu actions
     mUI.menuView->addAction( mUI.objectsDock->toggleViewAction() );
+    mUI.menuView->addAction( mUI.objectTemplatesDock->toggleViewAction() );
     mUI.menuView->addAction( mUI.pluginsDock->toggleViewAction() );
     mUI.menuView->addAction( mUI.propertyBrowserDock->toggleViewAction() );
     mUI.menuView->addAction( mUI.consoleDock->toggleViewAction() );
@@ -242,6 +248,7 @@ void MainWindow::load()
         EditorGlobals::mState->pushState( new LoadingState() );
         ServerPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
         pluginManager.createPlugin<PermissionManager>();
+        pluginManager.createPlugin<ClientObjectTemplateManager>();
         pluginManager.createPlugin<ClientObjectManager>();
 
         try
