@@ -74,6 +74,7 @@ private slots:
     void createChildObject();
     void createComponent( int componentType );
     void componentAction( QObject* pObject );
+    void createTemplate();
     void destroyObject();
     void destroyComponent();
     void destroySelected();
@@ -91,8 +92,9 @@ private:
     void clearActions();
     void clear();
 
-    ClientObjectManager*    mObjectManager;
-    ObjectComponentModel*   mModel;
+    ClientObjectManager*            mObjectManager;
+    ClientObjectTemplateManager*    mObjectTemplateManager;
+    ObjectComponentModel*           mModel;
 
     QMenu*                                      mComponentMenu;
     QAction*                                    mComponentMenuAction;

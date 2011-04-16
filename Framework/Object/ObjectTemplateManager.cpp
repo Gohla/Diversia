@@ -81,9 +81,9 @@ ObjectTemplate& ObjectTemplateManager::createObjectTemplate( const String& rName
 }
 
 ObjectTemplate& ObjectTemplateManager::createObjectTemplate( const Object& rObject, 
-    NetworkingType type /*= LOCAL */ )
+    const String& rName, NetworkingType type /*= LOCAL */ )
 {
-    ObjectTemplate& objectTemplate = ObjectTemplateManager::createObjectTemplate( rObject.getName(), 
+    ObjectTemplate& objectTemplate = ObjectTemplateManager::createObjectTemplate( rName, 
         type, rObject.getDisplayName().empty()? rObject.getName() : rObject.getDisplayName(), 
         mOwnGUID );
     objectTemplate.createComponentTemplates( rObject );
@@ -166,6 +166,12 @@ void ObjectTemplateManager::destroyWholeObjectTemplateTree( ObjectTemplate& rObj
             ObjectTemplateManager::destroyWholeObjectTemplateTree( *i->second, source, true );
         }
     }
+}
+
+String ObjectTemplateManager::generateName()
+{
+    static unsigned int counter = 0;
+    return String( "ObjectTemplate" ) + boost::lexical_cast<String>( counter++ );
 }
 
 void ObjectTemplateManager::offlineModeChanged( bool offlineMode )

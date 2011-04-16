@@ -45,7 +45,7 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     mUI.objectsDock->setStyle( new IconDockStyle( 
         QIcon( ":/Icons/Icons/mimetypes/gnome-package.png" ), mUI.objectsDock->style() ) );
     mUI.objectTemplatesDock->setStyle( new IconDockStyle( 
-        QIcon( ":/Icons/Icons/mimetypes/gnome-package.png" ), mUI.objectsDock->style() ) );
+        QIcon( ":/Icons/Icons/mimetypes/gnome-package.png" ), mUI.objectTemplatesDock->style() ) );
     mUI.pluginsDock->setStyle( new IconDockStyle( 
         QIcon( ":/Icons/Icons/status/nm-device-wired.png"), mUI.pluginsDock->style() ) );
     mUI.propertyBrowserDock->setStyle( new IconDockStyle( 
@@ -166,6 +166,7 @@ MainWindow::~MainWindow()
 void MainWindow::init()
 {
     mUI.treeViewObjects->init();
+    mUI.treeViewObjectTemplates->init();
     mUI.treeViewPlugins->init();
     mConnectDialog.init();
 }

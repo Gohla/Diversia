@@ -82,6 +82,7 @@ public:
     inside the created object template.
 
     @param  rObject     The object to create a template from.
+    @param  rName       The name of the object template.
     @param  type        The (local/remote) type of the object template, defaults to local.
 
     @throw  Exception   When an object template with that name already exists, or a client defined 
@@ -89,7 +90,8 @@ public:
 
     @return The created object template.
     **/
-    ObjectTemplate& createObjectTemplate( const Object& rObject, NetworkingType type = LOCAL );
+    ObjectTemplate& createObjectTemplate( const Object& rObject, const String& rName, 
+        NetworkingType type = LOCAL );
     /**
     Gets an object template by name.
 
@@ -225,6 +227,11 @@ public:
     {
         return mObjectTemplateSignal.connect( rSlot );
     }
+
+    /**
+    Generates a unique name for a new object template.
+    **/
+    String generateName();
 
 protected:
     friend class ObjectTemplate;	///< For delayed destruction.

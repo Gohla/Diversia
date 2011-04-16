@@ -212,10 +212,12 @@ void ObjectTemplate::setDisplayName( const String& rDisplayName )
     mDisplayName = rDisplayName;
 }
 
-ObjectTemplate& ObjectTemplate::createChildObjectTemplate( const String& rName )
+ObjectTemplate& ObjectTemplate::createChildObjectTemplate( const String& rName, 
+    const String& rDisplayName )
 {
     ObjectTemplate& objectTemplate = mObjectTemplateManager.createObjectTemplate( rName, mType );
     objectTemplate.parent( this );
+    objectTemplate.setDisplayName( rDisplayName );
     return objectTemplate;
 }
 
@@ -237,6 +239,7 @@ ComponentTemplate& ObjectTemplate::createComponentTemplate( ComponentType type, 
         mComponentTemplatesByName.insert( std::make_pair( rName, componentTemplate ) );
         mComponentTemplatesByHandle.insert( std::make_pair( ComponentHandle( type, rName ), 
             componentTemplate ) );
+        mComponentTemplateSignal( *componentTemplate, true );
 
         return *componentTemplate;
     } 
@@ -262,7 +265,8 @@ void ObjectTemplate::createComponentTemplates( const Object& rObject )
     ObjectChilds childs = rObject.getChildObjects();
     for( ObjectChilds::iterator i = childs.begin(); i != childs.end(); ++i )
     {
-        ObjectTemplate::createChildObjectTemplate( i->first ).createComponentTemplates( *i->second );
+        mObjectTemplateManager.createObjectTemplate( *i->second, 
+            mObjectTemplateManager.generateName(), mType ).parent( this );
     }
 
     // Create all components in object as component templates.
@@ -337,6 +341,7 @@ void ObjectTemplate::destroyComponentTemplate( ComponentType type,
 
         // Destroy component template
         ObjectTemplate::removeComponentTemplate( type );
+        mComponentTemplateSignal( *componentTemplate, false );
         delete componentTemplate;
     }
     else
@@ -363,6 +368,7 @@ void ObjectTemplate::destroyComponentTemplate( const String& rName,
 
         // Destroy component template
         ObjectTemplate::removeComponentTemplate( rName );
+        mComponentTemplateSignal( *componentTemplate, false );
         delete componentTemplate;
     }
     else

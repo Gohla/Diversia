@@ -168,7 +168,7 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="objectsDockWidgetContents">
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="gridLayoutObject">
      <property name="margin">
       <number>0</number>
      </property>
@@ -248,7 +248,7 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="objectTemplatesDockWidgetContents">
-    <layout class="QGridLayout" name="gridLayout">
+    <layout class="QGridLayout" name="gridLayoutObjectTemplate">
      <property name="margin">
       <number>0</number>
      </property>
@@ -328,7 +328,7 @@
     <number>1</number>
    </attribute>
    <widget class="QWidget" name="propertyBrowserDockWidgetContents">
-    <layout class="QGridLayout" name="gridLayout_3">
+    <layout class="QGridLayout" name="gridLayoutProperty">
      <property name="margin">
       <number>0</number>
      </property>
@@ -424,7 +424,7 @@
     <number>8</number>
    </attribute>
    <widget class="QWidget" name="consoleDockWidgetContents">
-    <layout class="QGridLayout" name="gridLayout_2">
+    <layout class="QGridLayout" name="gridLayoutConsole">
      <property name="margin">
       <number>0</number>
      </property>
@@ -721,7 +721,7 @@
     <number>2</number>
    </attribute>
    <widget class="QWidget" name="undoDockWidgetContents">
-    <layout class="QGridLayout" name="gridLayout_4">
+    <layout class="QGridLayout" name="gridLayoutUndo">
      <property name="margin">
       <number>0</number>
      </property>
@@ -914,6 +914,18 @@
     <string>Redo last undone action</string>
    </property>
   </action>
+  <action name="actionCreate_template_from_object">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/apps/gdeb.png</normaloff>:/Icons/Icons/apps/gdeb.png</iconset>
+   </property>
+   <property name="text">
+    <string>Create template from object</string>
+   </property>
+   <property name="toolTip">
+    <string>Creates an object template from this object</string>
+   </property>
+  </action>
   <zorder>propertyBrowserDock</zorder>
   <zorder>objectsDock</zorder>
   <zorder>pluginsDock</zorder>
@@ -945,6 +957,7 @@
     <slot>search()</slot>
     <slot>showContextMenu(QPoint)</slot>
     <slot>destroySelected()</slot>
+    <slot>createTemplate()</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1241,6 +1254,22 @@
     <hint type="destinationlabel">
      <x>559</x>
      <y>440</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCreate_template_from_object</sender>
+   <signal>triggered()</signal>
+   <receiver>treeViewObjects</receiver>
+   <slot>createTemplate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>193</y>
     </hint>
    </hints>
   </connection>

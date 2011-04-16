@@ -149,7 +149,7 @@ public:
     
     @param  rName   The name of the child object template. 
     **/
-    ObjectTemplate& createChildObjectTemplate( const String& rName );
+    ObjectTemplate& createChildObjectTemplate( const String& rName, const String& rDisplayName );
     /**
     Convenience function for destroying this object template.
     **/

@@ -14,6 +14,8 @@ This file is part of Diversia.
 #include "Client/Object/ClientComponent.h"
 #include "Client/Object/ClientObject.h"
 #include "Client/Object/ClientObjectManager.h"
+#include "Client/Object/ClientObjectTemplate.h"
+#include "Client/Object/ClientObjectTemplateManager.h"
 #include "Client/Undo/ComponentCommand.h"
 #include "Client/Undo/ObjectCommand.h"
 #include "Client/Undo/UndoStack.h"
@@ -22,6 +24,7 @@ This file is part of Diversia.
 #include "Object/ComponentFactory.h"
 #include "Object/ComponentFactoryManager.h"
 #include "Object/Object.h"
+#include "Object/ObjectTemplateManager.h"
 #include "OgreClient/Input/ObjectSelection.h"
 #include "Shared/ClientServerPlugin/ClientServerPlugin.h"
 #include "UI/MainWindow.h"
@@ -183,6 +186,8 @@ void ObjectTreeView::load( const QModelIndex& rIndex )
             EditorGlobals::mMainWindow->mUI.toolBarObject->addAction( 
                 EditorGlobals::mMainWindow->mUI.actionDestroy_object );
             EditorGlobals::mMainWindow->mUI.toolBarObject->addAction( mComponentMenuAction );
+            EditorGlobals::mMainWindow->mUI.toolBarObject->addAction( 
+                EditorGlobals::mMainWindow->mUI.actionCreate_template_from_object );    
 
             break;
         }
@@ -267,6 +272,8 @@ void ObjectTreeView::showContextMenu( const QPoint& rPoint )
                 contextMenu.addAction( EditorGlobals::mMainWindow->mUI.actionCreate_child_object );
                 contextMenu.addAction( EditorGlobals::mMainWindow->mUI.actionDestroy_object );
                 contextMenu.addMenu( mComponentMenu );
+                contextMenu.addAction( 
+                    EditorGlobals::mMainWindow->mUI.actionCreate_template_from_object );   
                 break;
             }
             case REPLICATYPE_COMPONENT:
@@ -411,6 +418,27 @@ void ObjectTreeView::componentAction( QObject* pObject )
     }
 }
 
+void ObjectTreeView::createTemplate()
+{
+    static unsigned int counter = 0;
+
+    QModelIndexList selectedIndexes = QTreeView::selectionModel()->selectedIndexes();
+    if( selectedIndexes.size() == 1 )
+    {
+        try
+        {
+            Object& object = ObjectTreeView::getObject( selectedIndexes.at( 0 ) );
+            mObjectTemplateManager->createObjectTemplate( object, 
+                String( "ObjectTemplateFromObject" ) + boost::lexical_cast<String>( counter++ ), 
+                object.getNetworkingType() );
+        }
+        catch( Exception e )
+        {
+            LOGE << "Could not create object template from object: " << e.what();
+        }
+    }
+}
+
 void ObjectTreeView::destroyObject()
 {
     QModelIndexList selectedIndexes = QTreeView::selectionModel()->selectedIndexes();
@@ -523,10 +551,14 @@ void ObjectTreeView::serverChange( ServerAbstract& rServer, bool created )
 
 void ObjectTreeView::pluginChange( ClientServerPlugin& rPlugin, bool created )
 {
-    if( rPlugin.getType() == CLIENTSERVERPLUGINTYPE_OBJECTMANAGER )
+    switch( rPlugin.getType() ) 
     {
-        mObjectManager = &static_cast<ClientObjectManager&>( rPlugin );
-        mModel->setObjectManager( *mObjectManager );
+        case CLIENTSERVERPLUGINTYPE_OBJECTMANAGER:
+            mObjectManager = &static_cast<ClientObjectManager&>( rPlugin );
+            mModel->setObjectManager( *mObjectManager );
+            break;
+        case CLIENTSERVERPLUGINTYPE_OBJECTTEMPLATEMANAGER:
+            mObjectTemplateManager = &static_cast<ClientObjectTemplateManager&>( rPlugin );
     }
 }
 
@@ -571,6 +603,8 @@ void ObjectTreeView::clearActions()
         EditorGlobals::mMainWindow->mUI.actionDestroy_component );
     EditorGlobals::mMainWindow->mUI.toolBarObject->removeAction( 
         EditorGlobals::mMainWindow->mUI.actionCreate_new_object );
+    EditorGlobals::mMainWindow->mUI.toolBarObject->removeAction( 
+        EditorGlobals::mMainWindow->mUI.actionCreate_template_from_object );
     EditorGlobals::mMainWindow->mUI.toolBarObject->removeAction( 
         EditorGlobals::mMainWindow->mUI.actionDestroy_selected );
 }
