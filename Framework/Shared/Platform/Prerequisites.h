@@ -109,7 +109,7 @@ class ResourceInfo;
 //#define REPLICATYPE_OBJECTTEMPLATE    0x03
 //#define REPLICATYPE_COMPONENTTEMPLATE 0x04
 
-// Client-server plugins
+// Client-server plugins, when changed also update CampBindings::bindClientServerPluginTypeEnum!
 typedef unsigned char ClientServerPluginType;
 enum ClientServerPluginTypeEnum
 {
@@ -135,7 +135,7 @@ enum ClientServerPluginTypeEnum
 #define CLIENTSERVERPLUGINNAME_GAMEMODE "GameMode"
 #define CLIENTSERVERPLUGINNAME_SCENEMANAGER "SceneManager"
 
-// Components
+// Components, when changed also update CampBindings::bindComponentTypeEnum!
 enum ComponentTypeEnum
 {
     COMPONENTTYPE_SCENENODE = 0x00,

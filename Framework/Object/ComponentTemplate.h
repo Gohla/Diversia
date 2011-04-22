@@ -240,6 +240,7 @@ protected:
     ComponentType mType;
 
 private:
+    friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
     friend void camp::detail::destroy<ComponentTemplate>( const UserObject& object );  ///< Allow private access for camp.
 
     /**
@@ -281,6 +282,11 @@ private:
     bool                                    mBroadcastingDestruction;
     ObjectTemplate&                         mObjectTemplate;
     ComponentFactory&                       mFactory;
+
+    typedef std::map<String, camp::Value> PropertyValueMap;
+    const camp::Class&                                      mComponentClass;
+    PropertyValueMap                                        mProperties;
+    sigc::signal<void, const String&, const camp::Value&>   mPropertySignal;
 
     CAMP_RTTI()
 };

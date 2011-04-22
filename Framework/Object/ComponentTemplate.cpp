@@ -47,7 +47,8 @@ ComponentTemplate::ComponentTemplate( const String& rName, Mode mode, Networking
     mLocalOverride( localOverride ),
     mBroadcastingDestruction( false ),
     mObjectTemplate( rObjectTemplate ),
-    mFactory( ComponentFactoryManager::getComponentFactory( type ) )
+    mFactory( ComponentFactoryManager::getComponentFactory( type ) ),
+    mComponentClass( camp::classByName( mFactory.getTypeName() ) )
 {
     // Override networking type to local.
     if( mLocalOverride || ( mMode == CLIENT && mFactory.clientOnly() ) ||
@@ -151,11 +152,29 @@ void ComponentTemplate::destroyComponentTemplateLocally()
 void ComponentTemplate::setTemplateProperty( const String& rPropertyName, 
     const camp::Value& rValue )
 {
-    // TODO: Set template properties.
+    if( !mComponentClass.hasProperty( rPropertyName, true ) )
+        DIVERSIA_EXCEPT( Exception::ERR_INVALIDPARAMS, 
+        "This property does not exist for this component.", 
+        "ComponentTemplate::setTemplateProperty" );
+
+    // Copy the value for user types.
+    camp::Value value;
+    if( rValue.type() == camp::userType )
+        value = rValue.to<camp::UserObject>().copy();
+    else
+        value = rValue;
+
+    mProperties[rPropertyName] = value;
+    mPropertySignal( rPropertyName, value );
 }
 
 void ComponentTemplate::setTemplateProperties( const Component& rComponent )
 {
+    if( rComponent.getType() != mType ) 
+        DIVERSIA_EXCEPT( Exception::ERR_INVALIDPARAMS, 
+        "Cannot set properties from a component that is not of the same type.", 
+    	"ComponentTemplate::setTemplateProperties" );
+
     camp::UserObject userObject = rComponent;
     const camp::Class& metaclass = userObject.getClass();
     std::size_t count = metaclass.propertyCount( true );

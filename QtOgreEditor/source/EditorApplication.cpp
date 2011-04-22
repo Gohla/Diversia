@@ -276,7 +276,7 @@ bool EditorApplication::notify( QObject* pObject, QEvent* pEvent )
     {
         return QApplication::notify( pObject, pEvent );
     }
-    catch( Exception e )
+    catch( const Exception& e )
     {
         e.log( Diversia::QtOgreEditor::Log::lg, true );
 
@@ -286,7 +286,7 @@ bool EditorApplication::notify( QObject* pObject, QEvent* pEvent )
         EditorApplication::unhandledException( e.what() );
 #endif
     }
-    catch( Ogre::Exception e )
+    catch( const Ogre::Exception& e )
     {
         LOGC << "OGRE UNHANDLED EXCEPTION: " << e.what();
 
@@ -296,7 +296,7 @@ bool EditorApplication::notify( QObject* pObject, QEvent* pEvent )
         EditorApplication::unhandledException( e.what() );
 #endif
     }
-    catch( camp::Error e )
+    catch( const camp::Error& e )
     {
         LOGC << "CAMP UNHANDLED EXCEPTION: " << e.what();
 
@@ -306,7 +306,7 @@ bool EditorApplication::notify( QObject* pObject, QEvent* pEvent )
         EditorApplication::unhandledException( e.what() );
 #endif
     }
-    catch( std::exception e )
+    catch( const std::exception& e )
     {
         LOGC << "OTHER UNHANDLED EXCEPTION: " << e.what();
 

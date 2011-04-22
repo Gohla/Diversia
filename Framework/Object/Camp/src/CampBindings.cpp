@@ -409,10 +409,16 @@ void CampBindings::bindComponentTemplate()
         // Properties (read/write)
         .property( "LocalOverride", &ComponentTemplate::getLocalOverride, &ComponentTemplate::setLocalOverride )
             .tag( "NoBitStream" )
+        .property( "Properties", &ComponentTemplate::mProperties )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+            .tag( "AddFunction", "SetProperty" )
+            .tag( "SetFunction", "SetProperty" )
         // Functions
         .function( "IsCreatedBy", &ComponentTemplate::isCreatedBy )
         .function( "IsCreatedBySource", &ComponentTemplate::isCreatedBySource )
-        .function( "Destroy", &ComponentTemplate::destroyComponentTemplate );
+        .function( "Destroy", &ComponentTemplate::destroyComponentTemplate )
+        .function( "SetProperty", &ComponentTemplate::setTemplateProperty );
         // Static functions
         // Operators
 }

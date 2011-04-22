@@ -36,9 +36,10 @@ void EditState::start()
     LOGI << "Entering edit state.";
 
     EditorGlobals::mMainWindow->mUI.objectsDockWidgetContents->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.objectTemplatesDockWidgetContents->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.pluginsDockWidgetContents->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.propertyBrowserDockWidgetContents->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.graphicsView->setEnabled( true );
-    EditorGlobals::mMainWindow->mUI.propertyBrowser->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.listViewUndo->setEnabled( true );
 }
 

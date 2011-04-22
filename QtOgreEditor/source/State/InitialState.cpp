@@ -42,8 +42,9 @@ void InitialState::suspend()
 void InitialState::wake()
 {
     EditorGlobals::mMainWindow->mUI.objectsDockWidgetContents->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.objectTemplatesDockWidgetContents->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.pluginsDockWidgetContents->setEnabled( false );
-    EditorGlobals::mMainWindow->mUI.propertyBrowser->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.propertyBrowserDockWidgetContents->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.graphicsView->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.propertyBrowser->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.listViewUndo->setEnabled( false );
