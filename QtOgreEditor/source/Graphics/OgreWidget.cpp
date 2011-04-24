@@ -21,7 +21,7 @@ namespace QtOgreEditor
 //------------------------------------------------------------------------------
 
 OgreWidget::OgreWidget( QWidget* pParentWidget /*= 0*/, Qt::WindowFlags flags /*= 0*/ ):
-    QWidget( pParentWidget, flags | Qt::MSWindowsOwnDC ),
+    QWidget( pParentWidget, flags ),
     mTargetRenderCount( 60 ),
     mLastTime( 0 ),
     mRenderDelta( 0 ),

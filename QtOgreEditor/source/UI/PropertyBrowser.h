@@ -25,6 +25,7 @@ public:
 
     void load( const camp::UserObject& rUserObject );
     void clear();
+    inline CampPropertyManager* getPropertyManager() const { return mPropertyManager; }
 
 private:
     CampPropertyManager* mPropertyManager;

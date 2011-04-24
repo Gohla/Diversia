@@ -17,6 +17,144 @@ namespace QtOgreEditor
 {
 //------------------------------------------------------------------------------
 
+bool CampPropertyDataInterface::operator<( const CampPropertyDataInterface* other ) const
+{
+    // Dirty hack but required for operators and inheritence..
+    if( typeid( *this ) != typeid( *other ) ) return false;
+    return lessThan( *other );
+}
+
+CampPropertyData::CampPropertyData( const camp::Property& rProperty, 
+    const camp::UserObject& rObject, CampPropertyDataInterface* pParentPropertyData /*= 0 */ ) :
+    mProperty( rProperty ), 
+    mObject( rObject ), 
+    mParentPropertyData( pParentPropertyData )
+{
+
+}
+
+CampPropertyData::~CampPropertyData()
+{
+    if( mParentPropertyData ) delete mParentPropertyData;
+}
+
+void CampPropertyData::setWithUndo( const camp::Value& rValue )
+{
+    /*if( !mParentPropertyData )
+        GlobalsBase::mUndoStack->push( 
+            new PropertyChangeCommand( mProperty, mObject, rValue ) );
+    else
+        GlobalsBase::mUndoStack->push( 
+            new PropertyChangeCommand( mProperty, mObject, rValue, 
+            &mParentPropertyData->mProperty, mParentPropertyData->mObject ) );*/
+
+    // TODO: Fix undo
+    CampPropertyData::set( rValue );
+}
+
+bool CampPropertyData::ignore() const
+{
+    return mProperty.hasTag( "NoPropertyBrowser" ) || !mProperty.readable( mObject );
+}
+
+QString CampPropertyData::valueText() const
+{
+    QString text;
+    const camp::UserProperty& userProp = static_cast<const camp::UserProperty&>( mProperty );
+    camp::UserObject object = userProp.get( mObject ).to<camp::UserObject>();
+    const camp::Class& metaClass = userProp.getClass();
+    bool first = true;
+
+    for( std::size_t j = 0; j != metaClass.propertyCount(); ++j )
+    {
+        const camp::Property& prop = metaClass.property( j );
+        if( prop.hasTag( "NoPropertyBrowser" ) || !prop.readable( object ) ) continue;
+
+        if( !first )
+            text += ", ";
+        else
+        {
+            text += "(";
+            first = false;
+        }
+
+        switch( prop.type() )
+        {
+        case camp::boolType:
+            text += boost::lexical_cast<char*>( prop.get( object ).to<bool>() );
+            break;
+        case camp::intType:
+            text += boost::lexical_cast<char*>( prop.get( object ).to<int>() );
+            break;
+        case camp::realType: 
+            text += QString::number( prop.get( object ).to<double>(), 'f', 2 );
+            break;
+        }
+    }
+
+    return text + ")";
+}
+
+CampPropertyData* CampPropertyData::clone() const
+{
+    return new CampPropertyData( mProperty, mObject, mParentPropertyData ? mParentPropertyData->clone() : 0 );
+}
+
+bool CampPropertyData::lessThan( const CampPropertyDataInterface& other ) const
+{
+    // This is ok because CampPropertyDataInterface::operator< checks if other is of this type.
+    const CampPropertyData& data = static_cast<const CampPropertyData&>( other );
+
+    // Use pair less than operator because of lazyness..
+    //typedef std::pair<const camp::Property*, const camp::UserObject&> LazyPair;
+    //return LazyPair( &mProperty, mObject ) < LazyPair( &data.mProperty, data.mObject );
+
+    if( &mProperty < &data.mProperty ) return true;
+    if( &data.mProperty < &mProperty ) return false;
+
+    if( mObject < data.mObject ) return true;
+
+    return false;
+}
+
+CampValueMapPropertyData::CampValueMapPropertyData( const camp::DictionaryProperty& rProperty, 
+    const camp::UserObject& rObject, const String& rKey ):
+    mProperty( rProperty ),
+    mObject( rObject ),
+    mKey( rKey )
+{
+
+}
+
+void CampValueMapPropertyData::setWithUndo( const camp::Value& rValue )
+{
+    // TODO: Fix undo
+    CampValueMapPropertyData::set( rValue );
+}
+
+CampValueMapPropertyData* CampValueMapPropertyData::clone() const
+{
+    return new CampValueMapPropertyData( mProperty, mObject, mKey );
+}
+
+bool CampValueMapPropertyData::lessThan( const CampPropertyDataInterface& other ) const
+{
+    // This is ok because CampPropertyDataInterface::operator< checks if other is of this type.
+    const CampValueMapPropertyData& data = static_cast<const CampValueMapPropertyData&>( other );
+
+    if( &mProperty < &data.mProperty ) return true;
+    if( &data.mProperty < &mProperty ) return false;
+
+    if( mObject < data.mObject ) return true;
+    if( data.mObject < mObject ) return false;
+
+    if( mKey < data.mKey ) return true;
+
+    return false;
+}
+
+//------------------------------------------------------------------------------
+
 CampCompoundPropertyManager::CampCompoundPropertyManager( CampPropertyManager* pParent /*= 0*/ ):
     QtAbstractPropertyManager( pParent ),
     mCampPropertyManager( pParent ),
@@ -32,14 +170,13 @@ CampCompoundPropertyManager::~CampCompoundPropertyManager()
 }
 
 void CampCompoundPropertyManager::setValue( QtProperty* pProperty, 
-    const camp::Property& rCampProperty, const camp::UserObject& rObject )
+    CampPropertyDataInterface* pData )
 {
     DataMap::iterator i = mPropertyData.find( pProperty );
     if( i == mPropertyData.end() )
     {
         // Add new property data.
-        CampPropertyData* data = new CampPropertyData( rCampProperty, rObject );
-        mPropertyData.insert( std::make_pair( pProperty, data ) );
+        mPropertyData.insert( std::make_pair( pProperty, pData ) );
     }
     else
     {
@@ -110,46 +247,7 @@ bool CampCompoundPropertyManager::hasValue( const QtProperty* pProperty ) const
 QString CampCompoundPropertyManager::valueText( const QtProperty* pProperty ) const
 {
     DataMap::const_iterator i = mPropertyData.find( pProperty );
-
-    if( i != mPropertyData.end() )
-    {
-        QString text;
-        const camp::UserProperty& userProp = static_cast<const camp::UserProperty&>( 
-            i->second->mProperty );
-        camp::UserObject object = userProp.get( i->second->mObject ).to<camp::UserObject>();
-        const camp::Class& metaClass = userProp.getClass();
-        bool first = true;
-
-        for( std::size_t j = 0; j != metaClass.propertyCount(); ++j )
-        {
-            const camp::Property& prop = metaClass.property( j );
-            if( prop.hasTag( "NoPropertyBrowser" ) || !prop.readable( object ) ) continue;
-
-            if( !first )
-                text += ", ";
-            else
-            {
-                text += "(";
-                first = false;
-            }
-
-            switch( prop.type() )
-            {
-                case camp::boolType:
-                    text += boost::lexical_cast<char*>( prop.get( object ).to<bool>() );
-                    break;
-                case camp::intType:
-                    text += boost::lexical_cast<char*>( prop.get( object ).to<int>() );
-                    break;
-                case camp::realType: 
-                    text += QString::number( prop.get( object ).to<double>(), 'f', 2 );
-                    break;
-            }
-        }
-
-        return text + ")";
-    }
-
+    if( i != mPropertyData.end() ) return i->second->valueText();
     return "";
 }
 
@@ -251,117 +349,106 @@ void CampPropertyManager::setPropertyBrowser( QtTreePropertyBrowser* pBrowser )
     pBrowser->setFactoryForManager( mEnumManager, mEnumFactory );
 }
 
-QtProperty* CampPropertyManager::addProperty( const camp::Property& rCampProperty, 
-    const camp::UserObject& rObject, QtProperty* pProperty /*= 0*/, 
-    const camp::Property* pParentProperty /*= 0*/, 
-    const camp::UserObject& rParentObject /*= camp::UserObject::nothing*/ )
+QtProperty* CampPropertyManager::addProperty( CampPropertyDataInterface* pData, 
+    QtProperty* pProperty /*= 0 */ )
 {
-    // Ignore properties with the NoPropertyBrowser tag.
-    if( rCampProperty.hasTag( "NoPropertyBrowser" ) || !rCampProperty.readable( rObject ) ) 
-        return 0;
+    if( pData->ignore() ) return 0;
 
-    String name = rCampProperty.name();
+    String name = pData->name();
     QtProperty* prop = 0;
 
-    switch( rCampProperty.type() )
+    switch( pData->type() )
     {
         case camp::boolType:
             prop = mBoolManager->addProperty( QString( name.c_str() ) );
-            mBoolManager->setValue( prop, rCampProperty.get( rObject ).to<bool>() );
-            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject, 
-                pParentProperty, rParentObject ) ) );
+            mBoolManager->setValue( prop, pData->get().to<bool>() );
+            mData.insert( std::make_pair( prop, pData ) );
             break;
         case camp::intType:  
             prop = mIntManager->addProperty( QString( name.c_str() ) );
-            mIntManager->setValue( prop, rCampProperty.get( rObject ).to<int>() );
-            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject, 
-                pParentProperty, rParentObject ) ) );
+            mIntManager->setValue( prop, pData->get().to<int>() );
+            mData.insert( std::make_pair( prop, pData ) );
             break;
         case camp::realType: 
             prop = mDoubleManager->addProperty( QString( name.c_str() ) );
-            mDoubleManager->setValue( prop, rCampProperty.get( rObject ).to<double>() );
-            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject, 
-                pParentProperty, rParentObject ) ) );
+            mDoubleManager->setValue( prop, pData->get().to<double>() );
+            mData.insert( std::make_pair( prop, pData ) );
 
-            if( rCampProperty.hasTag( "QtDoublePrecicion" ) )
-                mDoubleManager->setDecimals( prop, rCampProperty.tag( "QtDoublePrecicion" ).to<unsigned int>() );
+            if( pData->hasTag( "QtDoublePrecicion" ) )
+                mDoubleManager->setDecimals( prop, pData->tag( "QtDoublePrecicion" ).to<unsigned int>() );
             else
                 mDoubleManager->setDecimals( prop, 4 );
 
-            if( rCampProperty.hasTag( "QtSingleStep" ) )
-                mDoubleManager->setSingleStep( prop, rCampProperty.tag( "QtSingleStep" ).to<float>() );
+            if( pData->hasTag( "QtSingleStep" ) )
+                mDoubleManager->setSingleStep( prop, pData->tag( "QtSingleStep" ).to<float>() );
             else
                 mDoubleManager->setSingleStep( prop, 0.1 );
 
             break;
         case camp::stringType: 
             prop = mStringManager->addProperty( QString( name.c_str() ) );
-            mStringManager->setValue( prop, QString( rCampProperty.get( 
-                rObject ).to<String>().c_str() ) );
-            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject, 
-                pParentProperty, rParentObject ) ) );
+            mStringManager->setValue( prop, QString( pData->get().to<String>().c_str() ) );
+            mData.insert( std::make_pair( prop, pData ) );
             break;
         case camp::enumType:
         {
+            camp::EnumObject enumObject = pData->get().to<camp::EnumObject>();
+            const camp::Enum& metaenum = enumObject.getEnum();
+
             prop = mEnumManager->addProperty( QString( name.c_str() ) );
 
             // Add enum names
             QStringList names;
-            const camp::Enum& enumProp = static_cast<const camp::EnumProperty&>( 
-                rCampProperty ).getEnum();
-            for( std::size_t i = 0; i != enumProp.size(); ++i )
+            for( std::size_t i = 0; i != metaenum.size(); ++i )
             {
                 // TODO: Support enums that do not start with value 0.
-                names << enumProp.pair( i ).name.c_str();
+                names << metaenum.pair( i ).name.c_str();
             };
             mEnumManager->setEnumNames( prop, names );
 
-            mEnumManager->setValue( prop, rCampProperty.get( rObject ).to<int>() );
-            mData.insert( std::make_pair( prop, new CampPropertyData( rCampProperty, rObject, 
-                pParentProperty, rParentObject ) ) );
+            mEnumManager->setValue( prop, enumObject.value() );
+            mData.insert( std::make_pair( prop, pData ) );
             break;
         }
         case camp::userType:
         {
-            const camp::UserProperty& userProp = static_cast<const camp::UserProperty&>( 
-                rCampProperty );
-            const camp::Class& subClass = userProp.getClass();
-            camp::UserObject object = rCampProperty.get( rObject ).to<camp::UserObject>();
+            camp::UserObject object = pData->get().to<camp::UserObject>();
+            const camp::Class& subClass = object.getClass();
 
             // Create compound property that manages its sub properties.
-            QtProperty* compoundProperty = mCompoundManager->addProperty( QString( 
-                name.c_str() ) );
-            mCompoundManager->setValue( compoundProperty, userProp, rObject );
+            QtProperty* compoundProperty = mCompoundManager->addProperty( QString( name.c_str() ) );
+            mCompoundManager->setValue( compoundProperty, pData );
 
             // Do recursion by calling addClassInternal on user type.
             std::set<String> ignore;
             prop = CampPropertyManager::addClassInternal( subClass, object, name, ignore, 
-                compoundProperty, &userProp, rObject );
+                compoundProperty, pData );
             break;
         }
         case camp::arrayType:
-        {
             // TODO: Support arrays
             break;
-        }
+        case camp::dictionaryType:
+            // TODO: Support dictionaries
+            break;
+        case camp::valueType:
+            // TODO: Support type erased values
+            break;
         case camp::noType: default: LOGE << "Could not create property";
     }
 
     if( prop )
     {
-        mProperties.insert( std::make_pair( std::make_pair( rObject, &rCampProperty ), prop ) );
+        mProperties.insert( std::make_pair( pData, prop ) );
         //LOGD << "Adding " << (unsigned int)rObject.pointer() << ", " << rCampProperty.name();
 
-        if( rCampProperty.hasTag( "QtContinuousUpdate" ) )
+        if( pData->hasTag( "QtContinuousUpdate" ) )
         {
-            mContinuousUpdateMap.insert( std::make_pair( &rCampProperty, rObject ) );
+            mContinuousUpdateMap.insert( pData );
         }
 
-        if( pProperty )
-            pProperty->addSubProperty( prop );
-
-        if( !rCampProperty.writable( rObject ) )
-            prop->setEnabled( false );
+        if( pProperty ) pProperty->addSubProperty( prop );
+        if( !pData->writable() ) prop->setEnabled( false );
     }
 
     return prop;
@@ -385,8 +472,7 @@ QtProperty* CampPropertyManager::addClass( const camp::Class& rClass,
 
 QtProperty* CampPropertyManager::addClassInternal( const camp::Class& rClass, 
     const camp::UserObject& rObject, const String& rName, std::set<String>& rAddedProperties, 
-    QtProperty* pCompoundProperty /*= 0*/, const camp::Property* pParentProperty /*= 0*/, 
-    const camp::UserObject& rParentObject /*= camp::UserObject::nothing*/ )
+    QtProperty* pCompoundProperty /*= 0*/, CampPropertyDataInterface* pParentData /*= 0*/ )
 {
     QtProperty* prop;
 
@@ -401,8 +487,8 @@ QtProperty* CampPropertyManager::addClassInternal( const camp::Class& rClass,
 
         if( !rAddedProperties.count( property.name() ) )
         {
-            QtProperty* subProp = CampPropertyManager::addProperty( rClass.property( i ), rObject, 
-                prop, pParentProperty, rParentObject );
+            QtProperty* subProp = CampPropertyManager::addProperty( new CampPropertyData( 
+                rClass.property( i ), rObject, pParentData ? pParentData->clone() : 0 ), prop );
             if( subProp ) prop->addSubProperty( subProp );
             rAddedProperties.insert( property.name() );
         }
@@ -426,14 +512,20 @@ std::list<QtProperty*> CampPropertyManager::addClassTree( const camp::Class& rCl
     std::list<QtProperty*> rootProperties;
     CampPropertyManager::addClassTreeInternal( rClass, rObject, addedProperties, rootProperties );
 
+    CampPropertyManager::setup( rObject );
+
+    return rootProperties;
+}
+
+void CampPropertyManager::setup( const camp::UserObject& rObject )
+{
     // Propagate property changes to camp.
     CampPropertyManager::setBlockSlots( false );
 
     // Connect to property changes.
     mPropertyChangeSignal = UserObjectChange::connectChange( rObject, sigc::mem_fun( this, 
-        &CampPropertyManager::externalPropertyChanged ) );
-
-    return rootProperties;
+        (void(CampPropertyManager::*)(const camp::UserObject&, const camp::Property&, 
+        const camp::Value&))&CampPropertyManager::externalPropertyChanged ) );
 }
 
 void CampPropertyManager::addClassTreeInternal( const camp::Class& rClass, 
@@ -506,10 +598,10 @@ void CampPropertyManager::setBlockSlots( bool block )
     mCompoundManager->setBlockSlots( block );
 }
 
-void CampPropertyManager::externalPropertyChanged( const camp::UserObject& rObject, 
-    const camp::Property& rProperty, const camp::Value& rValue )
+void CampPropertyManager::externalPropertyChanged( CampPropertyDataInterface* pData, 
+    const camp::Value& rValue )
 {
-    PropertyMap::iterator i = mProperties.find( std::make_pair( rObject, &rProperty ) );
+    PropertyMap::iterator i = mProperties.find( pData );
     if( i != mProperties.end() )
     {
         CampPropertyManager::setBlockSlots( true );
@@ -544,6 +636,14 @@ void CampPropertyManager::externalPropertyChanged( const camp::UserObject& rObje
     }
 }
 
+void CampPropertyManager::externalPropertyChanged( const camp::UserObject& rObject, 
+    const camp::Property& rProperty, const camp::Value& rValue )
+{
+    CampPropertyData* data = new CampPropertyData( rProperty, rObject );
+    CampPropertyManager::externalPropertyChanged( data, rValue );
+    delete data;
+}
+
 void CampPropertyManager::update()
 {
     // Only update at 1/4th of the framerate.
@@ -555,8 +655,7 @@ void CampPropertyManager::update()
     {
         try
         {
-            CampPropertyManager::externalPropertyChanged( i->second, *i->first, 
-                i->first->get( i->second ) );
+            CampPropertyManager::externalPropertyChanged( *i, (*i)->get() );
         }
         catch( camp::Error e )
         {

@@ -35,12 +35,28 @@ namespace Util
 {
 //------------------------------------------------------------------------------
 
+// Normal properties
 typedef sigc::signal<void, const camp::UserObject&, const camp::Property&, const camp::Value&>
-    PropertySetSignal;
+    PropertyChangeSignal;
+// Array properties
 typedef sigc::signal<void, const camp::UserObject&, const camp::ArrayProperty&, const camp::Value&>
-    ValueInsertedSignal;
-typedef std::map<camp::UserObject, PropertySetSignal> SetSignalMap;
-typedef std::map<camp::UserObject, ValueInsertedSignal> InsertSignalMap;
+    ArrayInsertedSignal;
+typedef sigc::signal<void, const camp::UserObject&, const camp::ArrayProperty&, std::size_t, 
+    const camp::Value&> ArrayChangedSignal;
+typedef sigc::signal<void, const camp::UserObject&, const camp::ArrayProperty&, std::size_t>
+    ArrayRemovedSignal;
+// Dictionary properties
+typedef sigc::signal<void, const camp::UserObject&, const camp::DictionaryProperty&, 
+    const camp::Value&, const camp::Value&> DictChangedSignal;
+typedef sigc::signal<void, const camp::UserObject&, const camp::DictionaryProperty&, 
+    const camp::Value&> DictRemovedSignal;
+
+typedef std::map<camp::UserObject, PropertyChangeSignal> ChangeSignalMap;
+typedef std::map<camp::UserObject, ArrayInsertedSignal> ArrayInsertedSignalMap;
+typedef std::map<camp::UserObject, ArrayChangedSignal> ArrayChangedSignalMap;
+typedef std::map<camp::UserObject, ArrayRemovedSignal> ArrayRemovedSignalMap;
+typedef std::map<camp::UserObject, DictChangedSignal> DictChangedSignalMap;
+typedef std::map<camp::UserObject, DictRemovedSignal> DictRemovedSignalMap;
 
 /**
 Provides a signal to get notified of all property changes of a specific camp UserObject.
@@ -53,33 +69,93 @@ public:
 
     @param          rObject The UserObject to get changes for.
     @param [in,out] rSlot   The slot (signature: void func(const camp::Property&,
-                            const camp::Value&)) to connectChange.
+                            const camp::Value&)) to connect to.
 
     @return Connection object to block or disconnect the connection.
     **/
     static inline sigc::connection connectChange( const camp::UserObject& rObject,
-        const PropertySetSignal::slot_type& rSlot )
+        const PropertyChangeSignal::slot_type& rSlot )
     {
         UserObjectChange::connectToClass( rObject.getClass() );
-        return mSetSignalMap[ rObject ].connect( rSlot );
+        return mChangeMap[ rObject ].connect( rSlot );
     }
     /**
-    Connects to the camp value inserted signal.
+    Connects to the camp array inserted signal.
 
     @param          rObject The UserObject to get changes for.
-    @param [in,out] rSlot   The slot (signature: void func(const camp::Property&,
-                            const camp::Value&)) to connectChange.
+    @param [in,out] rSlot   The slot (signature: void func(const camp::ArrayProperty&,
+                            const camp::Value&)) to connect to.
 
     @return Connection object to block or disconnect the connection.
     **/
-    static inline sigc::connection connectInsertion( const camp::UserObject& rObject,
-        const ValueInsertedSignal::slot_type& rSlot )
+    static inline sigc::connection connectArrayInsertion( const camp::UserObject& rObject,
+        const ArrayInsertedSignal::slot_type& rSlot )
     {
         UserObjectChange::connectToClass( rObject.getClass() );
-        return mInsertSignalMap[ rObject ].connect( rSlot );
+        return mArrayInsertedMap[ rObject ].connect( rSlot );
     }
     /**
-    Connects to the property changed signal for all properties inside given class.
+    Connects to the camp array changed signal.
+
+    @param          rObject The UserObject to get changes for.
+    @param [in,out] rSlot   The slot (signature: void func(const camp::ArrayProperty&,
+                            std::size_t [index], const camp::Value&)) to connect to.
+
+    @return Connection object to block or disconnect the connection.
+    **/
+    static inline sigc::connection connectArrayChange( const camp::UserObject& rObject,
+        const ArrayChangedSignal::slot_type& rSlot )
+    {
+        UserObjectChange::connectToClass( rObject.getClass() );
+        return mArrayChangedMap[ rObject ].connect( rSlot );
+    }
+    /**
+    Connects to the camp array removed signal.
+
+    @param          rObject The UserObject to get changes for.
+    @param [in,out] rSlot   The slot (signature: void func(const camp::ArrayProperty&,
+                            std::size_t [index])) to connect to.
+
+    @return Connection object to block or disconnect the connection.
+    **/
+    static inline sigc::connection connectArrayRemoval( const camp::UserObject& rObject,
+        const ArrayRemovedSignal::slot_type& rSlot )
+    {
+        UserObjectChange::connectToClass( rObject.getClass() );
+        return mArrayRemovedMap[ rObject ].connect( rSlot );
+    }
+    /**
+    Connects to the camp dictionary changed signal.
+
+    @param          rObject The UserObject to get changes for.
+    @param [in,out] rSlot   The slot (signature: void func(const camp::DictionaryProperty&,
+                            const camp::Value& [key], const camp::Value& [value])) to connect to.
+
+    @return Connection object to block or disconnect the connection.
+    **/
+    static inline sigc::connection connectDictChange( const camp::UserObject& rObject,
+        const DictChangedSignal::slot_type& rSlot )
+    {
+        UserObjectChange::connectToClass( rObject.getClass() );
+        return mDictChangedMap[ rObject ].connect( rSlot );
+    }
+    /**
+    Connects to the camp dictionary removed signal.
+
+    @param          rObject The UserObject to get changes for.
+    @param [in,out] rSlot   The slot (signature: void func(const camp::DictionaryProperty&,
+                            const camp::Value& [key])) to connect to.
+
+    @return Connection object to block or disconnect the connection.
+    **/
+    static inline sigc::connection connectDictRemoval( const camp::UserObject& rObject,
+        const DictRemovedSignal::slot_type& rSlot )
+    {
+        UserObjectChange::connectToClass( rObject.getClass() );
+        return mDictRemovedMap[ rObject ].connect( rSlot );
+    }
+    /**
+    Connects to the change signals for all properties inside given class.
 
     @param  rClass  The metaclass to get property changed notifications from.
     **/
@@ -90,16 +166,32 @@ public:
         for( std::size_t i = 0; i < rClass.propertyCount(); ++i )
         {
             const camp::Property& prop = rClass.property( i );
-            if( prop.type() != camp::arrayType )
+            switch( prop.type() )
             {
-                prop.connectSetted( &UserObjectChange::propertyChanged );
-                prop.connectSettedNonwritable( &UserObjectChange::propertyChanged );
-            }
-            else
-            {
-                const camp::ArrayProperty& array = static_cast<const camp::ArrayProperty&>( prop );
-                array.connectInserted( &UserObjectChange::valueInserted );
-                array.connectInsertedNonwritable( &UserObjectChange::valueInserted );
+                case camp::arrayType:
+                {
+                    const camp::ArrayProperty& array = static_cast<const camp::ArrayProperty&>( prop );
+                    array.connectInserted( &UserObjectChange::arrayInserted );
+                    array.connectInsertedNonwritable( &UserObjectChange::arrayInserted );
+                    array.connectSetted( &UserObjectChange::arrayChanged );
+                    array.connectSettedNonwritable( &UserObjectChange::arrayChanged );
+                    array.connectRemoved( &UserObjectChange::arrayRemoved );
+                    array.connectRemovedNonwritable( &UserObjectChange::arrayRemoved );
+                    break;
+                }
+                case camp::dictionaryType:
+                {
+                    const camp::DictionaryProperty& dict = static_cast<const camp::DictionaryProperty&>( prop );
+                    dict.connectSetted( &UserObjectChange::dictChanged );
+                    dict.connectSettedNonwritable( &UserObjectChange::dictChanged );
+                    dict.connectRemoved( &UserObjectChange::dictRemoved );
+                    dict.connectRemovedNonwritable( &UserObjectChange::dictRemoved );
+                    break;
+                }
+                default:
+                    prop.connectSetted( &UserObjectChange::propertyChanged );
+                    prop.connectSettedNonwritable( &UserObjectChange::propertyChanged );
+                    break;
             }
         }
 
@@ -110,18 +202,43 @@ private:
     static inline void propertyChanged( const camp::UserObject& rObject,
         const camp::Property& rProperty, const camp::Value& rValue )
     {
-        mSetSignalMap[ rObject ]( rObject, rProperty, rValue );
+        mChangeMap[ rObject ]( rObject, rProperty, rValue );
     }
 
-    static inline void valueInserted( const camp::UserObject& rObject,
+    static inline void arrayInserted( const camp::UserObject& rObject,
         const camp::ArrayProperty& rProperty, const camp::Value& rValue )
     {
-        mInsertSignalMap[ rObject ]( rObject, rProperty, rValue );
+        mArrayInsertedMap[ rObject ]( rObject, rProperty, rValue );
+    }
+    static inline void arrayChanged( const camp::UserObject& rObject,
+        const camp::ArrayProperty& rProperty, std::size_t index, const camp::Value& rValue )
+    {
+        mArrayChangedMap[ rObject ]( rObject, rProperty, index, rValue );
+    }
+    static inline void arrayRemoved( const camp::UserObject& rObject,
+        const camp::ArrayProperty& rProperty, std::size_t index )
+    {
+        mArrayRemovedMap[ rObject ]( rObject, rProperty, index );
     }
 
-    static SetSignalMap     mSetSignalMap;
-    static InsertSignalMap  mInsertSignalMap;
-    static std::set<String> mClassesAdded;
+    static inline void dictChanged( const camp::UserObject& rObject,
+        const camp::DictionaryProperty& rProperty, const camp::Value& rKey, const camp::Value& rValue )
+    {
+        mDictChangedMap[ rObject ]( rObject, rProperty, rKey, rValue );
+    }
+    static inline void dictRemoved( const camp::UserObject& rObject,
+        const camp::DictionaryProperty& rProperty, const camp::Value& rKey )
+    {
+        mDictRemovedMap[ rObject ]( rObject, rProperty, rKey );
+    }
+
+    static ChangeSignalMap          mChangeMap;
+    static ArrayInsertedSignalMap   mArrayInsertedMap;
+    static ArrayChangedSignalMap    mArrayChangedMap;
+    static ArrayRemovedSignalMap    mArrayRemovedMap;
+    static DictChangedSignalMap     mDictChangedMap;
+    static DictRemovedSignalMap     mDictRemovedMap;
+    static std::set<String>         mClassesAdded;
 };
 
 //------------------------------------------------------------------------------

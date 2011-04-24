@@ -36,6 +36,8 @@ namespace ObjectSystem
 {
 //------------------------------------------------------------------------------
 
+typedef std::map<String, camp::Value> Properties;
+
 class DIVERSIA_OBJECT_API ComponentTemplate : public RakNet::Replica3, public boost::noncopyable
 {
 public:
@@ -125,6 +127,10 @@ public:
     Gets the network unique identifier as a string.
     **/
     inline String getGUIDString() { return boost::lexical_cast<String>( GetNetworkID() ); }
+    /**
+    Gets the property value map.
+    **/
+    inline const Properties& getProperties() const { return mProperties; }
 
     /**
     Sets a template property. 
@@ -139,6 +145,14 @@ public:
     @param  rComponent  The component. 
     **/
     void setTemplateProperties( const Component& rComponent );
+    /**
+    Creates a component with the properties from this template.
+    
+    @param [in,out] rObject The object to create the component on.
+    
+    @return The created component. 
+    **/
+    Component& createComponent( Object& rObject );
 
     /**
     Convenience function for destroying this component template.
@@ -283,9 +297,8 @@ private:
     ObjectTemplate&                         mObjectTemplate;
     ComponentFactory&                       mFactory;
 
-    typedef std::map<String, camp::Value> PropertyValueMap;
     const camp::Class&                                      mComponentClass;
-    PropertyValueMap                                        mProperties;
+    Properties                                        mProperties;
     sigc::signal<void, const String&, const camp::Value&>   mPropertySignal;
 
     CAMP_RTTI()

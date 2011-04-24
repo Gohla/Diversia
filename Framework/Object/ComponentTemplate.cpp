@@ -185,6 +185,30 @@ void ComponentTemplate::setTemplateProperties( const Component& rComponent )
     }
 }
 
+Component& ComponentTemplate::createComponent( Object& rObject )
+{
+    // Create component
+    Component& component = rObject.createComponent( mType, mComponentClass.name() );
+    camp::UserObject componentObject = component;
+
+    // Set template properties on component.
+    for( Properties::const_iterator i = mProperties.begin(); i != mProperties.end(); ++i )
+    {
+        try
+        {
+            componentObject.set( i->first, i->second );
+        }
+        catch( ... )
+        {
+        	// Ignore errors
+        }
+    }
+
+    // TODO: Create component links
+
+    return component;
+}
+
 void ComponentTemplate::broadcastConstruction()
 {
     OLOGD << "Broadcasting construction for component template " << mName << " in object template " 

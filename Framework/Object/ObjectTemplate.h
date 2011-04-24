@@ -326,6 +326,16 @@ public:
     **/
     void destroyComponentTemplate( const String& rName,
         RakNet::RakNetGUID source = RakNet::RakNetGUID( 0 ) );
+    /**
+    Creates an object with the parameters and component templates from this object template.
+    
+    @param [in,out] rObjectManager  The object manager to create the object in.
+    @param  rName                   The name of the object.
+    @param  type                    If the object should be a remote or local object. 
+    
+    @return The created object. 
+    **/
+    Object& createObject( ObjectManager& rObjectManager, const String& rName, NetworkingType type );
 
     /**
     Gets the parent object template.

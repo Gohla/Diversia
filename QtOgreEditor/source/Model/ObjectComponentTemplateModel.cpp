@@ -23,7 +23,7 @@ ComponentTemplateItem::ComponentTemplateItem( ComponentTemplate& rComponentTempl
     mComponentTemplate( rComponentTemplate )
 {
     QStandardItem::setText( QString( rComponentTemplate.getName().c_str() ) );
-    QStandardItem::setData( QVariant( REPLICATYPE_COMPONENT ), Qt::UserRole + 1 );
+    QStandardItem::setData( QVariant( REPLICATYPE_COMPONENTTEMPLATE ), Qt::UserRole + 1 );
     QStandardItem::setData( QVariant( QString( rComponentTemplate.getObjectTemplate().getName().c_str() ) ), 
         Qt::UserRole + 2 );
     QStandardItem::setData( QVariant( QString( rComponentTemplate.getName().c_str() ) ), Qt::UserRole + 3 );
@@ -67,7 +67,7 @@ ObjectTemplateItem::ObjectTemplateItem( ObjectTemplate& rObjectTemplate ):
     mObjectTemplate( rObjectTemplate )
 {
     QStandardItem::setText( QString( rObjectTemplate.getDisplayName().c_str() ) );
-    QStandardItem::setData( QVariant( REPLICATYPE_OBJECT ), Qt::UserRole + 1 );
+    QStandardItem::setData( QVariant( REPLICATYPE_OBJECTTEMPLATE ), Qt::UserRole + 1 );
     QStandardItem::setData( QVariant( QString( rObjectTemplate.getName().c_str() ) ), Qt::UserRole + 2 );
     QStandardItem::setIcon( QIcon( ":/Icons/Icons/mimetypes/gnome-package.png" ) );
     QStandardItem::setEditable( true );

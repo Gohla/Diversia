@@ -324,7 +324,7 @@ void PropertySynchronization::storeUserObject()
 
     mPropertyChangedConnection = UserObjectChange::connectChange( mUserObject, sigc::mem_fun( this, 
         &PropertySynchronization::propertyChanged ) );
-    mValueInsertedConnection = UserObjectChange::connectInsertion( mUserObject, sigc::mem_fun( this, 
+    mValueInsertedConnection = UserObjectChange::connectArrayInsertion( mUserObject, sigc::mem_fun( this, 
         &PropertySynchronization::valueInserted ) );
 }
 

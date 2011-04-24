@@ -263,9 +263,7 @@ void ObjectTreeView::showContextMenu( const QPoint& rPoint )
     QMenu contextMenu;
     if( index.isValid() )
     {
-        int type = index.data( Qt::UserRole + 1 ).toInt();
-
-        switch( type )
+        switch( ObjectTreeView::getReplicaType( index ) )
         {
             case REPLICATYPE_OBJECT: 
             {
@@ -319,8 +317,6 @@ void ObjectTreeView::createNewObject()
 {
     try
     {
-        /*mObjectManager->createObject( String( "EditorObject" ) + mObjectManager->getGUIDString() + 
-            boost::lexical_cast<String>( ++mObjectCounter ), LOCAL, "EditorObject" );*/
         GlobalsBase::mUndoStack->push( new ObjectCommand( *mObjectManager, 
             String( "EditorObject" ) + mObjectManager->getGUIDString() + 
             boost::lexical_cast<String>( ++mObjectCounter ), LOCAL, "EditorObject" ) );
@@ -333,26 +329,19 @@ void ObjectTreeView::createNewObject()
 
 void ObjectTreeView::createChildObject()
 {
-    QModelIndex index = QAbstractItemView::currentIndex();
-    if( index.isValid() && index.data( Qt::UserRole + 1 ).toInt() == REPLICATYPE_OBJECT )
+    try
     {
-        try
-        {
-            Object& rootObject = mObjectManager->getObject( index.data( Qt::UserRole + 2 
-                ).toString().toStdString() );
-            /*Object& object = mObjectManager->createObject( String( "EditorObject" ) + 
-                mObjectManager->getGUIDString() + boost::lexical_cast<String>( ++mObjectCounter ), 
-                rootObject.getNetworkingType(), "EditorObject" );
-            object.parent( &rootObject );*/
-            GlobalsBase::mUndoStack->push( new ObjectCommand( *mObjectManager, 
-                String( "EditorObject" ) + mObjectManager->getGUIDString() + 
-                boost::lexical_cast<String>( ++mObjectCounter ), rootObject.getNetworkingType(), 
-                "EditorObject", &rootObject ) );
-        }
-        catch( Exception e )
-        {
-            LOGE << "Could not create child object: " << e.what();
-        }
+        QModelIndex index = QAbstractItemView::currentIndex();
+        Object& rootObject = ObjectTreeView::getObject( index );
+
+        GlobalsBase::mUndoStack->push( new ObjectCommand( *mObjectManager, 
+            String( "EditorObject" ) + mObjectManager->getGUIDString() + 
+            boost::lexical_cast<String>( ++mObjectCounter ), rootObject.getNetworkingType(), 
+            "EditorObject", &rootObject ) );
+    }
+    catch( Exception e )
+    {
+        LOGE << "Could not create child object: " << e.what();
     }
 }
 
@@ -429,8 +418,8 @@ void ObjectTreeView::createTemplate()
         {
             Object& object = ObjectTreeView::getObject( selectedIndexes.at( 0 ) );
             mObjectTemplateManager->createObjectTemplate( object, 
-                String( "ObjectTemplateFromObject" ) + boost::lexical_cast<String>( counter++ ), 
-                object.getNetworkingType() );
+                String( "ObjectTemplateFromObject" ) + mObjectTemplateManager->getGUIDString() + 
+                boost::lexical_cast<String>( ++counter ), object.getNetworkingType() );
         }
         catch( Exception e )
         {
@@ -464,33 +453,26 @@ void ObjectTreeView::destroy( const QModelIndex& rIndex )
 
 void ObjectTreeView::destroyObject( const QModelIndex& rIndex )
 {
-    if( ObjectTreeView::isObject( rIndex ) )
+    try
     {
-        try
-        {
-            //mObjectManager->destroyObjectTree( ObjectTreeView::getObject( rIndex ) );
-            GlobalsBase::mUndoStack->push( new ObjectCommand( ObjectTreeView::getObject( rIndex ) ) );
-        }
-        catch( Exception e )
-        {
-            LOGE << "Could not destroy object(s): " << e.what();
-        }
+        GlobalsBase::mUndoStack->push( new ObjectCommand( ObjectTreeView::getObject( rIndex ) ) );
+    }
+    catch( Exception e )
+    {
+        LOGE << "Could not destroy object(s): " << e.what();
     }
 }
 
 void ObjectTreeView::destroyComponent( const QModelIndex& rIndex )
 {
-    if( ObjectTreeView::isComponent( rIndex ) )
+    try
     {
-        try
-        {
-            GlobalsBase::mUndoStack->push( new ComponentCommand( 
-                ObjectTreeView::getComponent( rIndex ) ) );
-        }
-        catch( Exception e )
-        {
-            LOGE << "Could not destroy component: " << e.what();
-        }
+        GlobalsBase::mUndoStack->push( new ComponentCommand( 
+            ObjectTreeView::getComponent( rIndex ) ) );
+    }
+    catch( Exception e )
+    {
+        LOGE << "Could not destroy component: " << e.what();
     }
 }
 
@@ -559,6 +541,7 @@ void ObjectTreeView::pluginChange( ClientServerPlugin& rPlugin, bool created )
             break;
         case CLIENTSERVERPLUGINTYPE_OBJECTTEMPLATEMANAGER:
             mObjectTemplateManager = &static_cast<ClientObjectTemplateManager&>( rPlugin );
+            break;
     }
 }
 

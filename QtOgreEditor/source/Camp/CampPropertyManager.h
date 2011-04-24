@@ -21,25 +21,81 @@ namespace QtOgreEditor
 //------------------------------------------------------------------------------
 
 /**
-Data class to keep track of camp properties.
+Interface for keeping track of camp properties.
 **/
-struct CampPropertyData
+struct CampPropertyDataInterface
+{
+    virtual ~CampPropertyDataInterface() {}
+
+    virtual void set( const camp::Value& rValue ) = 0;
+    virtual void setWithUndo( const camp::Value& rValue ) = 0;
+    virtual camp::Value get() const = 0;
+    virtual camp::Type type() const = 0;
+    virtual String name() const = 0;
+    virtual bool ignore() const = 0;
+    virtual QString valueText() const = 0;
+    virtual bool hasTag( const camp::Value& rTag ) const = 0;
+    virtual camp::Value tag( const camp::Value& rTag ) const = 0;
+    virtual bool writable() const = 0;
+    virtual CampPropertyDataInterface* clone() const = 0;
+    virtual CampPropertyDataInterface* parent() const = 0;
+
+    virtual bool lessThan(const CampPropertyDataInterface& other) const = 0;
+    bool operator <(const CampPropertyDataInterface* other) const;
+};
+
+/**
+Data class to keep track of normal camp properties.
+**/
+struct CampPropertyData : public CampPropertyDataInterface
 {
     CampPropertyData( const camp::Property& rProperty, const camp::UserObject& rObject,
-        const camp::Property* pParentProperty = 0, 
-        const camp::UserObject& rParentObject = camp::UserObject::nothing ):
-        mProperty( rProperty ), mObject( rObject ), mParentProperty( pParentProperty ),
-        mParentObject( rParentObject ) {}
+        CampPropertyDataInterface* pParentPropertyData = 0 );
+    ~CampPropertyData();
 
-    inline void set( camp::Value value ) { mProperty.set( mObject, value ); }
-    inline void setWithUndo( camp::Value value ) { GlobalsBase::mUndoStack->push( 
-        new PropertyChangeCommand( mProperty, mObject, value, mParentProperty, mParentObject ) ); }
+    inline void set( const camp::Value& rValue ) { mProperty.set( mObject, rValue ); }
+    void setWithUndo( const camp::Value& rValue );
     inline camp::Value get() const { return mProperty.get( mObject ); }
+    inline camp::Type type() const { return mProperty.type(); }
+    inline String name() const { return mProperty.name(); }
+    bool ignore() const;
+    QString valueText() const;
+    inline bool hasTag( const camp::Value& rTag ) const { return mProperty.hasTag( rTag ); }
+    inline camp::Value tag( const camp::Value& rTag ) const { return mProperty.tag( rTag ); }
+    inline bool writable() const { return mProperty.writable( mObject ); }
+    CampPropertyData* clone() const;
+    inline CampPropertyDataInterface* parent() const { return mParentPropertyData; }
 
-    const camp::Property&   mProperty;
-    camp::UserObject        mObject;
-    const camp::Property*   mParentProperty;
-    camp::UserObject        mParentObject;
+    bool lessThan(const CampPropertyDataInterface& other) const;
+
+    const camp::Property&       mProperty;
+    camp::UserObject            mObject;
+    CampPropertyDataInterface*  mParentPropertyData;
+};
+
+struct CampValueMapPropertyData : public CampPropertyDataInterface
+{
+    CampValueMapPropertyData( const camp::DictionaryProperty& rProperty, 
+        const camp::UserObject& rObject, const String& rKey );
+
+    inline void set( const camp::Value& rValue ) { mProperty.set( mObject, mKey, rValue ); }
+    void setWithUndo( const camp::Value& rValue );
+    inline camp::Value get() const { return mProperty.get( mObject, mKey ); }
+    inline camp::Type type() const { return get().type(); /* TODO: Use class? */ }
+    inline String name() const { return mKey; }
+    inline bool ignore() const { return false; }
+    inline QString valueText() const { return ""; }
+    inline bool hasTag( const camp::Value& rTag ) const { return false; }
+    inline camp::Value tag( const camp::Value& rTag ) const { return camp::Value::nothing; }
+    inline bool writable() const { return true; }
+    CampValueMapPropertyData* clone() const;
+    inline CampPropertyDataInterface* parent() const { return 0; }
+
+    bool lessThan(const CampPropertyDataInterface& other) const;
+
+    const camp::DictionaryProperty& mProperty;
+    camp::UserObject                mObject;
+    String                          mKey;
 };
 
 //------------------------------------------------------------------------------
@@ -56,8 +112,7 @@ public:
     CampCompoundPropertyManager( CampPropertyManager* pParent = 0 );
     ~CampCompoundPropertyManager();
 
-    void setValue( QtProperty* pProperty, const camp::Property& rProperty, 
-        const camp::UserObject& rObject );
+    void setValue( QtProperty* pProperty, CampPropertyDataInterface* pData );
     template <typename T> void propertyChanged( QtProperty* pProperty, T val )
     {
         if( mBlockChangeSignal ) return;
@@ -121,7 +176,7 @@ private:
     CampPropertyManager*    mCampPropertyManager;
     bool                    mBlockChangeSignal;
 
-    typedef std::map<const QtProperty*, CampPropertyData*> DataMap;
+    typedef std::map<const QtProperty*, CampPropertyDataInterface*> DataMap;
     DataMap mPropertyData;
     DataMap mSubPropertyData;
 
@@ -185,15 +240,10 @@ public:
     /**
     Adds a property to the manager and returns the property.
     
-    @param  rProperty   The property to add.
-    @param  rObject     The object that has rProperty.
-    @param  pProperty   Parent property, set this to the root item of the property browser.
 
     @return Created property or 0 if the property could not be created.
     **/
-    QtProperty* addProperty( const camp::Property& rProperty, const camp::UserObject& rObject, 
-        QtProperty* pProperty = 0, const camp::Property* pParentProperty = 0, 
-        const camp::UserObject& rParentObject = camp::UserObject::nothing );
+    QtProperty* addProperty( CampPropertyDataInterface* pData, QtProperty* pProperty = 0 );
     /**
     Adds a whole class to the manager as properties and returns the root property.
     
@@ -218,6 +268,13 @@ public:
     std::list<QtProperty*> addClassTree( const camp::Class& rClass, 
         const camp::UserObject& rObject );
     /**
+    Sets up the change signals so that edits in the property grid get propagated to camp. This
+    is called automatically in addClassTree, so only call this when using addProperty directly.
+
+    @param  rObject The object to setup changes for.
+    **/
+    void setup( const camp::UserObject& rObject );
+    /**
     Destroys all properties.
     **/
     void clear();
@@ -234,11 +291,11 @@ private:
 
     QtProperty* addClassInternal( const camp::Class& rClass, const camp::UserObject& rObject, 
         const String& rName, std::set<String>& rAddedProperties, 
-        QtProperty* pCompoundProperty = 0, const camp::Property* pParentProperty = 0, 
-        const camp::UserObject& rParentObject = camp::UserObject::nothing );
+        QtProperty* pCompoundProperty = 0, CampPropertyDataInterface* pParentData = 0 );
     void addClassTreeInternal( const camp::Class& rClass, const camp::UserObject& rObject,
         std::set<String>& rAddedProperties, std::list<QtProperty*>& rRootProperties );
     void setBlockSlots( bool block );
+    void externalPropertyChanged( CampPropertyDataInterface* pData, const camp::Value& rValue );
     void externalPropertyChanged( const camp::UserObject& rObject, const camp::Property& rProperty, 
         const camp::Value& rValue );
     template <typename T, typename U> void propertyChanged( QtProperty* pProperty, U pManager, 
@@ -282,9 +339,9 @@ private:
     }
     void update();
 
-    typedef std::map<QtProperty*, CampPropertyData*> DataMap;
-    typedef std::map<std::pair<camp::UserObject, const camp::Property*>, QtProperty*> PropertyMap;
-    typedef std::map<const camp::Property*, camp::UserObject> ContinuousUpdateMap;
+    typedef std::map<QtProperty*, CampPropertyDataInterface*> DataMap;
+    typedef std::map<CampPropertyDataInterface*, QtProperty*> PropertyMap;
+    typedef std::set<CampPropertyDataInterface*> ContinuousUpdateMap;
 
     DataMap                         mData;
     PropertyMap                     mProperties;

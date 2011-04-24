@@ -34,8 +34,12 @@ namespace Util
 {
 //------------------------------------------------------------------------------
 
-SetSignalMap UserObjectChange::mSetSignalMap = SetSignalMap();
-InsertSignalMap UserObjectChange::mInsertSignalMap = InsertSignalMap();
+ChangeSignalMap UserObjectChange::mChangeMap = ChangeSignalMap();
+ArrayInsertedSignalMap UserObjectChange::mArrayInsertedMap = ArrayInsertedSignalMap();
+ArrayChangedSignalMap UserObjectChange::mArrayChangedMap = ArrayChangedSignalMap();
+ArrayRemovedSignalMap UserObjectChange::mArrayRemovedMap = ArrayRemovedSignalMap();
+DictChangedSignalMap UserObjectChange::mDictChangedMap = DictChangedSignalMap();
+DictRemovedSignalMap UserObjectChange::mDictRemovedMap = DictRemovedSignalMap();
 std::set<String> UserObjectChange::mClassesAdded = std::set<String>();
 
 //------------------------------------------------------------------------------

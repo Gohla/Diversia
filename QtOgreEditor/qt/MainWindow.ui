@@ -190,6 +190,9 @@
          <height>16777215</height>
         </size>
        </property>
+       <property name="headerHidden">
+        <bool>true</bool>
+       </property>
       </widget>
      </item>
      <item row="0" column="0">
@@ -269,6 +272,9 @@
          <width>440</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="headerHidden">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -401,6 +407,9 @@
          <width>440</width>
          <height>16777215</height>
         </size>
+       </property>
+       <property name="headerHidden">
+        <bool>true</bool>
        </property>
       </widget>
      </item>
@@ -785,7 +794,7 @@
   <action name="actionDestroy_object">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
-     <normaloff>:/Icons/Icons/actions/application-exit.png</normaloff>:/Icons/Icons/actions/application-exit.png</iconset>
+     <normaloff>:/Icons/Icons/status/trashcan_full.png</normaloff>:/Icons/Icons/status/trashcan_full.png</iconset>
    </property>
    <property name="text">
     <string>Destroy object</string>
@@ -797,7 +806,7 @@
   <action name="actionDestroy_component">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
-     <normaloff>:/Icons/Icons/actions/application-exit.png</normaloff>:/Icons/Icons/actions/application-exit.png</iconset>
+     <normaloff>:/Icons/Icons/status/trashcan_full.png</normaloff>:/Icons/Icons/status/trashcan_full.png</iconset>
    </property>
    <property name="text">
     <string>Destroy component</string>
@@ -821,7 +830,7 @@
   <action name="actionDestroy_selected">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
-     <normaloff>:/Icons/Icons/actions/application-exit.png</normaloff>:/Icons/Icons/actions/application-exit.png</iconset>
+     <normaloff>:/Icons/Icons/status/trashcan_full.png</normaloff>:/Icons/Icons/status/trashcan_full.png</iconset>
    </property>
    <property name="text">
     <string>Destroy selected</string>
@@ -917,13 +926,85 @@
   <action name="actionCreate_template_from_object">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
-     <normaloff>:/Icons/Icons/apps/gdeb.png</normaloff>:/Icons/Icons/apps/gdeb.png</iconset>
+     <normaloff>:/Icons/Icons/apps/gpk-prefs.png</normaloff>:/Icons/Icons/apps/gpk-prefs.png</iconset>
    </property>
    <property name="text">
     <string>Create template from object</string>
    </property>
    <property name="toolTip">
     <string>Creates an object template from this object</string>
+   </property>
+  </action>
+  <action name="actionCreate_new_object_template">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/apps/package-manager-icon.png</normaloff>:/Icons/Icons/apps/package-manager-icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Create new object template</string>
+   </property>
+   <property name="toolTip">
+    <string>Create a new object template</string>
+   </property>
+  </action>
+  <action name="actionCreate_child_object_template">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/apps/package-manager-icon.png</normaloff>:/Icons/Icons/apps/package-manager-icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Create child object template</string>
+   </property>
+   <property name="toolTip">
+    <string>Create an object template as a child of the currently selected object template</string>
+   </property>
+  </action>
+  <action name="actionDestroy_object_template">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/status/trashcan_full.png</normaloff>:/Icons/Icons/status/trashcan_full.png</iconset>
+   </property>
+   <property name="text">
+    <string>Destroy object template</string>
+   </property>
+   <property name="toolTip">
+    <string>Destroy selected object template</string>
+   </property>
+  </action>
+  <action name="actionDestroy_component_template">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/status/trashcan_full.png</normaloff>:/Icons/Icons/status/trashcan_full.png</iconset>
+   </property>
+   <property name="text">
+    <string>Destroy component template</string>
+   </property>
+   <property name="toolTip">
+    <string>Destroy selected component template</string>
+   </property>
+  </action>
+  <action name="actionDestroy_selected_templates">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/status/trashcan_full.png</normaloff>:/Icons/Icons/status/trashcan_full.png</iconset>
+   </property>
+   <property name="text">
+    <string>Destroy selected</string>
+   </property>
+   <property name="toolTip">
+    <string>Destroy all selected object and component templates</string>
+   </property>
+  </action>
+  <action name="actionInstantiate_template">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/mimetypes/gnome-mime-x-install.png</normaloff>:/Icons/Icons/mimetypes/gnome-mime-x-install.png</iconset>
+   </property>
+   <property name="text">
+    <string>Instantiate template</string>
+   </property>
+   <property name="toolTip">
+    <string>Instantiate the selected object template</string>
    </property>
   </action>
   <zorder>propertyBrowserDock</zorder>
@@ -964,6 +1045,16 @@
    <class>Diversia::QtOgreEditor::ObjectTemplateTreeView</class>
    <extends>QTreeView</extends>
    <header>UI/ObjectTemplateTreeView.h</header>
+   <slots>
+    <slot>search()</slot>
+    <slot>createNewObjectTemplate()</slot>
+    <slot>createChildObjectTemplate()</slot>
+    <slot>createComponentTemplate()</slot>
+    <slot>destroyObjectTemplate()</slot>
+    <slot>destroyComponentTemplate()</slot>
+    <slot>destroySelected()</slot>
+    <slot>instantiate()</slot>
+   </slots>
   </customwidget>
   <customwidget>
    <class>Diversia::QtOgreEditor::PluginTreeView</class>
@@ -1270,6 +1361,118 @@
     <hint type="destinationlabel">
      <x>127</x>
      <y>193</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>editObjectTemplateSearch</sender>
+   <signal>editingFinished()</signal>
+   <receiver>treeViewObjectTemplates</receiver>
+   <slot>search()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>127</x>
+     <y>308</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>386</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCreate_new_object_template</sender>
+   <signal>triggered()</signal>
+   <receiver>treeViewObjectTemplates</receiver>
+   <slot>createNewObjectTemplate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>386</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionCreate_child_object_template</sender>
+   <signal>triggered()</signal>
+   <receiver>treeViewObjectTemplates</receiver>
+   <slot>createChildObjectTemplate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>386</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDestroy_component_template</sender>
+   <signal>triggered()</signal>
+   <receiver>treeViewObjectTemplates</receiver>
+   <slot>destroyComponentTemplate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>386</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDestroy_object_template</sender>
+   <signal>triggered()</signal>
+   <receiver>treeViewObjectTemplates</receiver>
+   <slot>destroyObjectTemplate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>386</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDestroy_selected_templates</sender>
+   <signal>triggered()</signal>
+   <receiver>treeViewObjectTemplates</receiver>
+   <slot>destroySelected()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>386</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionInstantiate_template</sender>
+   <signal>triggered()</signal>
+   <receiver>treeViewObjectTemplates</receiver>
+   <slot>instantiate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>386</y>
     </hint>
    </hints>
   </connection>

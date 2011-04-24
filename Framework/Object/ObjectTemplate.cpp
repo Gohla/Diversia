@@ -261,6 +261,11 @@ ComponentTemplate& ObjectTemplate::createComponentTemplate( const Component& rCo
 
 void ObjectTemplate::createComponentTemplates( const Object& rObject )
 {
+    // Set transform from object.
+    Node::setPosition( rObject.getPosition() );
+    Node::setOrientation( rObject.getOrientation() );
+    Node::setScale( rObject.getScale() );
+
     // Recursively go trough all child objects.
     ObjectChilds childs = rObject.getChildObjects();
     for( ObjectChilds::iterator i = childs.begin(); i != childs.end(); ++i )
@@ -377,6 +382,34 @@ void ObjectTemplate::destroyComponentTemplate( const String& rName,
             "Component template not found in this object template.",
             "ObjectTemplate::destroyComponentTemplate" );
     }
+}
+
+Object& ObjectTemplate::createObject( ObjectManager& rObjectManager, const String& rName, 
+    NetworkingType type )
+{
+    // Create object for this object template.
+    Object& object = rObjectManager.createObject( rName, type, mDisplayName );
+
+    // Set transform to object.
+    object.setPosition( Node::getPosition() );
+    object.setOrientation( Node::getOrientation() );
+    object.setScale( Node::getScale() );
+
+    // Recursively go trough all child object templates.
+    ObjectTemplateChilds childs = ObjectTemplate::getChildObjectTemplates();
+    for( ObjectTemplateChilds::iterator i = childs.begin(); i != childs.end(); ++i )
+    {
+        i->second->createObject( rObjectManager, rName + "Parent", type ).parent( &object );
+    }
+
+    // Create all components in created object.
+    for( ComponentTemplatesByType::iterator i = mComponentTemplatesByType.begin(); 
+        i != mComponentTemplatesByType.end(); ++i )
+    {
+        i->second->createComponent( object );
+    }
+
+    return object;
 }
 
 void ObjectTemplate::parent( ObjectTemplate* pObjectTemplate, 
