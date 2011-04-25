@@ -139,6 +139,9 @@
    <addaction name="actionSave"/>
    <addaction name="actionSave_as"/>
    <addaction name="separator"/>
+   <addaction name="actionPlay"/>
+   <addaction name="actionStop"/>
+   <addaction name="separator"/>
    <addaction name="actionUndo"/>
    <addaction name="actionRedo"/>
   </widget>
@@ -1007,6 +1010,30 @@
     <string>Instantiate the selected object template</string>
    </property>
   </action>
+  <action name="actionPlay">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/actions/media-playback-start.png</normaloff>:/Icons/Icons/actions/media-playback-start.png</iconset>
+   </property>
+   <property name="text">
+    <string>Play</string>
+   </property>
+   <property name="toolTip">
+    <string>Starts the game, any changes made in the editor in the play state are lost</string>
+   </property>
+  </action>
+  <action name="actionStop">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/actions/gtk-media-stop.png</normaloff>:/Icons/Icons/actions/gtk-media-stop.png</iconset>
+   </property>
+   <property name="text">
+    <string>Stop</string>
+   </property>
+   <property name="toolTip">
+    <string>Stops the game and reverts back to the state before play was pressed</string>
+   </property>
+  </action>
   <zorder>propertyBrowserDock</zorder>
   <zorder>objectsDock</zorder>
   <zorder>pluginsDock</zorder>
@@ -1476,15 +1503,48 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionPlay</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>play()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>560</x>
+     <y>440</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionStop</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>stop()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>560</x>
+     <y>440</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>exit()</slot>
   <slot>disconnect()</slot>
   <slot>load()</slot>
-  <slot>start()</slot>
+  <slot>play()</slot>
   <slot>saveAs()</slot>
   <slot>logSettingsChanged()</slot>
   <slot>undo()</slot>
   <slot>redo()</slot>
+  <slot>stop()</slot>
  </slots>
 </ui>

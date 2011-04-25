@@ -49,6 +49,8 @@ private slots:
     void load();
     void logSeverityChange( QWidget* pWidget );
     void logSourceChange( QWidget* pWidget );
+    void play();
+    void stop();
     void undo();
     void redo();
 

@@ -41,6 +41,12 @@ void EditState::start()
     EditorGlobals::mMainWindow->mUI.propertyBrowserDockWidgetContents->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.graphicsView->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.listViewUndo->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionPlay->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionSave->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionSave_as->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionLoad->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionUndo->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionRedo->setEnabled( true );
 }
 
 void EditState::suspend()

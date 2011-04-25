@@ -179,7 +179,6 @@ void EditorApplication::init()
         TemplatePluginFactory<GameModePlugin, ServerPluginManager>::registerFactory();
         camp::classByType<GameModePlugin>();
         GameModePlugin::setDefaultSlot( sigc::ptr_fun( &EditorGameMode::createGameMode ) );
-        GameModePlugin::forceDefaultConstruction( true );
 
         // Initialize graphics
         mGraphicsManager.reset( new GraphicsManager() );

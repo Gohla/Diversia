@@ -69,17 +69,17 @@ void GameModePlugin::create()
 {
     if( !mCreated )
     {
-        if( mClientScriptFiles.empty() || mClientLoadDefaultGamemode || mForceDefault )
+        if( mClientScriptFiles.empty() || mClientLoadDefaultGamemode || 
+            ClientServerPlugin::getState() == STOP )
         {
             // Create default gamemode
-            if( !mDefaultSlot.empty() && mClientLoadDefaultGamemode )
-                mGameMode = mDefaultSlot( this );
+            if( !mDefaultSlot.empty() ) mGameMode = mDefaultSlot( this );
 
-            if( mClientScriptFiles.empty() )
+            if( mClientScriptFiles.empty() || ClientServerPlugin::getState() == STOP )
                 ServerPlugin::mLoadingCompletedSignal( *this );
         }
 
-        if( !mClientScriptFiles.empty() )
+        if( !mClientScriptFiles.empty() && ClientServerPlugin::getState() == PLAY )
         {
             // Load lua gamemode(s)
             ResourceList resourceList;
@@ -148,6 +148,14 @@ void GameModePlugin::reload()
 void GameModePlugin::setServerState( ServerState serverState )
 {
     if( mGameMode ) mGameMode->setServerState( serverState );
+}
+
+void GameModePlugin::stateChanged( PluginState state )
+{
+    switch( state )
+    {
+        case STOP: case PLAY: GameModePlugin::reload(); break;
+    }
 }
 
 void GameModePlugin::resourcesLoaded()

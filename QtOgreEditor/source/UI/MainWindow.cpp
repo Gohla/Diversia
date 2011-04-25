@@ -302,6 +302,36 @@ void MainWindow::logSourceChange( QWidget* pWidget )
     if( !list.empty() ) mUI.logListWidget->scrollToBottom();
 }
 
+void MainWindow::play()
+{
+    try
+    {
+        // TODO: What about multiple 'servers'?
+        GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PLAY );
+        mUI.actionPlay->setEnabled( false );
+        mUI.actionStop->setEnabled( true );
+    }
+    catch( const Exception& e )
+    {
+    	LOGE << "Could not start the game: " << e.what();
+    }
+}
+
+void MainWindow::stop()
+{
+    try
+    {
+        // TODO: What about multiple 'servers'?
+        GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( STOP );
+        mUI.actionStop->setEnabled( false );
+        mUI.actionPlay->setEnabled( true );
+    }
+    catch( const Exception& e )
+    {
+        LOGE << "Could not stop the game: " << e.what();
+    }
+}
+
 void MainWindow::undo()
 {
     GlobalsBase::mUndoStack->undo();

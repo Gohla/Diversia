@@ -50,6 +50,13 @@ void InitialState::wake()
     EditorGlobals::mMainWindow->mUI.listViewUndo->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionConnect->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionDisconnect->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionSave->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionSave_as->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionLoad->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionStop->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionPlay->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionUndo->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionRedo->setEnabled( false );
     EditorGlobals::mOffline = false;
 }
 

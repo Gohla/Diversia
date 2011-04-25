@@ -33,6 +33,8 @@ EditorGameMode::EditorGameMode( GameModePlugin& rGameModePlugin ):
     mDestroyNextUpdate( 0 )
 {
     EditorGameMode::reset();
+
+    if( rGameModePlugin.getServer().getServerState() == CONNECTEDACTIVE ) EditorGameMode::create();
 }
 
 EditorGameMode::~EditorGameMode()
@@ -59,7 +61,7 @@ void EditorGameMode::create()
             mGameModePlugin.getGUIDString(), LOCAL );
         mCameraYaw->setThisClientControlled();
         mCameraPitch->parent( mCameraYaw );
-        mCameraYaw->setPosition( 0, 150, 0 );
+        mCameraYaw->setPosition( 0, 5, 50 );
 
         mCameraPitchDestroyedConnection = mCameraPitch->connectDestruction( sigc::mem_fun( this, 
             &EditorGameMode::cameraDestroyed ) );

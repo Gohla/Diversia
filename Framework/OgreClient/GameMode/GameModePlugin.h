@@ -90,10 +90,6 @@ public:
     {
         mDefaultSlot = rSlot;
     }
-    /**
-    Forces the default game mode to be always constructed.
-    **/
-    inline static void forceDefaultConstruction( bool force = true ) { mForceDefault = force; }
     
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
@@ -104,6 +100,7 @@ private:
     void destroy();
     void reload();
     void setServerState( ServerState serverState );
+    void stateChanged( PluginState state );
 
     bool mousePressed( const MouseButton button );
     void mouseReleased( const MouseButton button );
