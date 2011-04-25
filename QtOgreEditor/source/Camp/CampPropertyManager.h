@@ -40,9 +40,18 @@ struct CampPropertyDataInterface
     virtual CampPropertyDataInterface* clone() const = 0;
     virtual CampPropertyDataInterface* parent() const = 0;
 
-    virtual bool lessThan(const CampPropertyDataInterface& other) const = 0;
-    bool operator <(const CampPropertyDataInterface* other) const;
+    virtual bool lessThan(const CampPropertyDataInterface* other) const = 0;
+
+    struct Compare 
+    {
+        bool operator()(const CampPropertyDataInterface* lhs, const CampPropertyDataInterface* rhs)
+        {
+            return lhs->lessThan( rhs );
+        }
+    };
 };
+
+typedef std::map<const QtProperty*, CampPropertyDataInterface*> QtPropertyDataMap;
 
 /**
 Data class to keep track of normal camp properties.
@@ -66,7 +75,7 @@ struct CampPropertyData : public CampPropertyDataInterface
     CampPropertyData* clone() const;
     inline CampPropertyDataInterface* parent() const { return mParentPropertyData; }
 
-    bool lessThan(const CampPropertyDataInterface& other) const;
+    bool lessThan(const CampPropertyDataInterface* other) const;
 
     const camp::Property&       mProperty;
     camp::UserObject            mObject;
@@ -91,7 +100,7 @@ struct CampValueMapPropertyData : public CampPropertyDataInterface
     CampValueMapPropertyData* clone() const;
     inline CampPropertyDataInterface* parent() const { return 0; }
 
-    bool lessThan(const CampPropertyDataInterface& other) const;
+    bool lessThan(const CampPropertyDataInterface* other) const;
 
     const camp::DictionaryProperty& mProperty;
     camp::UserObject                mObject;
@@ -117,7 +126,7 @@ public:
     {
         if( mBlockChangeSignal ) return;
 
-        DataMap::iterator i = mSubPropertyData.find( pProperty );
+        QtPropertyDataMap::iterator i = mSubPropertyData.find( pProperty );
         if( i != mSubPropertyData.end() )
         {
             // This is called after the sub values have changed, get the value and set it again
@@ -176,9 +185,8 @@ private:
     CampPropertyManager*    mCampPropertyManager;
     bool                    mBlockChangeSignal;
 
-    typedef std::map<const QtProperty*, CampPropertyDataInterface*> DataMap;
-    DataMap mPropertyData;
-    DataMap mSubPropertyData;
+    QtPropertyDataMap mPropertyData;
+    QtPropertyDataMap mSubPropertyData;
 
     typedef std::map<QtProperty*, QtProperty*> SubToPropertyMap;
     typedef std::multimap<QtProperty*, QtProperty*> PropertyToSubMap;
@@ -303,7 +311,7 @@ private:
     {
         if( mBlockChangeSignal ) return;
 
-        DataMap::iterator i = mData.find( pProperty );
+        QtPropertyDataMap::iterator i = mData.find( pProperty );
         if( i != mData.end() )
         {
             camp::Value currentVal;
@@ -339,11 +347,10 @@ private:
     }
     void update();
 
-    typedef std::map<QtProperty*, CampPropertyDataInterface*> DataMap;
-    typedef std::map<CampPropertyDataInterface*, QtProperty*> PropertyMap;
+    typedef std::map<CampPropertyDataInterface*, QtProperty*, CampPropertyDataInterface::Compare> PropertyMap;
     typedef std::set<CampPropertyDataInterface*> ContinuousUpdateMap;
 
-    DataMap                         mData;
+    QtPropertyDataMap               mData;
     PropertyMap                     mProperties;
     ContinuousUpdateMap             mContinuousUpdateMap;
     sigc::connection                mPropertyChangeSignal;

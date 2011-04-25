@@ -17,13 +17,6 @@ namespace QtOgreEditor
 {
 //------------------------------------------------------------------------------
 
-bool CampPropertyDataInterface::operator<( const CampPropertyDataInterface* other ) const
-{
-    // Dirty hack but required for operators and inheritence..
-    if( typeid( *this ) != typeid( *other ) ) return false;
-    return lessThan( *other );
-}
-
 CampPropertyData::CampPropertyData( const camp::Property& rProperty, 
     const camp::UserObject& rObject, CampPropertyDataInterface* pParentPropertyData /*= 0 */ ) :
     mProperty( rProperty ), 
@@ -100,19 +93,15 @@ CampPropertyData* CampPropertyData::clone() const
     return new CampPropertyData( mProperty, mObject, mParentPropertyData ? mParentPropertyData->clone() : 0 );
 }
 
-bool CampPropertyData::lessThan( const CampPropertyDataInterface& other ) const
+bool CampPropertyData::lessThan( const CampPropertyDataInterface* other ) const
 {
     // This is ok because CampPropertyDataInterface::operator< checks if other is of this type.
-    const CampPropertyData& data = static_cast<const CampPropertyData&>( other );
+    const CampPropertyData* data = static_cast<const CampPropertyData*>( other );
 
-    // Use pair less than operator because of lazyness..
-    //typedef std::pair<const camp::Property*, const camp::UserObject&> LazyPair;
-    //return LazyPair( &mProperty, mObject ) < LazyPair( &data.mProperty, data.mObject );
+    if( &mProperty < &data->mProperty ) return true;
+    if( &data->mProperty < &mProperty ) return false;
 
-    if( &mProperty < &data.mProperty ) return true;
-    if( &data.mProperty < &mProperty ) return false;
-
-    if( mObject < data.mObject ) return true;
+    if( mObject < data->mObject ) return true;
 
     return false;
 }
@@ -137,18 +126,18 @@ CampValueMapPropertyData* CampValueMapPropertyData::clone() const
     return new CampValueMapPropertyData( mProperty, mObject, mKey );
 }
 
-bool CampValueMapPropertyData::lessThan( const CampPropertyDataInterface& other ) const
+bool CampValueMapPropertyData::lessThan( const CampPropertyDataInterface* other ) const
 {
     // This is ok because CampPropertyDataInterface::operator< checks if other is of this type.
-    const CampValueMapPropertyData& data = static_cast<const CampValueMapPropertyData&>( other );
+    const CampValueMapPropertyData* data = static_cast<const CampValueMapPropertyData*>( other );
 
-    if( &mProperty < &data.mProperty ) return true;
-    if( &data.mProperty < &mProperty ) return false;
+    if( &mProperty < &data->mProperty ) return true;
+    if( &data->mProperty < &mProperty ) return false;
 
-    if( mObject < data.mObject ) return true;
-    if( data.mObject < mObject ) return false;
+    if( mObject < data->mObject ) return true;
+    if( data->mObject < mObject ) return false;
 
-    if( mKey < data.mKey ) return true;
+    if( mKey < data->mKey ) return true;
 
     return false;
 }
@@ -172,7 +161,7 @@ CampCompoundPropertyManager::~CampCompoundPropertyManager()
 void CampCompoundPropertyManager::setValue( QtProperty* pProperty, 
     CampPropertyDataInterface* pData )
 {
-    DataMap::iterator i = mPropertyData.find( pProperty );
+    QtPropertyDataMap::iterator i = mPropertyData.find( pProperty );
     if( i == mPropertyData.end() )
     {
         // Add new property data.
@@ -192,7 +181,7 @@ void CampCompoundPropertyManager::externalPropertyChanged( QtProperty* pProperty
 
     for( PropertyToSubMap::iterator i = range.first; i != range.second; ++i )
     {
-        DataMap::iterator j = mSubPropertyData.find( i->second );
+        QtPropertyDataMap::iterator j = mSubPropertyData.find( i->second );
         if( j != mSubPropertyData.end() )
         {
             camp::UserObject object = j->second->get().to<camp::UserObject>();
@@ -215,7 +204,7 @@ void CampCompoundPropertyManager::propInserted( QtProperty* pProperty, QtPropert
     mSubToPropertyMap.insert( std::make_pair( pProperty, pParent ) );
     mPropertyToSubMap.insert( std::make_pair( pParent, pProperty ) );
 
-    DataMap::iterator i = mPropertyData.find( pParent );
+    QtPropertyDataMap::iterator i = mPropertyData.find( pParent );
     if( i != mPropertyData.end() )
     {
         mSubPropertyData.insert( std::make_pair( pProperty, i->second ) );
@@ -225,7 +214,7 @@ void CampCompoundPropertyManager::propInserted( QtProperty* pProperty, QtPropert
 void CampCompoundPropertyManager::clearMe()
 {
     QtAbstractPropertyManager::clear();
-    for( DataMap::iterator i = mPropertyData.begin(); i != mPropertyData.end(); ++i )
+    for( QtPropertyDataMap::iterator i = mPropertyData.begin(); i != mPropertyData.end(); ++i )
     {
         delete i->second;
     }
@@ -246,7 +235,7 @@ bool CampCompoundPropertyManager::hasValue( const QtProperty* pProperty ) const
 
 QString CampCompoundPropertyManager::valueText( const QtProperty* pProperty ) const
 {
-    DataMap::const_iterator i = mPropertyData.find( pProperty );
+    QtPropertyDataMap::const_iterator i = mPropertyData.find( pProperty );
     if( i != mPropertyData.end() ) return i->second->valueText();
     return "";
 }
@@ -583,7 +572,7 @@ void CampPropertyManager::clear()
     mEnumManager->clear();
     mCompoundManager->clearMe();
 
-    for( DataMap::iterator i = mData.begin(); i != mData.end(); ++i )
+    for( QtPropertyDataMap::iterator i = mData.begin(); i != mData.end(); ++i )
     {
         delete i->second;
     }
