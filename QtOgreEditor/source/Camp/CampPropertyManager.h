@@ -341,7 +341,6 @@ private:
             catch( ... )
             {
                 LOGE << "Could not set property: Unhandled exception";
-                //pManager->setValue( pProperty, currentVal.to<T>() );
             }
         }
     }

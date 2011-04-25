@@ -556,7 +556,13 @@ void CampPropertyManager::stringValueChanged( QtProperty* pProperty, const QStri
 
 void CampPropertyManager::enumValueChanged( QtProperty* pProperty, int val )
 {
-    CampPropertyManager::propertyChanged( pProperty, mEnumManager, val );
+    QtPropertyDataMap::iterator i = mData.find( pProperty );
+    if( i != mData.end() )
+    {
+        const camp::Enum& metaenum = i->second->get().to<camp::EnumObject>().getEnum();
+        CampPropertyManager::propertyChanged( pProperty, mEnumManager, camp::Value( 
+            camp::EnumObject( val, metaenum ) ) );
+    }
 }
 
 void CampPropertyManager::clear()
