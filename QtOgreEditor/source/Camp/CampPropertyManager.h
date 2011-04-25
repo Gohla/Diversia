@@ -276,6 +276,14 @@ public:
     std::list<QtProperty*> addClassTree( const camp::Class& rClass, 
         const camp::UserObject& rObject );
     /**
+    Adds a group property. 
+    
+    @param  rName   The name of the group property.
+    
+    @return The created group property.
+    **/
+    QtProperty* addGroupProperty( const String& rName );
+    /**
     Sets up the change signals so that edits in the property grid get propagated to camp. This
     is called automatically in addClassTree, so only call this when using addProperty directly.
 

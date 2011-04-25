@@ -468,7 +468,7 @@ QtProperty* CampPropertyManager::addClassInternal( const camp::Class& rClass,
     if( pCompoundProperty )
         prop = pCompoundProperty;
     else
-        prop = mGroupManager->addProperty( QString( rName.c_str() ) );
+        prop = CampPropertyManager::addGroupProperty( rName );
 
     for( std::size_t i = 0; i != rClass.propertyCount(); ++i )
     {
@@ -515,6 +515,11 @@ void CampPropertyManager::setup( const camp::UserObject& rObject )
     mPropertyChangeSignal = UserObjectChange::connectChange( rObject, sigc::mem_fun( this, 
         (void(CampPropertyManager::*)(const camp::UserObject&, const camp::Property&, 
         const camp::Value&))&CampPropertyManager::externalPropertyChanged ) );
+}
+
+QtProperty* CampPropertyManager::addGroupProperty( const String& rName )
+{
+    return mGroupManager->addProperty( QString( rName.c_str() ) );
 }
 
 void CampPropertyManager::addClassTreeInternal( const camp::Class& rClass, 

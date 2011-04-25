@@ -100,7 +100,7 @@ void ObjectTemplateTreeView::load( const QModelIndex& rIndex )
     {
         case REPLICATYPE_OBJECTTEMPLATE: 
         {
-            // TODO: Load property browser with object template.
+            // Load property browser with object template.
             EditorGlobals::mMainWindow->mUI.propertyBrowser->load( 
                 ObjectTemplateTreeView::getObjectTemplate( rIndex ) );
             EditorGlobals::mMainWindow->mUI.propertyBrowser->setEnabled( true );
@@ -119,7 +119,7 @@ void ObjectTemplateTreeView::load( const QModelIndex& rIndex )
         }
         case REPLICATYPE_COMPONENTTEMPLATE:
         {
-            // TODO: Load property browser with component template.
+            // Load property browser with component template.
             ComponentTemplate& componentTemplate = ObjectTemplateTreeView::getComponentTemplate( 
                 rIndex );
             camp::UserObject object = componentTemplate;
@@ -131,14 +131,18 @@ void ObjectTemplateTreeView::load( const QModelIndex& rIndex )
             CampPropertyManager* propertyManager = browser->getPropertyManager();
 
             browser->clear();
+            propertyManager->addClass( metaclass, object );
+            QtProperty* templateGroup = propertyManager->addGroupProperty( "Template properties" );
             for( Properties::const_iterator i = properties.begin(); i != properties.end(); ++i)
             {
-                browser->addProperty( propertyManager->addProperty( new CampValueMapPropertyData( 
-                    property, object, i->first ) ) );
+                templateGroup->addSubProperty( propertyManager->addProperty( 
+                    new CampValueMapPropertyData( property, object, i->first ) ) );
             }
+            browser->addProperty( templateGroup );
             propertyManager->setup( object );
             // TODO: Updates from external sources (script, network) must update the property browser.
-
+            EditorGlobals::mMainWindow->mUI.propertyBrowser->setEnabled( true );
+            
             // Set actions to toolbar.
             ObjectTemplateTreeView::clearActions();
             EditorGlobals::mMainWindow->mUI.toolBarObjectTemplate->addAction( 
@@ -232,7 +236,6 @@ void ObjectTemplateTreeView::instantiate()
     {
     	LOGE << "Could not instantiate object template: " << e.what();
     }
-    
 }
 
 void ObjectTemplateTreeView::createNewObjectTemplate()
