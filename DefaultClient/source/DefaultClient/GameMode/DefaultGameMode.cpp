@@ -91,7 +91,7 @@ void DefaultGameMode::create()
         // Kinematic RigidBody
         RigidBody& rigidBody = mAvatarOffset->createComponent<RigidBody>( "Physics" );
         rigidBody.set( "PhysicsType", PHYSICSTYPE_KINEMATIC );
-        rigidBody.set( "PhysicsShape", PHYSICSSHAPE_CONVEXHULL );
+        rigidBody.set( "PhysicsShape", PHYSICSSHAPE_FILE );
         rigidBody.set( "CollisionShapeFile", "physics/Ogre.bullet" );
 
         // Text
@@ -266,7 +266,7 @@ bool DefaultGameMode::keyPressed( const KeyboardButton button, unsigned int text
 
                 RigidBody& rigidBody = object->createComponent<RigidBody>( "Physics" );
                 rigidBody.set( "PhysicsType", PHYSICSTYPE_DYNAMIC );
-                rigidBody.set( "PhysicsShape", PHYSICSSHAPE_CONVEXHULL );
+                rigidBody.set( "PhysicsShape", PHYSICSSHAPE_FILE );
                 rigidBody.set( "CollisionShapeFile", "physics/barrel.bullet" );
                 rigidBody.set( "Mass", 10.0 );
 
