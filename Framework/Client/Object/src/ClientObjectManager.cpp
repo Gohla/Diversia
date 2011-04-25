@@ -37,14 +37,14 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-ClientObjectManager::ClientObjectManager( Mode mode, sigc::signal<void>& rUpdateSignal, 
-    sigc::signal<void>& rLateUpdateSignal, ServerPluginManager& rPluginManager, 
-    RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
-    RakNet::NetworkIDManager& rNetworkIDManager ):
+ClientObjectManager::ClientObjectManager( Mode mode, PluginState state, 
+    sigc::signal<void>& rUpdateSignal, sigc::signal<void>& rLateUpdateSignal, 
+    ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
+    RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     ObjectManager( mode, rRakPeer.GetMyGUID(), rRakPeer.GetGUIDFromIndex( 0 ), rUpdateSignal, 
         rLateUpdateSignal, rReplicaManager, rNetworkIDManager,
         rPluginManager.getServer().getServerConnection().getRPC3() ),
-    ServerPlugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mPermissionManager( rPluginManager.getPlugin<PermissionManager>() )
 {
     PropertySynchronization::storeUserObject();

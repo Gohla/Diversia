@@ -57,7 +57,7 @@ public:
 private:
     friend class TemplatePluginFactory<ClientObjectTemplateManager, ServerPluginManager>;
 
-    ClientObjectTemplateManager( Mode mode, ServerPluginManager& rPluginManager, 
+    ClientObjectTemplateManager( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     virtual ~ClientObjectTemplateManager();

@@ -37,7 +37,7 @@ namespace OgreClient
 class DIVERSIA_OGRECLIENT_API Terrain : public ServerPlugin
 {
 public:
-    Terrain( Mode mode, ServerPluginManager& rPluginManager, 
+    Terrain( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     ~Terrain();

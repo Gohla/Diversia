@@ -46,7 +46,7 @@ public:
     @param [in,out] rReplicaManager     The replica manager. 
     @param [in,out] rNetworkIDManager   The network ID manager. 
     **/
-    SkyPlugin( Mode mode, ServerPluginManager& rPluginManager, 
+    SkyPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     ~SkyPlugin();

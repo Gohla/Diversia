@@ -34,10 +34,12 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-ServerPluginManager::ServerPluginManager( Mode mode, sigc::signal<void>& rUpdateSignal, 
-    ServerAbstract& rServer, RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
-    RakNet::NetworkIDManager& rNetworkIDManager, bool offlineMode /*= false*/ ):
-    ClientServerPluginManager( mode, rUpdateSignal, rRakPeer, rReplicaManager, rNetworkIDManager ),
+ServerPluginManager::ServerPluginManager( Mode mode, PluginState state, 
+    sigc::signal<void>& rUpdateSignal, ServerAbstract& rServer, RakNet::RakPeerInterface& rRakPeer, 
+    RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager, 
+    bool offlineMode /*= false*/ ):
+    ClientServerPluginManager( mode, state, rUpdateSignal, rRakPeer, rReplicaManager, 
+        rNetworkIDManager ),
     mServer( rServer ),
     mOfflineMode( offlineMode )
 {

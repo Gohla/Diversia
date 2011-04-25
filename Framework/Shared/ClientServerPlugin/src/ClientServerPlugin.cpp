@@ -32,10 +32,11 @@ namespace Diversia
 {
 //------------------------------------------------------------------------------
 
-ClientServerPlugin::ClientServerPlugin( Mode mode,
+ClientServerPlugin::ClientServerPlugin( Mode mode, PluginState state,
     ClientServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer,
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     mMode( mode ),
+    mPluginState( state ),
     mPluginManager( rPluginManager ),
     mRakPeer( rRakPeer ),
     mReplicaManager( rReplicaManager ),
@@ -48,6 +49,15 @@ ClientServerPlugin::ClientServerPlugin( Mode mode,
 
 ClientServerPlugin::~ClientServerPlugin()
 {
+
+}
+
+void ClientServerPlugin::setState( PluginState state )
+{
+    if( state == mPluginState ) return;
+
+    mPluginState = state;
+    stateChanged( state );
 }
 
 void ClientServerPlugin::checkBroadcastConstruction()

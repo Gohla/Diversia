@@ -62,11 +62,12 @@ public:
 
     @see ClientServerPlugin::ClientServerPlugin()
     **/
-    inline T& create( Mode mode, ClientServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
-        RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager )
+    inline T& create( Mode mode, PluginState state, ClientServerPluginManager& rPluginManager, 
+        RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
+        RakNet::NetworkIDManager& rNetworkIDManager )
     {
-        return *new T( mode, mUpdateSignal, mLateUpdateSignal,  static_cast<U&>( rPluginManager ),
-            rRakPeer, rReplicaManager, rNetworkIDManager );
+        return *new T( mode, state, mUpdateSignal, mLateUpdateSignal, 
+            static_cast<U&>( rPluginManager ), rRakPeer, rReplicaManager, rNetworkIDManager );
     }
     /**
     Destroys an instance of a client-server plugin.

@@ -43,7 +43,7 @@ OfflineServer::OfflineServer( sigc::signal<void>& rUpdateSignal ):
     mUserInfo( "Offline" ),
     mServerConnection( new ServerConnection( mServerInfo, mDummySignal ) )
 {
-    mPluginManager.reset( new ServerPluginManager( CLIENT, rUpdateSignal, *this,
+    mPluginManager.reset( new ServerPluginManager( CLIENT, STOP, rUpdateSignal, *this,
         mServerConnection->getRakPeer(), mServerConnection->getReplicaManager(), 
         mServerConnection->getNetworkIDManager(), true ) );
 

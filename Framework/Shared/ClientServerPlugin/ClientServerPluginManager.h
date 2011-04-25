@@ -36,19 +36,30 @@ namespace Diversia
 typedef std::map<ClientServerPluginTypeEnum, ClientServerPlugin*> ClientServerPlugins;
 typedef std::set<ClientServerPluginTypeEnum> ClientServerPluginTypes;
 
+/**
+Values that represent the state of a plugin.
+**/
+enum PluginState 
+{
+    STOP = 0,	///< Plugin is stopped and is not updated.
+    PLAY,	    ///< Plugin is active and is updated. State is saved before going into this state.
+    PAUSE	    ///< Plugin is paused and is not updated. 
+};
+
 class DIVERSIA_SHARED_API ClientServerPluginManager : public boost::noncopyable
 {
 public:
     /**
     Constructor. 
-    
+
     @param  mode                        The mode the client-server plugin manager must run in.
+    @param  state                       The initial state to set plugins to.
     @param [in,out] rUpdateSignal       The frame/tick update signal.
     @param [in,out] rRakPeer            The peer interface.
     @param [in,out] rReplicaManager     Replica manager. 
     @param [in,out] rNetworkIDManager   Network ID manager. 
     **/
-    ClientServerPluginManager( Mode mode, sigc::signal<void>& rUpdateSignal, 
+    ClientServerPluginManager( Mode mode, PluginState state, sigc::signal<void>& rUpdateSignal, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     /**
@@ -150,6 +161,16 @@ public:
     @param  type    The type of the plugin. 
     **/
     static void addAutoCreateComponent( ClientServerPluginTypeEnum type );
+    /**
+    Gets the plugin state. 
+    **/
+    inline PluginState getState() const { return mPluginState; }
+    /**
+    Sets the plugin state. 
+    
+    @param  state   The plugin state to set.
+    **/
+    void setState( PluginState state );
 
     /**
     Gets the replica manager. 
@@ -196,6 +217,7 @@ private:
     void update();
 
     Mode                                            mMode;
+    PluginState                                     mPluginState;
     ClientServerPlugins                             mPlugins;
     ClientServerPluginTypes                         mDestroyedPlugins;
     ClientServerPluginTypes                         mCreatedPlugins;

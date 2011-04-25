@@ -76,16 +76,7 @@ typedef bidirectional_map<Ogre::BackgroundProcessTicket, ResourceCallback>::type
 class DIVERSIA_OGRECLIENT_API ResourceManager : public ServerPlugin, public Ogre::ResourceBackgroundQueue::Listener
 {
 public:
-    /**
-    Constructor. 
-    
-    @param  mode                        The mode (Client/Server) the plugin will run in. 
-    @param [in,out] rPluginManager      The plugin manager. 
-    @param [in,out] rRakPeer            The peer interface. 
-    @param [in,out] rReplicaManager     The replica manager. 
-    @param [in,out] rNetworkIDManager   The network ID manager. 
-    **/
-    ResourceManager( Mode mode, ServerPluginManager& rPluginManager, 
+    ResourceManager( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     /**

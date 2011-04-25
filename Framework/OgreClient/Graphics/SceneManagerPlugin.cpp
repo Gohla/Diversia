@@ -33,10 +33,10 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-SceneManagerPlugin::SceneManagerPlugin( Mode mode, ServerPluginManager& rPluginManager, 
-    RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
-    RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+SceneManagerPlugin::SceneManagerPlugin( Mode mode, PluginState state, 
+    ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
+    RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
+    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mResourceManager( ClientServerPlugin::getPluginManager().getPlugin<ResourceManager>() ),
     mCreated( false ),
     mResourcesInitialized( false ),

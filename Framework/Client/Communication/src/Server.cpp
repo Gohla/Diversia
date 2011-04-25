@@ -47,7 +47,7 @@ Server::Server( const GridPosition& rGridPosition, const ServerInfo& rServerInfo
     mTargetState( DISCOVERED ),
     mServerConnection( new ServerConnection( rServerInfo, rUpdateSignal ) )
 {
-    mPluginManager.reset( new ServerPluginManager( CLIENT, rUpdateSignal, *this,
+    mPluginManager.reset( new ServerPluginManager( CLIENT, STOP, rUpdateSignal, *this,
         mServerConnection->getRakPeer(), mServerConnection->getReplicaManager(), 
         mServerConnection->getNetworkIDManager() ) );
 

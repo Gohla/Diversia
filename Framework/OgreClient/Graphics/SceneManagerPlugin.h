@@ -37,7 +37,7 @@ namespace OgreClient
 class DIVERSIA_OGRECLIENT_API SceneManagerPlugin : public ServerPlugin
 {
 public:
-    SceneManagerPlugin( Mode mode, ServerPluginManager& rPluginManager, 
+    SceneManagerPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     ~SceneManagerPlugin();

@@ -41,16 +41,7 @@ namespace Client
 class DIVERSIA_CLIENT_API ServerNeighborsPlugin : public ServerPlugin
 {
 public:
-    /**
-    Constructor. 
-    
-    @param  mode                        The mode (Client/Server) the plugin will run in. 
-    @param [in,out] rPluginManager      The plugin manager. 
-    @param [in,out] rRakPeer            The peer interface. 
-    @param [in,out] rReplicaManager     The replica manager. 
-    @param [in,out] rNetworkIDManager   The network ID manager. 
-    **/
-    ServerNeighborsPlugin( Mode mode, ServerPluginManager& rPluginManager, 
+    ServerNeighborsPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
 

@@ -34,10 +34,10 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-ServerNeighborsPlugin::ServerNeighborsPlugin( Mode mode, ServerPluginManager& rPluginManager, 
-    RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
-    RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
+ServerNeighborsPlugin::ServerNeighborsPlugin( Mode mode, PluginState state, 
+    ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
+    RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
+    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
 {
     PropertySynchronization::storeUserObject();
 }

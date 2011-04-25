@@ -58,10 +58,11 @@ public:
 
     @see ClientServerPlugin::ClientServerPlugin()
     **/
-    inline T& create( Mode mode, ClientServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
-        RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager )
+    inline T& create( Mode mode, PluginState state, ClientServerPluginManager& rPluginManager, 
+        RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager,
+        RakNet::NetworkIDManager& rNetworkIDManager )
     {
-        return *new T( mode, static_cast<U&>( rPluginManager ), rRakPeer, rReplicaManager, 
+        return *new T( mode, state, static_cast<U&>( rPluginManager ), rRakPeer, rReplicaManager, 
             rNetworkIDManager ); 
     }
     /**

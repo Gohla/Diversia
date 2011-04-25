@@ -45,6 +45,7 @@ public:
     Constructor. 
     
     @param  mode                        The mode the client-server plugin manager must run in. 
+    @param  state                       The initial state to set plugins to.
     @param [in,out] rUpdateSignal       The frame/tick update signal. 
     @param [in,out] rServer             The server this plugin manager is part of. 
     @param [in,out] rRakPeer            The peer interface. 
@@ -52,7 +53,7 @@ public:
     @param [in,out] rNetworkIDManager   Network ID manager. 
     @param  offlineMode                 True to set offline mode. Defaults to false.
     **/
-    ServerPluginManager( Mode mode, sigc::signal<void>& rUpdateSignal, 
+    ServerPluginManager( Mode mode, PluginState state, sigc::signal<void>& rUpdateSignal, 
         ServerAbstract& rServer, RakNet::RakPeerInterface& rRakPeer, 
         RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager,
         bool offlineMode = false );

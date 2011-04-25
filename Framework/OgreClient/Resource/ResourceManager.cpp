@@ -75,10 +75,10 @@ ResourceManager::ResourcesLoader* ResourceManager::ResourcesLoader::create(
     return new ResourceManager::ResourcesLoader( rCompletedSlot );
 }
 
-ResourceManager::ResourceManager( Mode mode, ServerPluginManager& rPluginManager, 
+ResourceManager::ResourceManager( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
     RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
     RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mServer( rPluginManager.getServer() ),
     mRGM( Ogre::ResourceGroupManager::getSingleton() ),
     mRBQ( Ogre::ResourceBackgroundQueue::getSingleton() ),

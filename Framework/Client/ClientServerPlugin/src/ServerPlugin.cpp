@@ -34,10 +34,10 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-ServerPlugin::ServerPlugin( Mode mode, ServerPluginManager& rPluginManager, 
+ServerPlugin::ServerPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
     RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
     RakNet::NetworkIDManager& rNetworkIDManager ):
-    ClientServerPlugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    ClientServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     PropertySynchronization( mode )
 {
     try

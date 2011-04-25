@@ -41,12 +41,13 @@ public:
     Constructor. 
     
     @param  mode                        The mode (Client/Server) the plugin will run in. 
+    @param  state                       The initial state of this plugin.
     @param [in,out] rPluginManager      The plugin manager. 
     @param [in,out] rRakPeer            The peer interface. 
     @param [in,out] rReplicaManager     The replica manager. 
     @param [in,out] rNetworkIDManager   The network ID manager. 
     **/
-    ClientObjectManager( Mode mode, sigc::signal<void>& rUpdateSignal, 
+    ClientObjectManager( Mode mode, PluginState state, sigc::signal<void>& rUpdateSignal, 
         sigc::signal<void>& rLateUpdateSignal, ServerPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );

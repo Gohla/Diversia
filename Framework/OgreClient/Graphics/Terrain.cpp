@@ -39,10 +39,10 @@ namespace OgreClient
 
 Ogre::TerrainGlobalOptions* Terrain::mTerrainGlobals = 0;
 
-Terrain::Terrain( Mode mode, ServerPluginManager& rPluginManager, 
+Terrain::Terrain( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
     RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
     RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mTerrain( 0 ),
     mResourceManager( ClientServerPlugin::getPluginManager().getPlugin<ResourceManager>() ),
     mTerrainType( TERRAINTYPE_AUTOBLENDMAP ),

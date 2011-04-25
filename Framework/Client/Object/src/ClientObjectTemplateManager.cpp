@@ -38,12 +38,12 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-ClientObjectTemplateManager::ClientObjectTemplateManager( Mode mode, 
+ClientObjectTemplateManager::ClientObjectTemplateManager( Mode mode, PluginState state, 
     ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     ObjectTemplateManager( mode, rRakPeer.GetMyGUID(), rRakPeer.GetGUIDFromIndex( 0 ), rReplicaManager, 
         rNetworkIDManager ),
-    ServerPlugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mPermissionManager( rPluginManager.getPlugin<PermissionManager>() )
 {
     PropertySynchronization::storeUserObject();

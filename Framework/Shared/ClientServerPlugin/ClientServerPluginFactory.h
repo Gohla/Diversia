@@ -61,9 +61,9 @@ public:
 
     @see ClientServerPlugin::ClientServerPlugin()
     **/
-    virtual ClientServerPlugin& create( Mode mode, ClientServerPluginManager& rPluginManager, 
-        RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
-        RakNet::NetworkIDManager& rNetworkIDManager ) = 0;
+    virtual ClientServerPlugin& create( Mode mode, PluginState state, 
+        ClientServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
+        RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ) = 0;
     /**
     Destroys an instance of a client-server plugin.
     **/

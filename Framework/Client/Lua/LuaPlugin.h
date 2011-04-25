@@ -41,7 +41,7 @@ namespace Client
 class DIVERSIA_CLIENT_API LuaPlugin : public ServerPlugin
 {
 public:
-    LuaPlugin( Mode mode, ServerPluginManager& rPluginManager, 
+    LuaPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     ~LuaPlugin();

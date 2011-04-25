@@ -37,10 +37,11 @@ namespace Diversia
 
 ClientServerPluginTypes ClientServerPluginManager::mAutoCreatePlugins = ClientServerPluginTypes();
 
-ClientServerPluginManager::ClientServerPluginManager( Mode mode, sigc::signal<void>& rUpdateSignal,
-    RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
-    RakNet::NetworkIDManager& rNetworkIDManager ):
+ClientServerPluginManager::ClientServerPluginManager( Mode mode, PluginState state, 
+    sigc::signal<void>& rUpdateSignal, RakNet::RakPeerInterface& rRakPeer, 
+    RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     mMode( mode ),
+    mPluginState( state ),
     mUpdateSignal( rUpdateSignal ),
     mRakPeer( rRakPeer ),
     mReplicaManager( rReplicaManager ),
@@ -88,8 +89,8 @@ ClientServerPlugin& ClientServerPluginManager::createPlugin( ClientServerPluginT
         // Create the plugin now, but the plugin specific part is initialized in the next
         // tick/frame update.
         ClientServerPlugin& plugin = 
-            ClientServerPluginFactoryManager::getPluginFactory( type ).create( mMode, *this, 
-            mRakPeer, mReplicaManager, mNetworkIDManager );
+            ClientServerPluginFactoryManager::getPluginFactory( type ).create( mMode, mPluginState, 
+            *this, mRakPeer, mReplicaManager, mNetworkIDManager );
         mPlugins.insert( std::make_pair( type, &plugin ) );
         mCreatedPlugins.insert( type );
         mPluginSignal( plugin, true );
@@ -141,6 +142,18 @@ void ClientServerPluginManager::destroyPlugin( ClientServerPluginTypeEnum type )
 void ClientServerPluginManager::addAutoCreateComponent( ClientServerPluginTypeEnum type )
 {
     mAutoCreatePlugins.insert( type );
+}
+
+void ClientServerPluginManager::setState( PluginState state )
+{
+    if( state == mPluginState ) return;
+
+    mPluginState = state;
+
+    for( ClientServerPlugins::iterator i = mPlugins.begin(); i != mPlugins.end(); ++i )
+    {
+        i->second->setState( mPluginState );
+    }
 }
 
 void ClientServerPluginManager::update()

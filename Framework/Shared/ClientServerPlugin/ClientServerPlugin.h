@@ -42,12 +42,13 @@ public:
     Constructor.
 
     @param  mode                        The mode (Client/Server) the plugin will run in.
+    @param  state                       The initial state of this plugin.
     @param [in,out] rPluginManager      The plugin manager.
     @param [in,out] rRakPeer            The peer interface.
     @param [in,out] rReplicaManager     The replica manager.
     @param [in,out] rNetworkIDManager   The network ID manager.
     **/
-    ClientServerPlugin( Mode mode, ClientServerPluginManager& rPluginManager,
+    ClientServerPlugin( Mode mode, PluginState state, ClientServerPluginManager& rPluginManager,
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager,
         RakNet::NetworkIDManager& rNetworkIDManager );
     /**
@@ -84,6 +85,16 @@ public:
     **/
     inline Mode getMode() const { return mMode; }
     /**
+    Gets the plugin state. 
+    **/
+    inline PluginState getState() const { return mPluginState; }
+    /**
+    Sets the plugin state. 
+    
+    @param  state   The plugin state to set.
+    **/
+    void setState( PluginState state );
+    /**
     Gets the network unique identifier as a string.
     **/
     inline String getGUIDString()
@@ -112,6 +123,12 @@ protected:
 	plugin is created.
 	**/
 	virtual void create() = 0;
+    /**
+    Called when the state of this plugin changes.
+    
+    @param  state   The new state. 
+    **/
+    inline virtual void stateChanged( PluginState state ) { }
 
     /**
     Provide implementation for these functions in specialized plugin classes. Defaults are provided
@@ -175,6 +192,7 @@ private:
     bool QueryRemoteConstruction( RakNet::Connection_RM3* pSourceConnection );
 
     Mode                            mMode;
+    PluginState                     mPluginState;
     ClientServerPluginManager&      mPluginManager;
     RakNet::RakPeerInterface&       mRakPeer;
     RakNet::ReplicaManager3&        mReplicaManager;

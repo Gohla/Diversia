@@ -34,10 +34,10 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-LuaPlugin::LuaPlugin( Mode mode, ServerPluginManager& rPluginManager, 
+LuaPlugin::LuaPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
     RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
     RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
+    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
 {
     PropertySynchronization::storeUserObject();
 }

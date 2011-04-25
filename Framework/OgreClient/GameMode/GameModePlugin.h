@@ -61,7 +61,7 @@ class DIVERSIA_OGRECLIENT_API GameModePlugin : public ServerPlugin, public Keybo
     public MouseListener
 {
 public:
-    GameModePlugin( Mode mode, ServerPluginManager& rPluginManager, 
+    GameModePlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     ~GameModePlugin();

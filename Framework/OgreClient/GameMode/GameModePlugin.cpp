@@ -44,10 +44,10 @@ sigc::slot<GameModeBase*, GameModePlugin*> GameModePlugin::mDefaultSlot =
     sigc::slot<GameModeBase*, GameModePlugin*>();
 bool GameModePlugin::mForceDefault = false;
 
-GameModePlugin::GameModePlugin( Mode mode, ServerPluginManager& rPluginManager, 
+GameModePlugin::GameModePlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
     RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
     RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mGameMode( 0 ),
     mMousePriority( 0 ),
     mKeyboardPriority( 0 ),
