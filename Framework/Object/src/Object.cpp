@@ -424,6 +424,11 @@ void Object::addAutoCreateComponent( ComponentType type, const String& rName )
     mAutoCreateComponents.insert( std::make_pair( type, rName ) );
 }
 
+bool Object::hasAutoCreateComponent( ComponentType type )
+{
+    return mAutoCreateComponents.find( type ) != mAutoCreateComponents.end();
+}
+
 void Object::setClientControlled(
     RakNet::RakNetGUID controller /*= RakNet::UNASSIGNED_RAKNET_GUID */ )
 {

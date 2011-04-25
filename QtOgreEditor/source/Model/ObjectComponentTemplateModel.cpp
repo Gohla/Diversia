@@ -77,7 +77,7 @@ ObjectTemplateItem::ObjectTemplateItem( ObjectTemplate& rObjectTemplate ):
     rObjectTemplate.connectComponentTemplateChange( sigc::mem_fun( this, &ObjectTemplateItem::componentChange ) );
     rObjectTemplate.connectParentChange( sigc::mem_fun( this, &ObjectTemplateItem::parentChange ) );
     rObjectTemplate.connectDestruction( sigc::hide( sigc::mem_fun( this, &ObjectTemplateItem::destroyed ) ) );
-    //rObjectTemplate.connectDisplayNameChange( sigc::mem_fun( this, &ObjectTemplateItem::displayNameChanged ) );
+    rObjectTemplate.connectDisplayNameChange( sigc::mem_fun( this, &ObjectTemplateItem::displayNameChanged ) );
 }
 
 ObjectTemplateItem::~ObjectTemplateItem()

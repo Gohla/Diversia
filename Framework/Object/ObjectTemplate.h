@@ -418,6 +418,17 @@ public:
     {
         return mParentSignal.connect( rSlot );
     }
+    /**
+    Connects a slot to the display name changed signal.
+
+    @param [in,out] rSlot   The slot (signature: void func(const String& [name])) to connect.
+
+    @return Connection object to block or disconnect the connection.
+    **/
+    inline sigc::connection connectDisplayNameChange( const sigc::slot<void, const String&>& rSlot )
+    {
+        return mDisplayNameSignal.connect( rSlot );
+    }
     
 protected:
     friend class ObjectTemplateManager;	///< Only the ObjectTemplateManager class may construct object templates.
@@ -592,6 +603,7 @@ private:
 
     const String		                mName;
     String                              mDisplayName;
+    sigc::signal<void, const String&>	mDisplayNameSignal;
     Mode				                mMode;
     RakNet::RakNetGUID                  mOwnGUID;
     RakNet::RakNetGUID                  mServerGUID;

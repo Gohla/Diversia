@@ -137,6 +137,7 @@ void ObjectTemplateTreeView::load( const QModelIndex& rIndex )
                     property, object, i->first ) ) );
             }
             propertyManager->setup( object );
+            // TODO: Updates from external sources (script, network) must update the property browser.
 
             // Set actions to toolbar.
             ObjectTemplateTreeView::clearActions();

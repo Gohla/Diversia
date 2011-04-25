@@ -210,6 +210,7 @@ void ObjectTemplate::querySetNetworkingType( NetworkingType type,
 void ObjectTemplate::setDisplayName( const String& rDisplayName )
 {
     mDisplayName = rDisplayName;
+    mDisplayNameSignal( mDisplayName );
 }
 
 ObjectTemplate& ObjectTemplate::createChildObjectTemplate( const String& rName, 
@@ -275,10 +276,11 @@ void ObjectTemplate::createComponentTemplates( const Object& rObject )
     }
 
     // Create all components in object as component templates.
-    const ComponentsByName& components = rObject.getComponentsByName();
-    for( ComponentsByName::const_iterator i = components.begin(); i != components.end(); ++i )
+    const ComponentsByType& components = rObject.getComponentsByType();
+    for( ComponentsByType::const_iterator i = components.begin(); i != components.end(); ++i )
     {
-        ObjectTemplate::createComponentTemplate( *i->second );
+        if( !Object::hasAutoCreateComponent( i->first ) ) 
+            ObjectTemplate::createComponentTemplate( *i->second );
     }
 }
 
@@ -406,7 +408,7 @@ Object& ObjectTemplate::createObject( ObjectManager& rObjectManager, const Strin
     for( ComponentTemplatesByType::iterator i = mComponentTemplatesByType.begin(); 
         i != mComponentTemplatesByType.end(); ++i )
     {
-        i->second->createComponent( object );
+        if( !Object::hasAutoCreateComponent( i->first ) ) i->second->createComponent( object );
     }
 
     return object;

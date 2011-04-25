@@ -383,6 +383,15 @@ public:
     @param  rName   The name the component will be given.
     **/
     static void addAutoCreateComponent( ComponentType type, const String& rName );
+    /**
+    Query if given component type will be automatically created on object creation.
+    
+    @param  type    The component type. 
+    
+    @return True if given component type will be automatically created on object creation, false
+            otherwise.       
+    **/
+    static bool hasAutoCreateComponent( ComponentType type );
 
     /**
     Sets the transform to be (client) controlled. The client can start serializing this object's
