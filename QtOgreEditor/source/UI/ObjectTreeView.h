@@ -79,6 +79,11 @@ private slots:
     void destroyComponent();
     void destroySelected();
     void focusInEvent( QFocusEvent* pEvent );
+    void showRuntimeObjects( bool show );
+    void showDefaultComponents( bool show );
+    
+public:
+    void checkHiddenItems( QModelIndex parent = QModelIndex() );
 
 private:
     void destroy( const QModelIndex& rIndex );
@@ -95,6 +100,8 @@ private:
     ClientObjectManager*            mObjectManager;
     ClientObjectTemplateManager*    mObjectTemplateManager;
     ObjectComponentModel*           mModel;
+    bool                            mShowRuntimeObjects;
+    bool                            mShowDefaultComponents;
 
     QMenu*                                      mComponentMenu;
     QAction*                                    mComponentMenuAction;

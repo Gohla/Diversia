@@ -8,11 +8,12 @@ This file is part of Diversia.
 
 #include "Platform/StableHeaders.h"
 
-#include <sigc++/adaptors/hide.h>
-
 #include "Model/ObjectComponentModel.h"
 #include "Object/Object.h"
 #include "Object/ObjectManager.h"
+#include "UI/MainWindow.h"
+#include "UI/ObjectTreeView.h"
+#include <sigc++/adaptors/hide.h>
 
 namespace Diversia
 {
@@ -115,7 +116,10 @@ void ObjectItem::unparent()
 void ObjectItem::componentChange( Component& rComponent, bool created )
 {
     if( created )
+    {
         QStandardItem::appendRow( new ComponentItem( rComponent ) );
+        EditorGlobals::mMainWindow->mUI.treeViewObjects->checkHiddenItems();
+    }
 }
 
 void ObjectItem::parentChange( Object* pNewParent )
@@ -233,6 +237,7 @@ void ObjectComponentModel::objectChange( Object& rObject, bool created )
             {
                 ObjectComponentModel::getObjectItem( 
                     rObject.getParentObject()->getName() ).appendRow( item );
+                EditorGlobals::mMainWindow->mUI.treeViewObjects->checkHiddenItems();
             }
             catch( Exception e )
             {
@@ -242,6 +247,7 @@ void ObjectComponentModel::objectChange( Object& rObject, bool created )
         else
         {
             QStandardItemModel::appendRow( item );
+            EditorGlobals::mMainWindow->mUI.treeViewObjects->checkHiddenItems();
         }
     }
     else

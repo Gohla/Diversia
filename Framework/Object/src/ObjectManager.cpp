@@ -85,6 +85,14 @@ Object& ObjectManager::createObject( const String& rName, NetworkingType type /*
     }
 }
 
+Object& ObjectManager::createRuntimeObject( const String& rName, NetworkingType type /*= LOCAL*/, 
+    const String& rDisplayName /*= ""*/, RakNet::RakNetGUID source /*= RakNet::RakNetGUID( 0 ) */ )
+{
+    Object& object = ObjectManager::createObject( rName, type, rDisplayName, source );
+    object.setRuntimeObject( true );
+    return object;
+}
+
 Object& ObjectManager::getObject( const String& rName ) const
 {
     Objects::const_iterator i = mObjects.find( rName );

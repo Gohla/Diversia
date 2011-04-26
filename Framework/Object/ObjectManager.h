@@ -81,6 +81,22 @@ public:
     Object& createObject( const String& rName, NetworkingType type = LOCAL,
         const String& rDisplayName = "", RakNet::RakNetGUID source = RakNet::RakNetGUID( 0 ) );
     /**
+    Creates a runtime object that is not serialized or shown in editors. Use this for objects that
+    are created by game modes or scripts so that they are not destroyed by users.
+
+    @param  rName           The name of the object.
+    @param  type            The (local/remote) type of the object, defaults to local.
+    @param  rDisplayName    The display name of the object, defaults to the name of the object.
+    @param  source          Source of the construction request. Leave blank to use this system's
+                            GUID.
+
+    @throw  Exception   When an object with that name already exists, or a client defined exception.
+
+    @return The created object.
+    **/
+    Object& createRuntimeObject( const String& rName, NetworkingType type = LOCAL,
+        const String& rDisplayName = "", RakNet::RakNetGUID source = RakNet::RakNetGUID( 0 ) );
+    /**
     Gets an object by name.
 
     @param  rName   The name of the object.

@@ -153,6 +153,12 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     mUI.logSourceLuaCheckBox->setChecked( settings.value( "LuaCheckBox", true ).toBool() );
     settings.endGroup(); // Source
     settings.endGroup(); // Log
+
+    settings.beginGroup( "Objects" );
+    mUI.actionShow_runtime_objects->setChecked( settings.value( "ShowRuntimeObjects", false ).toBool() );
+    mUI.actionShow_default_components->setChecked( settings.value( "ShowDefaultComponents", false ).toBool() );
+    settings.endGroup(); // Objects
+
     settings.endGroup(); // MainWindow
 
     EditorGlobals::mMainWindow = this;
@@ -407,6 +413,12 @@ void MainWindow::closeEvent( QCloseEvent* pEvent )
     settings.setValue( "LuaCheckBox", mUI.logSourceLuaCheckBox->isChecked() );
     settings.endGroup(); // Source
     settings.endGroup(); // Log
+
+    settings.beginGroup( "Objects" );
+    settings.setValue( "ShowRuntimeObjects", mUI.actionShow_runtime_objects->isChecked() );
+    settings.setValue( "ShowDefaultComponents", mUI.actionShow_default_components->isChecked() );
+    settings.endGroup(); // Objects
+
     settings.endGroup(); // MainWindow
 
     QMainWindow::closeEvent( pEvent );

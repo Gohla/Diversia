@@ -223,6 +223,9 @@
        <property name="floatable">
         <bool>false</bool>
        </property>
+       <addaction name="actionShow_runtime_objects"/>
+       <addaction name="actionShow_default_components"/>
+       <addaction name="separator"/>
       </widget>
      </item>
     </layout>
@@ -1034,6 +1037,36 @@
     <string>Stops the game and reverts back to the state before play was pressed</string>
    </property>
   </action>
+  <action name="actionShow_runtime_objects">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/apps/ppa.png</normaloff>:/Icons/Icons/apps/ppa.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show runtime objects</string>
+   </property>
+   <property name="toolTip">
+    <string>Shows objects created at runtime</string>
+   </property>
+  </action>
+  <action name="actionShow_default_components">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/apps/application-default-icon.png</normaloff>:/Icons/Icons/apps/application-default-icon.png</iconset>
+   </property>
+   <property name="text">
+    <string>Show default components</string>
+   </property>
+  </action>
   <zorder>propertyBrowserDock</zorder>
   <zorder>objectsDock</zorder>
   <zorder>pluginsDock</zorder>
@@ -1066,6 +1099,8 @@
     <slot>showContextMenu(QPoint)</slot>
     <slot>destroySelected()</slot>
     <slot>createTemplate()</slot>
+    <slot>showRuntimeObjects(bool)</slot>
+    <slot>showDefaultComponents(bool)</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1532,6 +1567,38 @@
     <hint type="destinationlabel">
      <x>560</x>
      <y>440</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShow_runtime_objects</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>treeViewObjects</receiver>
+   <slot>showRuntimeObjects(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>200</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionShow_default_components</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>treeViewObjects</receiver>
+   <slot>showDefaultComponents(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>200</y>
     </hint>
    </hints>
   </connection>

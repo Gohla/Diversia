@@ -42,7 +42,9 @@ unsigned int ObjectTreeView::mObjectCounter = 0;
 
 ObjectTreeView::ObjectTreeView( QWidget* pParent ):
     QTreeView( pParent ),
-    mModel( new ObjectComponentModel( this ) )
+    mModel( new ObjectComponentModel( this ) ),
+    mShowRuntimeObjects( false ),
+    mShowDefaultComponents( false )
 {
     QTreeView::setDragDropMode( QTreeView::InternalMove );
     QTreeView::setSelectionMode( QAbstractItemView::ExtendedSelection );
@@ -498,6 +500,45 @@ void ObjectTreeView::focusInEvent( QFocusEvent* pEvent )
     QTreeView::focusInEvent( pEvent );
 }
 
+void ObjectTreeView::showRuntimeObjects( bool show )
+{
+    mShowRuntimeObjects = show;
+    ObjectTreeView::checkHiddenItems();
+}
+
+void ObjectTreeView::showDefaultComponents( bool show )
+{
+    mShowDefaultComponents = show;
+    ObjectTreeView::checkHiddenItems();
+}
+
+void ObjectTreeView::checkHiddenItems( QModelIndex parent /*= QModelIndex()*/ )
+{
+    unsigned int rows = mModel->rowCount( parent );
+    for( unsigned int i = 0; i < rows; ++i )
+    {
+        QModelIndex index = mModel->index( i, 0, parent );
+
+        switch( ObjectTreeView::getReplicaType( index ) )
+        {
+            case REPLICATYPE_OBJECT:
+            {
+                if( ObjectTreeView::getObject( index ).isRuntimeObject() ) 
+                    QTreeView::setRowHidden( i, parent, !mShowRuntimeObjects );
+
+                ObjectTreeView::checkHiddenItems( index );
+
+                break;
+            }
+            case REPLICATYPE_COMPONENT:
+                if( Object::hasAutoCreateComponent( ObjectTreeView::getComponent( 
+                    index ).getType() ) ) 
+                    QTreeView::setRowHidden( i, parent, !mShowDefaultComponents );
+                break;
+        }
+    }
+}
+
 void ObjectTreeView::mousePressEvent( QMouseEvent* pEvent )
 {
     QModelIndex index = QTreeView::indexAt( pEvent->pos() );
@@ -573,6 +614,8 @@ void ObjectTreeView::clear()
 
     EditorGlobals::mMainWindow->mUI.toolBarObject->addAction( 
         EditorGlobals::mMainWindow->mUI.actionCreate_new_object );
+
+    ObjectTreeView::checkHiddenItems();
 }
 
 void ObjectTreeView::clearActions()
