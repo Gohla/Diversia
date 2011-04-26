@@ -171,6 +171,14 @@ public:
     @param  state   The plugin state to set.
     **/
     void setState( PluginState state );
+    /**
+    Stores the state of all plugins.
+    **/
+    void storeState();
+    /**
+    Restores the last stored state.
+    **/
+    void restoreState();
 
     /**
     Gets the replica manager. 
@@ -201,6 +209,17 @@ public:
     {
         return mPluginSignal.connect( rSlot ); 
     }
+    /**
+    Connects a slot to the plugin state changed signal. 
+    
+    @param [in,out] rSlot   The slot (signature: void func(PluginState [new state])) to connect. 
+    
+    @return Connection object to block or disconnect the connection.
+    **/
+    inline sigc::connection connectPluginStateChange( const sigc::slot<void, PluginState>& rSlot ) 
+    {
+        return mPluginStateChange.connect( rSlot ); 
+    }
 
 protected:
     /**
@@ -218,6 +237,8 @@ private:
 
     Mode                                            mMode;
     PluginState                                     mPluginState;
+    sigc::signal<void, PluginState>                 mPluginStateChange;
+    SerializationFile*                              mStoredState;
     ClientServerPlugins                             mPlugins;
     ClientServerPluginTypes                         mDestroyedPlugins;
     ClientServerPluginTypes                         mCreatedPlugins;

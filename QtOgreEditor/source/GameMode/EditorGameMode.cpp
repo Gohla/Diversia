@@ -53,12 +53,14 @@ void EditorGameMode::create()
     {
         mCameraPitch = &mObjectManager.createObject( String( "EditorCameraPitch" ) + 
             mGameModePlugin.getGUIDString(), LOCAL );
+        mCameraPitch->setRuntimeObject( true );
         mCameraPitch->setThisClientControlled();
         Camera& camera = mCameraPitch->createComponent<Camera>( "Camera" );
         camera.setLocalOverride( true );
         camera.setActive( true );
         mCameraYaw = &mObjectManager.createObject( String( "EditorCameraYaw" ) + 
             mGameModePlugin.getGUIDString(), LOCAL );
+        mCameraYaw->setRuntimeObject( true );
         mCameraYaw->setThisClientControlled();
         mCameraPitch->parent( mCameraYaw );
         mCameraYaw->setPosition( 0, 5, 50 );

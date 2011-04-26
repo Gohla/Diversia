@@ -41,6 +41,7 @@ public:
     virtual void run() = 0;
     virtual void quitSoon() = 0;
     virtual void quit() = 0;
+    virtual void stopUpdates( bool stop = true ) = 0;
 
 };
 

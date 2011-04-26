@@ -11,6 +11,7 @@ This file is part of Diversia.
 
 #include "Platform/Prerequisites.h"
 
+#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
 #include "Util/State/State.h"
 
 namespace Diversia
@@ -30,6 +31,7 @@ private:
     void suspend();
     void wake();
     void activeServerDisconnected( ServerAbstract& rActiveServer );
+    void pluginStateChange( PluginState state );
 
 };
 

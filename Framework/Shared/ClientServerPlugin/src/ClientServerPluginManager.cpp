@@ -26,10 +26,11 @@ THE SOFTWARE.
 
 #include "Shared/Platform/StableHeaders.h"
 
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginFactoryManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginFactory.h"
 #include "Shared/ClientServerPlugin/ClientServerPlugin.h"
+#include "Shared/ClientServerPlugin/ClientServerPluginFactory.h"
+#include "Shared/ClientServerPlugin/ClientServerPluginFactoryManager.h"
+#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Util/Serialization/XMLSerializationFile.h"
 
 namespace Diversia
 {
@@ -42,6 +43,7 @@ ClientServerPluginManager::ClientServerPluginManager( Mode mode, PluginState sta
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     mMode( mode ),
     mPluginState( state ),
+    mStoredState( 0 ),
     mUpdateSignal( rUpdateSignal ),
     mRakPeer( rRakPeer ),
     mReplicaManager( rReplicaManager ),
@@ -150,9 +152,30 @@ void ClientServerPluginManager::setState( PluginState state )
 
     mPluginState = state;
 
+    if( mPluginState == PLAY ) ClientServerPluginManager::storeState();
     for( ClientServerPlugins::iterator i = mPlugins.begin(); i != mPlugins.end(); ++i )
     {
         i->second->setState( mPluginState );
+    }
+    if( mPluginState == STOP ) ClientServerPluginManager::restoreState();
+
+    mPluginStateChange( mPluginState );
+}
+
+void ClientServerPluginManager::storeState()
+{
+    if( mStoredState ) delete mStoredState;
+    mStoredState = new XMLSerializationFile( "", "NoSerialization", false, true );
+    mStoredState->serialize( this, false );
+}
+
+void ClientServerPluginManager::restoreState()
+{
+    if( mStoredState )
+    {
+        mStoredState->deserialize( this, false );
+        delete mStoredState;
+        mStoredState = 0;
     }
 }
 

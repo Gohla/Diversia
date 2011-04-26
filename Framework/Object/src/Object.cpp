@@ -52,6 +52,7 @@ Object::Object( const String& rName, Mode mode, NetworkingType type, const Strin
     mServerGUID( serverGUID ),
     mType( type ),
     mBroadcastingDestruction( false ),
+    mRuntime( false ),
     mSource( source == serverGUID ? SERVER : CLIENT ),
     mSourceGUID( source ),
     mParentChanged( false ),

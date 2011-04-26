@@ -8,10 +8,13 @@ This file is part of Diversia.
 
 #include "Platform/StableHeaders.h"
 
-#include "State/EditState.h"
-#include "UI/MainWindow.h"
-#include "UI/ConnectDialog.h"
+#include "Client/ClientServerPlugin/ServerPluginManager.h"
 #include "Client/Communication/GridManager.h"
+#include "Client/Communication/ServerAbstract.h"
+#include "OgreClient/ApplicationBase.h"
+#include "State/EditState.h"
+#include "UI/ConnectDialog.h"
+#include "UI/MainWindow.h"
 
 namespace Diversia
 {
@@ -24,6 +27,8 @@ EditState::EditState():
 {
     EditorGlobals::mGrid->connectActiveServerDisconnect( sigc::mem_fun( this, 
         &EditState::activeServerDisconnected ) );
+    EditorGlobals::mGrid->getActiveServer().getPluginManager().connectPluginStateChange( 
+        sigc::mem_fun( this, &EditState::pluginStateChange ) );
 }
 
 EditState::~EditState()
@@ -63,6 +68,15 @@ void EditState::activeServerDisconnected( ServerAbstract& rActiveServer )
 {
     LOGE << "Active server disconnected or failed to connect, logging out.";
     EditorGlobals::mState->popState();
+}
+
+void EditState::pluginStateChange( PluginState state )
+{
+    switch( state )
+    {
+        case STOP: case PAUSE: GlobalsBase::mApp->stopUpdates( true ); break;
+        case PLAY: GlobalsBase::mApp->stopUpdates( false ); break;
+    }
 }
 
 //------------------------------------------------------------------------------

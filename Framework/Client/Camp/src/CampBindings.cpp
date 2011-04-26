@@ -74,6 +74,7 @@ void CampBindings::bindClientObjectManager()
 void CampBindings::bindClientObject()
 {
     camp::Class::declare<ClientObject>( "ClientObject" )
+        .tag( "NoSerialization", &Object::isRuntimeObject )
         .base<Object>();
         // Constructors
         // Properties (read-only)
@@ -99,16 +100,16 @@ void CampBindings::bindClientComponent()
 
 void CampBindings::bindServerPlugin()
 {
-camp::Class::declare<ServerPlugin>( "ServerPlugin" )
-    .base<ClientServerPlugin>()
-    .base<PropertySynchronization>()
-    // Constructors
-    // Properties (read-only)
-    // Properties (read/write)
-    // Functions
-    .function( "ForceSerialize", &ServerPlugin::forceSerializeProperties );
-    // Static functions
-    // Operators
+    camp::Class::declare<ServerPlugin>( "ServerPlugin" )
+        .base<ClientServerPlugin>()
+        .base<PropertySynchronization>()
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        // Functions
+        .function( "ForceSerialize", &ServerPlugin::forceSerializeProperties );
+        // Static functions
+        // Operators
 }
 
 void CampBindings::bindPermissionManager()

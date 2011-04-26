@@ -60,7 +60,8 @@ namespace QtOgreEditor
 //------------------------------------------------------------------------------
 
 EditorApplication::EditorApplication( int argc, char* argv[] ):
-    QApplication( argc, argv )
+    QApplication( argc, argv ),
+    mStopUpdates( true )
 {
     if( !QResource::registerResource( "../../qt/MainWindow.rcc" ) )
     {
@@ -260,8 +261,12 @@ void EditorApplication::update()
     const Real elapsed = mTimer.elapsed();
     mTimer.restart();
 
-    mEarlyUpdateSignal();
-    mEarlyFrameSignal( elapsed );
+    if( !mStopUpdates ) 
+    {
+        mEarlyUpdateSignal();
+        mEarlyFrameSignal( elapsed );
+    }
+
     mUpdateSignal();
     mFrameSignal( elapsed );
     mLateUpdateSignal();

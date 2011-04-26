@@ -31,6 +31,7 @@ public:
     void run();
     inline void quitSoon() { QApplication::quit(); }
     inline void quit() { QApplication::quit(); }
+    inline void stopUpdates( bool stop = true ) { mStopUpdates = stop; }
 
 private slots:
     void update();
@@ -43,6 +44,7 @@ private:
 
     QTimer*         mUpdateTimer;
     boost::timer    mTimer;
+    bool            mStopUpdates;
 
     boost::scoped_ptr<Logger>           mLogger;
     boost::scoped_ptr<ConfigManager>    mConfigManager;

@@ -106,6 +106,7 @@ void CampBindings::bindObject()
 {
     camp::Class::declare<Object>( "Object" )
         .tag( "QtIcon", ":/Icons/Icons/mimetypes/gnome-package.png" )
+        .tag( "NoSerialization", &Object::isRuntimeObject )
         .base<Node>()
         // Constructors
         // Member variables

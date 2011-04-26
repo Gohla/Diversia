@@ -180,6 +180,19 @@ public:
     **/
     inline RakNet::RakNetGUID getSourceGUID() const { return mSourceGUID; }
     /**
+    Sets this object to be a runtime object which will not be serialized and cannot be deleted
+    by editors.
+    
+    @param  runtime True to set to a runtime object, false to set to a normal object.
+    **/
+    inline void setRuntimeObject( bool runtime = true ) { mRuntime = runtime; }
+    /**
+    Query if this object is runtime object. 
+    
+    @return True if runtime object, false if not. 
+    **/
+    inline bool isRuntimeObject() const { return mRuntime; }
+    /**
     Creates a child object. 
     
     @param  rName   The name of the child object. 
@@ -718,6 +731,7 @@ private:
     NetworkingType 				                mType;
     sigc::signal<void, Object&>                 mDestructionSignal;
     bool                                        mBroadcastingDestruction;
+    bool                                        mRuntime;
 
     ComponentsByType							mComponentsByType;
     ComponentsByName							mComponentsByName;
