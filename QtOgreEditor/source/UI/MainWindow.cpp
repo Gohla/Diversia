@@ -315,11 +315,34 @@ void MainWindow::play()
         // TODO: What about multiple 'servers'?
         GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PLAY );
         mUI.actionPlay->setEnabled( false );
+        mUI.actionPause->setEnabled( true );
         mUI.actionStop->setEnabled( true );
     }
     catch( const Exception& e )
     {
     	LOGE << "Could not start the game: " << e.what();
+    }
+}
+
+void MainWindow::pause( bool pause )
+{
+    try
+    {
+        // TODO: What about multiple 'servers'?
+        if( pause )
+        {
+            GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PAUSE );
+            mUI.actionStop->setEnabled( false );
+        }
+        else
+        {
+            GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PLAY );
+            mUI.actionStop->setEnabled( true );
+        }
+    }
+    catch( const Exception& e )
+    {
+    	LOGE << "Could not pause the game: " << e.what();
     }
 }
 
@@ -330,6 +353,7 @@ void MainWindow::stop()
         // TODO: What about multiple 'servers'?
         GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( STOP );
         mUI.actionStop->setEnabled( false );
+        mUI.actionPause->setEnabled( false );
         mUI.actionPlay->setEnabled( true );
     }
     catch( const Exception& e )

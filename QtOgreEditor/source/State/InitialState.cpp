@@ -54,6 +54,7 @@ void InitialState::wake()
     EditorGlobals::mMainWindow->mUI.actionSave_as->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionLoad->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionStop->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionPause->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionPlay->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionUndo->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionRedo->setEnabled( false );
