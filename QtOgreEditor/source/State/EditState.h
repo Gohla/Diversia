@@ -31,7 +31,7 @@ private:
     void suspend();
     void wake();
     void activeServerDisconnected( ServerAbstract& rActiveServer );
-    void pluginStateChange( PluginState state );
+    void pluginStateChange( PluginState state, PluginState prevState );
 
 };
 

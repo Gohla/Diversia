@@ -25,11 +25,12 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "Client/Platform/Prerequisites.h"
 
-#include "Client/Object/ClientObject.h"
 #include "Client/ClientServerPlugin/ServerPluginManager.h"
-#include "Shared/Resource/ResourceInfo.h"
-#include "Shared/Camp/PropertySynchronization.h"
+#include "Client/Object/ClientObject.h"
 #include "Object/Component.h"
+#include "Shared/Camp/PropertySynchronization.h"
+#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/Resource/ResourceInfo.h"
 
 namespace Diversia
 {
@@ -54,6 +55,26 @@ public:
     {
         return ClientComponent::getClientObject().getClientObjectManager().
             getServerPluginManager().getServer();
+    }
+    /**
+    Gets the plugin state. 
+    **/
+    inline PluginState getPluginState() const 
+    { 
+        return ClientComponent::getClientObject().getClientObjectManager().getState();
+    }
+    /**
+    Connects a slot to the plugin state changed signal. 
+    
+    @param [in,out] rSlot   The slot (signature: void func(PluginState [new state], PluginState 
+    [previous state])) to connect.
+    
+    @return Connection object to block or disconnect the connection.
+    **/
+    inline sigc::connection connectPluginStateChange( const sigc::slot<void, PluginState, PluginState>& rSlot ) 
+    {
+        return ClientComponent::getClientObject().getClientObjectManager().getPluginManager().
+            connectPluginStateChange( rSlot ); 
     }
 
 protected:

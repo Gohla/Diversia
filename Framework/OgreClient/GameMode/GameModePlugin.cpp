@@ -150,11 +150,12 @@ void GameModePlugin::setServerState( ServerState serverState )
     if( mGameMode ) mGameMode->setServerState( serverState );
 }
 
-void GameModePlugin::stateChanged( PluginState state )
+void GameModePlugin::stateChanged( PluginState state, PluginState prevState )
 {
     switch( state )
     {
-        case STOP: case PLAY: GameModePlugin::reload(); break;
+        case STOP: GameModePlugin::reload(); break;
+        case PLAY: if( prevState == STOP ) GameModePlugin::reload(); break;
     }
 }
 

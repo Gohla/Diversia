@@ -43,13 +43,15 @@ ForceField::ForceField( const String& rName, Mode mode, NetworkingType networkin
     PropertySynchronization::storeUserObject();
 
     // Connect to component changes to see if the area trigger component gets created or destroyed.
-    Component::getObject().connectComponentChange( sigc::mem_fun( this, &ForceField::componentChange ) );
+    Component::getObject().connectComponentChange( sigc::mem_fun( this, 
+        &ForceField::componentChange ) );
+    ClientComponent::connectPluginStateChange( sigc::mem_fun( this, 
+        &ForceField::pluginStateChanged ) );
+    mUpdateConnection = GlobalsBase::mUpdateSignal->connect( sigc::mem_fun( this,
+        &ForceField::update ) );
 
-    mUpdateConnection = GlobalsBase::mUpdateSignal->connect( sigc::mem_fun( this, &ForceField::update ) );
     if( Component::getObject().hasComponent( COMPONENTTYPE_AREATRIGGER ) )
-    {
         mObjectsInArea = &Component::getObject().getComponent<AreaTrigger>().getObjectsInArea();
-    }
     else
         mUpdateConnection.block( true );
 }
@@ -99,6 +101,15 @@ void ForceField::componentChange( Component& rComponent, bool created )
             mUpdateConnection.block( true );
             CLOGW << "Area trigger component was destroyed while a force field component was active.";
         }
+    }
+}
+
+void ForceField::pluginStateChanged( PluginState state, PluginState prevState )
+{
+    switch( state )
+    {
+        case STOP: case PAUSE: if( mEnabled ) mUpdateConnection.block( true ); break;
+        case PLAY: if( mEnabled && mObjectsInArea ) mUpdateConnection.block( false ); break;
     }
 }
 

@@ -85,6 +85,7 @@ private:
     void reload();
     inline bool delayedDestruction() { return false; }
     void resourceLoaded( Ogre::ResourcePtr pResource );
+    void pluginStateChanged( PluginState state, PluginState prevState );
 
     String getEventName( LuaObjectScriptEvent event );
     void disconnect( LuaObjectScriptEvent event );

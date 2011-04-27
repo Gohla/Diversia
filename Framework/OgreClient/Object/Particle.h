@@ -74,6 +74,7 @@ private:
     void create();
     inline bool delayedDestruction() { return false; }
     void resourcesLoaded();
+    void pluginStateChanged( PluginState state, PluginState prevState );
 
     Ogre::ParticleSystem*   mParticleSystem;
     bool                    mCreated;
@@ -81,7 +82,9 @@ private:
     SceneNode&          mNode;
     ResourceManager&    mResourceManager;
 
-    String mParticleSystemName;
+    String  mParticleSystemName;
+    bool    mStoppedOrPaused;
+    Real    mLastSpeedFactor;
 
     CAMP_RTTI()
 

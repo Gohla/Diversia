@@ -100,7 +100,7 @@ private:
     void destroy();
     void reload();
     void setServerState( ServerState serverState );
-    void stateChanged( PluginState state );
+    void stateChanged( PluginState state, PluginState prevState );
 
     bool mousePressed( const MouseButton button );
     void mouseReleased( const MouseButton button );

@@ -151,6 +151,18 @@ void Audio::transformChange( const Node& rNode )
     }
 }
 
+void Audio::pluginStateChanged( PluginState state, PluginState prevState )
+{
+    if( !mAudioSource ) return;
+
+    switch( state )
+    {
+        case STOP: mAudioSource->stop(); break;
+        case PAUSE: mAudioSource->pause(); break;
+        case PLAY: if( prevState == PAUSE && mAudioSource->isPaused() ) mAudioSource->play(); break;
+    }
+}
+
 //------------------------------------------------------------------------------
 } // Namespace OgreClient
 } // Namespace Diversia

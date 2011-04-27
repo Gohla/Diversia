@@ -40,12 +40,15 @@ Particle::Particle( const String& rName, Mode mode, NetworkingType networkingTyp
     mNode( rObject.getComponentCast<SceneNode>( "Node" ) ),
     mResourceManager( rObject.getClientObjectManager().getPluginManager().getPlugin<ResourceManager>() ),
     mParticleSystem( 0 ),
-    mCreated( false )
+    mCreated( false ),
+    mStoppedOrPaused( false ),
+    mLastSpeedFactor( 1.0 )
 {
     PropertySynchronization::storeUserObject();
 
     PropertySynchronization::queue( initializer< std::set<String> >( "ResourceList", "Name" ) );
     if( Component::isCreatedByServer() ) PropertySynchronization::queueConstruction( true );
+    ClientComponent::connectPluginStateChange( sigc::mem_fun( this, &Particle::pluginStateChanged ) );
 }
 
 Particle::~Particle()
@@ -123,6 +126,27 @@ void Particle::resourcesLoaded()
     catch( Ogre::Exception e )
     {
         CLOGE << "Could not create particle system: " << e.what();
+    }
+}
+
+void Particle::pluginStateChanged( PluginState state, PluginState prevState )
+{
+    switch( state )
+    {
+        case STOP: case PAUSE:
+            mParticleSystem->setEmitting( false );
+            mLastSpeedFactor = mParticleSystem->getSpeedFactor();
+            mParticleSystem->setSpeedFactor( 0.0 );
+            mStoppedOrPaused = true;
+            break;
+        case PLAY:
+            if( mStoppedOrPaused )
+            {
+                mParticleSystem->setEmitting( true );
+                mParticleSystem->setSpeedFactor( mLastSpeedFactor );
+                mStoppedOrPaused = false;
+            }
+            break;
     }
 }
 

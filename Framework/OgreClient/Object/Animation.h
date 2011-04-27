@@ -86,6 +86,7 @@ private:
     void update( Real timeElapsed );
     void resourcesLoaded( Entity& rEntity );
     void componentChange( Component& rComponent, bool created );
+    void pluginStateChanged( PluginState state, PluginState prevState );
 
     String  mAnimationName;
     Real    mSpeed;

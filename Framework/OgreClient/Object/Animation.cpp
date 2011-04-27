@@ -49,6 +49,8 @@ Animation::Animation( const String& rName, Mode mode, NetworkingType networkingT
     // Connect to component changes to see if the entity component gets created or destroyed.
     Component::getObject().connectComponentChange( sigc::mem_fun( this, 
         &Animation::componentChange ) );
+    ClientComponent::connectPluginStateChange( sigc::mem_fun( this, 
+        &Animation::pluginStateChanged ) );
 
     mUpdateSignal = GlobalsBase::mFrameSignal->connect( sigc::mem_fun( this, 
         &Animation::update ) );
@@ -150,6 +152,17 @@ void Animation::componentChange( Component& rComponent, bool created )
             mAnimationState = 0;
             mUpdateSignal.block( true );
         }
+    }
+}
+
+void Animation::pluginStateChanged( PluginState state, PluginState prevState )
+{
+    if( !mAnimationState ) return;
+
+    switch( state )
+    {
+        case STOP: case PAUSE: mUpdateSignal.block( true ); break;
+        case PLAY: mUpdateSignal.block( false ); break;
     }
 }
 

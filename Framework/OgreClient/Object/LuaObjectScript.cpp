@@ -58,6 +58,8 @@ LuaObjectScript::LuaObjectScript( const String& rName, Mode mode, NetworkingType
         getPluginManager().getPlugin<LuaPlugin>().get() )
 {
     PropertySynchronization::storeUserObject();
+    ClientComponent::connectPluginStateChange( sigc::mem_fun( this, 
+        &LuaObjectScript::pluginStateChanged ) );
 }
 
 LuaObjectScript::~LuaObjectScript()
@@ -191,6 +193,15 @@ void LuaObjectScript::resourceLoaded( Ogre::ResourcePtr pResource )
     if( mLuaManager.functionExists( "Create", mClientEnvironmentName, "Global" ) )
     {
         mLuaManager.call( "Create", mClientEnvironmentName, "Global" );
+    }
+}
+
+void LuaObjectScript::pluginStateChanged( PluginState state, PluginState prevState )
+{
+    switch( state )
+    {
+        case STOP: LuaObjectScript::destroy(); break;
+        case PLAY: if( prevState == STOP ) LuaObjectScript::create(); break;
     }
 }
 

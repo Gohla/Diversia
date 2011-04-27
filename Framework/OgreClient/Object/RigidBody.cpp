@@ -49,7 +49,10 @@ RigidBody::RigidBody( const String& rName, Mode mode, NetworkingType networkingT
     if( Component::isCreatedByServer() ) PropertySynchronization::queueConstruction( true );
 
     // Connect to component changes to see if the collision shape component gets created or destroyed.
-    Component::getObject().connectComponentChange( sigc::mem_fun( this, &RigidBody::componentChange ) );
+    Component::getObject().connectComponentChange( sigc::mem_fun( this, 
+        &RigidBody::componentChange ) );
+    ClientComponent::connectPluginStateChange( sigc::mem_fun( this, 
+        &RigidBody::pluginStateChanged ) );
 }
 
 RigidBody::~RigidBody()
@@ -183,6 +186,32 @@ void RigidBody::componentChange( Component& rComponent, bool created )
             mCollisionShape = 0;
         }
     }
+}
+
+void RigidBody::pluginStateChanged( PluginState state, PluginState prevState )
+{
+    switch( state )
+    {
+        case STOP: 
+            mTransformConnection.disconnect();
+            mTransformConnection = Component::getObject().connectTransformChange( sigc::mem_fun( 
+                this, &RigidBody::transformChange ) );
+            break;
+        case PLAY: 
+            if( prevState == STOP ) mTransformConnection.disconnect(); 
+            break;
+    }
+}
+
+void RigidBody::transformChange( const Node& rNode )
+{
+    if( !mRigidBody ) return;
+
+    btTransform worldTrans;
+    worldTrans.setOrigin( toVector3<btVector3>( Component::getObject()._getDerivedPosition() ) );
+    worldTrans.setRotation( toQuaternion<btQuaternion>( 
+        Component::getObject()._getDerivedOrientation() ) );
+    mRigidBody->setWorldTransform( worldTrans );
 }
 
 //------------------------------------------------------------------------------

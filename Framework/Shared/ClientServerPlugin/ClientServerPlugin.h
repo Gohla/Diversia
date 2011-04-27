@@ -89,12 +89,6 @@ public:
     **/
     inline PluginState getState() const { return mPluginState; }
     /**
-    Sets the plugin state. 
-    
-    @param  state   The plugin state to set.
-    **/
-    void setState( PluginState state );
-    /**
     Gets the network unique identifier as a string.
     **/
     inline String getGUIDString()
@@ -128,7 +122,7 @@ protected:
     
     @param  state   The new state. 
     **/
-    inline virtual void stateChanged( PluginState state ) { }
+    inline virtual void stateChanged( PluginState state, PluginState prevState ) { }
 
     /**
     Provide implementation for these functions in specialized plugin classes. Defaults are provided
@@ -163,6 +157,13 @@ protected:
         RakNet::Connection_RM3* pDroppedConnection ) const { return RakNet::RM3AOPC_DO_NOTHING; }
 
 private:
+    /**
+    Sets the plugin state. 
+    
+    @param  state       The plugin state to set.
+    @param  prevState   The previous state.
+    **/
+    void setState( PluginState state, PluginState prevState );
     /**
     Check if the plugin should be broadcasted.
     **/

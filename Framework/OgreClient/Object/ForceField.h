@@ -80,6 +80,7 @@ private:
     inline bool delayedDestruction() { return false; }
     void update();
     void componentChange( Component& rComponent, bool created );
+    void pluginStateChanged( PluginState state, PluginState prevState );
 
     const ObjectsInArea* mObjectsInArea;
 

@@ -150,16 +150,17 @@ void ClientServerPluginManager::setState( PluginState state )
 {
     if( state == mPluginState ) return;
 
+    PluginState prevState = mPluginState;
     mPluginState = state;
 
     if( mPluginState == PLAY ) ClientServerPluginManager::storeState();
     for( ClientServerPlugins::iterator i = mPlugins.begin(); i != mPlugins.end(); ++i )
     {
-        i->second->setState( mPluginState );
+        i->second->setState( mPluginState, prevState );
     }
     if( mPluginState == STOP ) ClientServerPluginManager::restoreState();
 
-    mPluginStateChange( mPluginState );
+    mPluginStateChange( mPluginState, prevState );
 }
 
 void ClientServerPluginManager::storeState()

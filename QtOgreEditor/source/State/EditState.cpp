@@ -70,7 +70,7 @@ void EditState::activeServerDisconnected( ServerAbstract& rActiveServer )
     EditorGlobals::mState->popState();
 }
 
-void EditState::pluginStateChange( PluginState state )
+void EditState::pluginStateChange( PluginState state, PluginState prevState )
 {
     switch( state )
     {

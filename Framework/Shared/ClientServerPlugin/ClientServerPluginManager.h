@@ -212,11 +212,12 @@ public:
     /**
     Connects a slot to the plugin state changed signal. 
     
-    @param [in,out] rSlot   The slot (signature: void func(PluginState [new state])) to connect. 
+    @param [in,out] rSlot   The slot (signature: void func(PluginState [new state], PluginState 
+    [previous state])) to connect. 
     
     @return Connection object to block or disconnect the connection.
     **/
-    inline sigc::connection connectPluginStateChange( const sigc::slot<void, PluginState>& rSlot ) 
+    inline sigc::connection connectPluginStateChange( const sigc::slot<void, PluginState, PluginState>& rSlot ) 
     {
         return mPluginStateChange.connect( rSlot ); 
     }
@@ -237,7 +238,7 @@ private:
 
     Mode                                            mMode;
     PluginState                                     mPluginState;
-    sigc::signal<void, PluginState>                 mPluginStateChange;
+    sigc::signal<void, PluginState, PluginState>    mPluginStateChange;
     SerializationFile*                              mStoredState;
     ClientServerPlugins                             mPlugins;
     ClientServerPluginTypes                         mDestroyedPlugins;

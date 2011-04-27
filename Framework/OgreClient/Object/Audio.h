@@ -75,6 +75,7 @@ private:
     inline bool delayedDestruction() { return false; }
     void resourceLoaded( Ogre::ResourcePtr pResource );
     void transformChange( const Node& rNode );
+    void pluginStateChanged( PluginState state, PluginState prevState );
     inline unsigned int getInstanceNumber() const { return mInstanceNumber; }
     inline Audio* getThis() { return this; }    ///< Hack for camp bindings.
 

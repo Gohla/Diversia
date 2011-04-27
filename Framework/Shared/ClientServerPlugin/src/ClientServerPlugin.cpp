@@ -52,12 +52,12 @@ ClientServerPlugin::~ClientServerPlugin()
 
 }
 
-void ClientServerPlugin::setState( PluginState state )
+void ClientServerPlugin::setState( PluginState state, PluginState prevState )
 {
     if( state == mPluginState ) return;
 
     mPluginState = state;
-    stateChanged( state );
+    stateChanged( state, prevState );
 }
 
 void ClientServerPlugin::checkBroadcastConstruction()

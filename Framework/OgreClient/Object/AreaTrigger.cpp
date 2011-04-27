@@ -123,13 +123,13 @@ void AreaTrigger::componentChange( Component& rComponent, bool created )
 void AreaTrigger::enterArea( Object& rObject )
 {
     mObjectsInArea.insert( std::make_pair( rObject.getName(), &rObject ) );
-    mAreaTriggerSignal( rObject, true );
+    if( ClientComponent::getPluginState() != STOP ) mAreaTriggerSignal( rObject, true );
 }
 
 void AreaTrigger::leaveArea( Object& rObject )
 {
     mObjectsInArea.erase( rObject.getName() );
-    mAreaTriggerSignal( rObject, false );
+    if( ClientComponent::getPluginState() != STOP ) mAreaTriggerSignal( rObject, false );
 }
 
 sigc::connection AreaTrigger::connectAreaChange( const sigc::slot<void, Object&, bool>& rSlot )

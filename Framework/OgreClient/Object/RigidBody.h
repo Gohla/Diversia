@@ -35,7 +35,8 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_OGRECLIENT_API RigidBody : public ClientComponent, public btMotionState, public sigc::trackable
+class DIVERSIA_OGRECLIENT_API RigidBody : public ClientComponent, public btMotionState, 
+    public sigc::trackable
 {
 public:
     RigidBody( const String& rName, Mode mode, NetworkingType networkingType, 
@@ -139,9 +140,12 @@ private:
     void destroyRigidBody();
     inline bool delayedDestruction() { return false; }
     void componentChange( Component& rComponent, bool created );
+    void pluginStateChanged( PluginState state, PluginState prevState );
+    void transformChange( const Node& rNode );
 
     btRigidBody*        mRigidBody;
     btCollisionShape*   mCollisionShape;
+    sigc::connection    mTransformConnection;
 
     PhysicsType     mPhysicsType;
     Real            mMass;
