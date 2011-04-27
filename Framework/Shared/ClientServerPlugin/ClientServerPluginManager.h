@@ -238,6 +238,7 @@ private:
 
     Mode                                            mMode;
     PluginState                                     mPluginState;
+    PluginState                                     mPrevPluginState;
     sigc::signal<void, PluginState, PluginState>    mPluginStateChange;
     SerializationFile*                              mStoredState;
     ClientServerPlugins                             mPlugins;

@@ -43,6 +43,7 @@ ClientServerPluginManager::ClientServerPluginManager( Mode mode, PluginState sta
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     mMode( mode ),
     mPluginState( state ),
+    mPrevPluginState( state ),
     mStoredState( 0 ),
     mUpdateSignal( rUpdateSignal ),
     mRakPeer( rRakPeer ),
@@ -150,17 +151,17 @@ void ClientServerPluginManager::setState( PluginState state )
 {
     if( state == mPluginState ) return;
 
-    PluginState prevState = mPluginState;
+    mPrevPluginState = mPluginState;
     mPluginState = state;
 
-    if( mPluginState == PLAY ) ClientServerPluginManager::storeState();
+    if( mPluginState == PLAY && mPrevPluginState == STOP ) ClientServerPluginManager::storeState();
     for( ClientServerPlugins::iterator i = mPlugins.begin(); i != mPlugins.end(); ++i )
     {
-        i->second->setState( mPluginState, prevState );
+        i->second->setState( mPluginState, mPrevPluginState );
     }
     if( mPluginState == STOP ) ClientServerPluginManager::restoreState();
 
-    mPluginStateChange( mPluginState, prevState );
+    mPluginStateChange( mPluginState, mPrevPluginState );
 }
 
 void ClientServerPluginManager::storeState()
