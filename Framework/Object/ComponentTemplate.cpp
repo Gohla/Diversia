@@ -69,6 +69,12 @@ ComponentTemplate::ComponentTemplate( const String& rName, Mode mode, Networking
 
 ComponentTemplate::~ComponentTemplate()
 {
+    for( InstantiatedComponents::iterator i = mInstantiatedComponents.begin(); 
+        i != mInstantiatedComponents.end(); ++i )
+    {
+        (*i)->setTemplate( 0 );
+    }
+
     mDestructionSignal( *this );
 }
 
@@ -166,6 +172,13 @@ void ComponentTemplate::setTemplateProperty( const String& rPropertyName,
 
     mProperties[rPropertyName] = value;
     mPropertySignal( rPropertyName, value );
+
+    // Propagate property change to all instantiated components.
+    for( InstantiatedComponents::iterator i = mInstantiatedComponents.begin(); 
+        i != mInstantiatedComponents.end(); ++i )
+    {
+        (*i)->setProperty( rPropertyName, value );
+    }
 }
 
 void ComponentTemplate::setTemplateProperties( const Component& rComponent )
@@ -187,8 +200,19 @@ void ComponentTemplate::setTemplateProperties( const Component& rComponent )
 
 Component& ComponentTemplate::createComponent( Object& rObject )
 {
+    // Create unique component name.
+    String componentName = mFactory.getTypeName();
+    if( mFactory.multiple() )
+    {
+        std::size_t count = rObject.componentCount( mType );
+        if( count )
+        {
+            componentName += boost::lexical_cast<String>( count + 1 );
+        }
+    }
+
     // Create component
-    Component& component = rObject.createComponent( mType, mComponentClass.name() );
+    Component& component = rObject.createComponent( mType, componentName );
     camp::UserObject componentObject = component;
 
     // Set template properties on component.
@@ -204,9 +228,19 @@ Component& ComponentTemplate::createComponent( Object& rObject )
         }
     }
 
-    // TODO: Create component links
+    // Create component links
+    mInstantiatedComponents.insert( &component );
+    component.setTemplate( this );
 
     return component;
+}
+
+void ComponentTemplate::addInstantiatedComponent( Component& rComponent )
+{
+    mInstantiatedComponents.insert( &rComponent );
+    rComponent.connectDestruction( sigc::mem_fun( this, &ComponentTemplate::componentDestroyed ) );
+
+    // TODO: Send over all properties?
 }
 
 void ComponentTemplate::broadcastConstruction()
@@ -260,6 +294,11 @@ void ComponentTemplate::DeallocReplica( RakNet::Connection_RM3* pSourceConnectio
             //DivAssert( 0, e.what() );
         }
     }
+}
+
+void ComponentTemplate::componentDestroyed( Component& rComponent )
+{
+    mInstantiatedComponents.erase( &rComponent );
 }
 
 //------------------------------------------------------------------------------

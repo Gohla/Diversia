@@ -87,13 +87,13 @@ struct CampValueMapPropertyData : public CampPropertyDataInterface
     CampValueMapPropertyData( const camp::DictionaryProperty& rProperty, 
         const camp::UserObject& rObject, const String& rKey );
 
-    inline void set( const camp::Value& rValue ) { mProperty.set( mObject, mKey, rValue ); }
+    void set( const camp::Value& rValue );
     void setWithUndo( const camp::Value& rValue );
     inline camp::Value get() const { return mProperty.get( mObject, mKey ); }
     inline camp::Type type() const { return get().type(); /* TODO: Use class? */ }
     inline String name() const { return mKey; }
     inline bool ignore() const { return false; }
-    inline QString valueText() const { return ""; }
+    QString valueText() const;
     inline bool hasTag( const camp::Value& rTag ) const { return false; }
     inline camp::Value tag( const camp::Value& rTag ) const { return camp::Value::nothing; }
     inline bool writable() const { return true; }

@@ -130,6 +130,20 @@ public:
     **/
     void destroyComponentLocally();
     /**
+    Sets the component template.
+    
+    @param [in,out] rTemplate   The component template.
+    **/
+    void setTemplate( ComponentTemplate* pTemplate);
+    /**
+    Sets a property, properties that are overridden are not changed.
+    
+    @param  rPropertyName   Name of the property. 
+    @param  rValue          The value to set. 
+    **/
+    void setProperty( const String& rPropertyName, const camp::Value& rValue );
+
+    /**
     Connects a slot to the destruction signal.
 
     @param [in,out] rSlot   The slot (signature: void func(Component& [this component])) to connect.
@@ -256,6 +270,8 @@ private:
 	Destroys this component from the network.
 	**/
 	void broadcastDestruction();
+    void propertyChange( const camp::UserObject& rObject, const camp::Property& rProperty, 
+        const camp::Value& rValue );
 
     /**
     Implemented by Component.
@@ -275,6 +291,11 @@ private:
 
     Object&                         mObject;
     ComponentFactory&               mFactory;
+
+    ComponentTemplate*              mTemplate;
+    ObjectTemplate*                 mObjectTemplate;
+    std::set<String>                mOverriddenProperties;
+    sigc::connection                mPropertyConnection;
 
     CAMP_RTTI()
 };

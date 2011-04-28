@@ -37,6 +37,7 @@ namespace ObjectSystem
 //------------------------------------------------------------------------------
 
 typedef std::map<String, camp::Value> Properties;
+typedef std::set<Component*> InstantiatedComponents;
 
 class DIVERSIA_OBJECT_API ComponentTemplate : public RakNet::Replica3, public boost::noncopyable
 {
@@ -153,6 +154,13 @@ public:
     @return The created component. 
     **/
     Component& createComponent( Object& rObject );
+    /**
+    Adds a component as an instantiated component to this component template. Property changes made
+    to this component template in the future are propagated to the given component.
+    
+    @param [in,out] rComponent  The component to add.
+    **/
+    void addInstantiatedComponent( Component& rComponent );
 
     /**
     Convenience function for destroying this component template.
@@ -278,6 +286,7 @@ private:
 	Destroys this component template from the network.
 	**/
 	void broadcastDestruction();
+    void componentDestroyed( Component& rComponent );
 
     /**
     Implemented by ComponentTemplate.
@@ -298,8 +307,9 @@ private:
     ComponentFactory&                       mFactory;
 
     const camp::Class&                                      mComponentClass;
-    Properties                                        mProperties;
+    Properties                                              mProperties;
     sigc::signal<void, const String&, const camp::Value&>   mPropertySignal;
+    InstantiatedComponents                                  mInstantiatedComponents;
 
     CAMP_RTTI()
 };

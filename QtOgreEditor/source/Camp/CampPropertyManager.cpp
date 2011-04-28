@@ -73,15 +73,15 @@ QString CampPropertyData::valueText() const
 
         switch( prop.type() )
         {
-        case camp::boolType:
-            text += boost::lexical_cast<char*>( prop.get( object ).to<bool>() );
-            break;
-        case camp::intType:
-            text += boost::lexical_cast<char*>( prop.get( object ).to<int>() );
-            break;
-        case camp::realType: 
-            text += QString::number( prop.get( object ).to<double>(), 'f', 2 );
-            break;
+            case camp::boolType:
+                text += boost::lexical_cast<char*>( prop.get( object ).to<bool>() );
+                break;
+            case camp::intType:
+                text += boost::lexical_cast<char*>( prop.get( object ).to<int>() );
+                break;
+            case camp::realType: 
+                text += QString::number( prop.get( object ).to<double>(), 'f', 2 );
+                break;
         }
     }
 
@@ -115,10 +115,70 @@ CampValueMapPropertyData::CampValueMapPropertyData( const camp::DictionaryProper
 
 }
 
+void CampValueMapPropertyData::set( const camp::Value& rValue )
+{
+    if( mProperty.hasTag( "SetFunction" ) )
+    {
+        mObject.getClass().function( mProperty.tag( "SetFunction" ).to<String>() ).call( mObject, 
+            camp::Args( mKey, rValue ) );
+    }
+    else if( mProperty.hasTag( "AddFunction" ) && mProperty.exists( mObject, mKey ) )
+    {
+        mObject.getClass().function( mProperty.tag( "AddFunction" ).to<String>() ).call( mObject, 
+            camp::Args( mKey ) );
+    }
+    else
+    {
+        mProperty.set( mObject, mKey, rValue );
+    }
+
+    mProperty.set( mObject, mKey, rValue );
+}
+
 void CampValueMapPropertyData::setWithUndo( const camp::Value& rValue )
 {
     // TODO: Fix undo
     CampValueMapPropertyData::set( rValue );
+}
+
+QString CampValueMapPropertyData::valueText() const
+{
+    /*QString text;
+    const camp::Class& metaClass = mProperty.elementClass();
+    camp::UserObject object = CampValueMapPropertyData::get().to<camp::UserObject>();
+    
+    bool first = true;
+
+    for( std::size_t j = 0; j != metaClass.propertyCount(); ++j )
+    {
+        const camp::Property& prop = metaClass.property( j );
+        if( prop.hasTag( "NoPropertyBrowser" ) || !prop.readable( object ) ) continue;
+
+        if( !first )
+            text += ", ";
+        else
+        {
+            text += "(";
+            first = false;
+        }
+
+        switch( prop.type() )
+        {
+            case camp::boolType:
+                text += boost::lexical_cast<char*>( prop.get( object ).to<bool>() );
+                break;
+            case camp::intType:
+                text += boost::lexical_cast<char*>( prop.get( object ).to<int>() );
+                break;
+            case camp::realType: 
+                text += QString::number( prop.get( object ).to<double>(), 'f', 2 );
+                break;
+        }
+    }
+
+    return text + ")";*/
+
+    return "";
 }
 
 CampValueMapPropertyData* CampValueMapPropertyData::clone() const

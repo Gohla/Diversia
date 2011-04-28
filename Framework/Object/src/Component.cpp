@@ -25,8 +25,10 @@ THE SOFTWARE.
 #include "Object/Platform/StableHeaders.h"
 
 #include "Object/Component.h"
-#include "Object/ComponentFactoryManager.h"
 #include "Object/ComponentFactory.h"
+#include "Object/ComponentFactoryManager.h"
+#include "Object/ComponentTemplate.h"
+#include "Util/Signal/UserObjectChange.h"
 
 namespace Diversia
 {
@@ -45,7 +47,9 @@ Component::Component( const String& rName, Mode mode, NetworkingType networkingT
     mLocalOverride( localOverride ),
     mBroadcastingDestruction( false ),
     mObject( rObject ),
-    mFactory( ComponentFactoryManager::getComponentFactory( type ) )
+    mFactory( ComponentFactoryManager::getComponentFactory( type ) ),
+    mTemplate( 0 ),
+    mObjectTemplate( 0 )
 {
     // Override networking type to local.
     if( mLocalOverride || ( mMode == CLIENT && mFactory.clientOnly() ) ||
@@ -141,6 +145,38 @@ void Component::destroyComponentLocally()
     }
 }
 
+void Component::setTemplate( ComponentTemplate* pTemplate )
+{
+    if( pTemplate )
+    {
+        mTemplate = pTemplate;
+        mObjectTemplate = &pTemplate->getObjectTemplate();
+
+        mPropertyConnection = UserObjectChange::connectChange( this, sigc::mem_fun( this, 
+            &Component::propertyChange ) );
+    }
+    else
+    {
+        mTemplate = 0;
+        mObjectTemplate = 0;
+        mPropertyConnection.disconnect();
+        mOverriddenProperties.clear();
+    }
+}
+
+void Component::setProperty( const String& rPropertyName, const camp::Value& rValue )
+{
+    mPropertyConnection.block( true );
+
+    camp::UserObject componentObject = this;
+    if( mOverriddenProperties.find( rPropertyName ) == mOverriddenProperties.end() )
+    {
+        componentObject.set( rPropertyName, rValue );
+    }
+
+    mPropertyConnection.block( false );
+}
+
 void Component::broadcastConstruction()
 {
     OLOGD << "Broadcasting construction for component " << mName << " in object " <<
@@ -164,6 +200,12 @@ void Component::broadcastDestruction()
     Replica3::BroadcastDestruction();
     mObject.getReplicaManager().Dereference( this );
     mBroadcastingDestruction = false;
+}
+
+void Component::propertyChange( const camp::UserObject& rObject, const camp::Property& rProperty, 
+    const camp::Value& rValue )
+{
+    mOverriddenProperties.insert( rProperty.name() );
 }
 
 void Component::WriteAllocationID( RakNet::Connection_RM3* pConnection,

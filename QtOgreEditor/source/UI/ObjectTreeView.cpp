@@ -154,7 +154,8 @@ ClientObject& ObjectTreeView::getObject( const QModelIndex& rIndex )
             "ObjectTreeView::getObject" );
 
     String objectName = rIndex.data( Qt::UserRole + 2 ).toString().toStdString();
-    return static_cast<ClientObject&>( mObjectManager->getObject( objectName ) );
+    Object& object = mObjectManager->getObject( objectName );
+    return static_cast<ClientObject&>( object );
 }
 
 ClientComponent& ObjectTreeView::getComponent( const QModelIndex& rIndex )
@@ -165,9 +166,9 @@ ClientComponent& ObjectTreeView::getComponent( const QModelIndex& rIndex )
             "ObjectTreeView::getObject" );
 
     String objectName = rIndex.data( Qt::UserRole + 2 ).toString().toStdString();
-    Object& object = mObjectManager->getObject( objectName );
     String componentName = rIndex.data( Qt::UserRole + 3 ).toString().toStdString();
-    return static_cast<ClientComponent&>( object.getComponent( componentName ) );
+    return static_cast<ClientComponent&>( mObjectManager->getObject( objectName ).getComponent( 
+        componentName ) );
 }
 
 void ObjectTreeView::load( const QModelIndex& rIndex )
@@ -223,14 +224,16 @@ void ObjectTreeView::selectionChanged( const QItemSelection& rSelected,
     QModelIndexList dIndexes = rDeselected.indexes();
     for( QModelIndexList::iterator i = dIndexes.begin(); i != dIndexes.end(); ++i )
     {
-        try
+        if( ObjectTreeView::isObject( *i ) )
         {
-            if( ObjectTreeView::isObject( *i ) )
+            try
+            {
                 EditorGlobals::mSelection->deselect( ObjectTreeView::getObject( *i ), true );
-        }
-        catch( Exception e )
-        {
-            // Ignore error, object will be deselected because it has been destroyed.
+            }
+            catch( ... )
+            {
+                // Ignore error, object will be deselected because it has been destroyed.
+            }
         }
     }
 
@@ -523,10 +526,17 @@ void ObjectTreeView::checkHiddenItems( QModelIndex parent /*= QModelIndex()*/ )
         {
             case REPLICATYPE_OBJECT:
             {
-                if( ObjectTreeView::getObject( index ).isRuntimeObject() ) 
-                    QTreeView::setRowHidden( i, parent, !mShowRuntimeObjects );
+                try
+                {
+                    if( ObjectTreeView::getObject( index ).isRuntimeObject() ) 
+                        QTreeView::setRowHidden( i, parent, !mShowRuntimeObjects );
 
-                ObjectTreeView::checkHiddenItems( index );
+                    ObjectTreeView::checkHiddenItems( index );
+                }
+                catch( ... )
+                {
+                	// Ignore error, object has been destroyed but is still in the tree view.
+                }
 
                 break;
             }
