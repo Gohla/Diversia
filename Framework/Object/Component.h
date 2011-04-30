@@ -132,9 +132,26 @@ public:
     /**
     Sets the component template.
     
-    @param [in,out] rTemplate   The component template.
+    @param [in,out] pTemplate   The component template.
     **/
-    void setTemplate( ComponentTemplate* pTemplate);
+    void setTemplate( ComponentTemplate* pTemplate );
+    /**
+    Sets the component template for this component using the name of the component template.
+    
+    @param  rName   The name of the template, or empty string to remove template. The non 
+                    changeable name of the template is used, not the display name.
+    **/
+    void setTemplate( const String& rName );
+    /**
+    Gets the object template for this object.
+        
+    @return The object template or 0 if this object has no template.
+    **/
+    inline ComponentTemplate* getTemplate() const { return mTemplate; }
+    /**
+    Gets the name of the template for this object or an empty string if this object has no template.
+    **/
+    String getTemplateName() const;
     /**
     Sets a property, properties that are overridden are not changed.
     
@@ -142,6 +159,13 @@ public:
     @param  rValue          The value to set. 
     **/
     void setProperty( const String& rPropertyName, const camp::Value& rValue );
+    /**
+    Blocks property overriding. This can be used to stop property overriding temporarily when 
+    deserializing this component.
+    
+    @param  block   True to block, false to unblock.
+    **/
+    void blockPropertyOverriding( bool block = true );
 
     /**
     Connects a slot to the destruction signal.
@@ -247,6 +271,7 @@ protected:
     ComponentType mType;
 
 private:
+    friend ObjectSystem::Bindings::CampBindings;    ///< Allow private access for camp bindings.
     friend void camp::detail::destroy<Component>( const UserObject& object );  ///< Allow private access for camp.
 
     /**
@@ -271,7 +296,7 @@ private:
 	**/
 	void broadcastDestruction();
     void propertyChange( const camp::UserObject& rObject, const camp::Property& rProperty, 
-        const camp::Value& rValue );
+        const camp::Value& rValue, const int reason );
 
     /**
     Implemented by Component.
@@ -293,7 +318,6 @@ private:
     ComponentFactory&               mFactory;
 
     ComponentTemplate*              mTemplate;
-    ObjectTemplate*                 mObjectTemplate;
     std::set<String>                mOverriddenProperties;
     sigc::connection                mPropertyConnection;
 

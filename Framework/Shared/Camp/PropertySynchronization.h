@@ -257,7 +257,7 @@ protected:
 private:
     void blockChangeConnections( bool block );
     void propertyChanged( const camp::UserObject& rObject, const camp::Property& rProperty,
-        const camp::Value& rValue );
+        const camp::Value& rValue, const int reason );
     void valueInserted( const camp::UserObject& rObject, const camp::ArrayProperty& rProperty,
         const camp::Value& rValue );
 

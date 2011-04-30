@@ -124,7 +124,7 @@ private:
     void querySetProperty( const String& rQuery, camp::Value& rValue );
     void queryInsertProperty( const String& rQuery, camp::Value& rValue );
 
-    PermissionManager& mPermissionManager;
+    PermissionManager&  mPermissionManager;
 
     CAMP_CLASS(ClientComponent)
 

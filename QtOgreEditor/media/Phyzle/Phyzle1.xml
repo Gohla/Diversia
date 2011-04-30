@@ -379,7 +379,7 @@
 											<item>
 												<key>ShapeRadius</key>
 												<value>
-													<real>2.0000002384185791</real>
+													<real>0.9999997615814209</real>
 												</value>
 											</item>
 											<item>
@@ -392,7 +392,7 @@
 												<key>ShapeType</key>
 												<value>
 													<enum>
-														<GraphicsShape>Sphere</GraphicsShape>
+														<GraphicsShape>IcoSphere</GraphicsShape>
 													</enum>
 												</value>
 											</item>
@@ -572,6 +572,7 @@
 							<DisplayName>EnvLight</DisplayName>
 							<NetworkingType>Local</NetworkingType>
 							<ParentName/>
+							<TemplateName/>
 							<Components>
 								<item>
 									<key>
@@ -580,6 +581,8 @@
 									</key>
 									<value>
 										<LocalOverride>1</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 									</value>
 								</item>
@@ -590,6 +593,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<Type>Point</Type>
 										<DiffuseColour>
@@ -607,10 +612,10 @@
 										<PowerScale>1</PowerScale>
 										<SpotlightFalloff>1</SpotlightFalloff>
 										<SpotlightInnerAngle>
-											<Radians>0.52359884977340698</Radians>
+											<Radians>0.52359879016876221</Radians>
 										</SpotlightInnerAngle>
 										<SpotlightOuterAngle>
-											<Radians>0.69813179969787598</Radians>
+											<Radians>0.69813168048858643</Radians>
 										</SpotlightOuterAngle>
 									</value>
 								</item>
@@ -641,6 +646,7 @@
 							<DisplayName>Ground</DisplayName>
 							<NetworkingType>Local</NetworkingType>
 							<ParentName/>
+							<TemplateName/>
 							<Components>
 								<item>
 									<key>
@@ -649,6 +655,8 @@
 									</key>
 									<value>
 										<LocalOverride>1</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 									</value>
 								</item>
@@ -659,6 +667,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<Material>Floor</Material>
 										<CastShadows>1</CastShadows>
@@ -672,6 +682,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<MeshFile/>
 										<ShapeType>Plane</ShapeType>
@@ -718,6 +730,7 @@
 							<DisplayName>Collision offset</DisplayName>
 							<NetworkingType>Local</NetworkingType>
 							<ParentName>EditorObject5809643718395920433467771912163187821</ParentName>
+							<TemplateName/>
 							<Components>
 								<item>
 									<key>
@@ -726,6 +739,8 @@
 									</key>
 									<value>
 										<LocalOverride>1</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 									</value>
 								</item>
@@ -736,6 +751,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<IsReceivingCollisionCallbacks>0</IsReceivingCollisionCallbacks>
 										<CollisionFile/>
@@ -755,6 +772,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<PhysicsType>Kinematic</PhysicsType>
 										<Mass>0</Mass>
@@ -793,6 +812,7 @@
 							<DisplayName>Launcher</DisplayName>
 							<NetworkingType>Local</NetworkingType>
 							<ParentName/>
+							<TemplateName/>
 							<Components>
 								<item>
 									<key>
@@ -801,6 +821,8 @@
 									</key>
 									<value>
 										<LocalOverride>1</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 									</value>
 								</item>
@@ -811,6 +833,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<IsReceivingCollisionCallbacks>0</IsReceivingCollisionCallbacks>
 										<CollisionFile/>
@@ -830,6 +854,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 									</value>
 								</item>
@@ -840,9 +866,11 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<ClientScriptFile>scripts/AreaTriggerTest.lua</ClientScriptFile>
-										<ClientEnvironmentName>LuaObjectScript0</ClientEnvironmentName>
+										<ClientEnvironmentName>LuaObjectScript00</ClientEnvironmentName>
 										<ClientSecurityLevel>Low</ClientSecurityLevel>
 										<ServerScriptFile/>
 										<ServerEnvironmentName/>
@@ -853,12 +881,12 @@
 						</value>
 					</item>
 					<item>
-						<key>ObjectFromObjectTemplate4863887977220260855854679895241688151</key>
+						<key>ObjectFromObjectTemplate8376695393258044171441151967107401334</key>
 						<value>
 							<Position>
-								<X>-3</X>
-								<Y>5</Y>
-								<Z>0</Z>
+								<X>-5</X>
+								<Y>10</Y>
+								<Z>-5</Z>
 							</Position>
 							<Orientation>
 								<X>0</X>
@@ -876,6 +904,7 @@
 							<DisplayName>Ball</DisplayName>
 							<NetworkingType>Local</NetworkingType>
 							<ParentName/>
+							<TemplateName>ObjectTemplateFromObject8241587448592287962206763947915745001</TemplateName>
 							<Components>
 								<item>
 									<key>
@@ -884,6 +913,8 @@
 									</key>
 									<value>
 										<LocalOverride>1</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 									</value>
 								</item>
@@ -894,6 +925,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>Entity</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<Material>Ball</Material>
 										<CastShadows>1</CastShadows>
@@ -907,9 +940,11 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>Mesh</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<MeshFile/>
-										<ShapeType>Sphere</ShapeType>
+										<ShapeType>IcoSphere</ShapeType>
 										<ShapeParameters>
 											<X>1</X>
 											<Y>1</Y>
@@ -922,7 +957,7 @@
 										<ShapeXSegments>12</ShapeXSegments>
 										<ShapeYSegments>4</ShapeYSegments>
 										<ShapeZSegments>4</ShapeZSegments>
-										<ShapeRadius>2.0000002384185791</ShapeRadius>
+										<ShapeRadius>0.9999997615814209</ShapeRadius>
 										<ShapeRadius2>1</ShapeRadius2>
 									</value>
 								</item>
@@ -933,6 +968,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>CollisionShape</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<IsReceivingCollisionCallbacks>0</IsReceivingCollisionCallbacks>
 										<CollisionFile/>
@@ -952,6 +989,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>RigidBody</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<PhysicsType>Dynamic</PhysicsType>
 										<Mass>1</Mass>
@@ -967,12 +1006,12 @@
 						</value>
 					</item>
 					<item>
-						<key>ObjectFromObjectTemplate4863887977220260855854679895241688152</key>
+						<key>ObjectFromObjectTemplate8376695393258044171441151967107401335</key>
 						<value>
 							<Position>
 								<X>0</X>
 								<Y>10</Y>
-								<Z>0</Z>
+								<Z>-5</Z>
 							</Position>
 							<Orientation>
 								<X>0</X>
@@ -990,6 +1029,7 @@
 							<DisplayName>Ball</DisplayName>
 							<NetworkingType>Local</NetworkingType>
 							<ParentName/>
+							<TemplateName>ObjectTemplateFromObject8241587448592287962206763947915745001</TemplateName>
 							<Components>
 								<item>
 									<key>
@@ -998,6 +1038,8 @@
 									</key>
 									<value>
 										<LocalOverride>1</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 									</value>
 								</item>
@@ -1008,6 +1050,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>Entity</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<Material>Ball</Material>
 										<CastShadows>1</CastShadows>
@@ -1021,9 +1065,11 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>Mesh</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<MeshFile/>
-										<ShapeType>Sphere</ShapeType>
+										<ShapeType>IcoSphere</ShapeType>
 										<ShapeParameters>
 											<X>1</X>
 											<Y>1</Y>
@@ -1036,7 +1082,7 @@
 										<ShapeXSegments>12</ShapeXSegments>
 										<ShapeYSegments>4</ShapeYSegments>
 										<ShapeZSegments>4</ShapeZSegments>
-										<ShapeRadius>0.59999990463256836</ShapeRadius>
+										<ShapeRadius>0.9999997615814209</ShapeRadius>
 										<ShapeRadius2>1</ShapeRadius2>
 									</value>
 								</item>
@@ -1047,6 +1093,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>CollisionShape</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<IsReceivingCollisionCallbacks>0</IsReceivingCollisionCallbacks>
 										<CollisionFile/>
@@ -1066,6 +1114,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>RigidBody</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<PhysicsType>Dynamic</PhysicsType>
 										<Mass>1</Mass>
@@ -1081,12 +1131,12 @@
 						</value>
 					</item>
 					<item>
-						<key>ObjectFromObjectTemplate4863887977220260855854679895241688153</key>
+						<key>ObjectFromObjectTemplate8376695393258044171441151967107401336</key>
 						<value>
 							<Position>
-								<X>3</X>
-								<Y>15</Y>
-								<Z>0</Z>
+								<X>5</X>
+								<Y>10</Y>
+								<Z>-5</Z>
 							</Position>
 							<Orientation>
 								<X>0</X>
@@ -1104,6 +1154,7 @@
 							<DisplayName>Ball</DisplayName>
 							<NetworkingType>Local</NetworkingType>
 							<ParentName/>
+							<TemplateName>ObjectTemplateFromObject8241587448592287962206763947915745001</TemplateName>
 							<Components>
 								<item>
 									<key>
@@ -1112,6 +1163,8 @@
 									</key>
 									<value>
 										<LocalOverride>1</LocalOverride>
+										<TemplateName/>
+										<OverriddenProperties/>
 										<ResourceList/>
 									</value>
 								</item>
@@ -1122,6 +1175,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>Entity</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<Material>Ball</Material>
 										<CastShadows>1</CastShadows>
@@ -1135,9 +1190,11 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>Mesh</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<MeshFile/>
-										<ShapeType>Sphere</ShapeType>
+										<ShapeType>IcoSphere</ShapeType>
 										<ShapeParameters>
 											<X>1</X>
 											<Y>1</Y>
@@ -1150,7 +1207,7 @@
 										<ShapeXSegments>12</ShapeXSegments>
 										<ShapeYSegments>4</ShapeYSegments>
 										<ShapeZSegments>4</ShapeZSegments>
-										<ShapeRadius>2.0000002384185791</ShapeRadius>
+										<ShapeRadius>0.9999997615814209</ShapeRadius>
 										<ShapeRadius2>1</ShapeRadius2>
 									</value>
 								</item>
@@ -1161,6 +1218,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>CollisionShape</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<IsReceivingCollisionCallbacks>0</IsReceivingCollisionCallbacks>
 										<CollisionFile/>
@@ -1180,6 +1239,8 @@
 									</key>
 									<value>
 										<LocalOverride>0</LocalOverride>
+										<TemplateName>RigidBody</TemplateName>
+										<OverriddenProperties/>
 										<ResourceList/>
 										<PhysicsType>Dynamic</PhysicsType>
 										<Mass>1</Mass>

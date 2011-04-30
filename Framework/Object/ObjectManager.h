@@ -46,20 +46,21 @@ public:
     /**
     Constructor.
 
-    @param  mode                        The mode the object manager must run in.
-    @param  ownGUID                     Own unique identifier.
-    @param  serverGUID                  Server unique identifier.
-    @param [in,out] rUpdateSignal       The frame/tick update signal.
-    @param [in,out] rLateUpdateSignal   The late frame/tick update signal.
-    @param [in,out] rReplicaManager     Replica manager.
-    @param [in,out] rNetworkIDManager   Network ID manager.
-    @param [in,out] rRPC3               RPC3 object.
-    @param  offlineMode                 True to set offline mode. Defaults to false.
+    @param  mode                            The mode the object manager must run in.
+    @param  ownGUID                         Own unique identifier.
+    @param  serverGUID                      Server unique identifier.
+    @param [in,out] rUpdateSignal           The frame/tick update signal.
+    @param [in,out] rLateUpdateSignal       The late frame/tick update signal.
+    @param [in,out] rObjectTemplateManager  The object template manager.
+    @param [in,out] rReplicaManager         Replica manager.
+    @param [in,out] rNetworkIDManager       Network ID manager.
+    @param [in,out] rRPC3                   RPC3 object.
+    @param  offlineMode                     True to set offline mode. Defaults to false.
     **/
     ObjectManager( Mode mode, RakNet::RakNetGUID ownGUID, RakNet::RakNetGUID serverGUID,
         sigc::signal<void>& rUpdateSignal, sigc::signal<void>& rLateUpdateSignal, 
-        RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager, 
-        RakNet::RPC3& rRPC3, bool offlineMode = false );
+        ObjectTemplateManager& rObjectTemplateManager, RakNet::ReplicaManager3& rReplicaManager, 
+        RakNet::NetworkIDManager& rNetworkIDManager, RakNet::RPC3& rRPC3, bool offlineMode = false );
     /**
     Destructor.
     **/
@@ -213,6 +214,10 @@ public:
     **/
     inline sigc::signal<void>& getUpdateSignal() { return mUpdateSignal; }
     /**
+    Gets the object template manager.
+    **/
+    inline ObjectTemplateManager& getObjectTemplateManager() const { return mObjectTemplateManager; }
+    /**
     Gets the replica manager.
     **/
     inline RakNet::ReplicaManager3& getReplicaManager() const { return mReplicaManager; }
@@ -303,6 +308,7 @@ private:
     sigc::signal<void>&                 mUpdateSignal;
     sigc::connection                    mUpdateConnection;
 
+    ObjectTemplateManager&              mObjectTemplateManager;
     RakNet::ReplicaManager3&            mReplicaManager;
     RakNet::NetworkIDManager&           mNetworkIDManager;
     RakNet::RPC3&                       mRPC3;

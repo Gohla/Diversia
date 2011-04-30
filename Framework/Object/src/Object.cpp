@@ -24,11 +24,12 @@ THE SOFTWARE.
 
 #include "Object/Platform/StableHeaders.h"
 
-#include "Object/Object.h"
 #include "Object/Component.h"
-#include "Object/ObjectManager.h"
-#include "Object/ComponentFactoryManager.h"
 #include "Object/ComponentFactory.h"
+#include "Object/ComponentFactoryManager.h"
+#include "Object/Object.h"
+#include "Object/ObjectManager.h"
+#include "Object/ObjectTemplate.h"
 
 namespace Diversia
 {
@@ -56,8 +57,10 @@ Object::Object( const String& rName, Mode mode, NetworkingType type, const Strin
     mSource( source == serverGUID ? SERVER : CLIENT ),
     mSourceGUID( source ),
     mParentChanged( false ),
+    mTemplate( 0 ),
     mUpdateSignal( rUpdateSignal ),
     mObjectManager( rObjectManager ),
+    mObjectTemplateManager( rObjectManager.getObjectTemplateManager() ),
     mReplicaManager( rReplicaManager ),
     mNetworkIDManager( rNetworkIDManager ),
     mRPC3( rRPC3 )
@@ -497,6 +500,27 @@ String Object::getParentName() const
     if( Node::hasParent() )
         return getParentObject()->getName();
 
+    return String();
+}
+
+void Object::setTemplate( ObjectTemplate* pTemplate )
+{
+    mTemplate = pTemplate;
+}
+
+void Object::setTemplate( const String& rName )
+{
+    if( rName.empty() )
+        Object::setTemplate( 0 );
+    else if( mObjectTemplateManager.hasObjectTemplate( rName ) )
+        Object::setTemplate( &mObjectTemplateManager.getObjectTemplate( rName ) );
+    else
+        OLOGE << "Object template " << rName << " does not exist, cannot set template for object " << mName;
+}
+
+String Object::getTemplateName() const
+{
+    if( mTemplate ) return mTemplate->getName();
     return String();
 }
 

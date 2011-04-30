@@ -35,13 +35,14 @@ namespace ObjectSystem
 
 ObjectManager::ObjectManager( Mode mode, RakNet::RakNetGUID ownGUID, RakNet::RakNetGUID serverGUID,
     sigc::signal<void>& rUpdateSignal, sigc::signal<void>& rLateUpdateSignal, 
-    RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager, 
-    RakNet::RPC3& rRPC3, bool offlineMode /*= false*/ ): 
+    ObjectTemplateManager& rObjectTemplateManager, RakNet::ReplicaManager3& rReplicaManager, 
+    RakNet::NetworkIDManager& rNetworkIDManager, RakNet::RPC3& rRPC3, bool offlineMode /*= false*/ ): 
     mMode( mode ),
     mOfflineMode( offlineMode ),
     mOwnGUID( ownGUID ),
     mServerGUID( serverGUID ),
     mUpdateSignal( rUpdateSignal ),
+    mObjectTemplateManager( rObjectTemplateManager ),
     mReplicaManager( rReplicaManager ),
     mNetworkIDManager( rNetworkIDManager ),
     mRPC3( rRPC3 )

@@ -62,7 +62,7 @@ struct CampPropertyData : public CampPropertyDataInterface
         CampPropertyDataInterface* pParentPropertyData = 0 );
     ~CampPropertyData();
 
-    inline void set( const camp::Value& rValue ) { mProperty.set( mObject, rValue ); }
+    inline void set( const camp::Value& rValue ) { mProperty.set( mObject, rValue, 2 ); }
     void setWithUndo( const camp::Value& rValue );
     inline camp::Value get() const { return mProperty.get( mObject ); }
     inline camp::Type type() const { return mProperty.type(); }
@@ -313,7 +313,7 @@ private:
     void setBlockSlots( bool block );
     void externalPropertyChanged( CampPropertyDataInterface* pData, const camp::Value& rValue );
     void externalPropertyChanged( const camp::UserObject& rObject, const camp::Property& rProperty, 
-        const camp::Value& rValue );
+        const camp::Value& rValue, const int reason );
     template <typename T, typename U> void propertyChanged( QtProperty* pProperty, U pManager, 
         T val )
     {

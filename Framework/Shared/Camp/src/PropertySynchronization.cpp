@@ -501,7 +501,7 @@ void PropertySynchronization::blockChangeConnections( bool block )
 }
 
 void PropertySynchronization::propertyChanged( const camp::UserObject& rObject, 
-    const camp::Property& rProperty, const camp::Value& rValue )
+    const camp::Property& rProperty, const camp::Value& rValue, const int reason )
 {
     if( rProperty.hasTag( "NoBitStream" ) ) return;
 

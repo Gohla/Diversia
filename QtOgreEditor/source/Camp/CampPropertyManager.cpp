@@ -249,7 +249,7 @@ void CampCompoundPropertyManager::externalPropertyChanged( QtProperty* pProperty
                 object.getClass().property( i->second->propertyName().toStdString() );
             //LOGD << "Updating " << (unsigned int)object.pointer() << ", " << subProperty.name();
             mCampPropertyManager->externalPropertyChanged( object, subProperty, 
-                subProperty.get( object ) );
+                subProperty.get( object ), 0 );
             mCampPropertyManager->setBlockSlots( true );
         }
     }
@@ -574,7 +574,7 @@ void CampPropertyManager::setup( const camp::UserObject& rObject )
     // Connect to property changes.
     mPropertyChangeSignal = UserObjectChange::connectChange( rObject, sigc::mem_fun( this, 
         (void(CampPropertyManager::*)(const camp::UserObject&, const camp::Property&, 
-        const camp::Value&))&CampPropertyManager::externalPropertyChanged ) );
+        const camp::Value&, const int))&CampPropertyManager::externalPropertyChanged ) );
 }
 
 QtProperty* CampPropertyManager::addGroupProperty( const String& rName )
@@ -697,7 +697,7 @@ void CampPropertyManager::externalPropertyChanged( CampPropertyDataInterface* pD
 }
 
 void CampPropertyManager::externalPropertyChanged( const camp::UserObject& rObject, 
-    const camp::Property& rProperty, const camp::Value& rValue )
+    const camp::Property& rProperty, const camp::Value& rValue, const int reason )
 {
     CampPropertyData* data = new CampPropertyData( rProperty, rObject );
     CampPropertyManager::externalPropertyChanged( data, rValue );

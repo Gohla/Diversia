@@ -210,7 +210,7 @@ public:
         return mPluginSignal.connect( rSlot ); 
     }
     /**
-    Connects a slot to the plugin state changed signal. 
+    Connects a slot to the plugin state changed signal.
     
     @param [in,out] rSlot   The slot (signature: void func(PluginState [new state], PluginState 
     [previous state])) to connect. 

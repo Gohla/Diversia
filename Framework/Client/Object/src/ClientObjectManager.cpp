@@ -28,6 +28,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "Client/Lua/LuaPlugin.h"
 #include "Client/Object/ClientObject.h"
 #include "Client/Object/ClientObjectManager.h"
+#include "Client/Object/ClientObjectTemplateManager.h"
 #include "Client/Permission/PermissionManager.h"
 #include "Shared/Lua/LuaManager.h"
 
@@ -42,8 +43,8 @@ ClientObjectManager::ClientObjectManager( Mode mode, PluginState state,
     ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     ObjectManager( mode, rRakPeer.GetMyGUID(), rRakPeer.GetGUIDFromIndex( 0 ), rUpdateSignal, 
-        rLateUpdateSignal, rReplicaManager, rNetworkIDManager,
-        rPluginManager.getServer().getServerConnection().getRPC3() ),
+        rLateUpdateSignal, rPluginManager.getPlugin<ClientObjectTemplateManager>(), rReplicaManager, 
+        rNetworkIDManager, rPluginManager.getServer().getServerConnection().getRPC3() ),
     ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mPermissionManager( rPluginManager.getPlugin<PermissionManager>() )
 {

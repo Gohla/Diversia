@@ -48,8 +48,7 @@ Component::Component( const String& rName, Mode mode, NetworkingType networkingT
     mBroadcastingDestruction( false ),
     mObject( rObject ),
     mFactory( ComponentFactoryManager::getComponentFactory( type ) ),
-    mTemplate( 0 ),
-    mObjectTemplate( 0 )
+    mTemplate( 0 )
 {
     // Override networking type to local.
     if( mLocalOverride || ( mMode == CLIENT && mFactory.clientOnly() ) ||
@@ -70,6 +69,7 @@ Component::Component( const String& rName, Mode mode, NetworkingType networkingT
 
 Component::~Component()
 {
+    mPropertyConnection.disconnect();
     mDestructionSignal( *this );
 }
 
@@ -150,31 +150,43 @@ void Component::setTemplate( ComponentTemplate* pTemplate )
     if( pTemplate )
     {
         mTemplate = pTemplate;
-        mObjectTemplate = &pTemplate->getObjectTemplate();
-
         mPropertyConnection = UserObjectChange::connectChange( this, sigc::mem_fun( this, 
             &Component::propertyChange ) );
     }
     else
     {
         mTemplate = 0;
-        mObjectTemplate = 0;
         mPropertyConnection.disconnect();
         mOverriddenProperties.clear();
     }
 }
 
+void Component::setTemplate( const String& rName )
+{
+    if( rName.empty() )
+        Component::setTemplate( 0 );
+    else if( mObject.getTemplate() )
+    {
+        Component::setTemplate( &mObject.getTemplate()->getComponentTemplate( rName ) );
+        mTemplate->addInstantiatedComponent( *this );
+    }
+    else
+        OLOGE << "Component template " << rName << " does not exist, cannot set template for component " << mName;
+}
+
+String Component::getTemplateName() const
+{
+    if( mTemplate ) return mTemplate->getName();
+    return String();
+}
+
 void Component::setProperty( const String& rPropertyName, const camp::Value& rValue )
 {
-    mPropertyConnection.block( true );
-
     camp::UserObject componentObject = this;
     if( mOverriddenProperties.find( rPropertyName ) == mOverriddenProperties.end() )
     {
         componentObject.set( rPropertyName, rValue );
     }
-
-    mPropertyConnection.block( false );
 }
 
 void Component::broadcastConstruction()
@@ -203,9 +215,9 @@ void Component::broadcastDestruction()
 }
 
 void Component::propertyChange( const camp::UserObject& rObject, const camp::Property& rProperty, 
-    const camp::Value& rValue )
+    const camp::Value& rValue, const int reason )
 {
-    mOverriddenProperties.insert( rProperty.name() );
+    if( reason != 0 ) mOverriddenProperties.insert( rProperty.name() );
 }
 
 void Component::WriteAllocationID( RakNet::Connection_RM3* pConnection,

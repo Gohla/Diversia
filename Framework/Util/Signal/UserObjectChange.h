@@ -36,8 +36,8 @@ namespace Util
 //------------------------------------------------------------------------------
 
 // Normal properties
-typedef sigc::signal<void, const camp::UserObject&, const camp::Property&, const camp::Value&>
-    PropertyChangeSignal;
+typedef sigc::signal<void, const camp::UserObject&, const camp::Property&, const camp::Value&, 
+    const int> PropertyChangeSignal;
 // Array properties
 typedef sigc::signal<void, const camp::UserObject&, const camp::ArrayProperty&, const camp::Value&>
     ArrayInsertedSignal;
@@ -200,9 +200,9 @@ public:
 
 private:
     static inline void propertyChanged( const camp::UserObject& rObject,
-        const camp::Property& rProperty, const camp::Value& rValue )
+        const camp::Property& rProperty, const camp::Value& rValue, const int reason )
     {
-        mChangeMap[ rObject ]( rObject, rProperty, rValue );
+        mChangeMap[ rObject ]( rObject, rProperty, rValue, reason );
     }
 
     static inline void arrayInserted( const camp::UserObject& rObject,

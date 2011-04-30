@@ -478,6 +478,29 @@ public:
     Gets the parent name of the parent object or an empty string if this object has no parent.
     **/
     String getParentName() const;
+    /**
+    Sets the object template.
+    
+    @param [in,out] pTemplate   The object template.
+    **/
+    void setTemplate( ObjectTemplate* pTemplate );
+    /**
+    Sets the object template for this object using the name of the object template.
+    
+    @param  rName   The name of the template, or empty string to remove template. The non 
+                    changeable name of the template is used, not the display name.
+    **/
+    void setTemplate( const String& rName );
+    /**
+    Gets the object template for this object.
+        
+    @return The object template or 0 if this object has no template.
+    **/
+    inline ObjectTemplate* getTemplate() const { return mTemplate; }
+    /**
+    Gets the name of the template for this object or an empty string if this object has no template.
+    **/
+    String getTemplateName() const;
 
     /**
     Connects a slot to the destruction signal.
@@ -740,6 +763,7 @@ private:
     ComponentsByType                            mDestroyedComponents;
     ComponentsByType                            mCreatedComponents;
     ObjectManager&								mObjectManager;
+    ObjectTemplateManager&                      mObjectTemplateManager;
     sigc::signal<void, Component&, bool>		mComponentSignal;
     static std::map<ComponentType, String>      mAutoCreateComponents;
 
@@ -747,6 +771,8 @@ private:
     sigc::signal<void, Object*>                 mParentSignal;
     String                                      mQueuedParentName;
     sigc::connection                            mQueuedParentConnection;
+    
+    ObjectTemplate*                             mTemplate;
 
     RakNet::RakNetGUID                          mController;
     sigc::signal<void, RakNet::RakNetGUID>      mControllerSignal;

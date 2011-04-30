@@ -231,6 +231,7 @@ Component& ComponentTemplate::createComponent( Object& rObject )
     // Create component links
     mInstantiatedComponents.insert( &component );
     component.setTemplate( this );
+    component.connectDestruction( sigc::mem_fun( this, &ComponentTemplate::componentDestroyed ) );
 
     return component;
 }
