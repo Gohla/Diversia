@@ -67,28 +67,28 @@ public:
     inline String getTypeName() const { return CLIENTSERVERPLUGINNAME_OBJECTMANAGER; }
     static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_OBJECTMANAGER; }
     
-private:
+protected:
     friend class ClientObject;	///< For delayed destruction.
 
-    Object& createObjectImpl( const String& rName, NetworkingType type, const String& rDisplayName,
+    virtual Object& createObjectImpl( const String& rName, NetworkingType type, const String& rDisplayName,
         RakNet::RakNetGUID source );
-    void queryDestroyObject( Object& rObject, RakNet::RakNetGUID source );
+    virtual void queryDestroyObject( Object& rObject, RakNet::RakNetGUID source );
 
     /**
     Creates the specific part of this plugin. This is called in the tick/frame update after the
     plugin is created.
     **/
-    void create();
+    virtual void create();
     /**
     Notifies the plugin about a server state change.
     **/
-    inline void setServerState( ServerState serverState ) {}
+    virtual inline void setServerState( ServerState serverState ) {}
     /**
     Called if the offline mode is changed.
     
     @param  offlineMode True if set to offline mode, false if set to online mode.
     **/
-    void offlineModeChanged( bool offlineMode );
+    virtual void offlineModeChanged( bool offlineMode );
 
     PermissionManager&  mPermissionManager;
 

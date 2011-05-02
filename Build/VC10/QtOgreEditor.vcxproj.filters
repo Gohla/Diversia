@@ -56,6 +56,9 @@
     <Filter Include="Log">
       <UniqueIdentifier>{9f10cf73-5e3d-4e70-834f-48bc16436f39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Object">
+      <UniqueIdentifier>{6617f783-85ad-434e-bdba-3df329cce851}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\QtOgreEditor\source\Platform\Config.h">
@@ -97,6 +100,12 @@
     <ClInclude Include="..\..\QtOgreEditor\source\EditorGlobals.h" />
     <ClInclude Include="..\..\QtOgreEditor\source\Log\QtLogger.h">
       <Filter>Log</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\Object\EditorObject.h">
+      <Filter>Object</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\Object\EditorObjectManager.h">
+      <Filter>Object</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -297,6 +306,12 @@
     </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ObjectTemplateTreeView.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Object\EditorObject.cpp">
+      <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Object\EditorObjectManager.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

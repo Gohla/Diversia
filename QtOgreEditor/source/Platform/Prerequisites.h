@@ -52,6 +52,10 @@ class PluginItem;
 class UndoModel;
 class UndoItem;
 
+// Object
+class EditorObject;
+class EditorObjectManager;
+
 // Log
 class QtLogger;
 

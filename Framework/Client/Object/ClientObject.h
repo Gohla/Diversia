@@ -55,9 +55,9 @@ public:
     /**
     Selects or unselects this object.
     **/
-    void setSelected( bool selected );
+    virtual void setSelected( bool selected );
 
-private:
+protected:
     friend class ClientObjectManager;	///< Only the ClientObjectManager class may construct objects. 
 
     ClientObject( const String& rName, Mode mode, NetworkingType type, const String& rDisplayName, 

@@ -10,6 +10,8 @@ This file is part of Diversia.
 
 #include "Camp/CampBindings.h"
 #include "EditorApplication.h"
+#include "Object/EditorObject.h"
+#include "Object/EditorObjectManager.h"
 #include "UI/ConnectDialog.h"
 
 namespace Diversia
@@ -46,6 +48,31 @@ void CampBindings::bindConnectDialog()
     	// Functions
     	// Static functions
     	// Operators
+}
+
+void CampBindings::bindEditorObject()
+{
+    camp::Class::declare<EditorObject>( "EditorObject" )
+        .tag( "NoSerialization", &Object::isRuntimeObject )
+        .base<ClientObject>();
+	    // Constructors
+	    // Properties (read-only)
+	    // Properties (read/write)
+	    // Functions
+	    // Static functions
+	    // Operators
+}
+
+void CampBindings::bindEditorObjectManager()
+{
+    camp::Class::declare<EditorObjectManager>( "EditorObjectManager" )
+        .base<ClientObjectManager>();
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        // Functions
+        // Static functions
+        // Operators
 }
 
 //------------------------------------------------------------------------------

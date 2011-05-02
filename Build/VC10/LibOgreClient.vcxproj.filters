@@ -170,6 +170,21 @@
     <ClInclude Include="..\..\Framework\OgreClient\Object\Light.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\ScaleGizmo.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\TranslationGizmo.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\Gizmo.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\RotationGizmo.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\OgreClient\Graphics\GeometryHelper.h">
+      <Filter>Graphics</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Libraries\BtOgre\BtOgre.cpp">
@@ -289,6 +304,21 @@
     </ClCompile>
     <ClCompile Include="..\..\Framework\OgreClient\Object\Light.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\TranslationGizmo.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\RotationGizmo.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\ScaleGizmo.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\GeometryHelper.cpp">
+      <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\OgreClient\Graphics\Gizmo.cpp">
+      <Filter>Graphics</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

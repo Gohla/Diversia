@@ -11,7 +11,6 @@ This file is part of Diversia.
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/ServerNeighborsPlugin.h"
 #include "Client/Lua/LuaPlugin.h"
-#include "Client/Object/ClientObjectManager.h"
 #include "Client/Object/ClientObjectTemplateManager.h"
 #include "Client/Permission/PermissionManager.h"
 #include "Client/Undo/UndoStack.h"
@@ -19,6 +18,7 @@ This file is part of Diversia.
 #include "GameMode/EditorGameMode.h"
 #include "Graphics/OgreWidget.h"
 #include "Log/QtLogger.h"
+#include "Object/EditorObjectManager.h"
 #include "Object/Object.h"
 #include "OgreClient/Audio/AudioManager.h"
 #include "OgreClient/GameMode/GameModePlugin.h"
@@ -162,8 +162,8 @@ void EditorApplication::init()
         camp::classByType<ResourceManager>();
         TemplatePluginFactory<ClientObjectTemplateManager, ServerPluginManager>::registerFactory();
         camp::classByType<ClientObjectTemplateManager>();
-        ObjectManagerFactory<ClientObjectManager, ServerPluginManager>::registerFactory( mUpdateSignal, mLateUpdateSignal );
-        camp::classByType<ClientObjectManager>();
+        ObjectManagerFactory<EditorObjectManager, ServerPluginManager>::registerFactory( mUpdateSignal, mLateUpdateSignal );
+        camp::classByType<EditorObjectManager>();
         TemplatePluginFactory<ServerNeighborsPlugin, ServerPluginManager>::registerFactory();
         camp::classByType<ServerNeighborsPlugin>();
         TemplatePluginFactory<SkyPlugin, ServerPluginManager>::registerFactory();

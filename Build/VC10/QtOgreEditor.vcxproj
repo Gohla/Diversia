@@ -178,6 +178,8 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
       <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp" "-fPlatform\StableHeaders.h" "-f..\..\Model\ObjectComponentTemplateModel.h" "-I$(NOINHERIT)\." "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(SolutionDir)..\..\$(ProjectName)\source" "-I$(SolutionDir)..\..\Framework" "-I$(SolutionDir)..\..\Libraries" "-I$(SolutionDir)..\..\QtOgreEditor\qtpropertybrowser-2.5_1\src" "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated" "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\." "-I$(SolutionDir)dependencies\include" "-I$(SolutionDir)dependencies\include\bullet" "-I$(SolutionDir)dependencies\include\cAudio\Headers" "-I$(SolutionDir)dependencies\include\cAudio\include" "-I$(SolutionDir)dependencies\include\curlpp" "-I$(SolutionDir)dependencies\include\lua" "-I$(SolutionDir)dependencies\include\Ogre" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\CgProgramManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\OctreeSceneManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\ParticleFX" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\Direct3D9" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\GL" "-I$(SolutionDir)dependencies\include\ogre-procedural" "-I." -D_MBCS -D_WIN32 -D_WINDOWS -DQT_CORE_LIB -DQT_GUI_LIB -DWIN32</Command>
     </CustomBuild>
+    <ClInclude Include="..\..\QtOgreEditor\source\Object\EditorObject.h" />
+    <ClInclude Include="..\..\QtOgreEditor\source\Object\EditorObjectManager.h" />
     <ClInclude Include="..\..\QtOgreEditor\source\Platform\Config.h" />
     <ClInclude Include="..\..\QtOgreEditor\source\Platform\Prerequisites.h" />
     <ClInclude Include="..\..\QtOgreEditor\source\Platform\StableHeaders.h" />
@@ -424,6 +426,8 @@
     <ClCompile Include="..\..\QtOgreEditor\source\Log\QtLogger.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Model\ObjectComponentTemplateModel.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Model\UndoModel.cpp" />
+    <ClCompile Include="..\..\QtOgreEditor\source\Object\EditorObject.cpp" />
+    <ClCompile Include="..\..\QtOgreEditor\source\Object\EditorObjectManager.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Platform\StableHeaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>

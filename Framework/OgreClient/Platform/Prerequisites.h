@@ -90,12 +90,16 @@ class Atlas;
 class CameraManager;
 class Canvas;
 class Fader;
+class Gizmo;
 class GraphicsManager;
+class RotationGizmo;
+class ScaleGizmo;
 class SceneManagerPlugin;
 class SkyPlugin;
 class Terrain;
 class TextCanvas;
 class TextCanvasBatch;
+class TranslationGizmo;
 
 // Input
 class Axis;

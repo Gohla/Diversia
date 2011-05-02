@@ -24,6 +24,8 @@ class CampBindings
 public:
     static void bindEditorApplication();
     static void bindConnectDialog();
+    static void bindEditorObject();
+    static void bindEditorObjectManager();
 
 };
 

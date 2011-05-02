@@ -16,7 +16,7 @@
     <Filter Include="Camp">
       <UniqueIdentifier>{159875a7-946e-4bfe-bb08-6b53695430e7}</UniqueIdentifier>
     </Filter>
-    <Filter Include="GUI\Input">
+    <Filter Include="Input">
       <UniqueIdentifier>{975043d0-a173-49dc-9f38-3cee914028d4}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
@@ -34,7 +34,7 @@
       <Filter>GUI</Filter>
     </ClCompile>
     <ClCompile Include="..\..\DefaultClient\source\DefaultClient\Input\OISInputManager.cpp">
-      <Filter>GUI\Input</Filter>
+      <Filter>Input</Filter>
     </ClCompile>
     <ClCompile Include="..\..\DefaultClient\source\DefaultClient\Platform\StableHeaders.cpp">
       <Filter>Platform</Filter>
@@ -69,7 +69,7 @@
       <Filter>GUI</Filter>
     </ClInclude>
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Input\OISInputManager.h">
-      <Filter>GUI\Input</Filter>
+      <Filter>Input</Filter>
     </ClInclude>
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Platform\Prerequisites.h">
       <Filter>Platform</Filter>

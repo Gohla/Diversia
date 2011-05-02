@@ -1,0 +1,47 @@
+material Axis_X
+{
+	technique
+	{
+		pass
+		{
+			emissive 1 0 0
+			ambient 0 0 0 
+			diffuse 0 0 0
+			specular 0 0 0 1
+			
+			fog_override true none
+		}
+	}
+}
+
+material Axis_Y
+{
+	technique
+	{
+		pass
+		{
+			emissive 0 1 0
+			ambient 0 0 0 
+			diffuse 0 0 0
+			specular 0 0 0 1
+			
+			fog_override true none
+		}
+	}
+}
+
+material Axis_Z
+{
+	technique
+	{
+		pass
+		{
+			emissive 0 0 1
+			ambient 0 0 0 
+			diffuse 0 0 0
+			specular 0 0 0 1
+			
+			fog_override true none
+		}
+	}
+}
