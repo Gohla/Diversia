@@ -91,9 +91,9 @@ def Ball {
     external def CameraYaw // Add the CameraYaw object definition as a child object.
 
     default state Alive {
-        var mMove = 0
-        var mStrafe = 0
-        var mSpeedMultiplier = 1
+        var mMove = 0;
+        var mStrafe = 0;
+        var mSpeedMultiplier = 1;
         
         on KeyPressed(Key) {
             switch(key) {

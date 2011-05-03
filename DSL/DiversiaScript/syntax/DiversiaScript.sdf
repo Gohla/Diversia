@@ -98,25 +98,8 @@ exports
     "case" Exp ":" Statement                       									-> Case {cons("Case")}
     "in" Exp TimeUnit "{" Statement* "}"    										-> Statement {cons("Delay")}
     "interpolate" Exp InterpolationType? "from" Exp "to" Exp "over" Exp TimeUnit ";"-> Statement {cons("Interpolation")}
-    Exp ";"																			-> Statement {cons("Expression")}    VarDef 																			-> Statement
-    
-    %% Expression or statement
-   	%% Exp "." Id "(" {Exp ","}* ")" ";"   -> Call
-    %% Call                                -> Exp {cons("Call"), left}
-    %% Call ";"                            -> Statement {cons("Call"), left}
-    %% Operator or statement
-	%% "++" Exp		-> PreInc
-    %% PreInc       	-> Exp {cons("PreInc"), right}
-   	%% PreInc ";"   	-> Statement {cons("PreInc"), right}
-	%% Exp "++"		-> PostInc
-	%% PostInc       	-> Exp {cons("PostInc"), right}
-   	%% PostInc ";"   	-> Statement {cons("PostInc"), right}
-	%% "--" Exp		-> PreDec
-	%% PreDec       	-> Exp {cons("PreDec"), right}
-   	%% PreDec ";"   	-> Statement {cons("PreDec"), right}
-	%% Exp "--"		-> PostDec
-    %% PostDec       	-> Exp {cons("PostDec"), right}
-   	%% PostDec ";"   	-> Statement {cons("PostDec"), right}
+    Exp ";"																			-> Statement {cons("Expression")}    
+    VarDef 																			-> Statement
    	
     %% Types
     "Int" -> Type {cons("IntType")}
@@ -126,11 +109,6 @@ exports
     Id ":" Type -> TypeId {cons("TypeId")}
     Id -> IdOrTypeId
     TypeId -> IdOrTypeId
-    
-    
-                
-
-            
     
     context-free priorities
         %% Operators, following the operator predecence from: http://www.uni-bonn.de/~manfear/javaoperators.php
