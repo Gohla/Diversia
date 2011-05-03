@@ -56,8 +56,16 @@ exports
 	%% Interpolation
 	"linearly"		-> InterpolationType
 	"exponentially"	-> InterpolationType
-    
-    %% Spacing
+	
+  %%  lexical syntax  %% Unarray minus
+	
+	 %% "-" 			-> UnarrayMinus
+	
+  %%  lexical restrictions
+  	
+   %% 	UnarrayMinus	-/- [\-]
+	
+  lexical syntax  %% Spacing
     [\ \t\n\r] -> LAYOUT
     
     %% Block comments
