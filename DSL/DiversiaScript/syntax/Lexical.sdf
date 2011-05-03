@@ -9,6 +9,7 @@ exports
     
     %% Reject keywords as identifiers.
     "this" -> Id {reject}
+    "null" -> Id {reject}
     "true" -> Id {reject}
     "false" -> Id {reject}
     "boolean" -> Id {reject}

@@ -55,6 +55,7 @@ exports
     "[" Exp "," Exp "," Exp "," Exp "]" -> Exp {cons("Vector4Const")}
     Id                                  -> Exp {cons("VarRef")}
     "this"                              -> Exp {cons("This")}
+    "null"                              -> Exp {cons("Null")}
     Id "(" {Exp ","}* ")"               -> Exp {cons("New")}
     Exp "." Exp                         -> Exp {cons("Access"), left, avoid}
     Exp "." Id "(" {Exp ","}* ")"   	-> Exp {cons("Call"), left}
