@@ -39,7 +39,7 @@ exports
     Id -> Param {cons("Param")}
     TypeId -> Param {cons("Param")}
     
-    %% Variable
+    %% Variable  %% this seems wierd in the tree. VarDef(VarDef("id",Exp))
     "var" TypeId -> VarDef {cons("VarDef")}
     "var" IdOrTypeId "=" Exp -> VarDef {cons("VarDef")}
     VarDef -> InsideDef
@@ -58,11 +58,17 @@ exports
     "this"                              -> Exp {cons("This")}
     Id "(" {Exp ","}* ")"               -> Exp {cons("New")}
     Exp "." Exp                         -> Exp {cons("Access"), left, avoid}
+    Exp "." Id "(" {Exp ","}* ")"   	-> Exp {cons("Call"), left}
     "(" Exp ")"                         -> Exp {bracket}
     
     %% Operators
     "!" Exp         -> Exp {cons("Not"), right}
-    "-" Exp         -> Exp {cons("Umin"), right}
+    "-" Exp 		-> Exp {cons("Umin"), right}
+  
+  context-free restrictions
+  	"-" Exp -/- [\-]
+  context-free syntax 
+   
     Exp "+" Exp     -> Exp {cons("Add"), left}
     Exp "-" Exp     -> Exp {cons("Sub"), left}
     Exp "*" Exp     -> Exp {cons("Mul"), left}
@@ -75,7 +81,11 @@ exports
     Exp ">=" Exp    -> Exp {cons("Gte"), left}
     Exp "&&" Exp    -> Exp {cons("And"), left}
     Exp "||" Exp    -> Exp {cons("Or"), left}
-    
+    "++" Exp		-> Exp {cons("PreInc"), right}
+    Exp "++"		-> Exp {cons("PostInc"), right}
+	"--" Exp		-> Exp {cons("PreDec"), right}
+	Exp "--"		-> Exp {cons("PostDec"), right}
+	
     %% Statements
     "{" Statement* "}"                                  							-> Statement {cons("Statements")}
     "else" "if" "(" Exp ")" Statement                   							-> ElseIfPart {cons("ElseIfPart")}
@@ -89,24 +99,25 @@ exports
     "case" Exp ":" Statement                       									-> Case {cons("Case")}
     "in" Exp TimeUnit "{" Statement* "}"    										-> Statement {cons("Delay")}
     "interpolate" Exp InterpolationType? "from" Exp "to" Exp "over" Exp TimeUnit ";"-> Statement {cons("Interpolation")}
+    Exp ";"																			-> Statement {cons("Expression")}
     
     %% Expression or statement
-   	Exp "." Id "(" {Exp ","}* ")" ";"   -> Call
-    Call                                -> Exp {cons("Call"), left}
-    Call ";"                            -> Statement {cons("Call"), left}
+   	%% Exp "." Id "(" {Exp ","}* ")" ";"   -> Call
+    %% Call                                -> Exp {cons("Call"), left}
+    %% Call ";"                            -> Statement {cons("Call"), left}
     %% Operator or statement
-	"++" Exp		-> PreInc
-    PreInc       	-> Exp {cons("PreInc"), right}
-   	PreInc ";"   	-> Statement {cons("PreInc"), right}
-	Exp "++"		-> PostInc
-	PostInc       	-> Exp {cons("PostInc"), right}
-   	PostInc ";"   	-> Statement {cons("PostInc"), right}
-	"--" Exp		-> PreDec
-	PreDec       	-> Exp {cons("PreDec"), right}
-   	PreDec ";"   	-> Statement {cons("PreDec"), right}
-	Exp "--"		-> PostDec
-    PostDec       	-> Exp {cons("PostDec"), right}
-   	PostDec ";"   	-> Statement {cons("PostDec"), right}
+	%% "++" Exp		-> PreInc
+    %% PreInc       	-> Exp {cons("PreInc"), right}
+   	%% PreInc ";"   	-> Statement {cons("PreInc"), right}
+	%% Exp "++"		-> PostInc
+	%% PostInc       	-> Exp {cons("PostInc"), right}
+   	%% PostInc ";"   	-> Statement {cons("PostInc"), right}
+	%% "--" Exp		-> PreDec
+	%% PreDec       	-> Exp {cons("PreDec"), right}
+   	%% PreDec ";"   	-> Statement {cons("PreDec"), right}
+	%% Exp "--"		-> PostDec
+    %% PostDec       	-> Exp {cons("PostDec"), right}
+   	%% PostDec ";"   	-> Statement {cons("PostDec"), right}
    	
     %% Types
     "Int" -> Type {cons("IntType")}
@@ -117,23 +128,29 @@ exports
     Id -> IdOrTypeId
     TypeId -> IdOrTypeId
     
+    
+                
+
+            
+    
     context-free priorities
         %% Operators, following the operator predecence from: http://www.uni-bonn.de/~manfear/javaoperators.php
         {
             left:
-            Call -> Exp
+            %% Call -> Exp
             Exp "." Exp -> Exp
-            Call -> Statement
+            Exp "." Id "(" {Exp ","}* ")" -> Exp
+            %% Call -> Statement
         }
         >
         {
-            right:
-            "!" Exp -> Exp
+        	right:
+        	"!" Exp -> Exp
             "-" Exp -> Exp
-            "++" Exp -> PreInc
-            Exp "++" -> PostInc
-            "--" Exp -> PreDec
-            Exp "--" -> PostDec
+            "++" Exp -> Exp
+            Exp "++" -> Exp
+            "--" Exp -> Exp
+            Exp "--" -> Exp
         }
         >
         {
