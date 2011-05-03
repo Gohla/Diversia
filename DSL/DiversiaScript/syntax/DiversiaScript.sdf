@@ -40,10 +40,9 @@ exports
     TypeId -> Param {cons("Param")}
     
     %% Variable
-    "var" TypeId -> VarDef {cons("VarDef")}
-    "var" IdOrTypeId "=" Exp -> VarDef {cons("VarDef")}
+    "var" TypeId ";" -> VarDef {cons("VarDef")}
+    "var" IdOrTypeId "=" Exp ";" -> VarDef {cons("VarDef")}
     VarDef -> InsideDef
-    VarDef ";" -> Statement {cons("VarDef")}
     Id -> VarRef {cons("VarRef")}
     
     %% Expressions
@@ -89,6 +88,7 @@ exports
     "case" Exp ":" Statement                       									-> Case {cons("Case")}
     "in" Exp TimeUnit "{" Statement* "}"    										-> Statement {cons("Delay")}
     "interpolate" Exp InterpolationType? "from" Exp "to" Exp "over" Exp TimeUnit ";"-> Statement {cons("Interpolation")}
+    VarDef 																			-> Statement
     
     %% Expression or statement
    	Exp "." Id "(" {Exp ","}* ")" ";"   -> Call

@@ -13,8 +13,8 @@ def CameraYaw {
     }
 
     // Variable definitions
-    var mRMB = false
-    var mMouseState : MouseState = null
+    var mRMB = false;
+    var mMouseState : MouseState = null;
     
     // States
     default state Alive {
