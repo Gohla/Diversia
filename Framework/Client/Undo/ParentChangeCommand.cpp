@@ -24,51 +24,52 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_OGRECLIENT_GIZMO_H
-#define DIVERSIA_OGRECLIENT_GIZMO_H
+#include "Client/Platform/StableHeaders.h"
 
-#include "OgreClient/Platform/Prerequisites.h"
+#include "Client/Undo/ParentChangeCommand.h"
 
 namespace Diversia
 {
-namespace OgreClient
+namespace Client 
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_OGRECLIENT_API Gizmo
+ParentChangeCommand::ParentChangeCommand():
+    UndoCommand( "" )
 {
-public:
-    /**
-    Constructor. 
-    
-    @param [in,out] rControlledObject   The object this gizmo should control. 
-    **/
-    Gizmo( ClientObject& rControlledObject );
-    /**
-    Destructor. 
-    **/
-    virtual ~Gizmo();
 
-    /**
-    Gets the gizmo scene node. 
-    **/
-    inline Ogre::SceneNode* getSceneNode() const { return mGizmoNode; }
-    /**
-    Gets the gizmo scene node. 
-    **/
-    inline ClientObject& getControlledObject() const { return mControlledObject; }
-   
-private:
-    Ogre::SceneNode*    mGizmoNode;
-    ClientObject&       mControlledObject;
+}
 
-};
+ParentChangeCommand::~ParentChangeCommand()
+{
+
+}
+
+bool ParentChangeCommand::mergeWith( const UndoCommand* pCommand )
+{
+    return false;
+}
+
+void ParentChangeCommand::redo()
+{
+
+}
+
+void ParentChangeCommand::undo()
+{
+
+}
+
+void ParentChangeCommand::objectDestroyed( Object& rObject )
+{
+
+}
+
+void ParentChangeCommand::parentObjectDestroyed( Object& rObject )
+{
+
+}
 
 //------------------------------------------------------------------------------
-} // Namespace OgreClient
+} // Namespace Client
 } // Namespace Diversia
-
-CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::OgreClient::Gizmo, 
-    &Diversia::OgreClient::Bindings::CampBindings::bindGizmo );
-
-#endif // DIVERSIA_OGRECLIENT_GIZMO_H

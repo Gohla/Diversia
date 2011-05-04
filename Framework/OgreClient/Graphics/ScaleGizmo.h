@@ -40,7 +40,7 @@ namespace OgreClient
 class DIVERSIA_OGRECLIENT_API ScaleGizmo : public Gizmo
 {
 public:
-    ScaleGizmo();
+    ScaleGizmo( ClientObject& rControlledObject );
     virtual ~ScaleGizmo();
 
 	
@@ -52,5 +52,8 @@ private:
 //------------------------------------------------------------------------------
 } // Namespace OgreClient
 } // Namespace Diversia
+
+CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::OgreClient::ScaleGizmo, 
+    &Diversia::OgreClient::Bindings::CampBindings::bindScaleGizmo );
 
 #endif // DIVERSIA_OGRECLIENT_SCALEGIZMO_H

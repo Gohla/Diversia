@@ -40,7 +40,8 @@ enum QueryFlags
     QueryFlags_Entity = 1,
     QueryFlags_Particle = 2,
     QueryFlags_Camera = 4,
-    QueryFlags_Terrain = 8
+    QueryFlags_Terrain = 8,
+    QueryFlags_Gizmo = 16
 };
 
 //------------------------------------------------------------------------------

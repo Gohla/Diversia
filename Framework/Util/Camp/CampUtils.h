@@ -24,51 +24,27 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_OGRECLIENT_GIZMO_H
-#define DIVERSIA_OGRECLIENT_GIZMO_H
+#ifndef DIVERSIA_UTIL_CAMPUTILS_H
+#define DIVERSIA_UTIL_CAMPUTILS_H
 
-#include "OgreClient/Platform/Prerequisites.h"
+#include "Util/Platform/Prerequisites.h"
 
-namespace Diversia
+namespace camp
 {
-namespace OgreClient
+
+bool hasBase( const camp::Class& rClass, const camp::Class& rBaseClass )
 {
-//------------------------------------------------------------------------------
+    for( std::size_t i = 0; i < rClass.baseCount(); ++i )
+    {
+        const camp::Class& base = rClass.base( i );
 
-class DIVERSIA_OGRECLIENT_API Gizmo
-{
-public:
-    /**
-    Constructor. 
-    
-    @param [in,out] rControlledObject   The object this gizmo should control. 
-    **/
-    Gizmo( ClientObject& rControlledObject );
-    /**
-    Destructor. 
-    **/
-    virtual ~Gizmo();
+        if( base == rBaseClass ) return true;
+        else if( base.baseCount() && hasBase( base, rBaseClass ) ) return true; 
+    }
 
-    /**
-    Gets the gizmo scene node. 
-    **/
-    inline Ogre::SceneNode* getSceneNode() const { return mGizmoNode; }
-    /**
-    Gets the gizmo scene node. 
-    **/
-    inline ClientObject& getControlledObject() const { return mControlledObject; }
-   
-private:
-    Ogre::SceneNode*    mGizmoNode;
-    ClientObject&       mControlledObject;
+    return false;
+}
 
-};
+} // Namespace camp
 
-//------------------------------------------------------------------------------
-} // Namespace OgreClient
-} // Namespace Diversia
-
-CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::OgreClient::Gizmo, 
-    &Diversia::OgreClient::Bindings::CampBindings::bindGizmo );
-
-#endif // DIVERSIA_OGRECLIENT_GIZMO_H
+#endif // DIVERSIA_UTIL_CAMPUTILS_H

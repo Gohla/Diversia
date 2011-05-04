@@ -111,7 +111,8 @@ void Particle::resourcesLoaded()
             mParticleSystemName );
         mParticleSystem->setEmitting( false );
 
-        mParticleSystem->setUserAny( Ogre::Any( &ClientComponent::getClientObject() ) );
+        mUserObject = ClientComponent::getClientObject();
+        mParticleSystem->setUserAny( Ogre::Any( &mUserObject ) );
         mParticleSystem->setQueryFlags( QueryFlags_Particle );
 
         mNode.getNode()->attachObject( mParticleSystem );

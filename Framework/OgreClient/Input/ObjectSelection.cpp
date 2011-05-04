@@ -27,7 +27,6 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Graphics/QueryFlags.h"
 #include "OgreClient/Graphics/CameraManager.h"
 #include "OgreClient/Graphics/GraphicsManager.h"
-#include "Client/Object/ClientObject.h"
 
 namespace Diversia
 {
@@ -106,49 +105,37 @@ ObjectSelection::~ObjectSelection()
     delete mRectangle;
 }
 
-void ObjectSelection::select( ClientObject& rObject, bool silent /*= false*/ )
+void ObjectSelection::select( const camp::UserObject& rObject, bool silent /*= false*/ )
 {
-    SelectedObjects::iterator i = mSelectedObjects.find( &rObject );
-    if( i == mSelectedObjects.end() )
+    const camp::Class& metaclass = rObject.getClass();
+    if( !ObjectSelection::isSelected( rObject ) && metaclass.hasTag( "Selectable" ) )
     {
-        rObject.setSelected( true );
-        mSelectedObjects.insert( &rObject );
-        mObjectConnections.insert( std::make_pair( &rObject, rObject.connectDestruction( 
-            sigc::mem_fun( this, &ObjectSelection::objectDestroyed ) ) ) );
-
-        if( silent ) return;
-        
-        mSelectedSignal( rObject, true );
-        CLOGD << "Selecting object " << rObject.getName();
+        mSelectedObjects.insert( rObject );
+        ObjectSelection::fireSelect( rObject, true, silent );
     }
 }
 
-void ObjectSelection::deselect( ClientObject& rObject, bool silent /*= false*/ )
+void ObjectSelection::deselect( const camp::UserObject& rObject, bool silent /*= false*/ )
 {
-    rObject.setSelected( false );
-    mSelectedObjects.erase( &rObject );
-
-    // Disconnect from destruction signal.
-    ObjectConnections::iterator i = mObjectConnections.find( &rObject );
-    if( i != mObjectConnections.end() )
+    if( ObjectSelection::isSelected( rObject ) )
     {
-        i->second.disconnect();
-        mObjectConnections.erase( i );
+        mSelectedObjects.erase( rObject );
+        ObjectSelection::fireSelect( rObject, false, silent );
     }
-
-    if( silent ) return;
-
-    mSelectedSignal( rObject, false );
-    CLOGD << "Deselecting object " << rObject.getName();
 }
 
-void ObjectSelection::toggleSelection( ClientObject& rObject, bool silent /*= false*/ )
+bool ObjectSelection::isSelected( const camp::UserObject& rObject )
 {
-    rObject.isSelected() ? ObjectSelection::deselect( rObject, silent ) : 
+    return mSelectedObjects.find( rObject ) != mSelectedObjects.end();
+}
+
+void ObjectSelection::toggleSelection( const camp::UserObject& rObject, bool silent /*= false*/ )
+{
+    ObjectSelection::isSelected( rObject ) ? ObjectSelection::deselect( rObject, silent ) : 
         ObjectSelection::select( rObject, silent );
 }
 
-void ObjectSelection::cropSelection( ClientObject& rObject, bool silent /*= false*/ )
+void ObjectSelection::cropSelection( const camp::UserObject& rObject, bool silent /*= false*/ )
 {
     ObjectSelection::deselectAll( true );
     ObjectSelection::select( rObject, silent );
@@ -158,24 +145,9 @@ void ObjectSelection::deselectAll( bool silent /*= false*/ )
 {
     for( SelectedObjects::iterator i = mSelectedObjects.begin(); i != mSelectedObjects.end(); )
     {
-        ClientObject* object = *i;
-        object->setSelected( false );
-
-        // Disconnect from destruction signal.
-        ObjectConnections::iterator j = mObjectConnections.find( object );
-        if( j != mObjectConnections.end() )
-        {
-            j->second.disconnect();
-            mObjectConnections.erase( j );
-        }
-
+        camp::UserObject object = *i;
         mSelectedObjects.erase( i++ );
-
-        if( !silent )
-        {
-            mSelectedSignal( *object, false );
-            CLOGD << "Deselecting object " << object->getName();
-        }
+        ObjectSelection::fireSelect( object, false, silent );
     }
 }
 
@@ -216,7 +188,7 @@ bool ObjectSelection::mousePressed( const MouseButton button )
                     return true;
                 }
 
-                if( mObjectUnderMouse )
+                if( mObjectUnderMouse && mObjectUnderMouse->getClass().hasTag( "Draggable" ) )
                 {
                     mDragClick = true;
                     mDraggingObject = mObjectUnderMouse;
@@ -239,33 +211,35 @@ void ObjectSelection::mouseReleased( const MouseButton button )
         {
             if( mObjectUnderMouse && mClick && mClickTimer.getMilliseconds() < 150 )
             {
+                bool objectUnderMouseSelected = ObjectSelection::isSelected( *mObjectUnderMouse );
+
                 if( GlobalsBase::mInput->getKeyboardState().isButtonDown( KC_LCONTROL ) && 
-                    mObjectUnderMouse->isSelected() )
+                     objectUnderMouseSelected )
                 {
                     // Remove object under cursor from selection.
                     ObjectSelection::deselect( *mObjectUnderMouse );
                 }
                 else if( GlobalsBase::mInput->getKeyboardState().isButtonDown( KC_LCONTROL ) && 
-                    !mObjectUnderMouse->isSelected() )
+                    !objectUnderMouseSelected )
                 {
                     // Add object under cursor to selection.
                     ObjectSelection::select( *mObjectUnderMouse );
-                    mClickSignal( *mObjectUnderMouse );
+                    ObjectSelection::fireClick( *mObjectUnderMouse );
                 }
                 else if( !GlobalsBase::mInput->getKeyboardState().isButtonDown( KC_LCONTROL ) && 
-                    mObjectUnderMouse->isSelected() )
+                    objectUnderMouseSelected )
                 {
                     // Crop selection to object under cursor.
                     ObjectSelection::cropSelection( *mObjectUnderMouse );
-                    mClickSignal( *mObjectUnderMouse );
+                    ObjectSelection::fireClick( *mObjectUnderMouse );
                 }
                 else if( !GlobalsBase::mInput->getKeyboardState().isButtonDown( KC_LCONTROL ) && 
-                    !mObjectUnderMouse->isSelected() )
+                    !objectUnderMouseSelected )
                 {
                     // Deselect everything and only select the object under cursor.
                     ObjectSelection::deselectAll();
                     ObjectSelection::select( *mObjectUnderMouse );
-                    mClickSignal( *mObjectUnderMouse );
+                    ObjectSelection::fireClick( *mObjectUnderMouse );
                 }
             }
             else if( mClick && mClickTimer.getMilliseconds() < 150 && 
@@ -279,8 +253,7 @@ void ObjectSelection::mouseReleased( const MouseButton button )
             }
             else if( mDragging )
             {
-                mDragSignal( *mDraggingObject, false );
-                CLOGD << "Stopped dragging object " << mDraggingObject->getName();
+                ObjectSelection::fireDrag( *mDraggingObject, false );
             }
         }
     }
@@ -295,7 +268,7 @@ void ObjectSelection::mouseReleased( const MouseButton button )
 
 void ObjectSelection::update()
 {
-    ClientObject* currentObjectUnderMouse = mObjectUnderMouse;
+    camp::UserObject* currentObjectUnderMouse = mObjectUnderMouse;
     mObjectUnderMouse = 0;
     Ogre::Entity* entity = NULL;
     Ogre::Vector3 result = Ogre::Vector3::ZERO;
@@ -307,15 +280,15 @@ void ObjectSelection::update()
         mQueryMask ) )
     {
         // Entity detected under the mouse.
-        ClientObject* object = ObjectSelection::getObject( entity );
-        if( object != currentObjectUnderMouse )
+        camp::UserObject* object = ObjectSelection::getObject( entity );
+        if( object && object != currentObjectUnderMouse )
         {
             if( currentObjectUnderMouse )
             {
-                mHoverSignal( *currentObjectUnderMouse, false );
+                ObjectSelection::fireHover( *currentObjectUnderMouse, false );
             }
             mObjectUnderMouse = object;
-            mHoverSignal( *mObjectUnderMouse, true );
+            ObjectSelection::fireHover( *mObjectUnderMouse, true );
         }
         else
         {
@@ -336,8 +309,7 @@ void ObjectSelection::update()
     else if( mDragClick && mClickTimer.getMilliseconds() >= 150 && !mDragging && mDraggingObject )
     {
         mDragging = true;
-        mDragSignal( *mDraggingObject, true );
-        CLOGD << "Started dragging object " << mDraggingObject->getName();
+        ObjectSelection::fireDrag( *mDraggingObject, true );
     }
 
     // Update volume query rectangle.
@@ -347,22 +319,24 @@ void ObjectSelection::update()
     }
 }
 
-void ObjectSelection::objectDestroyed( Object& rObject )
-{
-    ObjectSelection::deselect( static_cast<ClientObject&>( rObject ) );
-}
-
 void ObjectSelection::cameraChange( Ogre::Camera* pCamera )
 {
     mCamera = pCamera;
 }
 
-ClientObject* ObjectSelection::getObject( Ogre::MovableObject* pMovableObject )
+camp::UserObject* ObjectSelection::getObject( Ogre::MovableObject* pMovableObject )
 {
     const Ogre::Any& object = pMovableObject->getUserAny();
     if( !object.isEmpty() )
     {
-        return Ogre::any_cast<ClientObject*>( object );
+        try
+        {
+            return Ogre::any_cast<camp::UserObject*>( object );
+        }
+        catch( const Ogre::Exception& e )
+        {
+        	return 0;
+        }
     }
 
     return 0;
@@ -406,7 +380,7 @@ void ObjectSelection::doVolumeSelect()
     for ( Ogre::SceneQueryResultMovableList::iterator i = result.movables.begin(); 
         i != result.movables.end(); ++i )
     {
-        ClientObject* object = ObjectSelection::getObject( *i );
+        camp::UserObject* object = ObjectSelection::getObject( *i );
         if( object ) ObjectSelection::select( *object );
     }
 }

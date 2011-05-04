@@ -147,6 +147,7 @@
     <ClInclude Include="..\..\Framework\OgreClient\Object\Light.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\LuaObjectScript.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\Mesh.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Object\ObjectSelector.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\Particle.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\RigidBody.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\SceneNode.h" />
@@ -198,6 +199,7 @@
     <ClCompile Include="..\..\Framework\OgreClient\Object\Light.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\LuaObjectScript.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\Mesh.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Object\ObjectSelector.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\Particle.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\RigidBody.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\SceneNode.cpp" />

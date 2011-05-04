@@ -30,6 +30,7 @@ This file is part of Diversia.
 #include "UI/MainWindow.h"
 #include "UI/ObjectTreeView.h"
 #include "UI/PropertyBrowser.h"
+#include "Util/Camp/CampUtils.h"
 #include "qsignalmapper.h"
 
 namespace Diversia
@@ -596,12 +597,19 @@ void ObjectTreeView::pluginChange( ClientServerPlugin& rPlugin, bool created )
     }
 }
 
-void ObjectTreeView::objectSelectionChange( ClientObject& rObject, bool selected )
+void ObjectTreeView::objectSelectionChange( const camp::UserObject& rObject, bool selected )
 {
     try
     {
-        QTreeView::selectionModel()->select( mModel->getObjectIndex( rObject ), 
-            selected ? QItemSelectionModel::Select : QItemSelectionModel::Deselect );
+        const camp::Class& objectClass = camp::classByName( "Object" );
+        if( camp::hasBase( rObject.getClass(), objectClass ) )
+        {
+            Object* object = static_cast<Object*>( rObject.getClass().applyOffset( rObject.pointer(), 
+                objectClass ) );
+
+            QTreeView::selectionModel()->select( mModel->getObjectIndex( *object ), 
+                selected ? QItemSelectionModel::Select : QItemSelectionModel::Deselect );
+        }
     }
     catch( Exception e )
     {

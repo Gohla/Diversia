@@ -45,6 +45,8 @@ private:
     Object& createObjectImpl( const String& rName, NetworkingType type, const String& rDisplayName,
         RakNet::RakNetGUID source );
 
+    ObjectSelector* mObjectSelector;
+
     CAMP_CLASS(EditorObjectManager)
 
 };

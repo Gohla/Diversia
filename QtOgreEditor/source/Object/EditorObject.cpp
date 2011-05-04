@@ -46,7 +46,7 @@ void EditorObject::setSelected( bool selected )
 
     if( selected )
     {
-        mGizmo = new TranslationGizmo();
+        mGizmo = new TranslationGizmo( *this );
         Object::getComponent<SceneNode>().getNode()->addChild( mGizmo->getSceneNode() );
     }
 

@@ -123,6 +123,7 @@ class ForceField;
 class Light;
 class LuaObjectScript;
 class Mesh;
+class ObjectSelector;
 class Particle;
 class RigidBody;
 class SceneNode;

@@ -28,6 +28,7 @@ THE SOFTWARE.
 
 #include "OgreClient/Graphics/TranslationGizmo.h"
 #include "OgreClient/Graphics/GeometryHelper.h"
+#include "OgreClient/Graphics/QueryFlags.h"
 
 namespace Diversia
 {
@@ -35,50 +36,55 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-TranslationGizmo::TranslationGizmo():
-    Gizmo(),
+TranslationGizmo::TranslationGizmo( ClientObject& rControlledObject ):
+    Gizmo( rControlledObject ),
     mMouseIncrementToMovementFactor( 0.2f ),
-    mSelectionHelperQueryFlag( 0x20 ),
     mSelectionHelperSize( 0.2f ),
     mMoveX( false ),
     mMoveY( false ),
     mMoveZ( false ),
-    mTransformGizmoX( GeometryHelper::createLine("Axis_X", Ogre::Vector3::ZERO, Ogre::Vector3::UNIT_X) ),
-    mTransformGizmoY( GeometryHelper::createLine("Axis_Y", Ogre::Vector3::ZERO, Ogre::Vector3::UNIT_Y) ),
-    mTransformGizmoZ( GeometryHelper::createLine("Axis_Z", Ogre::Vector3::ZERO, Ogre::Vector3::UNIT_Z) ),
-    mTransformGizmoX2( GeometryHelper::createCone("Axis_X", Ogre::Vector3::UNIT_X, Ogre::Vector3::UNIT_X, 0.03f, 8, 0.1f) ),
-    mTransformGizmoY2( GeometryHelper::createCone("Axis_Y", Ogre::Vector3::UNIT_Y, Ogre::Vector3::UNIT_Y, 0.03f, 8, 0.1f) ),
-    mTransformGizmoZ2( GeometryHelper::createCone("Axis_Z", Ogre::Vector3::UNIT_Z, Ogre::Vector3::UNIT_Z, 0.03f, 8, 0.1f) ),
-    mSelectionHelperX( TranslationGizmo::createSelectionHelperBox(Ogre::Vector3(0.5f + mSelectionHelperSize * 0.5f, 0.0f, 0.0f), Ogre::Vector3(1.0f + mSelectionHelperSize, mSelectionHelperSize, mSelectionHelperSize)) ),
-    mSelectionHelperY( TranslationGizmo::createSelectionHelperBox(Ogre::Vector3(0.0f, 0.5f + mSelectionHelperSize * 0.5f, 0.0f), Ogre::Vector3(mSelectionHelperSize, 1.0f + mSelectionHelperSize, mSelectionHelperSize)) ),
-    mSelectionHelperZ( TranslationGizmo::createSelectionHelperBox(Ogre::Vector3(0.0f, 0.0f, 0.5f + mSelectionHelperSize * 0.5f), Ogre::Vector3(mSelectionHelperSize, mSelectionHelperSize, 1.0f + mSelectionHelperSize)) ),
+    mTransformGizmoX( GeometryHelper::createLine( "Axis_X", Ogre::Vector3::ZERO, 
+        Ogre::Vector3::UNIT_X ) ),
+    mTransformGizmoY( GeometryHelper::createLine( "Axis_Y", Ogre::Vector3::ZERO, 
+        Ogre::Vector3::UNIT_Y ) ),
+    mTransformGizmoZ( GeometryHelper::createLine( "Axis_Z", Ogre::Vector3::ZERO, 
+        Ogre::Vector3::UNIT_Z ) ),
+    mTransformGizmoX2( GeometryHelper::createCone( "Axis_X", Ogre::Vector3::UNIT_X, 
+        Ogre::Vector3::UNIT_X, 0.03f, 8, 0.1f ) ),
+    mTransformGizmoY2( GeometryHelper::createCone( "Axis_Y", Ogre::Vector3::UNIT_Y, 
+        Ogre::Vector3::UNIT_Y, 0.03f, 8, 0.1f ) ),
+    mTransformGizmoZ2( GeometryHelper::createCone( "Axis_Z", Ogre::Vector3::UNIT_Z, 
+        Ogre::Vector3::UNIT_Z, 0.03f, 8, 0.1f ) ),
+    mSelectionHelperX( TranslationGizmo::createSelectionHelperBox( 
+        Ogre::Vector3( 0.5f + mSelectionHelperSize * 0.5f, 0.0f, 0.0f ), 
+        Ogre::Vector3( 1.0f + mSelectionHelperSize, mSelectionHelperSize, mSelectionHelperSize ) ) ),
+    mSelectionHelperY( TranslationGizmo::createSelectionHelperBox( 
+        Ogre::Vector3( 0.0f, 0.5f + mSelectionHelperSize * 0.5f, 0.0f ), 
+        Ogre::Vector3( mSelectionHelperSize, 1.0f + mSelectionHelperSize, mSelectionHelperSize ) ) ),
+    mSelectionHelperZ( TranslationGizmo::createSelectionHelperBox( 
+        Ogre::Vector3( 0.0f, 0.0f, 0.5f + mSelectionHelperSize * 0.5f ), 
+        Ogre::Vector3( mSelectionHelperSize, mSelectionHelperSize, 1.0f + mSelectionHelperSize ) ) ),
     mXNode( Gizmo::getSceneNode()->createChildSceneNode() ),
     mYNode( Gizmo::getSceneNode()->createChildSceneNode() ),
     mZNode( Gizmo::getSceneNode()->createChildSceneNode() )
 {
-    // Create axis geometry
-    mTransformGizmoX->setVisibilityFlags( 2 );
-    mTransformGizmoY->setVisibilityFlags( 2 );
-    mTransformGizmoZ->setVisibilityFlags( 2 );
-    Gizmo::getSceneNode()->attachObject(mTransformGizmoX);
-    Gizmo::getSceneNode()->attachObject(mTransformGizmoY);
-    Gizmo::getSceneNode()->attachObject(mTransformGizmoZ);
-    mTransformGizmoX2->setVisibilityFlags( 2 );
-    mTransformGizmoY2->setVisibilityFlags( 2 );
-    mTransformGizmoZ2->setVisibilityFlags( 2 );
-    Gizmo::getSceneNode()->attachObject(mTransformGizmoX2);
-    Gizmo::getSceneNode()->attachObject(mTransformGizmoY2);
-    Gizmo::getSceneNode()->attachObject(mTransformGizmoZ2);
+    // Setup axis geometry
+    Gizmo::getSceneNode()->attachObject( mTransformGizmoX );
+    Gizmo::getSceneNode()->attachObject( mTransformGizmoY );
+    Gizmo::getSceneNode()->attachObject( mTransformGizmoZ );
+    Gizmo::getSceneNode()->attachObject( mTransformGizmoX2 );
+    Gizmo::getSceneNode()->attachObject( mTransformGizmoY2 );
+    Gizmo::getSceneNode()->attachObject( mTransformGizmoZ2 );
 
-    // Create selection helpers
+    // Setup selection helpers
     Gizmo::getSceneNode()->attachObject( mSelectionHelperX );
     Gizmo::getSceneNode()->attachObject( mSelectionHelperY );
     Gizmo::getSceneNode()->attachObject( mSelectionHelperZ );
 
-    // Create transformation helper nodes.
-    mXNode->translate(1.0f, 0.0f, 0.0f);
-    mYNode->translate(0.0f, 1.0f, 0.0f);
-    mZNode->translate(0.0f, 0.0f, 1.0f);
+    // Setup transformation helper nodes.
+    mXNode->translate( 1.0f, 0.0f, 0.0f );
+    mYNode->translate( 0.0f, 1.0f, 0.0f );
+    mZNode->translate( 0.0f, 0.0f, 1.0f );
 }
 
 TranslationGizmo::~TranslationGizmo()
@@ -97,10 +103,10 @@ TranslationGizmo::~TranslationGizmo()
 Ogre::Entity* TranslationGizmo::createSelectionHelperBox( const Ogre::Vector3& center, 
     const Ogre::Vector3& size )
 {
-    Ogre::Entity* entity = GeometryHelper::createAxisAlignedBoxEntity("BaseWhiteNoLighting", center, 
-        size);
+    Ogre::Entity* entity = GeometryHelper::createAxisAlignedBoxEntity( "BaseWhiteNoLighting", 
+        center, size );
     entity->setVisible( false );
-    entity->setQueryFlags( mSelectionHelperQueryFlag );
+    entity->setQueryFlags( QueryFlags_Gizmo );
     return entity;
 }
 

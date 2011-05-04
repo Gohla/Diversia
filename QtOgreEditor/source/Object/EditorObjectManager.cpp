@@ -12,6 +12,7 @@ This file is part of Diversia.
 #include "Object/EditorObject.h"
 #include "Object/EditorObjectManager.h"
 #include "Object/ObjectManager.h"
+#include "OgreClient/Object/ObjectSelector.h"
 
 namespace Diversia
 {
@@ -26,12 +27,12 @@ EditorObjectManager::EditorObjectManager( Mode mode, PluginState state,
     ClientObjectManager( mode, state, rUpdateSignal, rLateUpdateSignal, rPluginManager, rRakPeer, 
         rReplicaManager, rNetworkIDManager )
 {
-
+    mObjectSelector = new ObjectSelector( *this );
 }
 
 EditorObjectManager::~EditorObjectManager()
 {
-
+    delete mObjectSelector;
 }
 
 Object& EditorObjectManager::createObjectImpl( const String& rName, NetworkingType type, 

@@ -553,8 +553,8 @@
 						<value>
 							<Position>
 								<X>0</X>
-								<Y>1.0000001192092896</Y>
-								<Z>0</Z>
+								<Y>200</Y>
+								<Z>100</Z>
 							</Position>
 							<Orientation>
 								<X>0</X>
@@ -598,24 +598,24 @@
 										<ResourceList/>
 										<Type>Point</Type>
 										<DiffuseColour>
-											<R>1</R>
-											<G>1</G>
-											<B>1</B>
-											<A>1</A>
+											<R>0.59999990463256836</R>
+											<G>0.59999990463256836</G>
+											<B>0.59999990463256836</B>
+											<A>0.59999990463256836</A>
 										</DiffuseColour>
 										<SpecularColour>
-											<R>0</R>
-											<G>0</G>
-											<B>0</B>
-											<A>1</A>
+											<R>0.30000001192092896</R>
+											<G>0.30000001192092896</G>
+											<B>0.30000001192092896</B>
+											<A>0.29999992251396179</A>
 										</SpecularColour>
 										<PowerScale>1</PowerScale>
 										<SpotlightFalloff>1</SpotlightFalloff>
 										<SpotlightInnerAngle>
-											<Radians>0.52359879016876221</Radians>
+											<Radians>0.52359884977340698</Radians>
 										</SpotlightInnerAngle>
 										<SpotlightOuterAngle>
-											<Radians>0.69813168048858643</Radians>
+											<Radians>0.69813179969787598</Radians>
 										</SpotlightOuterAngle>
 									</value>
 								</item>

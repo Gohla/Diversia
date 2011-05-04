@@ -54,6 +54,7 @@ void CampBindings::bindEditorObject()
 {
     camp::Class::declare<EditorObject>( "EditorObject" )
         .tag( "NoSerialization", &Object::isRuntimeObject )
+        .tag( "Selectable" )
         .base<ClientObject>();
 	    // Constructors
 	    // Properties (read-only)

@@ -24,51 +24,52 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_OGRECLIENT_GIZMO_H
-#define DIVERSIA_OGRECLIENT_GIZMO_H
+#include "OgreClient/Platform/StableHeaders.h"
 
-#include "OgreClient/Platform/Prerequisites.h"
+#include "Client/Object/ClientObject.h"
+#include "Client/Object/ClientObjectManager.h"
+#include "OgreClient/Input/ObjectSelection.h"
+#include "OgreClient/Object/ObjectSelector.h"
 
 namespace Diversia
 {
-namespace OgreClient
+namespace OgreClient 
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_OGRECLIENT_API Gizmo
+ObjectSelector::ObjectSelector( ClientObjectManager& rObjectManager ):
+    mObjectManager( rObjectManager )
 {
-public:
-    /**
-    Constructor. 
-    
-    @param [in,out] rControlledObject   The object this gizmo should control. 
-    **/
-    Gizmo( ClientObject& rControlledObject );
-    /**
-    Destructor. 
-    **/
-    virtual ~Gizmo();
+    mObjectManager.connect( sigc::mem_fun( this, &ObjectSelector::objectChange ) );
+}
 
-    /**
-    Gets the gizmo scene node. 
-    **/
-    inline Ogre::SceneNode* getSceneNode() const { return mGizmoNode; }
-    /**
-    Gets the gizmo scene node. 
-    **/
-    inline ClientObject& getControlledObject() const { return mControlledObject; }
-   
-private:
-    Ogre::SceneNode*    mGizmoNode;
-    ClientObject&       mControlledObject;
+ObjectSelector::~ObjectSelector()
+{
 
-};
+}
+
+void ObjectSelector::objectChange( Object& rObject, bool created )
+{
+    ClientObject& object = static_cast<ClientObject&>( rObject );
+
+    if( created )
+    {
+        GlobalsBase::mSelection->setSelectSlot( rObject, 
+            sigc::bind( sigc::mem_fun( this, &ObjectSelector::objectSelected ), sigc::ref( 
+            object ) ), true );
+    }
+    else 
+    {
+        GlobalsBase::mSelection->deselect( rObject );
+        GlobalsBase::mSelection->removeSelectSlot( rObject );
+    }
+}
+
+void ObjectSelector::objectSelected( bool select, ClientObject& rObject )
+{
+    rObject.setSelected( select );
+}
 
 //------------------------------------------------------------------------------
 } // Namespace OgreClient
 } // Namespace Diversia
-
-CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::OgreClient::Gizmo, 
-    &Diversia::OgreClient::Bindings::CampBindings::bindGizmo );
-
-#endif // DIVERSIA_OGRECLIENT_GIZMO_H

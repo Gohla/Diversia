@@ -75,6 +75,7 @@ void CampBindings::bindClientObject()
 {
     camp::Class::declare<ClientObject>( "ClientObject" )
         .tag( "NoSerialization", &Object::isRuntimeObject )
+        .tag( "Selectable" )
         .base<Object>();
         // Constructors
         // Properties (read-only)

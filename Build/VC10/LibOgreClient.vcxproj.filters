@@ -185,6 +185,9 @@
     <ClInclude Include="..\..\Framework\OgreClient\Graphics\GeometryHelper.h">
       <Filter>Graphics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Framework\OgreClient\Object\ObjectSelector.h">
+      <Filter>Object</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Libraries\BtOgre\BtOgre.cpp">
@@ -319,6 +322,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Framework\OgreClient\Graphics\Gizmo.cpp">
       <Filter>Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\OgreClient\Object\ObjectSelector.cpp">
+      <Filter>Object</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

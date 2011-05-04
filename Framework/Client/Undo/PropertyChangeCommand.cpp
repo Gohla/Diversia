@@ -11,6 +11,7 @@ This file is part of Diversia.
 #include "Client/Undo/PropertyChangeCommand.h"
 #include "Object/Component.h"
 #include "Object/Object.h"
+#include "Util/Camp/CampUtils.h"
 
 namespace Diversia
 {
@@ -120,19 +121,6 @@ String PropertyChangeCommand::name()
         mProperty.name() + " property";
 }
 
-bool PropertyChangeCommand::hasBase( const camp::Class& rClass, const camp::Class& rBaseClass )
-{
-    for( std::size_t i = 0; i < rClass.baseCount(); ++i )
-    {
-        const camp::Class& base = rClass.base( i );
-
-        if( base == rBaseClass ) return true;
-        else if( base.baseCount() && PropertyChangeCommand::hasBase( base, rBaseClass ) ) return true; 
-    }
-
-    return false;
-}
-
 void PropertyChangeCommand::storeCurrentValue()
 {
     try
@@ -170,14 +158,14 @@ void PropertyChangeCommand::connectDestruction()
     {
         const camp::Class& componentClass = camp::classByType<Component>();
         const camp::Class& objectClass = camp::classByType<Object>();
-        if( PropertyChangeCommand::hasBase( *metaclass, componentClass ) )
+        if( camp::hasBase( *metaclass, componentClass ) )
         {
             Component* component = static_cast<Component*>( metaclass->applyOffset( ptr, 
                 componentClass ) );
             component->connectDestruction( sigc::mem_fun( this, 
                 &PropertyChangeCommand::componentDestroyed ) );
         }
-        else if( PropertyChangeCommand::hasBase( *metaclass, objectClass ) )
+        else if( camp::hasBase( *metaclass, objectClass ) )
         {
             Object* object = static_cast<Object*>( metaclass->applyOffset( ptr, 
                 objectClass ) );

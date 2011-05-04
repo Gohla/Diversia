@@ -34,8 +34,9 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-Gizmo::Gizmo():
-    mGizmoNode( GlobalsBase::mScene->createSceneNode() )
+Gizmo::Gizmo( ClientObject& rControlledObject ):
+    mGizmoNode( GlobalsBase::mScene->createSceneNode() ),
+    mControlledObject( rControlledObject )
 {
     mGizmoNode->setInheritScale( false );
     mGizmoNode->setScale( 3.0, 3.0, 3.0 );

@@ -36,6 +36,17 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
+typedef sigc::slot<void> ClickSlot;
+typedef sigc::slot<void, bool> HoverSlot;
+typedef sigc::slot<void, bool> SelectSlot;
+typedef sigc::signal<void, const camp::UserObject&, bool> SelectSignal;
+typedef sigc::slot<void, bool> DragSlot;
+
+typedef std::map<camp::UserObject, ClickSlot> ClickSlotMap;
+typedef std::map<camp::UserObject, HoverSlot> HoverSlotMap;
+typedef std::map<camp::UserObject, SelectSlot> SelectSlotMap;
+typedef std::map<camp::UserObject, DragSlot> DragSlotMap;
+
 class DIVERSIA_OGRECLIENT_API SelectionRectangle : public Ogre::ManualObject
 {
 public:
@@ -71,8 +82,7 @@ public:
 
 //------------------------------------------------------------------------------
 
-typedef std::set<ClientObject*> SelectedObjects;
-typedef std::map<ClientObject*, sigc::connection> ObjectConnections;
+typedef std::set<camp::UserObject> SelectedObjects;
 
 /**
 This class provides events for mouse interaction on objects such as hovering, click and dragging an 
@@ -110,21 +120,29 @@ public:
     @param [in,out] rObject The object to add to the selection.
     @param  silent          True to silently add, don't emit signal. Defaults to false.
     **/
-    void select( ClientObject& rObject, bool silent = false );
+    void select( const camp::UserObject& rObject, bool silent = false );
     /**
     Removes an object from the selection.
 
     @param [in,out] rObject The object remove from the selection.
     @param  silent          True to silently remove, don't emit signal. Defaults to false.
     **/
-    void deselect( ClientObject& rObject, bool silent = false );
+    void deselect( const camp::UserObject& rObject, bool silent = false );
+    /**
+    Query if given object is selected. 
+    
+    @param [in,out] rObject The object to check selection for.
+    
+    @return True if selected, false if not. 
+    **/
+    bool isSelected( const camp::UserObject& rObject );
     /**
     Toggles selection for an object.
 
     @param [in,out] rObject The object to toggle the selection for
     @param  silent          True to silently toggle, don't emit signal. Defaults to false.
     **/
-    void toggleSelection( ClientObject& rObject, bool silent = false );
+    void toggleSelection( const camp::UserObject& rObject, bool silent = false );
     /**
     Crops the selection to given object. All objects will be deselected except the given object, 
     if given object has not been selected yet it will be selected.
@@ -132,61 +150,92 @@ public:
     @param [in,out] rObject The object
     @param  silent          True to silently crop, don't emit signals. Defaults to false.
     **/
-    void cropSelection( ClientObject& rObject, bool silent = false );
+    void cropSelection( const camp::UserObject& rObject, bool silent = false );
     /**
     Deselects all objects.
 
     @param  silent          True to silently crop, don't emit signals. Defaults to false.
     **/
     void deselectAll( bool silent = false );
-
     /**
-    Connects a slot to the object hovered/unhovered signal.
-
-    @param [in,out] rSlot   The slot (signature: void func(Object&, bool [true if entered hover,
-                            false if leaving hover])) to connect. 
+    Sets a slot to the object clicked signal.
     
-    @return Connection object to block or disconnect the connection.
+    @param  rObject The object to set the slot for.
+    @param  rSlot   The slot (signature: void func()) to set. 
     **/
-    inline sigc::connection connectHover( const sigc::slot<void, ClientObject&, bool>& rSlot ) 
+    inline void setClickSlot( const camp::UserObject& rObject, const ClickSlot& rSlot ) 
     {
-        return mHoverSignal.connect( rSlot );
+        mClickSlots[rObject] = rSlot;
     }
     /**
-    Connects a slot to the object clicked signal.
-
-    @param [in,out] rSlot   The slot (signature: void func(Object&)) to connect. 
+    Removes the a slot from the clicked signal.
     
-    @return Connection object to block or disconnect the connection.
+    @param  rObject The object to remove the slot for.
     **/
-    inline sigc::connection connectClick( const sigc::slot<void, ClientObject&>& rSlot ) 
+    inline void removeClickSlot( const camp::UserObject& rObject ) { mClickSlots.erase( rObject ); }
+    /**
+    Sets a slot to the object hovered/unhovered signal. 
+    
+    @param  rObject The object to set the slot for.
+    @param  rSlot   The slot (signature: void func(bool [true if entered hover, false if leaving
+                    hover])) to set. 
+    **/
+    inline void setHoverSlot( const camp::UserObject& rObject, const HoverSlot& rSlot ) 
     {
-        return mClickSignal.connect( rSlot );
+        mHoverSlots[rObject] = rSlot;
     }
+    /**
+    Removes the a slot from the hover signal.
+    
+    @param  rObject The object to remove the slot for.
+    **/
+    inline void removeHoverSlot( const camp::UserObject& rObject ) { mHoverSlots.erase( rObject ); }
+    /**
+    Sets a slot to the object selected/deselected signal.
+    
+    @param  rObject The object to set the slot for. 
+    @param  rSlot   The slot (signature: void func(bool [true if selected, false if unselected]))
+                    to connect. 
+    **/
+    inline void setSelectSlot( const camp::UserObject& rObject, const SelectSlot& rSlot, bool ignoreSilent = false ) 
+    {
+        if( ignoreSilent ) mSelectIgnoreSilentSlots[rObject] = rSlot; else mSelectSlots[rObject] = rSlot;
+    }
+    /**
+    Removes the a slot from the select signal.
+    
+    @param  rObject The object to remove the slot for.
+    **/
+    inline void removeSelectSlot( const camp::UserObject& rObject ) { mSelectSlots.erase( rObject ); mSelectIgnoreSilentSlots.erase( rObject ); }
     /**
     Connects a slot to the object selected/deselected signal.
 
-    @param [in,out] rSlot   The slot (signature: void func(Object&, bool [true if selected, false 
-                            if unselected])) to connect. 
+    @param [in,out] rSlot   The slot (signature: void func(camp::UserObject&, bool [true if 
+                            selected, false if unselected])) to connect. 
     
     @return Connection object to block or disconnect the connection.
     **/
-    inline sigc::connection connectSelected( const sigc::slot<void, ClientObject&, bool>& rSlot ) 
+    inline sigc::connection connectSelected( const SelectSignal::slot_type& rSlot ) 
     {
-        return mSelectedSignal.connect( rSlot );
+        return mSelectSignal.connect( rSlot );
     }
     /**
-    Connects a slot to the object drag signal.
-
-    @param [in,out] rSlot   The slot (signature: void func(Object&, bool [true if starting to drag,
-                            false if stopping to drag])) to connect. 
+    Sets a slot to the object drag signal.
     
-    @return Connection object to block or disconnect the connection.
+    @param  rObject The object to set the slot for.
+    @param  rSlot   The slot (signature: void func(bool [true if starting to drag, false if
+                    stopping to drag])) to connect. 
     **/
-    inline sigc::connection connectDrag( const sigc::slot<void, ClientObject&, bool>& rSlot ) 
+    inline void setDragSlot( const camp::UserObject& rObject, const DragSlot& rSlot ) 
     {
-        return mDragSignal.connect( rSlot );
+        mDragSlots[rObject] = rSlot;
     }
+    /**
+    Removes the a slot from the drag signal.
+    
+    @param  rObject The object to remove the slot for.
+    **/
+    inline void removeDragSlot( const camp::UserObject& rObject ) { mDragSlots.erase( rObject ); }
 
 private:
     bool mouseMoved( const MouseState& rState );
@@ -195,10 +244,9 @@ private:
     inline int getMousePriority() const { return 2; }
 
     void update();
-    void objectDestroyed( Object& rObject );
     void cameraChange( Ogre::Camera* pCamera );
 
-    ClientObject* getObject( Ogre::MovableObject* pMovableObject );
+    camp::UserObject* getObject( Ogre::MovableObject* pMovableObject );
     void doVolumeSelect();
 
     inline static void swap(float &x, float &y)
@@ -207,11 +255,40 @@ private:
         x = y;
         y = tmp;
     }
-    
-    sigc::signal<void, ClientObject&, bool> mHoverSignal;
-    sigc::signal<void, ClientObject&>       mClickSignal;
-    sigc::signal<void, ClientObject&, bool> mSelectedSignal;
-    sigc::signal<void, ClientObject&, bool> mDragSignal;
+
+    inline void fireClick( const camp::UserObject& rObject )
+    {
+        ClickSlotMap::iterator i = mClickSlots.find( rObject );
+        if( i != mClickSlots.end() ) i->second();
+    }
+    inline void fireHover( const camp::UserObject& rObject, bool hover )
+    {
+        HoverSlotMap::iterator i = mHoverSlots.find( rObject );
+        if( i != mHoverSlots.end() ) i->second( hover );
+    }
+    inline void fireSelect( const camp::UserObject& rObject, bool selected, bool silent )
+    {
+        SelectSlotMap::iterator i = mSelectIgnoreSilentSlots.find( rObject );
+        if( i != mSelectIgnoreSilentSlots.end() ) i->second( selected );
+
+        if( silent ) return;
+
+        mSelectSignal( rObject, selected );
+        i = mSelectSlots.find( rObject );
+        if( i != mSelectSlots.end() ) i->second( selected );
+    }
+    inline void fireDrag( const camp::UserObject& rObject, bool dragStart )
+    {
+        DragSlotMap::iterator i = mDragSlots.find( rObject );
+        if( i != mDragSlots.end() ) i->second( dragStart );
+    }
+
+    ClickSlotMap    mClickSlots;
+    HoverSlotMap    mHoverSlots;
+    SelectSlotMap   mSelectSlots;
+    SelectSlotMap   mSelectIgnoreSilentSlots;
+    SelectSignal    mSelectSignal;
+    DragSlotMap     mDragSlots;
 
     Ogre::Camera*                           mCamera;
     MouseState                              mMouseState;
@@ -228,10 +305,9 @@ private:
     bool                                    mDoVolumeQuery;
     unsigned int                            mQueryMask;
 
-    ClientObject*                           mObjectUnderMouse;
-    ClientObject*                           mDraggingObject;
+    camp::UserObject*                       mObjectUnderMouse;
+    camp::UserObject*                       mDraggingObject;
     SelectedObjects                         mSelectedObjects;
-    ObjectConnections                       mObjectConnections;
 
 };
 

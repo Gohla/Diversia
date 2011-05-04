@@ -40,7 +40,15 @@ namespace OgreClient
 class DIVERSIA_OGRECLIENT_API TranslationGizmo : public Gizmo
 {
 public:
-    TranslationGizmo();
+    /**
+    Constructor. 
+    
+    @param [in,out] rControlledObject   The object this gizmo should control. 
+    **/
+    TranslationGizmo( ClientObject& rControlledObject );
+    /**
+    Destructor. 
+    **/
     virtual ~TranslationGizmo();
     
 private:
@@ -48,7 +56,6 @@ private:
         const Ogre::Vector3& size );
 
     Real mMouseIncrementToMovementFactor;
-    unsigned int mSelectionHelperQueryFlag;
     Real mSelectionHelperSize;
     bool mMoveX;
     bool mMoveY;
@@ -71,5 +78,8 @@ private:
 //------------------------------------------------------------------------------
 } // Namespace OgreClient
 } // Namespace Diversia
+
+CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::OgreClient::TranslationGizmo, 
+    &Diversia::OgreClient::Bindings::CampBindings::bindTranslationGizmo );
 
 #endif // DIVERSIA_OGRECLIENT_TRANSLATIONGIZMO_H

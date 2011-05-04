@@ -25,11 +25,15 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Audio/AudioManager.h"
 #include "OgreClient/Camp/CampBindings.h"
 #include "OgreClient/GameMode/GameModePlugin.h"
+#include "OgreClient/Graphics/Gizmo.h"
 #include "OgreClient/Graphics/GraphicsManager.h"
+#include "OgreClient/Graphics/RotationGizmo.h"
+#include "OgreClient/Graphics/ScaleGizmo.h"
 #include "OgreClient/Graphics/SceneManagerPlugin.h"
 #include "OgreClient/Graphics/SkyPlugin.h"
 #include "OgreClient/Graphics/Terrain.h"
 #include "OgreClient/Graphics/TextCanvasBatch.h"
+#include "OgreClient/Graphics/TranslationGizmo.h"
 #include "OgreClient/Input/InputManager.h"
 #include "OgreClient/Object/Animation.h"
 #include "OgreClient/Object/AreaTrigger.h"
@@ -1251,6 +1255,57 @@ void CampBindings::bindLight()
 	    // Functions
 	    // Static functions
 	    // Operators
+}
+
+void CampBindings::bindGizmo()
+{
+    camp::Class::declare<Gizmo>( "Gizmo" )
+        .tag( "Draggable" );
+	    // Constructors
+	    // Properties (read-only)
+	    // Properties (read/write)
+	    // Functions
+	    // Static functions
+	    // Operators
+}
+
+void CampBindings::bindRotationGizmo()
+{
+    camp::Class::declare<RotationGizmo>( "RotationGizmo" )
+        .tag( "Draggable" )
+        .base<Gizmo>();
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        // Functions
+        // Static functions
+        // Operators
+}
+
+void CampBindings::bindScaleGizmo()
+{
+    camp::Class::declare<ScaleGizmo>( "ScaleGizmo" )
+        .tag( "Draggable" )
+        .base<Gizmo>();
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        // Functions
+        // Static functions
+        // Operators
+}
+
+void CampBindings::bindTranslationGizmo()
+{
+    camp::Class::declare<TranslationGizmo>( "TranslationGizmo" )
+        .tag( "Draggable" )
+        .base<Gizmo>();
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        // Functions
+        // Static functions
+        // Operators
 }
 
 //------------------------------------------------------------------------------

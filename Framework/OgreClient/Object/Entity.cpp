@@ -108,7 +108,8 @@ void Entity::meshLoaded( Mesh& rMesh )
             rMesh.getMeshName(), mResourceManager.getGroup() );
         mNode.getNode()->attachObject( mEntity );
 
-        mEntity->setUserAny( Ogre::Any( &ClientComponent::getClientObject() ) );
+        mUserObject = ClientComponent::getClientObject();
+        mEntity->setUserAny( Ogre::Any( &mUserObject ) );
         mEntity->setQueryFlags( QueryFlags_Entity );
 
         PropertySynchronization::processQueuedConstruction();

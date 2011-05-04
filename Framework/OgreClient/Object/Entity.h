@@ -85,14 +85,12 @@ private:
     void meshLoaded( Mesh& rMesh );
     void componentChange( Component& rComponent, bool created );
 
-    SceneNode&          mNode;
-    ResourceManager&    mResourceManager;
-
-    String  mMaterial;
-    bool    mCreated;
-
-    Ogre::Entity*   mEntity;
-
+    SceneNode&                  mNode;
+    ResourceManager&            mResourceManager;
+    String                      mMaterial;
+    bool                        mCreated;
+    Ogre::Entity*               mEntity;
+    camp::UserObject            mUserObject;
     sigc::connection            mComponentChangeConnection;
     sigc::signal<void, Entity&> mLoadedSignal;
 

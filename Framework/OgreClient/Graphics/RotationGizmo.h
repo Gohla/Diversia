@@ -40,7 +40,7 @@ namespace OgreClient
 class DIVERSIA_OGRECLIENT_API RotationGizmo : public Gizmo
 {
 public:
-    RotationGizmo();
+    RotationGizmo( ClientObject& rControlledObject );
     virtual ~RotationGizmo();
 
 	
@@ -52,5 +52,8 @@ private:
 //------------------------------------------------------------------------------
 } // Namespace OgreClient
 } // Namespace Diversia
+
+CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::OgreClient::RotationGizmo, 
+    &Diversia::OgreClient::Bindings::CampBindings::bindRotationGizmo );
 
 #endif // DIVERSIA_OGRECLIENT_ROTATIONGIZMO_H

@@ -74,6 +74,10 @@ public:
     static void bindAreaTrigger();
     static void bindForceField();
     static void bindLight();
+    static void bindGizmo();
+    static void bindRotationGizmo();
+    static void bindScaleGizmo();
+    static void bindTranslationGizmo();
 
 };
 

@@ -2480,6 +2480,10 @@
 			Value="4.7.1"
 		/>
 		<Global
+			Name="QtVersion"
+			Value="4.7.1"
+		/>
+		<Global
 			Name="RccDir"
 			Value=".\..\..\QtOgreEditor\source\Generated"
 		/>

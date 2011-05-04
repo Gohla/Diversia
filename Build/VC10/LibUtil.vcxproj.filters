@@ -258,5 +258,8 @@
       <Filter>Serialization</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Framework\Util\UtilIncludes.h" />
+    <ClInclude Include="..\..\Framework\Util\Camp\CampUtils.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

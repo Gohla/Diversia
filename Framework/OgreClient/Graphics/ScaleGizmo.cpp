@@ -34,7 +34,8 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-ScaleGizmo::ScaleGizmo()
+ScaleGizmo::ScaleGizmo( ClientObject& rControlledObject ):
+    Gizmo( rControlledObject )
 {
 
 }

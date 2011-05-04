@@ -24,8 +24,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_OGRECLIENT_GIZMO_H
-#define DIVERSIA_OGRECLIENT_GIZMO_H
+#ifndef DIVERSIA_OGRECLIENT_OBJECTSELECTOR_H
+#define DIVERSIA_OGRECLIENT_OBJECTSELECTOR_H
 
 #include "OgreClient/Platform/Prerequisites.h"
 
@@ -35,32 +35,28 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_OGRECLIENT_API Gizmo
+/**
+Provides selection using ObjectSelection for the object system. 
+**/
+class DIVERSIA_OGRECLIENT_API ObjectSelector
 {
 public:
     /**
     Constructor. 
     
-    @param [in,out] rControlledObject   The object this gizmo should control. 
+    @param [in,out] rObjectManager  The object manager to provide selection for.
     **/
-    Gizmo( ClientObject& rControlledObject );
+    ObjectSelector( ClientObjectManager& rObjectManager );
     /**
     Destructor. 
     **/
-    virtual ~Gizmo();
-
-    /**
-    Gets the gizmo scene node. 
-    **/
-    inline Ogre::SceneNode* getSceneNode() const { return mGizmoNode; }
-    /**
-    Gets the gizmo scene node. 
-    **/
-    inline ClientObject& getControlledObject() const { return mControlledObject; }
-   
+    ~ObjectSelector();
+    
 private:
-    Ogre::SceneNode*    mGizmoNode;
-    ClientObject&       mControlledObject;
+    void objectChange( Object& rObject, bool created );
+    void objectSelected( bool select, ClientObject& rObject );
+
+    ClientObjectManager& mObjectManager;
 
 };
 
@@ -68,7 +64,4 @@ private:
 } // Namespace OgreClient
 } // Namespace Diversia
 
-CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::OgreClient::Gizmo, 
-    &Diversia::OgreClient::Bindings::CampBindings::bindGizmo );
-
-#endif // DIVERSIA_OGRECLIENT_GIZMO_H
+#endif // DIVERSIA_OGRECLIENT_OBJECTSELECTOR_H

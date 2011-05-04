@@ -34,7 +34,8 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-RotationGizmo::RotationGizmo()
+RotationGizmo::RotationGizmo( ClientObject& rControlledObject ):
+    Gizmo( rControlledObject )
 {
 
 }

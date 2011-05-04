@@ -125,6 +125,7 @@
     <ClCompile Include="..\..\Framework\Util\Serialization\src\XMLSerializationFile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Framework\Util\Camp\CampUtils.h" />
     <ClInclude Include="..\..\Framework\Util\Helper\ConsoleInput.h" />
     <ClInclude Include="..\..\Framework\Util\Helper\ContainerInitializer.h" />
     <ClInclude Include="..\..\Framework\Util\Helper\Exception.h" />

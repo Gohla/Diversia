@@ -78,13 +78,12 @@ private:
 
     Ogre::ParticleSystem*   mParticleSystem;
     bool                    mCreated;
-
-    SceneNode&          mNode;
-    ResourceManager&    mResourceManager;
-
-    String  mParticleSystemName;
-    bool    mStoppedOrPaused;
-    Real    mLastSpeedFactor;
+    SceneNode&              mNode;
+    ResourceManager&        mResourceManager;
+    camp::UserObject        mUserObject;
+    String                  mParticleSystemName;
+    bool                    mStoppedOrPaused;
+    Real                    mLastSpeedFactor;
 
     CAMP_RTTI()
 
