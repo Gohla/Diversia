@@ -12,8 +12,8 @@ material Floor
 			}
 
  			rtshader_system
- 			{			
- 				lighting_stage per_pixel				
+ 			{
+ 				lighting_stage per_pixel
  			}
 		}
 	}

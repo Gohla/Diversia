@@ -10,6 +10,11 @@ material Ball
 			{
 				texture Objects/Ball/Ball.png
 			}
+
+ 			rtshader_system
+ 			{
+ 				lighting_stage per_pixel
+ 			}
 		}
 	}
 }

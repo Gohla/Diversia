@@ -197,6 +197,7 @@ directory or set the correct directory in config.xml under 'RootResourceLocation
 
     // Create scene manager.
     mSceneMgr = mRoot->createSceneManager( Ogre::ST_GENERIC );
+    mSceneMgr->setShadowTechnique( Ogre::SHADOWTYPE_NONE );
     GlobalsBase::mScene = mSceneMgr;
 
     // Load resources

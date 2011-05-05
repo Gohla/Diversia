@@ -553,14 +553,14 @@
 						<value>
 							<Position>
 								<X>0</X>
-								<Y>10.150062561035156</Y>
+								<Y>0</Y>
 								<Z>0</Z>
 							</Position>
 							<Orientation>
-								<X>0.97629362344741821</X>
+								<X>0.93847024440765381</X>
 								<Y>0</Y>
 								<Z>0</Z>
-								<W>0.21645030379295349</W>
+								<W>0.34536001086235046</W>
 							</Orientation>
 							<Scale>
 								<X>1</X>
@@ -597,10 +597,11 @@
 										<OverriddenProperties/>
 										<ResourceList/>
 										<LightType>Directional</LightType>
+										<CastShadows>1</CastShadows>
 										<DiffuseColour>
-											<R>1</R>
-											<G>1</G>
-											<B>1</B>
+											<R>0.30000001192092896</R>
+											<G>0.29999992251396179</G>
+											<B>0.29999992251396179</B>
 											<A>1</A>
 										</DiffuseColour>
 										<SpecularColour>
@@ -626,7 +627,7 @@
 						<key>EditorObject4593671742282783527115687533610186601</key>
 						<value>
 							<Position>
-								<X>-5</X>
+								<X>-10</X>
 								<Y>5</Y>
 								<Z>-10</Z>
 							</Position>
@@ -670,9 +671,10 @@
 										<TemplateName/>
 										<OverriddenProperties/>
 										<ResourceList/>
-										<LightType>Spot</LightType>
+										<LightType>Point</LightType>
+										<CastShadows>0</CastShadows>
 										<DiffuseColour>
-											<R>2.4999997615814209</R>
+											<R>1</R>
 											<G>0</G>
 											<B>0</B>
 											<A>1</A>
@@ -744,10 +746,11 @@
 										<TemplateName/>
 										<OverriddenProperties/>
 										<ResourceList/>
-										<LightType>Spot</LightType>
+										<LightType>Point</LightType>
+										<CastShadows>0</CastShadows>
 										<DiffuseColour>
 											<R>0</R>
-											<G>2.5</G>
+											<G>1</G>
 											<B>0</B>
 											<A>1</A>
 										</DiffuseColour>
@@ -774,7 +777,7 @@
 						<key>EditorObject4593671742282783527115687533610186603</key>
 						<value>
 							<Position>
-								<X>5</X>
+								<X>10</X>
 								<Y>5</Y>
 								<Z>-10</Z>
 							</Position>
@@ -818,11 +821,12 @@
 										<TemplateName/>
 										<OverriddenProperties/>
 										<ResourceList/>
-										<LightType>Spot</LightType>
+										<LightType>Point</LightType>
+										<CastShadows>0</CastShadows>
 										<DiffuseColour>
 											<R>0</R>
 											<G>0</G>
-											<B>2.5</B>
+											<B>1</B>
 											<A>1</A>
 										</DiffuseColour>
 										<SpecularColour>
@@ -893,7 +897,7 @@
 										<OverriddenProperties/>
 										<ResourceList/>
 										<Material>Floor</Material>
-										<CastShadows>1</CastShadows>
+										<CastShadows>0</CastShadows>
 										<Visible>1</Visible>
 									</value>
 								</item>

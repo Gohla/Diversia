@@ -1216,6 +1216,10 @@ void CampBindings::bindLight()
 	    // Properties (read-only)
 	    // Properties (read/write)
         .property( "LightType", &Light::mType, &Light::setType )
+        .property( "CastShadows", 
+            &Ogre::Light::getCastShadows, 
+            &Ogre::Light::setCastShadows,
+            &Light::getLight )
         .property( "DiffuseColour", 
             boost::bind( &toColour<Colour, Ogre::ColourValue>, boost::bind( &Ogre::Light::getDiffuseColour, _1 ) ), 
             boost::bind( &Ogre::Light::setDiffuseColour, _1, boost::bind( &toColour<Ogre::ColourValue, Colour>, _2 ) ), 
