@@ -68,7 +68,7 @@ public:
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
-    void create();
+    inline void create() { }
     inline bool delayedDestruction() { return false; }
     Ogre::Light::LightTypes getOgreLightType( LightType type );
 

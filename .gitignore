@@ -46,3 +46,5 @@
 /DSL/DiversiaScript/syntax/DiversiaScript.generated.pp
 /DSL/DiversiaScript/editor/java
 /DSL/DiversiaScript/lib
+/QtOgreEditor/media/ShaderCache
+/DefaultClient/media/ShaderCache

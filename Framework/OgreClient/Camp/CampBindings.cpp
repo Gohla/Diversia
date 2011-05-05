@@ -1215,17 +1215,19 @@ void CampBindings::bindLight()
 	    // Constructors
 	    // Properties (read-only)
 	    // Properties (read/write)
-        .property( "Type", &Light::mType, &Light::setType )
+        .property( "LightType", &Light::mType, &Light::setType )
         .property( "DiffuseColour", 
             boost::bind( &toColour<Colour, Ogre::ColourValue>, boost::bind( &Ogre::Light::getDiffuseColour, _1 ) ), 
             boost::bind( &Ogre::Light::setDiffuseColour, _1, boost::bind( &toColour<Ogre::ColourValue, Colour>, _2 ) ), 
             &Light::getLight )
+                .tag( "DeserializeCopySet" )
                 .readable( &Light::isLoaded )
                 .writable( &Light::isLoaded )
         .property( "SpecularColour", 
             boost::bind( &toColour<Colour, Ogre::ColourValue>, boost::bind( &Ogre::Light::getSpecularColour, _1 ) ), 
             boost::bind( &Ogre::Light::setSpecularColour, _1, boost::bind( &toColour<Ogre::ColourValue, Colour>, _2 ) ), 
             &Light::getLight )
+                .tag( "DeserializeCopySet" )
                 .readable( &Light::isLoaded )
                 .writable( &Light::isLoaded )
         .property( "PowerScale", 

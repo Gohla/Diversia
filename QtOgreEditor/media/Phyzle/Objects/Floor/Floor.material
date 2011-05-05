@@ -10,6 +10,11 @@ material Floor
 				filtering anisotropic
 				max_anisotropy 16
 			}
+
+ 			rtshader_system
+ 			{			
+ 				lighting_stage per_pixel				
+ 			}
 		}
 	}
 }

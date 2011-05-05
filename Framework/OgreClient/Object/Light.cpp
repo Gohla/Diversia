@@ -36,24 +36,18 @@ Light::Light( const String& rName, Mode mode, NetworkingType networkingType,
     ClientComponent( rName, mode, networkingType, Light::getTypeStatic(), source, localOverride, 
         rObject ),
     mNode( rObject.getComponentCast<SceneNode>( "Node" ) ),
-    mLight( 0 ),
+    mLight( GlobalsBase::mScene->createLight() ),
     mType( LIGHTTYPE_POINT )
 {
 	PropertySynchronization::storeUserObject();
+
+    mNode.getNode()->attachObject( mLight );
+    mLight->setType( Light::getOgreLightType( mType ) );
 }
 
 Light::~Light()
 {
-    if( mLight ) GlobalsBase::mScene->destroyLight( mLight );
-}
-
-void Light::create()
-{
-    if( mLight ) GlobalsBase::mScene->destroyLight( mLight );
-
-    mLight = GlobalsBase::mScene->createLight();
-    mNode.getNode()->attachObject( mLight );
-    mLight->setType( Light::getOgreLightType( mType ) );
+    GlobalsBase::mScene->destroyLight( mLight );
 }
 
 Ogre::Light::LightTypes Light::getOgreLightType( LightType type )

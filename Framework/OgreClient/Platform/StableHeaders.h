@@ -46,6 +46,7 @@ THE SOFTWARE.
 // Ogre
 #include <OGRE/Ogre.h>
 #include <OGRE/Terrain/OgreTerrain.h>
+#include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
 
 // Bullet
 #include <bullet/btBulletCollisionCommon.h>

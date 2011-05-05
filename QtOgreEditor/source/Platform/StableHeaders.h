@@ -28,6 +28,7 @@ Copyright (c) 2008-2010 Diversia
 // Ogre
 #include <OGRE/Ogre.h>
 #include <OGRE/Terrain/OgreTerrain.h>
+#include <OGRE/RTShaderSystem/OgreRTShaderSystem.h>
 
 // Bullet
 #include <bullet/btBulletCollisionCommon.h>

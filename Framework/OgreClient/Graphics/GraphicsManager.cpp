@@ -85,6 +85,7 @@ GraphicsManager::GraphicsManager():
     // Set default resource locations.
     mResourceLocations.push_back( OgreResourceParams() );
     mResourceLocations.push_back( OgreResourceParams( "Ogre" ) );
+    mResourceLocations.push_back( OgreResourceParams( "RTShaderLib" ) );
 
     GlobalsBase::mGraphics = this;
 }
@@ -231,6 +232,21 @@ directory or set the correct directory in config.xml under 'RootResourceLocation
 
     mAtlas = new Atlas( std::vector<String>(), 
         initializer< std::vector<FontFaceDefinition> >( titleFont ), "General" );
+
+    // Create RTShader system
+    if ( Ogre::RTShader::ShaderGenerator::initialize() )
+    {
+        Ogre::RTShader::ShaderGenerator* shaderGenerator = 
+            Ogre::RTShader::ShaderGenerator::getSingletonPtr();
+
+        // Set shader cache path.
+        Path cachePath = mRootResourceLocation / "ShaderCache";
+        boost::filesystem::create_directories( cachePath );
+        shaderGenerator->setShaderCachePath( cachePath.string() );
+
+        // Set the scene manager.
+        shaderGenerator->addSceneManager( mSceneMgr );
+    }
 
     // Set zero values for transitions
     TransitionZeroHelper<Ogre::ColourValue>::mZero = Ogre::ColourValue::ZERO;

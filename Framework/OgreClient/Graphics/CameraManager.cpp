@@ -44,6 +44,8 @@ CameraManager::CameraManager():
     mCanvas( new Canvas( GlobalsBase::mGraphics->getAtlas(), mViewport ) ),
     mAudioListener( GlobalsBase::mAudio->getListener() )
 {
+    mViewport->setMaterialScheme( Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME );
+
     mTextCanvasBatch = new TextCanvasBatch( *this, *GlobalsBase::mGraphics->getAtlas(), *mCanvas, 
         *mDefaultCamera, GlobalsBase::mGraphics->getAtlasFont() );
 
