@@ -59,6 +59,8 @@ SceneManagerPlugin::~SceneManagerPlugin()
 {
     GlobalsBase::mScene->setSkyDome( false, "" );
     GlobalsBase::mScene->setSkyBox( false, "" );
+
+    Ogre::RTShader::ShaderGenerator::getSingletonPtr()->removeAllShaderBasedTechniques();
 }
 
 void SceneManagerPlugin::setSkyMaterial( const String& rMaterial )

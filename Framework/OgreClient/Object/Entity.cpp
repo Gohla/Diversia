@@ -63,9 +63,6 @@ void Entity::setMaterial( const String& rMaterial )
 
     if( !mMaterial.empty() )
     {
-        Ogre::RTShader::ShaderGenerator::getSingletonPtr()->createShaderBasedTechnique( rMaterial, 
-            Ogre::MaterialManager::DEFAULT_SCHEME_NAME, 
-            Ogre::RTShader::ShaderGenerator::DEFAULT_SCHEME_NAME );
         mEntity->setMaterialName( mMaterial, mResourceManager.getGroup() );
     }
 }
