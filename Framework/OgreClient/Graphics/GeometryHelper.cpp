@@ -34,7 +34,7 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-Ogre::ManualObject* GeometryHelper::createAxisAlignedBox( String materialName, Ogre::Vector3 center, Ogre::Vector3 size )
+Ogre::ManualObject* GeometryHelper::createAxisAlignedBox( const String& materialName, const Ogre::Vector3& center, const Ogre::Vector3& size )
 {
     Ogre::Vector3 vector(size * 0.5f);
     Ogre::Vector3 pos(center.x - vector.x, center.y + vector.y, center.z + vector.z);
@@ -71,7 +71,7 @@ Ogre::ManualObject* GeometryHelper::createAxisAlignedBox( String materialName, O
     return obj2;
 }
 
-Ogre::Entity* GeometryHelper::createAxisAlignedBoxEntity( String materialName, Ogre::Vector3 center, Ogre::Vector3 size )
+Ogre::Entity* GeometryHelper::createAxisAlignedBoxEntity( const String& materialName, const Ogre::Vector3& center, const Ogre::Vector3& size )
 {
     if( !Ogre::ResourceGroupManager::getSingletonPtr()->resourceGroupExists( "GeometryHelper" ) )
     {
@@ -87,7 +87,7 @@ Ogre::Entity* GeometryHelper::createAxisAlignedBoxEntity( String materialName, O
     return GlobalsBase::mScene->createEntity(meshName);
 }
 
-Ogre::ManualObject* GeometryHelper::createCircle( String materialName, float radius, int sides, Ogre::Vector3 normal )
+Ogre::ManualObject* GeometryHelper::createCircle( const String& materialName, float radius, int sides, const Ogre::Vector3& normal )
 {
     Ogre::ManualObject* obj2 = GlobalsBase::mScene->createManualObject();
     obj2->begin(materialName, Ogre::RenderOperation::OT_LINE_STRIP);
@@ -100,7 +100,7 @@ Ogre::ManualObject* GeometryHelper::createCircle( String materialName, float rad
     return obj2;
 }
 
-Ogre::ManualObject* GeometryHelper::createCone( String materialName, Ogre::Vector3 center, Ogre::Vector3 direction, float radius, int sides, float height )
+Ogre::ManualObject* GeometryHelper::createCone( const String& materialName, const Ogre::Vector3& center, const Ogre::Vector3& direction, float radius, int sides, float height )
 {
     std::vector<Ogre::Vector3> list = getCirclePoints(center, radius, sides, direction, false);
     Ogre::Vector3 pos = center + direction.normalisedCopy() * height;
@@ -127,7 +127,7 @@ Ogre::ManualObject* GeometryHelper::createCone( String materialName, Ogre::Vecto
     return obj2;
 }
 
-Ogre::ManualObject* GeometryHelper::createCylinder( String materialName, Ogre::Vector3 center, float radius, float halfHeight, int sides, Ogre::Vector3 normal )
+Ogre::ManualObject* GeometryHelper::createCylinder( const String& materialName, const Ogre::Vector3& center, float radius, float halfHeight, int sides, const Ogre::Vector3& normal )
 {
     Ogre::ManualObject* obj2 = GlobalsBase::mScene->createManualObject();
     obj2->begin(materialName, Ogre::RenderOperation::OT_TRIANGLE_LIST);
@@ -163,7 +163,7 @@ Ogre::ManualObject* GeometryHelper::createCylinder( String materialName, Ogre::V
     return obj2;
 }
 
-Ogre::Entity* GeometryHelper::createCylinderEntity( String entityName, String materialName, Ogre::Vector3 center, float radius, float halfHeight, int sides, Ogre::Vector3 normal )
+Ogre::Entity* GeometryHelper::createCylinderEntity( const String& entityName, const String& materialName, const Ogre::Vector3& center, float radius, float halfHeight, int sides, const Ogre::Vector3& normal )
 {
     String meshName = entityName + ".mesh";
     Ogre::ManualObject* obj2 = createCylinder(materialName, center, radius, halfHeight, sides, normal);
@@ -172,7 +172,7 @@ Ogre::Entity* GeometryHelper::createCylinderEntity( String entityName, String ma
     return GlobalsBase::mScene->createEntity(entityName, meshName);
 }
 
-Ogre::ManualObject* GeometryHelper::createLine( String materialName, Ogre::Vector3 startPoint, Ogre::Vector3 endPoint )
+Ogre::ManualObject* GeometryHelper::createLine( const String& materialName, Ogre::Vector3 startPoint, Ogre::Vector3 endPoint )
 {
     Ogre::ManualObject* obj2 = GlobalsBase::mScene->createManualObject();
     obj2->begin(materialName, Ogre::RenderOperation::OT_LINE_LIST);
@@ -182,7 +182,7 @@ Ogre::ManualObject* GeometryHelper::createLine( String materialName, Ogre::Vecto
     return obj2;
 }
 
-Ogre::ManualObject* GeometryHelper::createSphere( String materialName, float radius, int sides )
+Ogre::ManualObject* GeometryHelper::createSphere( const String& materialName, float radius, int sides )
 {
     Ogre::ManualObject* obj2 = GlobalsBase::mScene->createManualObject();
     obj2->begin(materialName, Ogre::RenderOperation::OT_TRIANGLE_LIST);
@@ -217,7 +217,7 @@ Ogre::ManualObject* GeometryHelper::createSphere( String materialName, float rad
     return obj2;
 }
 
-Ogre::Entity* GeometryHelper::createSphereEntity( String entityName, String materialName, float radius, int sides )
+Ogre::Entity* GeometryHelper::createSphereEntity( const String& entityName, const String& materialName, float radius, int sides )
 {
     String meshName = entityName + ".mesh";
     Ogre::ManualObject* obj2 = createSphere(materialName, radius, sides);
@@ -226,7 +226,7 @@ Ogre::Entity* GeometryHelper::createSphereEntity( String entityName, String mate
     return GlobalsBase::mScene->createEntity(entityName, meshName);
 }
 
-Ogre::ManualObject* GeometryHelper::createTorus( String materialName, Ogre::Vector3 center, float radius1, float radius2, int sides1, int sides2, Ogre::Vector3 normal )
+Ogre::ManualObject* GeometryHelper::createTorus( const String& materialName, const Ogre::Vector3& center, float radius1, float radius2, int sides1, int sides2, const Ogre::Vector3& normal )
 {
     Ogre::Quaternion rotationTo = Ogre::Vector3::UNIT_Y.getRotationTo(normal);
     Ogre::ManualObject* obj2 = GlobalsBase::mScene->createManualObject();
@@ -267,7 +267,7 @@ Ogre::ManualObject* GeometryHelper::createTorus( String materialName, Ogre::Vect
     return obj2;
 }
 
-Ogre::Entity* GeometryHelper::createTorusEntity( String entityName, String materialName, Ogre::Vector3 center, float radius1, float radius2, int sides1, int sides2, Ogre::Vector3 normal )
+Ogre::Entity* GeometryHelper::createTorusEntity( const String& entityName, const String& materialName, const Ogre::Vector3& center, float radius1, float radius2, int sides1, int sides2, const Ogre::Vector3& normal )
 {
     String meshName = entityName + ".mesh";
     Ogre::ManualObject* obj2 = createTorus(materialName, center, radius1, radius2, sides1, sides2, normal);
@@ -276,7 +276,7 @@ Ogre::Entity* GeometryHelper::createTorusEntity( String entityName, String mater
     return GlobalsBase::mScene->createEntity(entityName, meshName);
 }
 
-std::vector<Ogre::Vector3> GeometryHelper::getCircleNormals( Ogre::Vector3 center, float radius, int sides, Ogre::Vector3 normal, bool close )
+std::vector<Ogre::Vector3> GeometryHelper::getCircleNormals( const Ogre::Vector3& center, float radius, int sides, const Ogre::Vector3& normal, bool close )
 {
     std::vector<Ogre::Vector3> list = getCirclePoints(center, radius, sides, normal, close);
     std::vector<Ogre::Vector3> list2 = getCirclePoints(center, radius + 1.0f, sides, normal, close);
@@ -288,7 +288,7 @@ std::vector<Ogre::Vector3> GeometryHelper::getCircleNormals( Ogre::Vector3 cente
     return list3;
 }
 
-std::vector<Ogre::Vector3> GeometryHelper::getCirclePoints( Ogre::Vector3 center, float radius, int sides, Ogre::Vector3 normal, bool close )
+std::vector<Ogre::Vector3> GeometryHelper::getCirclePoints( const Ogre::Vector3& center, float radius, int sides, const Ogre::Vector3& normal, bool close )
 {
     Ogre::Quaternion rotationTo = Ogre::Vector3::UNIT_X.getRotationTo(normal);
     // Should this be radians?
@@ -315,7 +315,7 @@ std::vector<Ogre::Vector3> GeometryHelper::getCirclePoints( Ogre::Vector3 center
     return list;
 }
 
-std::vector<Ogre::Vector3> GeometryHelper::getCircleTangents( int sides, Ogre::Vector3 normal, bool close )
+std::vector<Ogre::Vector3> GeometryHelper::getCircleTangents( int sides, const Ogre::Vector3& normal, bool close )
 {
     Ogre::Quaternion rotationTo = Ogre::Vector3::UNIT_Y.getRotationTo(normal);
     std::vector<Ogre::Vector3> list;

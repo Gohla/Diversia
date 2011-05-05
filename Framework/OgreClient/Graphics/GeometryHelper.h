@@ -38,56 +38,56 @@ namespace OgreClient
 class DIVERSIA_OGRECLIENT_API GeometryHelper
 {
 public:
-    static Ogre::ManualObject* createAxisAlignedBox(String materialName, Ogre::Vector3 center, Ogre::Vector3 size);
-    static Ogre::Entity* createAxisAlignedBoxEntity(String materialName, Ogre::Vector3 center, Ogre::Vector3 size);
-    static Ogre::ManualObject* createCircle(String materialName, float radius, int sides, Ogre::Vector3 normal);
-    inline static Ogre::ManualObject* createCircleXY(String materialName, float radius, int sides)
+    static Ogre::ManualObject* createAxisAlignedBox(const String& materialName, const Ogre::Vector3& center, const Ogre::Vector3& size);
+    static Ogre::Entity* createAxisAlignedBoxEntity(const String& materialName, const Ogre::Vector3& center, const Ogre::Vector3& size);
+    static Ogre::ManualObject* createCircle(const String& materialName, float radius, int sides, const Ogre::Vector3& normal);
+    inline static Ogre::ManualObject* createCircleXY(const String& materialName, float radius, int sides)
     {
         return createCircle(materialName, radius, sides, Ogre::Vector3::UNIT_Z);
     }
-    inline static Ogre::ManualObject* createCircleXZ(String materialName, float radius, int sides)
+    inline static Ogre::ManualObject* createCircleXZ(const String& materialName, float radius, int sides)
     {
         return createCircle(materialName, radius, sides, Ogre::Vector3::UNIT_Y);
     }
-    inline static Ogre::ManualObject* createCircleYZ(String materialName, float radius, int sides)
+    inline static Ogre::ManualObject* createCircleYZ(const String& materialName, float radius, int sides)
     {
         return createCircle(materialName, radius, sides, Ogre::Vector3::UNIT_X);
     }
-    static Ogre::ManualObject* createCone(String materialName, Ogre::Vector3 center, Ogre::Vector3 direction, float radius, int sides, float height);
-    static Ogre::ManualObject* createCylinder(String materialName, Ogre::Vector3 center, float radius, float halfHeight, int sides, Ogre::Vector3 normal);
-    static Ogre::Entity* createCylinderEntity(String entityName, String materialName, Ogre::Vector3 center, float radius, float halfHeight, int sides, Ogre::Vector3 normal);
-    static Ogre::ManualObject* createLine(String materialName, Ogre::Vector3 startPoint, Ogre::Vector3 endPoint);
-    static Ogre::ManualObject* createSphere(String materialName, float radius, int sides);
-    static Ogre::Entity* createSphereEntity(String entityName, String materialName, float radius, int sides);
-    static Ogre::ManualObject* createTorus(String materialName, Ogre::Vector3 center, float radius1, float radius2, int sides1, int sides2, Ogre::Vector3 normal);
-    static Ogre::Entity* createTorusEntity(String entityName, String materialName, Ogre::Vector3 center, float radius1, float radius2, int sides1, int sides2, Ogre::Vector3 normal);
-    inline static Ogre::Entity* createTorusEntityXY(String entityName, String materialName, float radius1, float radius2, int sides1, int sides2)
+    static Ogre::ManualObject* createCone(const String& materialName, const Ogre::Vector3& center, const Ogre::Vector3& direction, float radius, int sides, float height);
+    static Ogre::ManualObject* createCylinder(const String& materialName, const Ogre::Vector3& center, float radius, float halfHeight, int sides, const Ogre::Vector3& normal);
+    static Ogre::Entity* createCylinderEntity(const String& entityName, const String& materialName, const Ogre::Vector3& center, float radius, float halfHeight, int sides, const Ogre::Vector3& normal);
+    static Ogre::ManualObject* createLine(const String& materialName, Ogre::Vector3 startPoint, Ogre::Vector3 endPoint);
+    static Ogre::ManualObject* createSphere(const String& materialName, float radius, int sides);
+    static Ogre::Entity* createSphereEntity(const String& entityName, const String& materialName, float radius, int sides);
+    static Ogre::ManualObject* createTorus(const String& materialName, const Ogre::Vector3& center, float radius1, float radius2, int sides1, int sides2, const Ogre::Vector3& normal);
+    static Ogre::Entity* createTorusEntity(const String& entityName, const String& materialName, const Ogre::Vector3& center, float radius1, float radius2, int sides1, int sides2, const Ogre::Vector3& normal);
+    inline static Ogre::Entity* createTorusEntityXY(const String& entityName, const String& materialName, float radius1, float radius2, int sides1, int sides2)
     {
         return createTorusEntity(entityName, materialName, Ogre::Vector3::ZERO, radius1, radius2, sides1, sides2, Ogre::Vector3::UNIT_Z);
     }
-    inline static Ogre::Entity* createTorusEntityXZ(String entityName, String materialName, float radius1, float radius2, int sides1, int sides2)
+    inline static Ogre::Entity* createTorusEntityXZ(const String& entityName, const String& materialName, float radius1, float radius2, int sides1, int sides2)
     {
         return createTorusEntity(entityName, materialName, Ogre::Vector3::ZERO, radius1, radius2, sides1, sides2, Ogre::Vector3::UNIT_Y);
     }
-    inline static Ogre::Entity* createTorusEntityYZ(String entityName, String materialName, float radius1, float radius2, int sides1, int sides2)
+    inline static Ogre::Entity* createTorusEntityYZ(const String& entityName, const String& materialName, float radius1, float radius2, int sides1, int sides2)
     {
         return createTorusEntity(entityName, materialName, Ogre::Vector3::ZERO, radius1, radius2, sides1, sides2, Ogre::Vector3::UNIT_X);
     }
-    inline static Ogre::ManualObject* createTorusXY(String materialName, float radius1, float radius2, int sides1, int sides2)
+    inline static Ogre::ManualObject* createTorusXY(const String& materialName, float radius1, float radius2, int sides1, int sides2)
     {
         return createTorus(materialName, Ogre::Vector3::ZERO, radius1, radius2, sides1, sides2, Ogre::Vector3::UNIT_Z);
     }
-    inline static Ogre::ManualObject* createTorusXZ(String materialName, float radius1, float radius2, int sides1, int sides2)
+    inline static Ogre::ManualObject* createTorusXZ(const String& materialName, float radius1, float radius2, int sides1, int sides2)
     {
         return createTorus(materialName, Ogre::Vector3::ZERO, radius1, radius2, sides1, sides2, Ogre::Vector3::UNIT_Y);
     }
-    inline static Ogre::ManualObject* createTorusYZ(String materialName, float radius1, float radius2, int sides1, int sides2)
+    inline static Ogre::ManualObject* createTorusYZ(const String& materialName, float radius1, float radius2, int sides1, int sides2)
     {
         return createTorus(materialName, Ogre::Vector3::ZERO, radius1, radius2, sides1, sides2, Ogre::Vector3::UNIT_X);
     }
-    static std::vector<Ogre::Vector3> getCircleNormals(Ogre::Vector3 center, float radius, int sides, Ogre::Vector3 normal, bool close);
-    static std::vector<Ogre::Vector3> getCirclePoints(Ogre::Vector3 center, float radius, int sides, Ogre::Vector3 normal, bool close);
-    static std::vector<Ogre::Vector3> getCircleTangents(int sides, Ogre::Vector3 normal, bool close);
+    static std::vector<Ogre::Vector3> getCircleNormals(const Ogre::Vector3& center, float radius, int sides, const Ogre::Vector3& normal, bool close);
+    static std::vector<Ogre::Vector3> getCirclePoints(const Ogre::Vector3& center, float radius, int sides, const Ogre::Vector3& normal, bool close);
+    static std::vector<Ogre::Vector3> getCircleTangents(int sides, const Ogre::Vector3& normal, bool close);
 
 };
 
