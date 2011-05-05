@@ -598,16 +598,16 @@
 										<ResourceList/>
 										<Type>Point</Type>
 										<DiffuseColour>
-											<R>0.59999990463256836</R>
-											<G>0.59999990463256836</G>
+											<R>0.60000002384185791</R>
+											<G>0.60000002384185791</G>
 											<B>0.59999990463256836</B>
-											<A>0.59999990463256836</A>
+											<A>1</A>
 										</DiffuseColour>
 										<SpecularColour>
 											<R>0.30000001192092896</R>
 											<G>0.30000001192092896</G>
 											<B>0.30000001192092896</B>
-											<A>0.29999992251396179</A>
+											<A>1</A>
 										</SpecularColour>
 										<PowerScale>1</PowerScale>
 										<SpotlightFalloff>1</SpotlightFalloff>

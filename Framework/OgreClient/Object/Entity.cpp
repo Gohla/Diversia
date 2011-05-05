@@ -46,6 +46,7 @@ Entity::Entity( const String& rName, Mode mode, NetworkingType networkingType,
     mEntity( 0 )
 {
     PropertySynchronization::storeUserObject();
+    mUserObject = ClientComponent::getClientObject();
 
     PropertySynchronization::queue( initializer< std::set<String> >( "Mesh", "ResourceList" ) );
     if( Component::isCreatedByServer() ) PropertySynchronization::queueConstruction( true );
@@ -108,8 +109,7 @@ void Entity::meshLoaded( Mesh& rMesh )
             rMesh.getMeshName(), mResourceManager.getGroup() );
         mNode.getNode()->attachObject( mEntity );
 
-        mUserObject = ClientComponent::getClientObject();
-        mEntity->setUserAny( Ogre::Any( &mUserObject ) );
+        mEntity->getUserObjectBindings().setUserAny( "Object", Ogre::Any( &mUserObject ) );
         mEntity->setQueryFlags( QueryFlags_Entity );
 
         PropertySynchronization::processQueuedConstruction();

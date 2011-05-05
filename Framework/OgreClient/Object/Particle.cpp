@@ -45,6 +45,7 @@ Particle::Particle( const String& rName, Mode mode, NetworkingType networkingTyp
     mLastSpeedFactor( 1.0 )
 {
     PropertySynchronization::storeUserObject();
+    mUserObject = ClientComponent::getClientObject();
 
     PropertySynchronization::queue( initializer< std::set<String> >( "ResourceList", "Name" ) );
     if( Component::isCreatedByServer() ) PropertySynchronization::queueConstruction( true );
@@ -111,8 +112,7 @@ void Particle::resourcesLoaded()
             mParticleSystemName );
         mParticleSystem->setEmitting( false );
 
-        mUserObject = ClientComponent::getClientObject();
-        mParticleSystem->setUserAny( Ogre::Any( &mUserObject ) );
+        mParticleSystem->getUserObjectBindings().setUserAny( "Object", Ogre::Any( &mUserObject ) );
         mParticleSystem->setQueryFlags( QueryFlags_Particle );
 
         mNode.getNode()->attachObject( mParticleSystem );

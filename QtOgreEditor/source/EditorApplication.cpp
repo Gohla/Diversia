@@ -202,7 +202,7 @@ void EditorApplication::init()
         mCameraManager.reset( new CameraManager() );
 
         // Initialize object selection
-        mObjectSelection.reset( new ObjectSelection() );
+        mObjectSelection.reset( new ObjectSelection( QueryFlags_Entity | QueryFlags_Particle | QueryFlags_Gizmo ) );
 
         // Initialize grid manager
         mGridManager.reset( new GridManager( mUpdateSignal ) );

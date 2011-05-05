@@ -30,6 +30,7 @@ THE SOFTWARE.
 #include "OgreClient/Platform/Prerequisites.h"
 
 #include "OgreClient/Graphics/Gizmo.h"
+#include "OgreClient/Input/InputManager.h"
 
 namespace Diversia
 {
@@ -52,26 +53,56 @@ public:
     virtual ~TranslationGizmo();
     
 private:
+    enum Axis 
+    {
+        X_AXIS,
+        Y_AXIS,
+        Z_AXIS
+    };
+
+    struct TranslationGizmoMouse : public MouseListener
+    {
+        TranslationGizmoMouse();
+
+        inline int getMousePriority() const { return -2; }
+        bool mouseMoved( const MouseState& rState );
+
+        bool mCapture;
+        MouseState mMouseState;
+    };
+
     Ogre::Entity* createSelectionHelperBox( const Ogre::Vector3& center, 
         const Ogre::Vector3& size );
+    
+    void hover( bool hoverIn, int param );
+    void drag( bool dragStart, int param );
+    void checkHighlight();
+    void checkMove();
+    void update();
 
-    Real mMouseIncrementToMovementFactor;
     Real mSelectionHelperSize;
     bool mMoveX;
+    bool mHoverX;
     bool mMoveY;
+    bool mHoverY;
     bool mMoveZ;
-    Ogre::ManualObject* mTransformGizmoX;
-    Ogre::ManualObject* mTransformGizmoX2;
-    Ogre::ManualObject* mTransformGizmoY;
-    Ogre::ManualObject* mTransformGizmoY2;
-    Ogre::ManualObject* mTransformGizmoZ;
-    Ogre::ManualObject* mTransformGizmoZ2;
+    bool mHoverZ;
+    Ogre::ManualObject* mLineX;
+    Ogre::ManualObject* mConeX;
+    Ogre::ManualObject* mLineY;
+    Ogre::ManualObject* mConeY;
+    Ogre::ManualObject* mLineZ;
+    Ogre::ManualObject* mConeZ;
     Ogre::Entity* mSelectionHelperX;
     Ogre::Entity* mSelectionHelperY;
     Ogre::Entity* mSelectionHelperZ;
     Ogre::SceneNode* mXNode;
     Ogre::SceneNode* mYNode;
     Ogre::SceneNode* mZNode;
+    camp::UserObject mUserObject;
+    sigc::connection mUpdateConnection;
+
+    static TranslationGizmoMouse* mMouse;
 
 };
 

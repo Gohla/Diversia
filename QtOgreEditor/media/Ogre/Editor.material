@@ -45,3 +45,19 @@ material Axis_Z
 		}
 	}
 }
+
+material Axis_Selected
+{
+	technique
+	{
+		pass
+		{
+			emissive 1 1 0
+			ambient 0 0 0 
+			diffuse 0 0 0
+			specular 0 0 0 1
+			
+			fog_override true none
+		}
+	}
+}

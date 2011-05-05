@@ -37,15 +37,17 @@ namespace OgreClient
 //------------------------------------------------------------------------------
 
 typedef sigc::slot<void> ClickSlot;
-typedef sigc::slot<void, bool> HoverSlot;
+typedef sigc::slot<void, bool, int> HoverSlot;
 typedef sigc::slot<void, bool> SelectSlot;
 typedef sigc::signal<void, const camp::UserObject&, bool> SelectSignal;
-typedef sigc::slot<void, bool> DragSlot;
+typedef sigc::slot<void, bool, int> DragSlot;
 
 typedef std::map<camp::UserObject, ClickSlot> ClickSlotMap;
 typedef std::map<camp::UserObject, HoverSlot> HoverSlotMap;
 typedef std::map<camp::UserObject, SelectSlot> SelectSlotMap;
 typedef std::map<camp::UserObject, DragSlot> DragSlotMap;
+
+typedef boost::tuple<camp::UserObject*, int> ParamsTuple;
 
 class DIVERSIA_OGRECLIENT_API SelectionRectangle : public Ogre::ManualObject
 {
@@ -246,7 +248,7 @@ private:
     void update();
     void cameraChange( Ogre::Camera* pCamera );
 
-    camp::UserObject* getObject( Ogre::MovableObject* pMovableObject );
+    ParamsTuple getParams( Ogre::MovableObject* pMovableObject );
     void doVolumeSelect();
 
     inline static void swap(float &x, float &y)
@@ -261,10 +263,10 @@ private:
         ClickSlotMap::iterator i = mClickSlots.find( rObject );
         if( i != mClickSlots.end() ) i->second();
     }
-    inline void fireHover( const camp::UserObject& rObject, bool hover )
+    inline void fireHover( const camp::UserObject& rObject, bool hover, int param )
     {
         HoverSlotMap::iterator i = mHoverSlots.find( rObject );
-        if( i != mHoverSlots.end() ) i->second( hover );
+        if( i != mHoverSlots.end() ) i->second( hover, param );
     }
     inline void fireSelect( const camp::UserObject& rObject, bool selected, bool silent )
     {
@@ -277,10 +279,10 @@ private:
         i = mSelectSlots.find( rObject );
         if( i != mSelectSlots.end() ) i->second( selected );
     }
-    inline void fireDrag( const camp::UserObject& rObject, bool dragStart )
+    inline void fireDrag( const camp::UserObject& rObject, bool dragStart, int param )
     {
         DragSlotMap::iterator i = mDragSlots.find( rObject );
-        if( i != mDragSlots.end() ) i->second( dragStart );
+        if( i != mDragSlots.end() ) i->second( dragStart, param );
     }
 
     ClickSlotMap    mClickSlots;
@@ -306,7 +308,9 @@ private:
     unsigned int                            mQueryMask;
 
     camp::UserObject*                       mObjectUnderMouse;
+    int                                     mParamUnderMouse;
     camp::UserObject*                       mDraggingObject;
+    int                                     mDraggingParam;
     SelectedObjects                         mSelectedObjects;
 
 };

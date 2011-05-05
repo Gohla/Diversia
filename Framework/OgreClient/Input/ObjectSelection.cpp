@@ -79,6 +79,7 @@ ObjectSelection::ObjectSelection( unsigned int queryMask /*= QueryFlags_Entity*/
     mDragClick( false ),
     mDragging( false ),
     mObjectUnderMouse( 0 ),
+    mParamUnderMouse( 0 ),
     mDraggingObject( 0 ),
     mRectangle( new SelectionRectangle( "Selection" ) ),
     mDoVolumeQuery( false ),
@@ -185,6 +186,7 @@ bool ObjectSelection::mousePressed( const MouseButton button )
                         float)GlobalsBase::mInput->getWindowHeight();
                     mDragClick = true;
                     mDraggingObject = 0;
+                    mDraggingParam = 0;
                     return true;
                 }
 
@@ -192,6 +194,7 @@ bool ObjectSelection::mousePressed( const MouseButton button )
                 {
                     mDragClick = true;
                     mDraggingObject = mObjectUnderMouse;
+                    mDraggingParam = mParamUnderMouse;
                     return true;
                 }
             }
@@ -253,23 +256,26 @@ void ObjectSelection::mouseReleased( const MouseButton button )
             }
             else if( mDragging )
             {
-                ObjectSelection::fireDrag( *mDraggingObject, false );
+                ObjectSelection::fireDrag( *mDraggingObject, false, mDraggingParam );
             }
+
+            mClick = false;
+            mDragClick = false;
+            mDragging = false;
+            mDoVolumeQuery = false;
+            mDraggingObject = 0;
+            mRectangle->setVisible( false );
+            break;
         }
     }
-
-    mClick = false;
-    mDragClick = false;
-    mDragging = false;
-    mDoVolumeQuery = false;
-    mDraggingObject = 0;
-    mRectangle->setVisible( false );
 }
 
 void ObjectSelection::update()
 {
     camp::UserObject* currentObjectUnderMouse = mObjectUnderMouse;
+    int currentParamUnderMouse = mParamUnderMouse;
     mObjectUnderMouse = 0;
+    mParamUnderMouse = 0;
     Ogre::Entity* entity = NULL;
     Ogre::Vector3 result = Ogre::Vector3::ZERO;
     float distToColl;
@@ -280,20 +286,33 @@ void ObjectSelection::update()
         mQueryMask ) )
     {
         // Entity detected under the mouse.
-        camp::UserObject* object = ObjectSelection::getObject( entity );
+        ParamsTuple params = ObjectSelection::getParams( entity );
+        camp::UserObject* object = params.get<0>();
         if( object && object != currentObjectUnderMouse )
         {
             if( currentObjectUnderMouse )
             {
-                ObjectSelection::fireHover( *currentObjectUnderMouse, false );
+                ObjectSelection::fireHover( *currentObjectUnderMouse, false, currentParamUnderMouse );
             }
             mObjectUnderMouse = object;
-            ObjectSelection::fireHover( *mObjectUnderMouse, true );
+            mParamUnderMouse = params.get<1>();
+            ObjectSelection::fireHover( *mObjectUnderMouse, true, mParamUnderMouse );
         }
         else
         {
             mObjectUnderMouse = object;
+            mParamUnderMouse = params.get<1>();
         }
+    }
+    else
+    {
+        if( currentObjectUnderMouse )
+        {
+            ObjectSelection::fireHover( *currentObjectUnderMouse, false, currentParamUnderMouse );
+        }
+
+        mObjectUnderMouse = 0;
+        mParamUnderMouse = 0;
     }
 
     // Detect dragging
@@ -309,7 +328,7 @@ void ObjectSelection::update()
     else if( mDragClick && mClickTimer.getMilliseconds() >= 150 && !mDragging && mDraggingObject )
     {
         mDragging = true;
-        ObjectSelection::fireDrag( *mDraggingObject, true );
+        ObjectSelection::fireDrag( *mDraggingObject, true, mDraggingParam );
     }
 
     // Update volume query rectangle.
@@ -324,22 +343,29 @@ void ObjectSelection::cameraChange( Ogre::Camera* pCamera )
     mCamera = pCamera;
 }
 
-camp::UserObject* ObjectSelection::getObject( Ogre::MovableObject* pMovableObject )
+ParamsTuple ObjectSelection::getParams( Ogre::MovableObject* pMovableObject )
 {
-    const Ogre::Any& object = pMovableObject->getUserAny();
+    const Ogre::UserObjectBindings& bindings = pMovableObject->getUserObjectBindings();
+    const Ogre::Any& object = bindings.getUserAny( "Object" );
     if( !object.isEmpty() )
     {
         try
         {
-            return Ogre::any_cast<camp::UserObject*>( object );
+            camp::UserObject* userObject = Ogre::any_cast<camp::UserObject*>( object );
+            int param = 0;
+
+            const Ogre::Any& paramAny = bindings.getUserAny( "Param" );
+            if( !paramAny.isEmpty() ) param = Ogre::any_cast<int>( paramAny );
+
+            return ParamsTuple( userObject, param );
         }
         catch( const Ogre::Exception& e )
         {
-        	return 0;
+        	CLOGW << e.what();
         }
     }
 
-    return 0;
+    return ParamsTuple( 0, 0 );
 }
 
 void ObjectSelection::doVolumeSelect()
@@ -380,7 +406,7 @@ void ObjectSelection::doVolumeSelect()
     for ( Ogre::SceneQueryResultMovableList::iterator i = result.movables.begin(); 
         i != result.movables.end(); ++i )
     {
-        camp::UserObject* object = ObjectSelection::getObject( *i );
+        camp::UserObject* object = ObjectSelection::getParams( *i ).get<0>();
         if( object ) ObjectSelection::select( *object );
     }
 }
