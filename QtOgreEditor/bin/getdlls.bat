@@ -21,6 +21,8 @@ xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\RenderSystem*.dll ReleaseWi
 xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\Plugin*.dll ReleaseWin32\*.dll /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\OIS.dll ReleaseWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\cg.dll ReleaseWin32\ /d /y
+xcopy ..\..\Build\VC10\dependencies\qt\lib\QtCore4.dll ReleaseWin32\ /d /y
+xcopy ..\..\Build\VC10\dependencies\qt\lib\QtGui4.dll ReleaseWin32\ /d /y
 xcopy ..\..\QtOgreEditor\lib\QtSolutions_PropertyBrowser-2.5.dll ReleaseWin32\ /d /y
 
 xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\sigc-vc90-d-2_0.dll DebugWin32\ /d /y
@@ -42,6 +44,8 @@ xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\RenderSystem*.dll DebugWin32\
 xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\Plugin*.dll DebugWin32\*.dll /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\OIS_d.dll DebugWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\cg.dll DebugWin32\ /d /y
+xcopy ..\..\Build\VC10\dependencies\qt\lib\QtCored4.dll DebugWin32\ /d /y
+xcopy ..\..\Build\VC10\dependencies\qt\lib\QtGuid4.dll DebugWin32\ /d /y
 xcopy ..\..\QtOgreEditor\lib\QtSolutions_PropertyBrowser-2.5d.dll DebugWin32\ /d /y
 
 pause
