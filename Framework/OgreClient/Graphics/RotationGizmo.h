@@ -40,12 +40,23 @@ namespace OgreClient
 class DIVERSIA_OGRECLIENT_API RotationGizmo : public Gizmo
 {
 public:
+    /**
+    Constructor. 
+    
+    @param [in,out] rControlledObject   The object this gizmo should control. 
+    **/
     RotationGizmo( ClientObject& rControlledObject );
-    virtual ~RotationGizmo();
-
-	
+    /**
+    Destructor. 
+    **/
+    ~RotationGizmo();
     
 private:
+    void hover( bool hoverIn, int param );
+    void drag( bool dragStart, int param );
+    void checkHighlight();
+    void checkMove();
+    void update();
 
 };
 

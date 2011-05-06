@@ -28,6 +28,7 @@ THE SOFTWARE.
 #define DIVERSIA_OGRECLIENT_GIZMO_H
 
 #include "OgreClient/Platform/Prerequisites.h"
+#include "OgreClient/Input/InputManager.h"
 
 namespace Diversia
 {
@@ -58,6 +59,27 @@ public:
     **/
     inline ClientObject& getControlledObject() const { return mControlledObject; }
    
+protected:
+    enum Axis 
+    {
+        X_AXIS,
+        Y_AXIS,
+        Z_AXIS
+    };
+
+    struct GizmoMouse : public MouseListener
+    {
+        GizmoMouse();
+
+        inline int getMousePriority() const { return -2; }
+        bool mouseMoved( const MouseState& rState );
+
+        bool mCapture;
+        MouseState mMouseState;
+    };
+
+    static GizmoMouse* mMouse;
+
 private:
     Ogre::SceneNode*    mGizmoNode;
     ClientObject&       mControlledObject;

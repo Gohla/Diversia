@@ -27,6 +27,7 @@ THE SOFTWARE.
 #include "OgreClient/Platform/StableHeaders.h"
 
 #include "OgreClient/Graphics/Gizmo.h"
+#include "OgreClient/Input/InputManager.h"
 
 namespace Diversia
 {
@@ -34,17 +35,35 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
+Gizmo::GizmoMouse* Gizmo::mMouse = 0;
+
 Gizmo::Gizmo( ClientObject& rControlledObject ):
     mGizmoNode( GlobalsBase::mScene->createSceneNode() ),
     mControlledObject( rControlledObject )
 {
     mGizmoNode->setInheritScale( false );
     mGizmoNode->setScale( 3.0, 3.0, 3.0 );
+
+    if( !mMouse ) mMouse = new Gizmo::GizmoMouse();
 }
 
 Gizmo::~Gizmo()
 {
     GlobalsBase::mScene->destroySceneNode( mGizmoNode );
+}
+
+//------------------------------------------------------------------------------
+
+Gizmo::GizmoMouse::GizmoMouse():
+    mCapture( false )
+{
+    GlobalsBase::mInput->subscribeMouse( *this );
+}
+
+bool Gizmo::GizmoMouse::mouseMoved( const MouseState& rState )
+{
+    mMouseState = rState;
+    return mCapture;
 }
 
 //------------------------------------------------------------------------------
