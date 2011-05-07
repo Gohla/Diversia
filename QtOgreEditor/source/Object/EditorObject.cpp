@@ -22,6 +22,7 @@ namespace QtOgreEditor
 
 sigc::signal<void, EditorObject::GizmoMode> EditorObject::mGizmoModeSignal = sigc::signal<void, 
     EditorObject::GizmoMode>();
+EditorObject::GizmoMode EditorObject::mGizmoMode = EditorObject::NONE;
 
 EditorObject::EditorObject( const String& rName, Mode mode, NetworkingType type, 
     const String& rDisplayName, RakNet::RakNetGUID source, RakNet::RakNetGUID ownGUID, 
@@ -32,7 +33,6 @@ EditorObject::EditorObject( const String& rName, Mode mode, NetworkingType type,
     ClientObject( rName, mode, type, rDisplayName, source, ownGUID, serverGUID, rUpdateSignal, 
         rObjectManager, rPermissionManager, rReplicaManager, rNetworkIDManager, rRPC3 ),
     mGizmo( 0 ),
-    mGizmoMode( NONE ),
     mSelected( false )
 {
     mGizmoModeConnection = mGizmoModeSignal.connect( sigc::mem_fun( this, 

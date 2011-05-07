@@ -58,10 +58,10 @@ private:
 
     Gizmo* mGizmo;
     sigc::connection mGizmoModeConnection;
-    static sigc::signal<void, GizmoMode> mGizmoModeSignal;
-    GizmoMode mGizmoMode;
     bool mSelected;
 
+    static sigc::signal<void, GizmoMode> mGizmoModeSignal;
+    static GizmoMode mGizmoMode;
 
     CAMP_CLASS(EditorObject)
 
