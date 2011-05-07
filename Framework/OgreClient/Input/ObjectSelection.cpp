@@ -79,8 +79,9 @@ ObjectSelection::ObjectSelection( unsigned int queryMask /*= QueryFlags_Entity*/
     mDragClick( false ),
     mDragging( false ),
     mObjectUnderMouse( 0 ),
-    mParamUnderMouse( 0 ),
+    mParamUnderMouse( std::numeric_limits<int>::min() ),
     mDraggingObject( 0 ),
+    mDraggingParam( std::numeric_limits<int>::min() ),
     mRectangle( new SelectionRectangle( "Selection" ) ),
     mDoVolumeQuery( false ),
     mQueryMask( queryMask )
@@ -186,7 +187,7 @@ bool ObjectSelection::mousePressed( const MouseButton button )
                         float)GlobalsBase::mInput->getWindowHeight();
                     mDragClick = true;
                     mDraggingObject = 0;
-                    mDraggingParam = 0;
+                    mDraggingParam = std::numeric_limits<int>::min();
                     return true;
                 }
 
@@ -266,7 +267,7 @@ void ObjectSelection::mouseReleased( const MouseButton button )
             mDragging = false;
             mDoVolumeQuery = false;
             mDraggingObject = 0;
-            mDraggingParam = 0;
+            mDraggingParam = std::numeric_limits<int>::min();
             mDragStartPosition = Vector3::ZERO;
             mRectangle->setVisible( false );
             break;
@@ -279,7 +280,7 @@ void ObjectSelection::update()
     camp::UserObject* currentObjectUnderMouse = mObjectUnderMouse;
     int currentParamUnderMouse = mParamUnderMouse;
     mObjectUnderMouse = 0;
-    mParamUnderMouse = 0;
+    mParamUnderMouse = std::numeric_limits<int>::min();
     Ogre::Entity* entity = NULL;
     Ogre::Vector3 result = Ogre::Vector3::ZERO;
     float distToColl;
@@ -294,20 +295,21 @@ void ObjectSelection::update()
         // Entity detected under the mouse.
         ParamsTuple params = ObjectSelection::getParams( entity );
         camp::UserObject* object = params.get<0>();
-        if( object && object != currentObjectUnderMouse )
+        int param = params.get<1>();
+        if( object && ( object != currentObjectUnderMouse || ( object == currentObjectUnderMouse && param != currentParamUnderMouse ) ) )
         {
             if( currentObjectUnderMouse )
             {
                 ObjectSelection::fireHover( *currentObjectUnderMouse, false, currentParamUnderMouse );
             }
             mObjectUnderMouse = object;
-            mParamUnderMouse = params.get<1>();
+            mParamUnderMouse = param;
             ObjectSelection::fireHover( *mObjectUnderMouse, true, mParamUnderMouse );
         }
         else
         {
             mObjectUnderMouse = object;
-            mParamUnderMouse = params.get<1>();
+            mParamUnderMouse = param;
         }
     }
     else
@@ -318,7 +320,7 @@ void ObjectSelection::update()
         }
 
         mObjectUnderMouse = 0;
-        mParamUnderMouse = 0;
+        mParamUnderMouse = std::numeric_limits<int>::min();
         mPositionUnderMouse = Vector3::ZERO;
     }
 

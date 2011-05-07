@@ -16,12 +16,14 @@ This file is part of Diversia.
 #include "Client/Permission/PermissionManager.h"
 #include "Client/Undo/UndoStack.h"
 #include "GameMode/EditorGameMode.h"
+#include "Object/EditorObject.h"
 #include "OgreClient/Graphics/SceneManagerPlugin.h"
 #include "State/LoadingState.h"
 #include "UI/MainWindow.h"
 #include "UI/ObjectTreeView.h"
 #include "Util/Serialization/XMLSerializationFile.h"
 #include "Util/State/StateMachine.h"
+#include <QActionGroup>
 #include <QFileDialog>
 #include <QPainter>
 #include <QSignalMapper>
@@ -72,6 +74,15 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
 
     QObject::connect( mUI.actionConnect, SIGNAL( triggered() ), &mConnectDialog, SLOT( show() ) );
     QObject::connect( mUI.actionNew, SIGNAL( triggered() ), &mNewGameDialog, SLOT( show() ) );
+
+    // Setup gizmo actions.
+    mGizmoActions = new QActionGroup( this );
+    mGizmoActions->addAction( mUI.actionMovement_mode );
+    mGizmoActions->addAction( mUI.actionRotation_mode );
+    mGizmoActions->addAction( mUI.actionScaling_mode );
+    mGizmoActions->setExclusive( true );
+    mUI.defaultToolBar->addActions( mGizmoActions->actions() );
+    QObject::connect( mGizmoActions, SIGNAL( triggered(QAction*) ), this, SLOT( gizmoChange(QAction*) ) );
 
     // Setup log severity controls.
     QSignalMapper* severitySignalMapper = new QSignalMapper( this );
@@ -446,6 +457,16 @@ void MainWindow::closeEvent( QCloseEvent* pEvent )
     settings.endGroup(); // MainWindow
 
     QMainWindow::closeEvent( pEvent );
+}
+
+void MainWindow::gizmoChange( QAction* action )
+{
+    if( action->objectName() == "actionMovement_mode" ) EditorObject::setGizmoMode( 
+        EditorObject::MOVEMENT );
+    else if( action->objectName() == "actionRotation_mode" ) EditorObject::setGizmoMode( 
+        EditorObject::ROTATION );
+    else if( action->objectName() == "actionScaling_mode" ) EditorObject::setGizmoMode( 
+        EditorObject::SCALING );
 }
 
 //------------------------------------------------------------------------------

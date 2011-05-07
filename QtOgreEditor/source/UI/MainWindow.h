@@ -54,6 +54,7 @@ private slots:
     void stop();
     void undo();
     void redo();
+    void gizmoChange( QAction* action );
 
 private:
     friend class QtLogger;
@@ -65,6 +66,7 @@ private:
 
     ConnectDialog       mConnectDialog;
     NewGameDialog       mNewGameDialog;
+    QActionGroup*       mGizmoActions;
 
 };
 

@@ -108,6 +108,9 @@
    <addaction name="menuServer"/>
   </widget>
   <widget class="QToolBar" name="defaultToolBar">
+   <property name="enabled">
+    <bool>true</bool>
+   </property>
    <property name="windowTitle">
     <string>Default toolbar</string>
    </property>
@@ -145,6 +148,7 @@
    <addaction name="separator"/>
    <addaction name="actionUndo"/>
    <addaction name="actionRedo"/>
+   <addaction name="separator"/>
   </widget>
   <widget class="QDockWidget" name="objectsDock">
    <property name="sizePolicy">
@@ -1081,6 +1085,54 @@
    </property>
    <property name="toolTip">
     <string>Pauses the game</string>
+   </property>
+  </action>
+  <action name="actionMovement_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/editor/move.png</normaloff>:/Icons/Icons/editor/move.png</iconset>
+   </property>
+   <property name="text">
+    <string>Movement mode</string>
+   </property>
+   <property name="toolTip">
+    <string>Enable object movement mode</string>
+   </property>
+  </action>
+  <action name="actionRotation_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/editor/rotate.png</normaloff>:/Icons/Icons/editor/rotate.png</iconset>
+   </property>
+   <property name="text">
+    <string>Rotation mode</string>
+   </property>
+   <property name="toolTip">
+    <string>Enable object rotation mode</string>
+   </property>
+  </action>
+  <action name="actionScaling_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/editor/scale.png</normaloff>:/Icons/Icons/editor/scale.png</iconset>
+   </property>
+   <property name="text">
+    <string>Scaling mode</string>
+   </property>
+   <property name="toolTip">
+    <string>Enable object scaling mode</string>
    </property>
   </action>
   <zorder>propertyBrowserDock</zorder>

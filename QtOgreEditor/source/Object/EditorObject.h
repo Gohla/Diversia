@@ -23,9 +23,25 @@ class EditorObject : public ClientObject
 {
 public:
     /**
+    Values that represent a gizmo mode.
+    **/
+    enum GizmoMode 
+    {
+        NONE,
+        MOVEMENT,
+        ROTATION,
+        SCALING
+    };
+
+    /**
     Selects or unselects this object.
     **/
     void setSelected( bool selected );
+
+    /**
+    Sets the gizmo mode. 
+    **/
+    inline static void setGizmoMode( GizmoMode mode ) { mGizmoModeSignal( mode ); }
     
 private:
     friend class EditorObjectManager;	///< Only the EditorObjectManager class may construct objects. 
@@ -37,7 +53,15 @@ private:
         RakNet::NetworkIDManager& rNetworkIDManager, RakNet::RPC3& rRPC3 );
     virtual ~EditorObject();
 
+    void gizmoModeChange( GizmoMode mode );
+    void checkGizmo();
+
     Gizmo* mGizmo;
+    sigc::connection mGizmoModeConnection;
+    static sigc::signal<void, GizmoMode> mGizmoModeSignal;
+    GizmoMode mGizmoMode;
+    bool mSelected;
+
 
     CAMP_CLASS(EditorObject)
 

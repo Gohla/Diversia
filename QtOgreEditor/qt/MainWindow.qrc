@@ -3,6 +3,9 @@
     <file>Icon.ico</file>
   </qresource>
   <qresource prefix="/Icons">
+    <file>Icons/editor/move.png</file>
+    <file>Icons/editor/rotate.png</file>
+    <file>Icons/editor/scale.png</file>
     <file>Icons/actions/address-book-new.png</file>
     <file>Icons/actions/application-exit.png</file>
     <file>Icons/actions/audio-cd-duplicate.png</file>

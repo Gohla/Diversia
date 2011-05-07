@@ -171,6 +171,7 @@ void RotationGizmo::drag( bool dragStart, int param, const Vector3& rPosition )
     {
         mMouse->mCapture = true;
         mUpdateConnection.block( false );
+        mArrowNode->setScale( Gizmo::getSceneNode()->getScale() );
         mHitPoint = toVector3<Ogre::Vector3>( rPosition );
 
         Ogre::Plane plane( Ogre::Vector3::UNIT_X, 0.0f );
@@ -194,12 +195,12 @@ void RotationGizmo::drag( bool dragStart, int param, const Vector3& rPosition )
         }
 
         const Ogre::Quaternion& gizmoOrientation = Gizmo::getSceneNode()->_getDerivedOrientation();
-        const Ogre::Vector3& gizmoposition = Gizmo::getSceneNode()->_getDerivedPosition();
+        const Ogre::Vector3& gizmoPosition = Gizmo::getSceneNode()->_getDerivedPosition();
         Ogre::Vector3 rkVector = gizmoOrientation * mRotationAxis;
         Ogre::Matrix4 projView = GlobalsBase::mCamera->getActiveCamera()->getProjectionMatrix() * 
             GlobalsBase::mCamera->getActiveCamera()->getViewMatrix();
 
-        Ogre::Vector3 vector2 = gizmoposition - mHitPoint;
+        Ogre::Vector3 vector2 = gizmoPosition - mHitPoint;
         vector2.normalise();
         Ogre::Vector3 vector3 = vector2.crossProduct(rkVector);
         Ogre::Vector3 vector4 = mHitPoint + vector3;
@@ -219,7 +220,7 @@ void RotationGizmo::drag( bool dragStart, int param, const Vector3& rPosition )
             if (((scale.x != 0.0f) && (scale.y != 0.0f)) && (scale.z != 0.0f))
             {
                 mArrowIndicator->beginUpdate( 0 );
-                Ogre::Vector3 pos = gizmoposition / scale;
+                Ogre::Vector3 pos = gizmoPosition / scale;
                 mArrowIndicator->position(pos);
                 Ogre::Vector3 vector13 = pos + (gizmoOrientation * vector9);
                 mArrowIndicator->position(vector13);
@@ -229,7 +230,7 @@ void RotationGizmo::drag( bool dragStart, int param, const Vector3& rPosition )
                 mArrowIndicator->position(vector13);
                 mArrowIndicator->position(vector13 - (gizmoOrientation * vector10));
                 mArrowIndicator->end();
-                mArrowIndicator->setVisible( true );
+                //mArrowIndicator->setVisible( true );
             }
         }
     }
@@ -257,7 +258,7 @@ void RotationGizmo::update()
     mArrowNode->setScale( Gizmo::getSceneNode()->getScale() );
     Ogre::Radian rfAngle( (mDirector.x * (Real)mMouse->mMouseState.x.rel) - (mDirector.y * (Real)mMouse->mMouseState.y.rel) );
     Gizmo::getControlledObject().rotate( toVector3<Vector3>( mRotationAxis ), 
-        toRadian<Radian>( rfAngle ) * 0.05, Node::TS_LOCAL );
+        toRadian<Radian>( rfAngle ) * 0.02, Node::TS_LOCAL );
 
     mMouse->mMouseState.clear();
 }

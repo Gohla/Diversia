@@ -19,6 +19,9 @@ namespace QtOgreEditor
 {
 //------------------------------------------------------------------------------
 
+sigc::signal<void, EditorObject::GizmoMode> EditorObject::mGizmoModeSignal = sigc::signal<void, 
+    EditorObject::GizmoMode>();
+
 EditorObject::EditorObject( const String& rName, Mode mode, NetworkingType type, 
     const String& rDisplayName, RakNet::RakNetGUID source, RakNet::RakNetGUID ownGUID, 
     RakNet::RakNetGUID serverGUID, sigc::signal<void>& rUpdateSignal, 
@@ -27,17 +30,36 @@ EditorObject::EditorObject( const String& rName, Mode mode, NetworkingType type,
     RakNet::RPC3& rRPC3 ):
     ClientObject( rName, mode, type, rDisplayName, source, ownGUID, serverGUID, rUpdateSignal, 
         rObjectManager, rPermissionManager, rReplicaManager, rNetworkIDManager, rRPC3 ),
-    mGizmo( 0 )
+    mGizmo( 0 ),
+    mGizmoMode( MOVEMENT ),
+    mSelected( false )
 {
-
+    mGizmoModeConnection = mGizmoModeSignal.connect( sigc::mem_fun( this, 
+        &EditorObject::gizmoModeChange ) );
 }
 
 EditorObject::~EditorObject()
 {
     if( mGizmo ) delete mGizmo;
+    mGizmoModeConnection.disconnect();
 }
 
 void EditorObject::setSelected( bool selected )
+{
+    mSelected = selected;
+
+    EditorObject::checkGizmo();
+    ClientObject::setSelected( selected );
+}
+
+void EditorObject::gizmoModeChange( GizmoMode mode )
+{
+    mGizmoMode = mode;
+
+    EditorObject::checkGizmo();
+}
+
+void EditorObject::checkGizmo()
 {
     if( mGizmo ) 
     {
@@ -45,13 +67,16 @@ void EditorObject::setSelected( bool selected )
         mGizmo = 0;
     }
 
-    if( selected )
+    if( mSelected )
     {
-        mGizmo = new RotationGizmo( *this );
-        Object::getComponent<SceneNode>().getNode()->addChild( mGizmo->getSceneNode() );
+        switch( mGizmoMode )
+        {
+            case SCALING: case NONE: mGizmo = 0; break;
+            case MOVEMENT: mGizmo = new TranslationGizmo( *this ); break;
+            case ROTATION: mGizmo = new RotationGizmo( *this ); break;
+        }
+        if( mGizmo ) Object::getComponent<SceneNode>().getNode()->addChild( mGizmo->getSceneNode() );
     }
-
-    ClientObject::setSelected( selected );
 }
 
 //------------------------------------------------------------------------------
