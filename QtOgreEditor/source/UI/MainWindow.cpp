@@ -104,7 +104,6 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     mGizmoActions->setExclusive( true );
     mUI.actionSelection_mode->setChecked( true );
     mUI.renderToolBar->addActions( mGizmoActions->actions() );
-    QObject::connect( mGizmoActions, SIGNAL( triggered(QAction*) ), this, SLOT( gizmoChange(QAction*) ) );
 
     // Setup log severity controls.
     QSignalMapper* severitySignalMapper = new QSignalMapper( this );
@@ -479,14 +478,6 @@ void MainWindow::closeEvent( QCloseEvent* pEvent )
     settings.endGroup(); // MainWindow
 
     QMainWindow::closeEvent( pEvent );
-}
-
-void MainWindow::gizmoChange( QAction* action )
-{
-    if( action == mUI.actionMovement_mode ) EditorObject::setGizmoMode( EditorObject::MOVEMENT );
-    else if( action == mUI.actionRotation_mode ) EditorObject::setGizmoMode( EditorObject::ROTATION );
-    else if( action == mUI.actionScaling_mode ) EditorObject::setGizmoMode( EditorObject::SCALING );
-    else if( action == mUI.actionSelection_mode ) EditorObject::setGizmoMode( EditorObject::NONE );
 }
 
 //------------------------------------------------------------------------------

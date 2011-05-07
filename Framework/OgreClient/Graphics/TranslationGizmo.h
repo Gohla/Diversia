@@ -76,6 +76,7 @@ private:
     Ogre::SceneNode* mXNode;
     Ogre::SceneNode* mYNode;
     Ogre::SceneNode* mZNode;
+    Vector3 mDesiredPosition;
     camp::UserObject mUserObject;
     sigc::connection mUpdateConnection;
 

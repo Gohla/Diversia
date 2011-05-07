@@ -13,6 +13,7 @@ This file is part of Diversia.
 #include "OgreClient/Graphics/ScaleGizmo.h"
 #include "OgreClient/Graphics/TranslationGizmo.h"
 #include "OgreClient/Object/SceneNode.h"
+#include "UI/MainWindow.h"
 
 namespace Diversia
 {
@@ -20,9 +21,8 @@ namespace QtOgreEditor
 {
 //------------------------------------------------------------------------------
 
-sigc::signal<void, EditorObject::GizmoMode> EditorObject::mGizmoModeSignal = sigc::signal<void, 
-    EditorObject::GizmoMode>();
 EditorObject::GizmoMode EditorObject::mGizmoMode = EditorObject::NONE;
+bool EditorObject::mSnapToGrid = false;
 
 EditorObject::EditorObject( const String& rName, Mode mode, NetworkingType type, 
     const String& rDisplayName, RakNet::RakNetGUID source, RakNet::RakNetGUID ownGUID, 
@@ -30,19 +30,21 @@ EditorObject::EditorObject( const String& rName, Mode mode, NetworkingType type,
     ClientObjectManager& rObjectManager, PermissionManager& rPermissionManager, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager, 
     RakNet::RPC3& rRPC3 ):
+    QObject( 0 ),
     ClientObject( rName, mode, type, rDisplayName, source, ownGUID, serverGUID, rUpdateSignal, 
         rObjectManager, rPermissionManager, rReplicaManager, rNetworkIDManager, rRPC3 ),
     mGizmo( 0 ),
     mSelected( false )
 {
-    mGizmoModeConnection = mGizmoModeSignal.connect( sigc::mem_fun( this, 
-        &EditorObject::gizmoModeChange ) );
+    QObject::connect( EditorGlobals::mMainWindow->mGizmoActions, SIGNAL( triggered(QAction*) ), 
+        this, SLOT( gizmoModeChange(QAction*) ) );
+    QObject::connect( EditorGlobals::mMainWindow->mUI.actionSnap_to_grid, SIGNAL( toggled(bool) ),
+        this, SLOT( snapToGridChange(bool) ) );
 }
 
 EditorObject::~EditorObject()
 {
     if( mGizmo ) delete mGizmo;
-    mGizmoModeConnection.disconnect();
 }
 
 void EditorObject::setSelected( bool selected )
@@ -53,11 +55,20 @@ void EditorObject::setSelected( bool selected )
     ClientObject::setSelected( selected );
 }
 
-void EditorObject::gizmoModeChange( GizmoMode mode )
+void EditorObject::gizmoModeChange( QAction* action )
 {
-    mGizmoMode = mode;
+    if( action == EditorGlobals::mMainWindow->mUI.actionMovement_mode ) mGizmoMode = MOVEMENT;
+    else if( action == EditorGlobals::mMainWindow->mUI.actionRotation_mode ) mGizmoMode = ROTATION;
+    else if( action == EditorGlobals::mMainWindow->mUI.actionScaling_mode ) mGizmoMode = SCALING;
+    else if( action == EditorGlobals::mMainWindow->mUI.actionSelection_mode ) mGizmoMode = NONE;
 
     EditorObject::checkGizmo();
+}
+
+void EditorObject::snapToGridChange( bool snap )
+{
+    mSnapToGrid = snap;
+    if( mGizmo ) mGizmo->setSnapToGrid( snap );
 }
 
 void EditorObject::checkGizmo()
@@ -77,7 +88,12 @@ void EditorObject::checkGizmo()
             case SCALING: mGizmo = new ScaleGizmo( *this ); break;
             case NONE: mGizmo = 0; break;
         }
-        if( mGizmo ) Object::getComponent<SceneNode>().getNode()->addChild( mGizmo->getSceneNode() );
+
+        if( mGizmo ) 
+        {
+            Object::getComponent<SceneNode>().getNode()->addChild( mGizmo->getSceneNode() );
+            mGizmo->setSnapToGrid( mSnapToGrid );
+        }
     }
 }
 

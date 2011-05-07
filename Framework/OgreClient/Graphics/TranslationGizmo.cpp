@@ -69,7 +69,8 @@ TranslationGizmo::TranslationGizmo( ClientObject& rControlledObject ):
         Ogre::Vector3( mSelectionHelperSize, mSelectionHelperSize, 1.0f + mSelectionHelperSize ) ) ),
     mXNode( Gizmo::getSceneNode()->createChildSceneNode() ),
     mYNode( Gizmo::getSceneNode()->createChildSceneNode() ),
-    mZNode( Gizmo::getSceneNode()->createChildSceneNode() )
+    mZNode( Gizmo::getSceneNode()->createChildSceneNode() ),
+    mDesiredPosition( Vector3::ZERO )
 {
     mUserObject = this;
 
@@ -198,7 +199,8 @@ void TranslationGizmo::update()
             if ( vec.length() != 0.0f ) vec.normalise(); else return;
 
             float x = (incMouseX * vec.x) - (incMouseY * vec.y);
-            Gizmo::getControlledObject().translate( x, 0.0f, 0.0f, Node::TS_WORLD );
+            Gizmo::getControlledObject().translateUpdate( mDesiredPosition, 
+                Vector3( x, 0.0f, 0.0f ), Node::TS_WORLD );
             break;
         }
         case Y_AXIS:
@@ -209,7 +211,8 @@ void TranslationGizmo::update()
             if ( vec.length() != 0.0f ) vec.normalise(); else return;
 
             float y = (incMouseX * vec.x) - (incMouseY * vec.y);
-            Gizmo::getControlledObject().translate( 0.0f, y, 0.0f, Node::TS_WORLD );
+            Gizmo::getControlledObject().translateUpdate( mDesiredPosition,
+                Vector3( 0.0f, y, 0.0f ), Node::TS_WORLD );
             break;
         }
         case Z_AXIS:
@@ -220,9 +223,23 @@ void TranslationGizmo::update()
             if ( vec.length() != 0.0f ) vec.normalise(); else return;
 
             float z = (incMouseX * vec.x) - (incMouseY * vec.y);
-            Gizmo::getControlledObject().translate( 0.0f, 0.0f, z, Node::TS_WORLD );
+            Gizmo::getControlledObject().translateUpdate( mDesiredPosition, 
+                Vector3( 0.0f, 0.0f, z ), Node::TS_WORLD );
             break;
         }
+    }
+
+    if( Gizmo::isSnappingToGrid() )
+    {
+        Vector3 newPosition;
+        newPosition.x = (int)mDesiredPosition.x % 256;
+        newPosition.y = (int)mDesiredPosition.y % 256;
+        newPosition.z = (int)mDesiredPosition.z % 256;
+        Gizmo::getControlledObject().setPosition( newPosition );
+    }
+    else 
+    {
+        Gizmo::getControlledObject().setPosition( mDesiredPosition );
     }
 
     mMouse->mMouseState.clear();

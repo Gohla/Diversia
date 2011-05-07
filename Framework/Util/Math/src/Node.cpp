@@ -392,6 +392,33 @@ void Node::translate(const Vector3& d, TransformSpace relativeTo)
     needUpdate();
 
 }
+
+void Node::translateUpdate(Vector3& pos, const Vector3& d, TransformSpace relativeTo /*= TS_PARENT*/)
+{
+    switch(relativeTo)
+    {
+    case TS_LOCAL:
+        // position is relative to parent so transform downwards
+        pos += mOrientation * d;
+        break;
+    case TS_WORLD:
+        // position is relative to parent so transform upwards
+        if (mParent)
+        {
+            pos += (mParent->_getDerivedOrientation().Inverse() * d)
+                / mParent->_getDerivedScale();
+        }
+        else
+        {
+            pos += d;
+        }
+        break;
+    case TS_PARENT:
+        pos += d;
+        break;
+    }
+}
+
 //-----------------------------------------------------------------------
 void Node::rotate(const Vector3& axis, const Radian& angle, TransformSpace relativeTo)
 {

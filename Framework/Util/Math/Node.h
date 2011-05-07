@@ -403,6 +403,16 @@ public:
             relativeTo The space which this transform is relative to.
     */
     void translate(const Vector3& d, TransformSpace relativeTo = TS_PARENT);
+    /** Returns position after moving the node along the Cartesian axes.
+        @par
+            This method moves the node by the supplied vector along the
+            world Cartesian axes, i.e. along world x,y,z
+        @param
+            d Vector with x,y,z values representing the translation.
+        @param
+            relativeTo The space which this transform is relative to.
+    */
+    void translateUpdate(Vector3& pos, const Vector3& d, TransformSpace relativeTo = TS_PARENT);
     /** Moves the node along the Cartesian axes.
         @par
             This method moves the node by the supplied vector along the

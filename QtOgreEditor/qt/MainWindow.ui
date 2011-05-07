@@ -170,14 +170,14 @@
      <property name="spacing">
       <number>1</number>
      </property>
-     <item row="1" column="0">
+     <item row="2" column="0">
       <widget class="QLineEdit" name="editObjectSearch">
        <property name="placeholderText">
         <string>Search</string>
        </property>
       </widget>
      </item>
-     <item row="2" column="0">
+     <item row="3" column="0">
       <widget class="Diversia::QtOgreEditor::ObjectTreeView" name="treeViewObjects">
        <property name="maximumSize">
         <size>
@@ -190,7 +190,7 @@
        </property>
       </widget>
      </item>
-     <item row="0" column="0">
+     <item row="1" column="0">
       <widget class="QToolBar" name="toolBarObject">
        <property name="font">
         <font>
@@ -802,6 +802,7 @@
    <attribute name="toolBarBreak">
     <bool>false</bool>
    </attribute>
+   <addaction name="actionSnap_to_grid"/>
   </widget>
   <action name="actionExit">
    <property name="icon">
@@ -1227,6 +1228,24 @@
    </property>
    <property name="toolTip">
     <string>Enable object selection mode</string>
+   </property>
+  </action>
+  <action name="actionSnap_to_grid">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/editor/grid.png</normaloff>:/Icons/Icons/editor/grid.png</iconset>
+   </property>
+   <property name="text">
+    <string>Snap to grid</string>
+   </property>
+   <property name="toolTip">
+    <string>Enable snap to grid</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+G</string>
    </property>
   </action>
   <zorder>propertyBrowserDock</zorder>

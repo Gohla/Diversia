@@ -58,6 +58,18 @@ public:
     Gets the gizmo scene node. 
     **/
     inline ClientObject& getControlledObject() const { return mControlledObject; }
+    /**
+    Sets if the gizmo should snap to grid.
+    
+    @param  snap    True to snap to grid.
+    **/
+    inline void setSnapToGrid( bool snap ) { mSnapToGrid = snap; }
+    /**
+    Query if this object is snapping to grid. 
+    
+    @return True if snapping to grid, false if not.
+    **/
+    inline bool isSnappingToGrid() const { return mSnapToGrid; }
    
 protected:
     enum Axis 
@@ -84,6 +96,7 @@ protected:
 private:
     Ogre::SceneNode*    mGizmoNode;
     ClientObject&       mControlledObject;
+    bool                mSnapToGrid;
 
 };
 

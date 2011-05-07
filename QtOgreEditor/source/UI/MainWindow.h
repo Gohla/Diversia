@@ -40,6 +40,7 @@ public:
     inline ConnectDialog& getConnectDialog() { return mConnectDialog; }
 
     Ui::MainWindowClass mUI;
+    QActionGroup* mGizmoActions;
 
 private slots:
     void exit();
@@ -54,7 +55,6 @@ private slots:
     void stop();
     void undo();
     void redo();
-    void gizmoChange( QAction* action );
 
 private:
     friend class QtLogger;
@@ -66,7 +66,6 @@ private:
 
     ConnectDialog       mConnectDialog;
     NewGameDialog       mNewGameDialog;
-    QActionGroup*       mGizmoActions;
 
 };
 

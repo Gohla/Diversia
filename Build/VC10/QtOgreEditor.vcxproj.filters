@@ -101,9 +101,6 @@
     <ClInclude Include="..\..\QtOgreEditor\source\Log\QtLogger.h">
       <Filter>Log</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\QtOgreEditor\source\Object\EditorObject.h">
-      <Filter>Object</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\QtOgreEditor\source\Object\EditorObjectManager.h">
       <Filter>Object</Filter>
     </ClInclude>
@@ -313,6 +310,15 @@
     <ClCompile Include="..\..\QtOgreEditor\source\Object\EditorObjectManager.cpp">
       <Filter>Object</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_EditorObject.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_EditorObject.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_EditorObject.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\QtOgreEditor\qt\Icon.ico">
@@ -385,6 +391,9 @@
     </CustomBuild>
     <CustomBuild Include="..\..\QtOgreEditor\source\UI\ObjectTemplateTreeView.h">
       <Filter>UI</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\Object\EditorObject.h">
+      <Filter>Object</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

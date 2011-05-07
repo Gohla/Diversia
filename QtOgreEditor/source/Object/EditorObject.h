@@ -19,8 +19,10 @@ namespace QtOgreEditor
 {
 //------------------------------------------------------------------------------
 
-class EditorObject : public ClientObject
+class EditorObject : public QObject, public ClientObject
 {
+    Q_OBJECT
+
 public:
     /**
     Values that represent a gizmo mode.
@@ -37,12 +39,11 @@ public:
     Selects or unselects this object.
     **/
     void setSelected( bool selected );
-
-    /**
-    Sets the gizmo mode. 
-    **/
-    inline static void setGizmoMode( GizmoMode mode ) { mGizmoModeSignal( mode ); }
     
+private slots:
+    void gizmoModeChange( QAction* action );
+    void snapToGridChange( bool snap );
+
 private:
     friend class EditorObjectManager;	///< Only the EditorObjectManager class may construct objects. 
 
@@ -53,15 +54,13 @@ private:
         RakNet::NetworkIDManager& rNetworkIDManager, RakNet::RPC3& rRPC3 );
     virtual ~EditorObject();
 
-    void gizmoModeChange( GizmoMode mode );
     void checkGizmo();
 
     Gizmo* mGizmo;
-    sigc::connection mGizmoModeConnection;
     bool mSelected;
 
-    static sigc::signal<void, GizmoMode> mGizmoModeSignal;
     static GizmoMode mGizmoMode;
+    static bool mSnapToGrid;
 
     CAMP_CLASS(EditorObject)
 

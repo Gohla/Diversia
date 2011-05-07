@@ -39,7 +39,8 @@ Gizmo::GizmoMouse* Gizmo::mMouse = 0;
 
 Gizmo::Gizmo( ClientObject& rControlledObject ):
     mGizmoNode( GlobalsBase::mScene->createSceneNode() ),
-    mControlledObject( rControlledObject )
+    mControlledObject( rControlledObject ),
+    mSnapToGrid( false )
 {
     mGizmoNode->setInheritScale( false );
     mGizmoNode->setScale( 3.0, 3.0, 3.0 );
