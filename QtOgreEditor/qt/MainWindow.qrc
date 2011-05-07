@@ -3,6 +3,7 @@
     <file>Icon.ico</file>
   </qresource>
   <qresource prefix="/Icons">
+    <file>Icons/editor/cursor.png</file>
     <file>Icons/editor/move.png</file>
     <file>Icons/editor/rotate.png</file>
     <file>Icons/editor/scale.png</file>

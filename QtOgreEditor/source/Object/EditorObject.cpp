@@ -10,6 +10,7 @@ This file is part of Diversia.
 
 #include "Object/EditorObject.h"
 #include "OgreClient/Graphics/RotationGizmo.h"
+#include "OgreClient/Graphics/ScaleGizmo.h"
 #include "OgreClient/Graphics/TranslationGizmo.h"
 #include "OgreClient/Object/SceneNode.h"
 
@@ -31,7 +32,7 @@ EditorObject::EditorObject( const String& rName, Mode mode, NetworkingType type,
     ClientObject( rName, mode, type, rDisplayName, source, ownGUID, serverGUID, rUpdateSignal, 
         rObjectManager, rPermissionManager, rReplicaManager, rNetworkIDManager, rRPC3 ),
     mGizmo( 0 ),
-    mGizmoMode( MOVEMENT ),
+    mGizmoMode( NONE ),
     mSelected( false )
 {
     mGizmoModeConnection = mGizmoModeSignal.connect( sigc::mem_fun( this, 
@@ -71,9 +72,10 @@ void EditorObject::checkGizmo()
     {
         switch( mGizmoMode )
         {
-            case SCALING: case NONE: mGizmo = 0; break;
             case MOVEMENT: mGizmo = new TranslationGizmo( *this ); break;
             case ROTATION: mGizmo = new RotationGizmo( *this ); break;
+            case SCALING: mGizmo = new ScaleGizmo( *this ); break;
+            case NONE: mGizmo = 0; break;
         }
         if( mGizmo ) Object::getComponent<SceneNode>().getNode()->addChild( mGizmo->getSceneNode() );
     }

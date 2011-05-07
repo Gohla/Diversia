@@ -1184,6 +1184,21 @@
     <string>Enable object scaling mode</string>
    </property>
   </action>
+  <action name="actionSelection_mode">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/editor/cursor.png</normaloff>:/Icons/Icons/editor/cursor.png</iconset>
+   </property>
+   <property name="text">
+    <string>Selection mode</string>
+   </property>
+   <property name="toolTip">
+    <string>Enable object selection mode</string>
+   </property>
+  </action>
   <zorder>propertyBrowserDock</zorder>
   <zorder>objectsDock</zorder>
   <zorder>pluginsDock</zorder>

@@ -85,6 +85,11 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     mUI.menuView->addAction( mUI.propertyBrowserDock->toggleViewAction() );
     mUI.menuView->addAction( mUI.consoleDock->toggleViewAction() );
     mUI.menuView->addSeparator();
+    mUI.menuView->addAction( mUI.defaultToolBar->toggleViewAction() );
+    mUI.menuView->addAction( mUI.fileToolBar->toggleViewAction() );
+    mUI.menuView->addAction( mUI.stateToolBar->toggleViewAction() );
+    mUI.menuView->addAction( mUI.undoToolBar->toggleViewAction() );
+    mUI.menuView->addAction( mUI.renderToolBar->toggleViewAction() );
 
     // Dialog signals
     QObject::connect( mUI.actionConnect, SIGNAL( triggered() ), &mConnectDialog, SLOT( show() ) );
@@ -92,11 +97,12 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
 
     // Setup gizmo actions
     mGizmoActions = new QActionGroup( this );
+    mGizmoActions->addAction( mUI.actionSelection_mode );
     mGizmoActions->addAction( mUI.actionMovement_mode );
     mGizmoActions->addAction( mUI.actionRotation_mode );
     mGizmoActions->addAction( mUI.actionScaling_mode );
     mGizmoActions->setExclusive( true );
-    mUI.actionMovement_mode->setChecked( true );
+    mUI.actionSelection_mode->setChecked( true );
     mUI.renderToolBar->addActions( mGizmoActions->actions() );
     QObject::connect( mGizmoActions, SIGNAL( triggered(QAction*) ), this, SLOT( gizmoChange(QAction*) ) );
 
@@ -477,12 +483,10 @@ void MainWindow::closeEvent( QCloseEvent* pEvent )
 
 void MainWindow::gizmoChange( QAction* action )
 {
-    if( action->objectName() == "actionMovement_mode" ) EditorObject::setGizmoMode( 
-        EditorObject::MOVEMENT );
-    else if( action->objectName() == "actionRotation_mode" ) EditorObject::setGizmoMode( 
-        EditorObject::ROTATION );
-    else if( action->objectName() == "actionScaling_mode" ) EditorObject::setGizmoMode( 
-        EditorObject::SCALING );
+    if( action == mUI.actionMovement_mode ) EditorObject::setGizmoMode( EditorObject::MOVEMENT );
+    else if( action == mUI.actionRotation_mode ) EditorObject::setGizmoMode( EditorObject::ROTATION );
+    else if( action == mUI.actionScaling_mode ) EditorObject::setGizmoMode( EditorObject::SCALING );
+    else if( action == mUI.actionSelection_mode ) EditorObject::setGizmoMode( EditorObject::NONE );
 }
 
 //------------------------------------------------------------------------------
