@@ -76,7 +76,7 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
         QIcon( ":/Icons/Icons/actions/media-playback-start.png" ) );
     mUI.undoToolBar->toggleViewAction()->setIcon( 
         QIcon( ":/Icons/Icons/actions/media-skip-backward.png" ) );
-    mUI.renderToolBar->toggleViewAction()->setIcon( 
+    mUI.manipulationToolBar->toggleViewAction()->setIcon( 
         QIcon( ":/Icons/Icons/editor/move.png" ) );
     // View menu actions
     mUI.menuView->addAction( mUI.objectsDock->toggleViewAction() );
@@ -89,7 +89,7 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     mUI.menuView->addAction( mUI.fileToolBar->toggleViewAction() );
     mUI.menuView->addAction( mUI.stateToolBar->toggleViewAction() );
     mUI.menuView->addAction( mUI.undoToolBar->toggleViewAction() );
-    mUI.menuView->addAction( mUI.renderToolBar->toggleViewAction() );
+    mUI.menuView->addAction( mUI.manipulationToolBar->toggleViewAction() );
 
     // Dialog signals
     QObject::connect( mUI.actionConnect, SIGNAL( triggered() ), &mConnectDialog, SLOT( show() ) );
@@ -103,7 +103,7 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     mGizmoActions->addAction( mUI.actionScaling_mode );
     mGizmoActions->setExclusive( true );
     mUI.actionSelection_mode->setChecked( true );
-    mUI.renderToolBar->addActions( mGizmoActions->actions() );
+    mUI.manipulationToolBar->addActions( mGizmoActions->actions() );
 
     // Setup log severity controls.
     QSignalMapper* severitySignalMapper = new QSignalMapper( this );
@@ -190,6 +190,14 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     mUI.actionShow_runtime_objects->setChecked( settings.value( "ShowRuntimeObjects", false ).toBool() );
     mUI.actionShow_default_components->setChecked( settings.value( "ShowDefaultComponents", false ).toBool() );
     settings.endGroup(); // Objects
+
+    settings.beginGroup( "Manipulation" );
+    mUI.actionSnap_to_grid->setChecked( settings.value( "SnapToGrid", false ).toBool() );
+    mUI.actionSelection_mode->setChecked( settings.value( "SelectionMode", true ).toBool() );
+    mUI.actionMovement_mode->setChecked( settings.value( "MovementMode", false ).toBool() );
+    mUI.actionRotation_mode->setChecked( settings.value( "RotationMode", false ).toBool() );
+    mUI.actionScaling_mode->setChecked( settings.value( "ScalingMode", false ).toBool() );
+    settings.endGroup(); // Manipulation
 
     settings.endGroup(); // MainWindow
 
@@ -474,6 +482,14 @@ void MainWindow::closeEvent( QCloseEvent* pEvent )
     settings.setValue( "ShowRuntimeObjects", mUI.actionShow_runtime_objects->isChecked() );
     settings.setValue( "ShowDefaultComponents", mUI.actionShow_default_components->isChecked() );
     settings.endGroup(); // Objects
+
+    settings.beginGroup( "Manipulation" );
+    settings.setValue( "SnapToGrid", mUI.actionSnap_to_grid->isChecked() );
+    settings.setValue( "SelectionMode", mUI.actionSelection_mode->isChecked() );
+    settings.setValue( "MovementMode", mUI.actionMovement_mode->isChecked() );
+    settings.setValue( "RotationMode", mUI.actionRotation_mode->isChecked() );
+    settings.setValue( "ScalingMode", mUI.actionScaling_mode->isChecked() );
+    settings.endGroup(); // Manipulation
 
     settings.endGroup(); // MainWindow
 
