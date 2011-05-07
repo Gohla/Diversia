@@ -31,7 +31,6 @@ THE SOFTWARE.
 #include "OgreClient/Graphics/GeometryHelper.h"
 #include "OgreClient/Graphics/QueryFlags.h"
 #include "OgreClient/Graphics/TranslationGizmo.h"
-#include "OgreClient/Input/InputManager.h"
 #include "OgreClient/Input/ObjectSelection.h"
 #include "Util/Math/Node.h"
 
@@ -41,17 +40,12 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-TranslationGizmo::TranslationGizmoMouse* TranslationGizmo::mMouse = 0;
+const Real TranslationGizmo::mSelectionHelperSize = 0.2f;
 
 TranslationGizmo::TranslationGizmo( ClientObject& rControlledObject ):
     Gizmo( rControlledObject ),
-    mSelectionHelperSize( 0.2f ),
-    mMoveX( false ),
-    mHoverX( false ),
-    mMoveY( false ),
-    mHoverY( false ),
-    mMoveZ( false ),
-    mHoverZ( false ),
+    mHoverAxis( NO_AXIS ),
+    mDragAxis( NO_AXIS ),
     mLineX( GeometryHelper::createLine( "Axis_X", Ogre::Vector3::ZERO, 
         Ogre::Vector3::UNIT_X ) ),
     mLineY( GeometryHelper::createLine( "Axis_Y", Ogre::Vector3::ZERO, 
@@ -78,6 +72,8 @@ TranslationGizmo::TranslationGizmo( ClientObject& rControlledObject ):
     mZNode( Gizmo::getSceneNode()->createChildSceneNode() )
 {
     mUserObject = this;
+
+    Gizmo::getSceneNode()->setInheritOrientation( false );
 
     // Setup axis geometry
     Gizmo::getSceneNode()->attachObject( mLineX ); 
@@ -112,8 +108,6 @@ TranslationGizmo::TranslationGizmo( ClientObject& rControlledObject ):
     mUpdateConnection = GlobalsBase::mUpdateSignal->connect( sigc::mem_fun( this, 
         &TranslationGizmo::update ) );
     mUpdateConnection.block( true );
-
-    if( !mMouse ) mMouse = new TranslationGizmo::TranslationGizmoMouse();
 }
 
 TranslationGizmo::~TranslationGizmo()
@@ -127,12 +121,15 @@ TranslationGizmo::~TranslationGizmo()
     GlobalsBase::mScene->destroyEntity( mSelectionHelperX );
     GlobalsBase::mScene->destroyEntity( mSelectionHelperY );
     GlobalsBase::mScene->destroyEntity( mSelectionHelperZ );
+    GlobalsBase::mScene->destroySceneNode( mXNode );
+    GlobalsBase::mScene->destroySceneNode( mYNode );
+    GlobalsBase::mScene->destroySceneNode( mZNode );
 
     GlobalsBase::mSelection->removeHoverSlot( mUserObject );
     GlobalsBase::mSelection->removeDragSlot( mUserObject );
     mUpdateConnection.disconnect();
 
-    if( mMoveX || mMoveY || mMoveZ ) mMouse->mCapture = false;
+    if( mDragAxis != NO_AXIS ) mMouse->mCapture = false;
 }
 
 Ogre::Entity* TranslationGizmo::createSelectionHelperBox( const Ogre::Vector3& center, 
@@ -147,42 +144,20 @@ Ogre::Entity* TranslationGizmo::createSelectionHelperBox( const Ogre::Vector3& c
 
 void TranslationGizmo::hover( bool hoverIn, int param )
 {
-    switch( param )
-    {
-        case X_AXIS: mHoverX = hoverIn; break;
-        case Y_AXIS: mHoverY = hoverIn; break;
-        case Z_AXIS: mHoverZ = hoverIn; break;
-    }
+    if( hoverIn ) mHoverAxis = (Axis)param;
+    else mHoverAxis = NO_AXIS;
 
     TranslationGizmo::checkHighlight();
 }
 
-void TranslationGizmo::drag( bool dragStart, int param )
+void TranslationGizmo::drag( bool dragStart, int param, const Vector3& rPosition )
 {
-    switch( param )
-    {
-        case X_AXIS: mMoveX = dragStart; break;
-        case Y_AXIS: mMoveY = dragStart; break;
-        case Z_AXIS: mMoveZ = dragStart; break;
-    }
+    if( dragStart ) mDragAxis = (Axis)param;
+    else mDragAxis = NO_AXIS;
 
     TranslationGizmo::checkHighlight();
-    TranslationGizmo::checkMove();
-}
 
-void TranslationGizmo::checkHighlight()
-{
-    mLineX->setMaterialName( 0, mHoverX || mMoveX ? "Axis_Selected" : "Axis_X" );
-    mConeX->setMaterialName( 0, mHoverX || mMoveX ? "Axis_Selected" : "Axis_X" );
-    mLineY->setMaterialName( 0, mHoverY || mMoveY ? "Axis_Selected" : "Axis_Y" );
-    mConeY->setMaterialName( 0, mHoverY || mMoveY ? "Axis_Selected" : "Axis_Y" );
-    mLineZ->setMaterialName( 0, mHoverZ || mMoveZ ? "Axis_Selected" : "Axis_Z" );
-    mConeZ->setMaterialName( 0, mHoverZ || mMoveZ ? "Axis_Selected" : "Axis_Z" );
-}
-
-void TranslationGizmo::checkMove()
-{
-    if( mMoveX || mMoveY || mMoveZ ) 
+    if( mDragAxis != NO_AXIS ) 
     {
         mMouse->mCapture = true;
         mUpdateConnection.block( false );
@@ -194,6 +169,16 @@ void TranslationGizmo::checkMove()
     }
 }
 
+void TranslationGizmo::checkHighlight()
+{
+    mLineX->setMaterialName( 0, mHoverAxis == X_AXIS || mDragAxis == X_AXIS ? "Axis_Selected" : "Axis_X" );
+    mConeX->setMaterialName( 0, mHoverAxis == X_AXIS || mDragAxis == X_AXIS ? "Axis_Selected" : "Axis_X" );
+    mLineY->setMaterialName( 0, mHoverAxis == Y_AXIS || mDragAxis == Y_AXIS ? "Axis_Selected" : "Axis_Y" );
+    mConeY->setMaterialName( 0, mHoverAxis == Y_AXIS || mDragAxis == Y_AXIS ? "Axis_Selected" : "Axis_Y" );
+    mLineZ->setMaterialName( 0, mHoverAxis == Z_AXIS || mDragAxis == Z_AXIS ? "Axis_Selected" : "Axis_Z" );
+    mConeZ->setMaterialName( 0, mHoverAxis == Z_AXIS || mDragAxis == Z_AXIS ? "Axis_Selected" : "Axis_Z" );
+}
+
 void TranslationGizmo::update()
 {
     Ogre::Camera* camera = GlobalsBase::mCamera->getActiveCamera();
@@ -203,56 +188,46 @@ void TranslationGizmo::update()
     float incMouseX = mMouse->mMouseState.x.rel /** num3*/ * 0.05;
     float incMouseY = mMouse->mMouseState.y.rel /** num3*/ * 0.05;
 
-    if( mMoveX )
+    switch( mDragAxis )
     {
-        Ogre::Vector3 vec = ( projView * mXNode->_getDerivedPosition() ) - 
-            ( projView * Gizmo::getSceneNode()->_getDerivedPosition() );
-        vec.z = 0.0f;
-        if ( vec.length() != 0.0f ) vec.normalise(); else return;
+        case X_AXIS:
+        {
+            Ogre::Vector3 vec = ( projView * mXNode->_getDerivedPosition() ) - 
+                ( projView * Gizmo::getSceneNode()->_getDerivedPosition() );
+            vec.z = 0.0f;
+            if ( vec.length() != 0.0f ) vec.normalise(); else return;
 
-        float x = (incMouseX * vec.x) - (incMouseY * vec.y);
-        Gizmo::getControlledObject().translate( x, 0.0f, 0.0f, Node::TS_WORLD );
-    } 
-    else if( mMoveY ) 
-    {
-        Ogre::Vector3 vec = ( projView * mYNode->_getDerivedPosition() ) - 
-            ( projView * Gizmo::getSceneNode()->_getDerivedPosition() );
-        vec.z = 0.0f;
-        if ( vec.length() != 0.0f ) vec.normalise(); else return;
+            float x = (incMouseX * vec.x) - (incMouseY * vec.y);
+            Gizmo::getControlledObject().translate( x, 0.0f, 0.0f, Node::TS_WORLD );
+            break;
+        }
+        case Y_AXIS:
+        {
+            Ogre::Vector3 vec = ( projView * mYNode->_getDerivedPosition() ) - 
+                ( projView * Gizmo::getSceneNode()->_getDerivedPosition() );
+            vec.z = 0.0f;
+            if ( vec.length() != 0.0f ) vec.normalise(); else return;
 
-        float y = (incMouseX * vec.x) - (incMouseY * vec.y);
-        Gizmo::getControlledObject().translate( 0.0f, y, 0.0f, Node::TS_WORLD );
+            float y = (incMouseX * vec.x) - (incMouseY * vec.y);
+            Gizmo::getControlledObject().translate( 0.0f, y, 0.0f, Node::TS_WORLD );
+            break;
+        }
+        case Z_AXIS:
+        {
+            Ogre::Vector3 vec = ( projView * mZNode->_getDerivedPosition() ) - 
+                ( projView * Gizmo::getSceneNode()->_getDerivedPosition() );
+            vec.z = 0.0f;
+            if ( vec.length() != 0.0f ) vec.normalise(); else return;
+
+            float z = (incMouseX * vec.x) - (incMouseY * vec.y);
+            Gizmo::getControlledObject().translate( 0.0f, 0.0f, z, Node::TS_WORLD );
+            break;
+        }
     }
-    else if( mMoveZ ) 
-    {
-        Ogre::Vector3 vec = ( projView * mZNode->_getDerivedPosition() ) - 
-            ( projView * Gizmo::getSceneNode()->_getDerivedPosition() );
-        vec.z = 0.0f;
-        if ( vec.length() != 0.0f ) vec.normalise(); else return;
-
-        float z = (incMouseX * vec.x) - (incMouseY * vec.y);
-        Gizmo::getControlledObject().translate( 0.0f, 0.0f, z, Node::TS_WORLD );
-    }
-
 
     mMouse->mMouseState.clear();
 }
 
 //------------------------------------------------------------------------------
-
-TranslationGizmo::TranslationGizmoMouse::TranslationGizmoMouse():
-    mCapture( false )
-{
-    GlobalsBase::mInput->subscribeMouse( *this );
-}
-
-bool TranslationGizmo::TranslationGizmoMouse::mouseMoved( const MouseState& rState )
-{
-    mMouseState = rState;
-    return mCapture;
-}
-
-//------------------------------------------------------------------------------
-
 } // Namespace OgreClient
 } // Namespace Diversia

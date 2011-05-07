@@ -52,11 +52,38 @@ public:
     ~RotationGizmo();
     
 private:
+    Ogre::Entity* createSelectionHelperBox( const String& rName );
+
     void hover( bool hoverIn, int param );
-    void drag( bool dragStart, int param );
+    void drag( bool dragStart, int param, const Vector3& rPosition );
     void checkHighlight();
-    void checkMove();
     void update();
+
+    static const int mSides = 0x18;
+    static const Real mRadius;
+
+    Gizmo::Axis mHoverAxis;
+    Gizmo::Axis mDragAxis;
+    String mName;
+    Ogre::ManualObject* mCircleX;
+    Ogre::ManualObject* mDiscX;
+    Ogre::ManualObject* mCircleY;
+    Ogre::ManualObject* mDiscY;
+    Ogre::ManualObject* mCircleZ;
+    Ogre::ManualObject* mDiscZ;
+    Ogre::ManualObject* mArrowIndicator;
+    Ogre::Entity* mSelectionHelperX;
+    Ogre::Entity* mSelectionHelperY;
+    Ogre::Entity* mSelectionHelperZ;
+    Ogre::SceneNode* mXNode;
+    Ogre::SceneNode* mYNode;
+    Ogre::SceneNode* mZNode;
+    Ogre::SceneNode* mArrowNode;
+    Ogre::Vector3 mRotationAxis;
+    Ogre::Vector3 mDirector;
+    Ogre::Vector3 mHitPoint;
+    camp::UserObject mUserObject;
+    sigc::connection mUpdateConnection;
 
 };
 

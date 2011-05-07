@@ -30,7 +30,6 @@ THE SOFTWARE.
 #include "OgreClient/Platform/Prerequisites.h"
 
 #include "OgreClient/Graphics/Gizmo.h"
-#include "OgreClient/Input/InputManager.h"
 
 namespace Diversia
 {
@@ -50,43 +49,21 @@ public:
     /**
     Destructor. 
     **/
-    virtual ~TranslationGizmo();
+    ~TranslationGizmo();
     
 private:
-    enum Axis 
-    {
-        X_AXIS,
-        Y_AXIS,
-        Z_AXIS
-    };
-
-    struct TranslationGizmoMouse : public MouseListener
-    {
-        TranslationGizmoMouse();
-
-        inline int getMousePriority() const { return -2; }
-        bool mouseMoved( const MouseState& rState );
-
-        bool mCapture;
-        MouseState mMouseState;
-    };
-
     Ogre::Entity* createSelectionHelperBox( const Ogre::Vector3& center, 
         const Ogre::Vector3& size );
     
     void hover( bool hoverIn, int param );
-    void drag( bool dragStart, int param );
+    void drag( bool dragStart, int param, const Vector3& rPosition );
     void checkHighlight();
-    void checkMove();
     void update();
 
-    Real mSelectionHelperSize;
-    bool mMoveX;
-    bool mHoverX;
-    bool mMoveY;
-    bool mHoverY;
-    bool mMoveZ;
-    bool mHoverZ;
+    static const Real mSelectionHelperSize;
+
+    Gizmo::Axis mHoverAxis;
+    Gizmo::Axis mDragAxis;
     Ogre::ManualObject* mLineX;
     Ogre::ManualObject* mConeX;
     Ogre::ManualObject* mLineY;
@@ -101,8 +78,6 @@ private:
     Ogre::SceneNode* mZNode;
     camp::UserObject mUserObject;
     sigc::connection mUpdateConnection;
-
-    static TranslationGizmoMouse* mMouse;
 
 };
 

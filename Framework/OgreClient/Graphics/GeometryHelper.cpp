@@ -165,6 +165,11 @@ Ogre::ManualObject* GeometryHelper::createCylinder( const String& materialName, 
 
 Ogre::Entity* GeometryHelper::createCylinderEntity( const String& entityName, const String& materialName, const Ogre::Vector3& center, float radius, float halfHeight, int sides, const Ogre::Vector3& normal )
 {
+    if( !Ogre::ResourceGroupManager::getSingletonPtr()->resourceGroupExists( "GeometryHelper" ) )
+    {
+        Ogre::ResourceGroupManager::getSingletonPtr()->createResourceGroup( "GeometryHelper" );
+    }
+
     String meshName = entityName + ".mesh";
     Ogre::ManualObject* obj2 = createCylinder(materialName, center, radius, halfHeight, sides, normal);
     obj2->convertToMesh(meshName, "GeometryHelper");
@@ -219,6 +224,11 @@ Ogre::ManualObject* GeometryHelper::createSphere( const String& materialName, fl
 
 Ogre::Entity* GeometryHelper::createSphereEntity( const String& entityName, const String& materialName, float radius, int sides )
 {
+    if( !Ogre::ResourceGroupManager::getSingletonPtr()->resourceGroupExists( "GeometryHelper" ) )
+    {
+        Ogre::ResourceGroupManager::getSingletonPtr()->createResourceGroup( "GeometryHelper" );
+    }
+
     String meshName = entityName + ".mesh";
     Ogre::ManualObject* obj2 = createSphere(materialName, radius, sides);
     obj2->convertToMesh(meshName, "GeometryHelper");
@@ -269,6 +279,11 @@ Ogre::ManualObject* GeometryHelper::createTorus( const String& materialName, con
 
 Ogre::Entity* GeometryHelper::createTorusEntity( const String& entityName, const String& materialName, const Ogre::Vector3& center, float radius1, float radius2, int sides1, int sides2, const Ogre::Vector3& normal )
 {
+    if( !Ogre::ResourceGroupManager::getSingletonPtr()->resourceGroupExists( "GeometryHelper" ) )
+    {
+        Ogre::ResourceGroupManager::getSingletonPtr()->createResourceGroup( "GeometryHelper" );
+    }
+
     String meshName = entityName + ".mesh";
     Ogre::ManualObject* obj2 = createTorus(materialName, center, radius1, radius2, sides1, sides2, normal);
     obj2->convertToMesh(meshName, "GeometryHelper");
@@ -292,7 +307,7 @@ std::vector<Ogre::Vector3> GeometryHelper::getCirclePoints( const Ogre::Vector3&
 {
     Ogre::Quaternion rotationTo = Ogre::Vector3::UNIT_X.getRotationTo(normal);
     // Should this be radians?
-    float num2 = (float) Ogre::Math::ACos((double) (normal.dotProduct(Ogre::Vector3::NEGATIVE_UNIT_X) / normal.length())).valueRadians();
+    float num2 = (float) Ogre::Math::ACos((double) (normal.dotProduct(Ogre::Vector3::NEGATIVE_UNIT_X) / normal.length())).valueAngleUnits();
     if (num2 <= 0.001)
     {
         rotationTo.FromAngleAxis(Ogre::Radian(Ogre::Degree(180)), Ogre::Vector3::UNIT_Y);

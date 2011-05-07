@@ -64,7 +64,8 @@ protected:
     {
         X_AXIS,
         Y_AXIS,
-        Z_AXIS
+        Z_AXIS,
+        NO_AXIS
     };
 
     struct GizmoMouse : public MouseListener

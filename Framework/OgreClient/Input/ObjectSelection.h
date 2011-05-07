@@ -40,7 +40,7 @@ typedef sigc::slot<void> ClickSlot;
 typedef sigc::slot<void, bool, int> HoverSlot;
 typedef sigc::slot<void, bool> SelectSlot;
 typedef sigc::signal<void, const camp::UserObject&, bool> SelectSignal;
-typedef sigc::slot<void, bool, int> DragSlot;
+typedef sigc::slot<void, bool, int, const Vector3&> DragSlot;
 
 typedef std::map<camp::UserObject, ClickSlot> ClickSlotMap;
 typedef std::map<camp::UserObject, HoverSlot> HoverSlotMap;
@@ -180,7 +180,7 @@ public:
     
     @param  rObject The object to set the slot for.
     @param  rSlot   The slot (signature: void func(bool [true if entered hover, false if leaving
-                    hover])) to set. 
+                    hover], int [custom param])) to set. 
     **/
     inline void setHoverSlot( const camp::UserObject& rObject, const HoverSlot& rSlot ) 
     {
@@ -212,7 +212,7 @@ public:
     /**
     Connects a slot to the object selected/deselected signal.
 
-    @param [in,out] rSlot   The slot (signature: void func(camp::UserObject&, bool [true if 
+    @param [in,out] rSlot   The slot (signature: void func(const camp::UserObject&, bool [true if 
                             selected, false if unselected])) to connect. 
     
     @return Connection object to block or disconnect the connection.
@@ -226,7 +226,9 @@ public:
     
     @param  rObject The object to set the slot for.
     @param  rSlot   The slot (signature: void func(bool [true if starting to drag, false if
-                    stopping to drag])) to connect. 
+                    stopping to drag], int [custom param], const Vector3& [drag start/stop 
+                    position, do not store a reference to this as it will be invalid after the slot
+                    is called])) to connect. 
     **/
     inline void setDragSlot( const camp::UserObject& rObject, const DragSlot& rSlot ) 
     {
@@ -279,10 +281,11 @@ private:
         i = mSelectSlots.find( rObject );
         if( i != mSelectSlots.end() ) i->second( selected );
     }
-    inline void fireDrag( const camp::UserObject& rObject, bool dragStart, int param )
+    inline void fireDrag( const camp::UserObject& rObject, bool dragStart, int param, 
+        const Vector3& rPos )
     {
         DragSlotMap::iterator i = mDragSlots.find( rObject );
-        if( i != mDragSlots.end() ) i->second( dragStart, param );
+        if( i != mDragSlots.end() ) i->second( dragStart, param, rPos );
     }
 
     ClickSlotMap    mClickSlots;
@@ -309,8 +312,10 @@ private:
 
     camp::UserObject*                       mObjectUnderMouse;
     int                                     mParamUnderMouse;
+    Vector3                                 mPositionUnderMouse;
     camp::UserObject*                       mDraggingObject;
     int                                     mDraggingParam;
+    Vector3                                 mDragStartPosition;
     SelectedObjects                         mSelectedObjects;
 
 };

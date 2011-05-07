@@ -9,6 +9,7 @@ This file is part of Diversia.
 #include "Platform/StableHeaders.h"
 
 #include "Object/EditorObject.h"
+#include "OgreClient/Graphics/RotationGizmo.h"
 #include "OgreClient/Graphics/TranslationGizmo.h"
 #include "OgreClient/Object/SceneNode.h"
 
@@ -46,7 +47,7 @@ void EditorObject::setSelected( bool selected )
 
     if( selected )
     {
-        mGizmo = new TranslationGizmo( *this );
+        mGizmo = new RotationGizmo( *this );
         Object::getComponent<SceneNode>().getNode()->addChild( mGizmo->getSceneNode() );
     }
 

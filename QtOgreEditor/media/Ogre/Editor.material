@@ -61,3 +61,63 @@ material Axis_Selected
 		}
 	}
 }
+
+material Disc_X
+{
+	technique
+	{
+		pass
+		{
+			emissive 0.1 0 0
+			ambient 0 0 0 
+			diffuse 0 0 0
+			specular 0 0 0 1
+			scene_blend add
+			fog_override true none
+
+			depth_check off
+			depth_write off
+			cull_hardware none
+		}
+	}
+}
+
+material Disc_Y
+{
+	technique
+	{
+		pass
+		{
+			emissive 0 0.1 0
+			ambient 0 0 0 
+			diffuse 0 0 0
+			specular 0 0 0 1
+			scene_blend add
+			fog_override true none
+
+			depth_check off
+			depth_write off
+			cull_hardware none
+		}
+	}
+}
+
+material Disc_Z
+{
+	technique
+	{
+		pass
+		{
+			emissive 0 0 0.1
+			ambient 0 0 0 
+			diffuse 0 0 0
+			specular 0 0 0 1
+			scene_blend add
+			fog_override true none
+
+			depth_check off
+			depth_write off
+			cull_hardware none
+		}
+	}
+}

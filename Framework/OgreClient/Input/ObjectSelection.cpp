@@ -195,6 +195,7 @@ bool ObjectSelection::mousePressed( const MouseButton button )
                     mDragClick = true;
                     mDraggingObject = mObjectUnderMouse;
                     mDraggingParam = mParamUnderMouse;
+                    mDragStartPosition = mPositionUnderMouse;
                     return true;
                 }
             }
@@ -256,7 +257,8 @@ void ObjectSelection::mouseReleased( const MouseButton button )
             }
             else if( mDragging )
             {
-                ObjectSelection::fireDrag( *mDraggingObject, false, mDraggingParam );
+                ObjectSelection::fireDrag( *mDraggingObject, false, mDraggingParam, 
+                    mPositionUnderMouse );
             }
 
             mClick = false;
@@ -264,6 +266,8 @@ void ObjectSelection::mouseReleased( const MouseButton button )
             mDragging = false;
             mDoVolumeQuery = false;
             mDraggingObject = 0;
+            mDraggingParam = 0;
+            mDragStartPosition = Vector3::ZERO;
             mRectangle->setVisible( false );
             break;
         }
@@ -285,6 +289,8 @@ void ObjectSelection::update()
         Ogre::Vector2( mMouseState.x.abs, mMouseState.y.abs ), result, entity, distToColl, 
         mQueryMask ) )
     {
+        mPositionUnderMouse = toVector3<Vector3>( result );
+
         // Entity detected under the mouse.
         ParamsTuple params = ObjectSelection::getParams( entity );
         camp::UserObject* object = params.get<0>();
@@ -313,6 +319,7 @@ void ObjectSelection::update()
 
         mObjectUnderMouse = 0;
         mParamUnderMouse = 0;
+        mPositionUnderMouse = Vector3::ZERO;
     }
 
     // Detect dragging
@@ -328,7 +335,7 @@ void ObjectSelection::update()
     else if( mDragClick && mClickTimer.getMilliseconds() >= 150 && !mDragging && mDraggingObject )
     {
         mDragging = true;
-        ObjectSelection::fireDrag( *mDraggingObject, true, mDraggingParam );
+        ObjectSelection::fireDrag( *mDraggingObject, true, mDraggingParam, mDragStartPosition );
     }
 
     // Update volume query rectangle.
