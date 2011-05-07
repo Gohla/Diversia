@@ -54,7 +54,7 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
         QIcon( ":/Icons/Icons/categories/xfce-system.png" ), mUI.propertyBrowserDock->style() ) );
     mUI.consoleDock->setStyle( new IconDockStyle( 
         QIcon( ":/Icons/Icons/apps/utilities-terminal.png" ), mUI.consoleDock->style() ) );
-    // View action icons
+    // Dock view action icons.
     mUI.objectsDock->toggleViewAction()->setIcon( 
         QIcon( ":/Icons/Icons/mimetypes/gnome-package.png" ) );
     mUI.objectTemplatesDock->toggleViewAction()->setIcon( 
@@ -65,23 +65,39 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
         QIcon( ":/Icons/Icons/categories/xfce-system.png" ) );
     mUI.consoleDock->toggleViewAction()->setIcon( 
         QIcon( ":/Icons/Icons/apps/utilities-terminal.png" ) );
+    mUI.undoDock->toggleViewAction()->setIcon( 
+        QIcon( ":/Icons/Icons/actions/media-skip-backward.png" ) );
+    // Toolbar view action icons.
+    mUI.defaultToolBar->toggleViewAction()->setIcon( 
+        QIcon( ":/Icons/Icons/actions/reload.png" ) );
+    mUI.fileToolBar->toggleViewAction()->setIcon( 
+        QIcon( ":/Icons/Icons/actions/bookmark-new.png" ) );
+    mUI.stateToolBar->toggleViewAction()->setIcon( 
+        QIcon( ":/Icons/Icons/actions/media-playback-start.png" ) );
+    mUI.undoToolBar->toggleViewAction()->setIcon( 
+        QIcon( ":/Icons/Icons/actions/media-skip-backward.png" ) );
+    mUI.renderToolBar->toggleViewAction()->setIcon( 
+        QIcon( ":/Icons/Icons/editor/move.png" ) );
     // View menu actions
     mUI.menuView->addAction( mUI.objectsDock->toggleViewAction() );
     mUI.menuView->addAction( mUI.objectTemplatesDock->toggleViewAction() );
     mUI.menuView->addAction( mUI.pluginsDock->toggleViewAction() );
     mUI.menuView->addAction( mUI.propertyBrowserDock->toggleViewAction() );
     mUI.menuView->addAction( mUI.consoleDock->toggleViewAction() );
+    mUI.menuView->addSeparator();
 
+    // Dialog signals
     QObject::connect( mUI.actionConnect, SIGNAL( triggered() ), &mConnectDialog, SLOT( show() ) );
     QObject::connect( mUI.actionNew, SIGNAL( triggered() ), &mNewGameDialog, SLOT( show() ) );
 
-    // Setup gizmo actions.
+    // Setup gizmo actions
     mGizmoActions = new QActionGroup( this );
     mGizmoActions->addAction( mUI.actionMovement_mode );
     mGizmoActions->addAction( mUI.actionRotation_mode );
     mGizmoActions->addAction( mUI.actionScaling_mode );
     mGizmoActions->setExclusive( true );
-    mUI.defaultToolBar->addActions( mGizmoActions->actions() );
+    mUI.actionMovement_mode->setChecked( true );
+    mUI.renderToolBar->addActions( mGizmoActions->actions() );
     QObject::connect( mGizmoActions, SIGNAL( triggered(QAction*) ), this, SLOT( gizmoChange(QAction*) ) );
 
     // Setup log severity controls.
