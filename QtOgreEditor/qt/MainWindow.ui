@@ -814,6 +814,9 @@
    <property name="toolTip">
     <string>Exit the editor</string>
    </property>
+   <property name="shortcut">
+    <string>Esc</string>
+   </property>
   </action>
   <action name="actionConnect">
    <property name="icon">
@@ -910,6 +913,9 @@
    <property name="toolTip">
     <string>Save current game to the currently loaded file</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
+   </property>
   </action>
   <action name="actionLoad">
    <property name="icon">
@@ -921,6 +927,9 @@
    </property>
    <property name="toolTip">
     <string>Load a game</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionDestroy_plugin">
@@ -946,6 +955,9 @@
    <property name="toolTip">
     <string>Save current game to a new file</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Shift+S</string>
+   </property>
   </action>
   <action name="actionNew">
    <property name="icon">
@@ -957,6 +969,9 @@
    </property>
    <property name="toolTip">
     <string>Create a new game</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="actionUndo">
@@ -970,6 +985,9 @@
    <property name="toolTip">
     <string>Undo last action</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+Z</string>
+   </property>
   </action>
   <action name="actionRedo">
    <property name="icon">
@@ -981,6 +999,9 @@
    </property>
    <property name="toolTip">
     <string>Redo last undone action</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+Y</string>
    </property>
   </action>
   <action name="actionCreate_template_from_object">
@@ -1150,6 +1171,9 @@
    <property name="toolTip">
     <string>Enable object movement mode</string>
    </property>
+   <property name="shortcut">
+    <string>Ctrl+M</string>
+   </property>
   </action>
   <action name="actionRotation_mode">
    <property name="checkable">
@@ -1164,6 +1188,9 @@
    </property>
    <property name="toolTip">
     <string>Enable object rotation mode</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+R</string>
    </property>
   </action>
   <action name="actionScaling_mode">
@@ -1182,6 +1209,9 @@
    </property>
    <property name="toolTip">
     <string>Enable object scaling mode</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+S</string>
    </property>
   </action>
   <action name="actionSelection_mode">
