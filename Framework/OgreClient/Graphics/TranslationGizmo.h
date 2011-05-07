@@ -59,6 +59,7 @@ private:
     void drag( bool dragStart, int param, const Vector3& rPosition );
     void checkHighlight();
     void update();
+    void transformChange( const Node& rNode );
 
     static const Real mSelectionHelperSize;
 
@@ -79,6 +80,7 @@ private:
     Vector3 mDesiredPosition;
     camp::UserObject mUserObject;
     sigc::connection mUpdateConnection;
+    sigc::connection mPositionChangeConnection;
 
 };
 

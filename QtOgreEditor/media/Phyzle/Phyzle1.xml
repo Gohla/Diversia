@@ -1110,9 +1110,9 @@
 						<key>ObjectFromObjectTemplate8376695393258044171441151967107401334</key>
 						<value>
 							<Position>
-								<X>-5</X>
+								<X>-10</X>
 								<Y>10</Y>
-								<Z>-5</Z>
+								<Z>-10</Z>
 							</Position>
 							<Orientation>
 								<X>0</X>
@@ -1237,7 +1237,7 @@
 							<Position>
 								<X>0</X>
 								<Y>10</Y>
-								<Z>-5</Z>
+								<Z>-10</Z>
 							</Position>
 							<Orientation>
 								<X>0</X>
@@ -1360,9 +1360,9 @@
 						<key>ObjectFromObjectTemplate8376695393258044171441151967107401336</key>
 						<value>
 							<Position>
-								<X>5</X>
+								<X>10</X>
 								<Y>10</Y>
-								<Z>-5</Z>
+								<Z>-10</Z>
 							</Position>
 							<Orientation>
 								<X>0</X>

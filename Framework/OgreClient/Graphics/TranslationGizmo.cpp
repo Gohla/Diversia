@@ -70,7 +70,7 @@ TranslationGizmo::TranslationGizmo( ClientObject& rControlledObject ):
     mXNode( Gizmo::getSceneNode()->createChildSceneNode() ),
     mYNode( Gizmo::getSceneNode()->createChildSceneNode() ),
     mZNode( Gizmo::getSceneNode()->createChildSceneNode() ),
-    mDesiredPosition( Vector3::ZERO )
+    mDesiredPosition( rControlledObject.getPosition() )
 {
     mUserObject = this;
 
@@ -109,6 +109,8 @@ TranslationGizmo::TranslationGizmo( ClientObject& rControlledObject ):
     mUpdateConnection = GlobalsBase::mUpdateSignal->connect( sigc::mem_fun( this, 
         &TranslationGizmo::update ) );
     mUpdateConnection.block( true );
+    mPositionChangeConnection = rControlledObject.connectLocalTransformChange( sigc::mem_fun( this,
+        &TranslationGizmo::transformChange ) );
 }
 
 TranslationGizmo::~TranslationGizmo()
@@ -129,6 +131,7 @@ TranslationGizmo::~TranslationGizmo()
     GlobalsBase::mSelection->removeHoverSlot( mUserObject );
     GlobalsBase::mSelection->removeDragSlot( mUserObject );
     mUpdateConnection.disconnect();
+    mPositionChangeConnection.disconnect();
 
     if( mDragAxis != NO_AXIS ) mMouse->mCapture = false;
 }
@@ -200,7 +203,7 @@ void TranslationGizmo::update()
 
             float x = (incMouseX * vec.x) - (incMouseY * vec.y);
             Gizmo::getControlledObject().translateUpdate( mDesiredPosition, 
-                Vector3( x, 0.0f, 0.0f ), Node::TS_WORLD );
+                Vector3( x, 0.0f, 0.0f ), Node::TS_PARENT );
             break;
         }
         case Y_AXIS:
@@ -212,7 +215,7 @@ void TranslationGizmo::update()
 
             float y = (incMouseX * vec.x) - (incMouseY * vec.y);
             Gizmo::getControlledObject().translateUpdate( mDesiredPosition,
-                Vector3( 0.0f, y, 0.0f ), Node::TS_WORLD );
+                Vector3( 0.0f, y, 0.0f ), Node::TS_PARENT );
             break;
         }
         case Z_AXIS:
@@ -224,10 +227,12 @@ void TranslationGizmo::update()
 
             float z = (incMouseX * vec.x) - (incMouseY * vec.y);
             Gizmo::getControlledObject().translateUpdate( mDesiredPosition, 
-                Vector3( 0.0f, 0.0f, z ), Node::TS_WORLD );
+                Vector3( 0.0f, 0.0f, z ), Node::TS_PARENT );
             break;
         }
     }
+
+    mPositionChangeConnection.block( true );
 
     if( Gizmo::isSnappingToGrid() )
     {
@@ -242,7 +247,14 @@ void TranslationGizmo::update()
         Gizmo::getControlledObject().setPosition( mDesiredPosition );
     }
 
+    mPositionChangeConnection.block( false );
+
     mMouse->mMouseState.clear();
+}
+
+void TranslationGizmo::transformChange( const Node& rNode )
+{
+    mDesiredPosition = rNode.getPosition();
 }
 
 //------------------------------------------------------------------------------
