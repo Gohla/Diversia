@@ -82,6 +82,7 @@ private:
     Ogre::Vector3 mRotationAxis;
     Ogre::Vector3 mDirector;
     Ogre::Vector3 mHitPoint;
+    Radian mRotationAccumulator;
     camp::UserObject mUserObject;
     sigc::connection mUpdateConnection;
 

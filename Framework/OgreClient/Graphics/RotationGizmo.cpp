@@ -173,6 +173,7 @@ void RotationGizmo::drag( bool dragStart, int param, const Vector3& rPosition )
         mUpdateConnection.block( false );
         mArrowNode->setScale( Gizmo::getSceneNode()->getScale() );
         mHitPoint = toVector3<Ogre::Vector3>( rPosition );
+        mRotationAccumulator = 0;
 
         Ogre::Plane plane( Ogre::Vector3::UNIT_X, 0.0f );
         switch( mDragAxis )
@@ -256,9 +257,31 @@ void RotationGizmo::checkHighlight()
 void RotationGizmo::update()
 {
     mArrowNode->setScale( Gizmo::getSceneNode()->getScale() );
-    Ogre::Radian rfAngle( (mDirector.x * (Real)mMouse->mMouseState.x.rel) - (mDirector.y * (Real)mMouse->mMouseState.y.rel) );
-    Gizmo::getControlledObject().rotate( toVector3<Vector3>( mRotationAxis ), 
-        toRadian<Radian>( rfAngle ) * 0.02, Node::TS_LOCAL );
+    Ogre::Radian rfAngle = Ogre::Radian( (mDirector.x * (Real)mMouse->mMouseState.x.rel) - 
+        (mDirector.y * (Real)mMouse->mMouseState.y.rel) ) * 0.02;
+    
+    if( Gizmo::isSnappingToGrid() )
+    {
+        mRotationAccumulator += toRadian<Radian>( rfAngle );
+
+        if( mRotationAccumulator.valueDegrees() >= 45 )
+        {
+            Gizmo::getControlledObject().rotate( toVector3<Vector3>( mRotationAxis ), 
+                Radian( Degree( 45 ) ), Node::TS_LOCAL );
+            mRotationAccumulator = 0;
+        }
+        else if( mRotationAccumulator.valueDegrees() <= -45 )
+        {
+            Gizmo::getControlledObject().rotate( toVector3<Vector3>( mRotationAxis ), 
+                Radian( Degree( -45 ) ), Node::TS_LOCAL );
+            mRotationAccumulator = 0;
+        }
+    }
+    else
+    {
+        Gizmo::getControlledObject().rotate( toVector3<Vector3>( mRotationAxis ), 
+            toRadian<Radian>( rfAngle ), Node::TS_LOCAL );
+    }
 
     mMouse->mMouseState.clear();
 }

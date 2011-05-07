@@ -453,6 +453,30 @@ void Node::rotate(const Quaternion& q, TransformSpace relativeTo)
     needUpdate();
 }
 
+void Node::rotateUpdate( Quaternion& orientation, const Quaternion& q, 
+    TransformSpace relativeTo /*= TS_LOCAL*/ )
+{
+    // Normalise quaternion to avoid drift
+    Quaternion qnorm = q;
+    qnorm.normalise();
+
+    switch(relativeTo)
+    {
+    case TS_PARENT:
+        // Rotations are normally relative to local axes, transform up
+        orientation = qnorm * mOrientation;
+        break;
+    case TS_WORLD:
+        // Rotations are normally relative to local axes, transform up
+        orientation = mOrientation * _getDerivedOrientation().Inverse()
+            * qnorm * _getDerivedOrientation();
+        break;
+    case TS_LOCAL:
+        // Note the order of the mult, i.e. q comes after
+        orientation = mOrientation * qnorm;
+        break;
+    }
+}
 
 //-----------------------------------------------------------------------
 void Node::_setDerivedPosition( const Vector3& pos )

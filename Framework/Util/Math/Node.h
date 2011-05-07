@@ -489,9 +489,13 @@ public:
     */
     void rotate(const Vector3& axis, const Radian& angle, TransformSpace relativeTo = TS_LOCAL);
 
-    /** Rotate the node around an aritrary axis using a Quarternion.
+    /** Rotate the node around an arbitrary axis using a Quaternion.
     */
     void rotate(const Quaternion& q, TransformSpace relativeTo = TS_LOCAL);
+
+    /** Return rotation the node around an arbitrary axis using a Quaternion.
+    */
+    void rotateUpdate(Quaternion& orientation, const Quaternion& q, TransformSpace relativeTo = TS_LOCAL);
 
     /** Gets a matrix whose columns are the local axes based on
         the nodes orientation relative to it's parent. */
