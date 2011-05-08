@@ -139,7 +139,7 @@ void ObjectSelection::toggleSelection( const camp::UserObject& rObject, bool sil
 
 void ObjectSelection::cropSelection( const camp::UserObject& rObject, bool silent /*= false*/ )
 {
-    ObjectSelection::deselectAll( true );
+    ObjectSelection::deselectAll( silent );
     ObjectSelection::select( rObject, silent );
 }
 
