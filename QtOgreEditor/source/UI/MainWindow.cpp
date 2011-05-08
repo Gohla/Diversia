@@ -102,7 +102,6 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     mGizmoActions->addAction( mUI.actionRotation_mode );
     mGizmoActions->addAction( mUI.actionScaling_mode );
     mGizmoActions->setExclusive( true );
-    mUI.actionSelection_mode->setChecked( true );
     mUI.manipulationToolBar->addActions( mGizmoActions->actions() );
 
     // Setup log severity controls.

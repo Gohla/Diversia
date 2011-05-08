@@ -36,6 +36,13 @@ EditorObject::EditorObject( const String& rName, Mode mode, NetworkingType type,
     mGizmo( 0 ),
     mSelected( false )
 {
+    if( EditorGlobals::mMainWindow->mUI.actionMovement_mode->isChecked() ) mGizmoMode = MOVEMENT;
+    else if( EditorGlobals::mMainWindow->mUI.actionRotation_mode->isChecked() ) mGizmoMode = ROTATION;
+    else if( EditorGlobals::mMainWindow->mUI.actionScaling_mode->isChecked() ) mGizmoMode = SCALING;
+    else if( EditorGlobals::mMainWindow->mUI.actionSelection_mode->isChecked() ) mGizmoMode = NONE;
+
+    if( EditorGlobals::mMainWindow->mUI.actionSnap_to_grid->isChecked() ) mSnapToGrid = true;
+
     QObject::connect( EditorGlobals::mMainWindow->mGizmoActions, SIGNAL( triggered(QAction*) ), 
         this, SLOT( gizmoModeChange(QAction*) ) );
     QObject::connect( EditorGlobals::mMainWindow->mUI.actionSnap_to_grid, SIGNAL( toggled(bool) ),
