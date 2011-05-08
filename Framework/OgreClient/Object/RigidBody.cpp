@@ -53,6 +53,8 @@ RigidBody::RigidBody( const String& rName, Mode mode, NetworkingType networkingT
         &RigidBody::componentChange ) );
     ClientComponent::connectPluginStateChange( sigc::mem_fun( this, 
         &RigidBody::pluginStateChanged ) );
+
+    if( ClientComponent::getPluginState() == STOP ) RigidBody::pluginStateChanged( STOP, STOP );
 }
 
 RigidBody::~RigidBody()
@@ -115,9 +117,6 @@ void RigidBody::createRigidBody()
             PropertySynchronization::storeState( camp::Args( "NoRestore", "NoBitStream" ) );
             RigidBody::destroyRigidBody();
         }
-
-        // Check mass
-        //if( mPhysicsType == PHYSICSTYPE_STATIC || mPhysicsType == PHYSICSTYPE_KINEMATIC ) mMass = 0;
 
         // Calculate inertia
         btVector3 inertia;
