@@ -63,6 +63,8 @@ class QtLogger;
 class EditState;
 class InitialState;
 class LoadingState;
+class PauseState;
+class PlayState;
 
 // UI
 class ConnectDialog;

@@ -104,6 +104,12 @@
     <ClInclude Include="..\..\QtOgreEditor\source\Object\EditorObjectManager.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\State\PlayState.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\State\PauseState.h">
+      <Filter>State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\QtOgreEditor\source\Platform\StableHeaders.cpp">
@@ -318,6 +324,12 @@
     </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_EditorObject.cpp">
       <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\State\PlayState.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\State\PauseState.cpp">
+      <Filter>State</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

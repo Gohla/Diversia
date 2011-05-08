@@ -122,6 +122,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\QtOgreEditor\source\Log\QtLogger.h" />
+    <ClInclude Include="..\..\QtOgreEditor\source\State\PauseState.h" />
+    <ClInclude Include="..\..\QtOgreEditor\source\State\PlayState.h" />
     <CustomBuild Include="..\..\QtOgreEditor\source\UI\ObjectTemplateTreeView.h">
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing %(Identity)...</Message>
@@ -459,6 +461,8 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Graphics\OgreWidget.cpp" />
+    <ClCompile Include="..\..\QtOgreEditor\source\State\PauseState.cpp" />
+    <ClCompile Include="..\..\QtOgreEditor\source\State\PlayState.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\UI\ConnectDialog.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\UI\MainWindow.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\UI\NewGameDialog.cpp" />

@@ -19,6 +19,8 @@ This file is part of Diversia.
 #include "Object/EditorObject.h"
 #include "OgreClient/Graphics/SceneManagerPlugin.h"
 #include "State/LoadingState.h"
+#include "State/PauseState.h"
+#include "State/PlayState.h"
 #include "UI/MainWindow.h"
 #include "UI/ObjectTreeView.h"
 #include "Util/Serialization/XMLSerializationFile.h"
@@ -235,7 +237,15 @@ void MainWindow::disconnect()
     msgBox.setStandardButtons( QMessageBox::Yes | QMessageBox::No );
     msgBox.setDefaultButton( QMessageBox::No );
     if( msgBox.exec() == QMessageBox::Yes )
-        EditorGlobals::mState->popTo( 1 );
+    {
+        // First pop to edit (stopped) state, if we are in played or paused state.
+        EditorGlobals::mState->popTo( 3 );
+
+        // Pop to initial state in the next tick so that plugins can handle the transition to the
+        // stop state.
+        DelayedCall::create( sigc::bind( sigc::mem_fun( EditorGlobals::mState, 
+            &StateMachine::popTo ), 1 ), 0 );
+    }
 }
 
 void MainWindow::save()
@@ -351,15 +361,11 @@ void MainWindow::play()
 {
     try
     {
-        // TODO: What about multiple 'servers'?
-        GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PLAY );
-        mUI.actionPlay->setEnabled( false );
-        mUI.actionPause->setEnabled( true );
-        mUI.actionStop->setEnabled( true );
+        GlobalsBase::mState->pushState( new PlayState() );
     }
     catch( const Exception& e )
     {
-    	LOGE << "Could not start the game: " << e.what();
+    	LOGE << "Could not play the game: " << e.what();
     }
 }
 
@@ -367,16 +373,14 @@ void MainWindow::pause( bool pause )
 {
     try
     {
-        // TODO: What about multiple 'servers'?
         if( pause )
         {
-            GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PAUSE );
-            mUI.actionStop->setEnabled( false );
+            GlobalsBase::mState->pushState( new PauseState() );
         }
         else
         {
-            GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PLAY );
-            mUI.actionStop->setEnabled( true );
+            // Pop the pause state off the stack.
+            GlobalsBase::mState->popState();
         }
     }
     catch( const Exception& e )
@@ -389,11 +393,8 @@ void MainWindow::stop()
 {
     try
     {
-        // TODO: What about multiple 'servers'?
-        GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( STOP );
-        mUI.actionStop->setEnabled( false );
-        mUI.actionPause->setEnabled( false );
-        mUI.actionPlay->setEnabled( true );
+        // Pop the play state off the stack.
+        GlobalsBase::mState->popState();
     }
     catch( const Exception& e )
     {

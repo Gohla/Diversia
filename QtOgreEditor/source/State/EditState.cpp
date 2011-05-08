@@ -61,7 +61,13 @@ void EditState::suspend()
 
 void EditState::wake()
 {
-
+    // TODO: What about multiple 'servers'?
+    GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( STOP );
+    EditorGlobals::mMainWindow->mUI.actionStop->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionPause->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionPlay->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionSave->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionSave_as->setEnabled( true );
 }
 
 void EditState::activeServerDisconnected( ServerAbstract& rActiveServer )
