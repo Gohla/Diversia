@@ -128,6 +128,7 @@ TranslationGizmo::~TranslationGizmo()
     GlobalsBase::mScene->destroySceneNode( mYNode );
     GlobalsBase::mScene->destroySceneNode( mZNode );
 
+    GlobalsBase::mSelection->removeObject( mUserObject );
     GlobalsBase::mSelection->removeHoverSlot( mUserObject );
     GlobalsBase::mSelection->removeDragSlot( mUserObject );
     mUpdateConnection.disconnect();

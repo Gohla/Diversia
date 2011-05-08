@@ -153,6 +153,22 @@ void ObjectSelection::deselectAll( bool silent /*= false*/ )
     }
 }
 
+void ObjectSelection::removeObject( const camp::UserObject& rObject )
+{
+    ObjectSelection::deselect( rObject );
+    if( mObjectUnderMouse && *mObjectUnderMouse == rObject ) 
+    {
+        mObjectUnderMouse = 0;
+        mParamUnderMouse = std::numeric_limits<int>::min();
+    }
+    if( mDraggingObject && *mDraggingObject == rObject )
+    {
+        mDraggingObject = 0;
+        mDraggingParam = std::numeric_limits<int>::min();
+        mDragging = false;
+    }
+}
+
 bool ObjectSelection::mouseMoved( const MouseState& rState )
 {
     mMouseState = rState;

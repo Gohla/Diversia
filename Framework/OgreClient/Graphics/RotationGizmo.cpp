@@ -134,6 +134,7 @@ RotationGizmo::~RotationGizmo()
     GlobalsBase::mScene->destroyManualObject( mArrowIndicator );
     GlobalsBase::mScene->destroySceneNode( mArrowNode );
 
+    GlobalsBase::mSelection->removeObject( mUserObject );
     GlobalsBase::mSelection->removeHoverSlot( mUserObject );
     GlobalsBase::mSelection->removeDragSlot( mUserObject );
     mUpdateConnection.disconnect();

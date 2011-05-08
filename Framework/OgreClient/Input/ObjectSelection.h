@@ -160,6 +160,12 @@ public:
     **/
     void deselectAll( bool silent = false );
     /**
+    Removes an object from object selection to prevent using null pointer or invalid objects.
+    
+    @param  rObject The object to remove. 
+    **/
+    void removeObject( const camp::UserObject& rObject );
+    /**
     Sets a slot to the object clicked signal.
     
     @param  rObject The object to set the slot for.
