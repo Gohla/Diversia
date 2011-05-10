@@ -78,6 +78,7 @@ ObjectSelection::ObjectSelection( unsigned int queryMask /*= QueryFlags_Entity*/
     mClick( false ),
     mDragClick( false ),
     mDragging( false ),
+    mEnableVolumeSelect( true ),
     mObjectUnderMouse( 0 ),
     mParamUnderMouse( std::numeric_limits<int>::min() ),
     mDraggingObject( 0 ),
@@ -195,7 +196,8 @@ bool ObjectSelection::mousePressed( const MouseButton button )
                 mClick = true;
                 mClickTimer.reset();
 
-                if( GlobalsBase::mInput->getKeyboardState().isButtonDown( KC_LCONTROL ) )
+                if( GlobalsBase::mInput->getKeyboardState().isButtonDown( KC_LCONTROL ) && 
+                    mEnableVolumeSelect )
                 {
                     mDragStart.x = (float)mMouseState.x.abs / 
                         (float)GlobalsBase::mInput->getWindowWidth();
@@ -245,22 +247,27 @@ void ObjectSelection::mouseReleased( const MouseButton button )
                 {
                     // Add object under cursor to selection.
                     ObjectSelection::select( *mObjectUnderMouse );
-                    ObjectSelection::fireClick( *mObjectUnderMouse );
+                    // Check again, object could have been destroyed.
+                    if( mObjectUnderMouse ) ObjectSelection::fireClick( *mObjectUnderMouse );
                 }
                 else if( !GlobalsBase::mInput->getKeyboardState().isButtonDown( KC_LCONTROL ) && 
                     objectUnderMouseSelected )
                 {
                     // Crop selection to object under cursor.
                     ObjectSelection::cropSelection( *mObjectUnderMouse );
-                    ObjectSelection::fireClick( *mObjectUnderMouse );
+                    // Check again, object could have been destroyed.
+                    if( mObjectUnderMouse ) ObjectSelection::fireClick( *mObjectUnderMouse );
                 }
                 else if( !GlobalsBase::mInput->getKeyboardState().isButtonDown( KC_LCONTROL ) && 
                     !objectUnderMouseSelected )
                 {
                     // Deselect everything and only select the object under cursor.
                     ObjectSelection::deselectAll();
-                    ObjectSelection::select( *mObjectUnderMouse );
-                    ObjectSelection::fireClick( *mObjectUnderMouse );
+                    if( mObjectUnderMouse ) // Check again, object could have been destroyed.
+                    {
+                        ObjectSelection::select( *mObjectUnderMouse );
+                        ObjectSelection::fireClick( *mObjectUnderMouse );
+                    }
                 }
             }
             else if( mClick && mClickTimer.getMilliseconds() < 150 && 
@@ -342,7 +349,7 @@ void ObjectSelection::update()
 
     // Detect dragging
     if( mDragClick && GlobalsBase::mInput->getKeyboardState().isButtonDown( KC_LCONTROL ) && 
-        !mDoVolumeQuery )
+        !mDoVolumeQuery && mEnableVolumeSelect )
     {
         // If Ctrl is hold, start a volume query to select multiple objects.
         mDoVolumeQuery = true;
@@ -357,7 +364,7 @@ void ObjectSelection::update()
     }
 
     // Update volume query rectangle.
-    if( mDoVolumeQuery )
+    if( mDoVolumeQuery && mEnableVolumeSelect )
     {
         mRectangle->setCorners( mDragStart, mDragStop );
     }

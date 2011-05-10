@@ -55,6 +55,7 @@ private slots:
     void stop();
     void undo();
     void redo();
+    void gizmoModeChange( QAction* pAction );
 
 private:
     friend class QtLogger;

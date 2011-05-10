@@ -117,6 +117,18 @@ public:
     **/
     inline void setQueryMask( unsigned int queryMask ) { mQueryMask = queryMask; }
     /**
+    Query if volume selection is enabled. 
+    
+    @return True if it enabled, false if not. 
+    **/
+    inline bool volumeSelectEnabled() const { return mEnableVolumeSelect; }
+    /**
+    Enables volume selecton. 
+    
+    @param  enable  True to enable, false to disable. 
+    **/
+    inline void enableVolumeSelect( bool enable = true ) { mEnableVolumeSelect = enable; }
+    /**
     Adds an object to the selection. 
     
     @param [in,out] rObject The object to add to the selection.
@@ -311,6 +323,7 @@ private:
     bool                                    mDragging;
     Ogre::Vector2                           mDragStart;
     Ogre::Vector2                           mDragStop;
+    bool                                    mEnableVolumeSelect;
     Ogre::PlaneBoundedVolumeListSceneQuery* mVolumeQuery;
     SelectionRectangle*                     mRectangle;
     bool                                    mDoVolumeQuery;

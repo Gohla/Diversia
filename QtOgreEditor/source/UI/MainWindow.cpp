@@ -18,6 +18,7 @@ This file is part of Diversia.
 #include "GameMode/EditorGameMode.h"
 #include "Object/EditorObject.h"
 #include "OgreClient/Graphics/SceneManagerPlugin.h"
+#include "OgreClient/Input/ObjectSelection.h"
 #include "State/LoadingState.h"
 #include "State/PauseState.h"
 #include "State/PlayState.h"
@@ -105,6 +106,8 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     mGizmoActions->addAction( mUI.actionScaling_mode );
     mGizmoActions->setExclusive( true );
     mUI.manipulationToolBar->addActions( mGizmoActions->actions() );
+    QObject::connect( mGizmoActions, SIGNAL( triggered(QAction*) ), this, 
+        SLOT( gizmoModeChange(QAction*) ) );
 
     // Setup log severity controls.
     QSignalMapper* severitySignalMapper = new QSignalMapper( this );
@@ -494,6 +497,13 @@ void MainWindow::closeEvent( QCloseEvent* pEvent )
     settings.endGroup(); // MainWindow
 
     QMainWindow::closeEvent( pEvent );
+}
+
+void MainWindow::gizmoModeChange( QAction* pAction )
+{
+    // Only enable volume selection in selection mode.
+    if( pAction == mUI.actionSelection_mode ) GlobalsBase::mSelection->enableVolumeSelect( true );
+    else GlobalsBase::mSelection->enableVolumeSelect( false );
 }
 
 //------------------------------------------------------------------------------
