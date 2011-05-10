@@ -125,8 +125,12 @@ void Component::setNetworkingType( NetworkingType type )
 Component& Component::duplicate( Object& rObject )
 {
     Component& component = rObject.createComponent( mType, mName, mLocalOverride );
-    if( mTemplate ) component.setTemplate( mTemplate );
     component.setOverriddenProperties( mOverriddenProperties );
+    if( mTemplate ) 
+    {
+        component.setTemplate( mTemplate );
+        mTemplate->addInstantiatedComponent( component );
+    }
 
     camp::UserObject userObject = this;
     const camp::Class& metaclass = userObject.getClass();

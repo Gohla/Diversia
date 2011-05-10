@@ -164,6 +164,10 @@ void TranslationGizmo::drag( bool dragStart, int param, const Vector3& rPosition
 
     if( mDragAxis != NO_AXIS ) 
     {
+        // Duplicate if control key is being hold
+        if( GlobalsBase::mInput->getKeyboardState().isButtonDown( KC_LCONTROL ) )
+            Gizmo::getControlledObject().duplicate();
+
         mMouse->mCapture = true;
         mUpdateConnection.block( false );
     }
