@@ -75,6 +75,7 @@ private slots:
     void createComponent( int componentType );
     void componentAction( QObject* pObject );
     void createTemplate();
+    void duplicate();
     void destroyObject();
     void destroyComponent();
     void destroySelected();

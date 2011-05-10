@@ -191,7 +191,9 @@ void ObjectTreeView::load( const QModelIndex& rIndex )
                 EditorGlobals::mMainWindow->mUI.actionDestroy_object );
             EditorGlobals::mMainWindow->mUI.toolBarObject->addAction( mComponentMenuAction );
             EditorGlobals::mMainWindow->mUI.toolBarObject->addAction( 
-                EditorGlobals::mMainWindow->mUI.actionCreate_template_from_object );    
+                EditorGlobals::mMainWindow->mUI.actionDuplicate_object );
+            EditorGlobals::mMainWindow->mUI.toolBarObject->addAction( 
+                EditorGlobals::mMainWindow->mUI.actionCreate_template_from_object );
 
             break;
         }
@@ -276,6 +278,8 @@ void ObjectTreeView::showContextMenu( const QPoint& rPoint )
                 contextMenu.addAction( EditorGlobals::mMainWindow->mUI.actionCreate_child_object );
                 contextMenu.addAction( EditorGlobals::mMainWindow->mUI.actionDestroy_object );
                 contextMenu.addMenu( mComponentMenu );
+                contextMenu.addAction( 
+                    EditorGlobals::mMainWindow->mUI.actionDuplicate_object );
                 contextMenu.addAction( 
                     EditorGlobals::mMainWindow->mUI.actionCreate_template_from_object );   
                 break;
@@ -430,6 +434,23 @@ void ObjectTreeView::createTemplate()
         catch( Exception e )
         {
             LOGE << "Could not create object template from object: " << e.what();
+        }
+    }
+}
+
+void ObjectTreeView::duplicate()
+{
+    QModelIndexList selectedIndexes = QTreeView::selectionModel()->selectedIndexes();
+    if( selectedIndexes.size() == 1 )
+    {
+        try
+        {
+            Object& object = ObjectTreeView::getObject( selectedIndexes.at( 0 ) );
+            object.duplicate();
+        }
+        catch( const Exception& e )
+        {
+            LOGE << "Could not duplicate object: " << e.what();
         }
     }
 }
@@ -651,6 +672,8 @@ void ObjectTreeView::clearActions()
         EditorGlobals::mMainWindow->mUI.actionCreate_template_from_object );
     EditorGlobals::mMainWindow->mUI.toolBarObject->removeAction( 
         EditorGlobals::mMainWindow->mUI.actionDestroy_selected );
+    EditorGlobals::mMainWindow->mUI.toolBarObject->removeAction( 
+        EditorGlobals::mMainWindow->mUI.actionDuplicate_object );
 }
 
 //------------------------------------------------------------------------------

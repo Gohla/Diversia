@@ -199,6 +199,14 @@ public:
     **/
     Object& createChildObject( const String& rName );
     /**
+    Duplicates this object and all its components.
+    
+    @param  rName           The name of the new object. Empty to generate name.
+    
+    @return A duplicate of this object. 
+    **/
+    Object& duplicate( const String& rName = "" );
+    /**
     Convenience function for destroying this object.
     **/
     inline void destroyObject() { mObjectManager.destroyObject( mName ); }

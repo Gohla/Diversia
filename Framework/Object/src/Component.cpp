@@ -122,6 +122,32 @@ void Component::setNetworkingType( NetworkingType type )
     }
 }
 
+Component& Component::duplicate( Object& rObject )
+{
+    Component& component = rObject.createComponent( mType, mName, mLocalOverride );
+    if( mTemplate ) component.setTemplate( mTemplate );
+    component.setOverriddenProperties( mOverriddenProperties );
+
+    camp::UserObject userObject = this;
+    const camp::Class& metaclass = userObject.getClass();
+    std::size_t count = metaclass.propertyCount( true );
+    for( std::size_t i = 0; i < count; ++i )
+    {
+        try
+        {
+            const camp::Property& prop = metaclass.property( i, true );
+            prop.set( component, prop.get( userObject ) );
+        }
+        catch( ... )
+        {
+            // Ignore errors (camp cannot write error can be ignored as it will delay setting
+            // the property until the component is loaded).
+        }
+    }
+
+    return component;
+}
+
 void Component::destroyComponentLocally()
 {
     try

@@ -122,6 +122,14 @@ public:
     **/
     inline String getGUIDString() { return boost::lexical_cast<String>( GetNetworkID() ); }
     /**
+    Duplicates this component.
+    
+    @param [in,out] rObject The object to create a duplicate on.
+    
+    @return A duplicate of this component. 
+    **/
+    Component& duplicate( Object& rObject );
+    /**
     Convenience function for destroying this component.
     **/
     inline void destroyComponent() { mObject.destroyComponent( mName ); }
@@ -160,12 +168,11 @@ public:
     **/
     void setProperty( const String& rPropertyName, const camp::Value& rValue );
     /**
-    Blocks property overriding. This can be used to stop property overriding temporarily when 
-    deserializing this component.
+    Sets the overridden properties. 
     
-    @param  block   True to block, false to unblock.
+    @param  rProperties Set of overridden properties. 
     **/
-    void blockPropertyOverriding( bool block = true );
+    inline void setOverriddenProperties( const std::set<String>& rProperties ) { mOverriddenProperties = rProperties; }
 
     /**
     Connects a slot to the destruction signal.

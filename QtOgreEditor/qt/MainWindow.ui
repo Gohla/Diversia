@@ -1248,6 +1248,24 @@
     <string>Ctrl+G</string>
    </property>
   </action>
+  <action name="actionDuplicate_object">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/apps/wine-uninstaller.png</normaloff>:/Icons/Icons/apps/wine-uninstaller.png</iconset>
+   </property>
+   <property name="text">
+    <string>Duplicate object</string>
+   </property>
+   <property name="toolTip">
+    <string>Duplicates selected object</string>
+   </property>
+   <property name="shortcut">
+    <string>Ctrl+D</string>
+   </property>
+   <property name="shortcutContext">
+    <enum>Qt::WidgetShortcut</enum>
+   </property>
+  </action>
   <zorder>propertyBrowserDock</zorder>
   <zorder>objectsDock</zorder>
   <zorder>pluginsDock</zorder>
@@ -1282,6 +1300,7 @@
     <slot>createTemplate()</slot>
     <slot>showRuntimeObjects(bool)</slot>
     <slot>showDefaultComponents(bool)</slot>
+    <slot>duplicate()</slot>
    </slots>
   </customwidget>
   <customwidget>
@@ -1796,6 +1815,22 @@
     <hint type="destinationlabel">
      <x>560</x>
      <y>440</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionDuplicate_object</sender>
+   <signal>triggered()</signal>
+   <receiver>treeViewObjects</receiver>
+   <slot>duplicate()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>127</x>
+     <y>204</y>
     </hint>
    </hints>
   </connection>

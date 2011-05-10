@@ -247,6 +247,35 @@ Object& Object::createChildObject( const String& rName )
     return object;
 }
 
+Object& Object::duplicate( const String& rName /*= ""*/ )
+{
+    static unsigned int count = 0;
+
+    // Duplicate object
+    Object& object = mObjectManager.createObject( rName.empty() ? mName + 
+        boost::lexical_cast<String>( count++ ) : rName, mType, mDisplayName );
+    if( mTemplate ) object.setTemplate( mTemplate );
+    object.setPosition( Node::getPosition() );
+    object.setOrientation( Node::getOrientation() );
+    object.setScale( Node::getScale() );
+
+    // Duplicate child objects
+    ObjectChilds childs = Object::getChildObjects();
+    for( ObjectChilds::iterator i = childs.begin(); i != childs.end(); ++i )
+    {
+        i->second->duplicate().parent( &object );
+    }
+
+    // Duplicate components
+    for( ComponentsByType::iterator i = mComponentsByType.begin(); i != mComponentsByType.end(); 
+        ++i )
+    {
+        if( !Object::hasAutoCreateComponent( i->first ) ) i->second->duplicate( object );
+    }
+
+    return object;
+}
+
 Component& Object::createComponent( ComponentType type, const String& rName,
     bool localOverride /*= false*/, RakNet::RakNetGUID source /*= RakNet::RakNetGUID( 0 )*/ )
 {
