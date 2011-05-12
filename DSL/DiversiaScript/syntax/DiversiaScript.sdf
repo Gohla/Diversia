@@ -16,6 +16,7 @@ exports
     "external" "def" Id -> ObjectDef {cons("ExternalObjectDef")}
     ObjectDef -> GlobalDef
     ObjectDef -> InsideDef
+    Id -> ObjectRef {cons("ObjectRef")}
     
     %% Component
     "component" Id "{" PropAssign* "}" -> InsideDef {cons("ComponentDef")}
@@ -24,6 +25,7 @@ exports
     "state" Id "{" InsideDef* "}" -> StateDef {cons("StateDef")}
     "default" "state" Id "{" InsideDef* "}" -> StateDef {cons("DefaultStateDef")}
     StateDef -> InsideDef
+    Id -> StateRef {cons("StateRef")}
     
     %% Event reaction
     "on" Id "(" {Param ","}* ")" "{" Statement* "}" -> EventDef {cons("EventDef")}
@@ -92,8 +94,8 @@ exports
     "if" "(" Exp ")" Statement    													-> Statement {cons("IfNoElse")} %% desugered
     "while" "(" Exp ")" Statement                       							-> Statement {cons("While")}
     Exp "=" Exp ";"                                     							-> Statement {cons("Assign")}
-    "new" Id "{" PropAssign* "}"        											-> Statement {cons("ObjectNew")}
-    "setstate" Id ";"                                   							-> Statement {cons("StateChange")}
+    "new" ObjectRef "{" PropAssign* "}"        										-> Statement {cons("ObjectNew")}
+    "setstate" StateRef ";"                                   						-> Statement {cons("StateChange")}
     "switch" "(" Exp ")" "{" Case* "}"                  							-> Statement {cons("Switch")}
     "case" Exp ":" Statement                       									-> Case {cons("Case")}
     "in" Exp TimeUnit "{" Statement* "}"    										-> Statement {cons("Delay")}
