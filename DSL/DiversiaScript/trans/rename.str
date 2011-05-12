@@ -1,0 +1,47 @@
+module rename
+
+imports 
+	include/DiversiaScript
+	lib/namespaces
+	namespace
+	
+strategies
+
+	rename-all = alltd(rename)
+
+rules
+	
+	rename :
+		ObjectDef(name, statements) -> ObjectDef(name', statements')
+		where 
+			<rename-declaration(|Vars())> name => name';
+			new-scope (
+				<rename-all> statements => statements'
+			)
+			
+	rename :
+		StateDef(name, statements) -> StateDef(name', statements')
+		where 
+			<rename-declaration(|States())> name => name';
+			new-scope (
+				<rename-all> statements => statements'
+			)
+			
+	rename :
+		EventDef(name, statements) -> EventDef(name', statements')
+		where 
+			<rename-declaration(|Events())> name => name';
+			new-scope (
+				<rename-all> statements => statements'
+			)
+
+	rename : 
+		VarDef(name, exp) -> VarDef(name', exp)
+		where
+			<rename-declaration(|Vars())> name => name'
+			
+	rename :
+		ComponentDef(name, params) -> ComponentDef(name', params)
+		where
+			<rename-declaration(|Components())> name => name'
+			

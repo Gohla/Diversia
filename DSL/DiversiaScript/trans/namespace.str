@@ -1,0 +1,9 @@
+module namespace
+	
+signature constructors // namespaces
+	
+	Objects : Namespace
+	Components : Namespace
+	States : Namespace
+	Events : Namespace
+	Vars : Namespace
