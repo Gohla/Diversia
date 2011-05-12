@@ -1,0 +1,119 @@
+%% Grammar for the Lua language
+%% By default, based on an example "entities" syntax
+module Lua
+
+imports Lexical
+
+exports
+
+  context-free start-symbols
+    Start
+
+  context-free syntax
+  
+    %% Chunk
+    StatementClosure* LastStatementClosure? -> Chunk {cons("Chunk")}
+    Chunk -> Start
+    Chunk -> Block
+    
+    %% Statement
+    VarRefList "=" ExpList -> Statement {cons("Assignment")}
+    FunctionCall -> Statement {cons("FunctionCall")}
+	"do" Block "end" -> Statement {cons("DoWhile")}
+	"while" Exp "do" Block "end" -> Statement {cons("While")}
+	"repeat" Block "until" Exp -> Statement {cons("Repeat")}
+	"elsif" Exp "then" Block -> ElseIfPart {cons("ElseIfPart")}
+	"else" Block -> ElsePart {cons("ElsePart")}
+	"if" Exp "then" Block ElseIfPart* ElsePart? "end" -> Statement {cons("If")}
+	"," Exp -> ExpPart {cons("ExpPart")}
+	"for" Id "=" Exp "," Exp ExpPart? "do" Block "end" -> Statement {cons("For")}
+	"for" IdList "in" ExpList "do" Block "end" -> Statement {cons("ForIn")}
+	"function" FunctionName FunctionBody -> Statement {cons("Function")}
+	"local" "function" Id FunctionBody -> Statement {cons("LocalFunction")}
+	"local" IdList -> Statement {cons("LocalVariable")}
+	"local" IdList "=" ExpList -> Statement {cons("LocalVariableInit")}
+	Statement -> StatementClosure
+    Statement ";" -> StatementClosure
+    
+	%% Last statement
+	"return" -> LastStatement {cons("Return")}
+	"return" ExpList -> LastStatement {cons("ReturnExp")}
+	"break" -> LastStatement {cons("Break")}
+	LastStatement -> LastStatementClosure
+    LastStatement ";" -> LastStatementClosure
+    
+    %% Function
+    "." Id -> DotIdPart {cons("DotIdPart")}
+    ":" Id -> ColonIdPart {cons("ColonIdPart")}
+    Id DotIdPart* ColonIdPart? -> FunctionName {cons("FunctionName")}
+    PrefixExp Args -> FunctionCall
+    PrefixExp ":" Id Args -> FunctionCall
+    "function" FunctionBody -> Function
+    "(" ParList ")" Block "end" -> FunctionBody {cons("FunctionBody")}
+    
+    %% Args
+    "(" ExpList ")" -> Args
+    TableConstructor -> Args
+    StrConst -> Args
+    
+    %% Variable
+    Id -> VarRef
+    PrefixExp "[" Exp "]" -> VarRef
+    PrefixExp "." Id -> VarRef
+    
+    %% Field
+    "[" Exp "]" "=" Exp -> Field
+    Id "=" Exp -> Field
+    Exp -> Field
+    "," -> FieldSep
+    ";" -> FieldSep
+    "{" FieldList "}" -> TableConstructor
+    
+    %% Expression
+	"nil" -> Exp {cons("nil")}
+	"false" -> Exp {cons("False")}
+	"true" -> Exp {cons("True")}
+	IntConst -> Exp {cons("Number")}
+	FloatConst -> Exp {cons("Number")}
+	StrConst -> Exp {cons("String")}
+	"..." -> Exp {cons("Nothing")}
+	Function -> Exp {cons("Function")}
+	PrefixExp -> Exp {cons("PrefixExp")}
+	TableConstructor -> Exp {cons("TableConstructor")}
+	Exp BinOp Exp -> Exp {cons("Operator")}
+	UnOp Exp -> Exp {cons("UnaryOperator")}
+	
+	%% Operators
+	"+" -> BinOp
+	"-" -> BinOp
+	"*" -> BinOp
+	"/" -> BinOp
+	"^" -> BinOp
+	"%" -> BinOp
+	".." -> BinOp
+	"<" -> BinOp
+	"<=" -> BinOp
+	">" -> BinOp
+	">=" -> BinOp
+	"==" -> BinOp
+	"~=" -> BinOp
+	"and"-> BinOp
+	"or" -> BinOp
+	"-" -> UnOp
+	"not" -> UnOp
+	"#" -> UnOp
+	
+	%% Prefix expression
+	VarRef -> PrefixExp {cons("VarPrefix")}
+	FunctionCall -> PrefixExp {cons("FunctionCallPrefix")}
+	"(" Exp ")" -> PrefixExp {bracket}
+	
+	%% Lists
+	{Exp ","}* -> ExpList
+	{VarRef ","}* -> VarRefList
+	{Id ","}* -> IdList
+	"..." -> ParList
+	"," "..." -> ParListPart
+	IdList ParListPart? -> ParList
+	{Field FieldSep}* -> FieldList
+	
