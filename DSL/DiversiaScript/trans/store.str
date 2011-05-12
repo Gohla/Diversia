@@ -1,0 +1,31 @@
+module store
+
+imports 
+	include/DiversiaScript
+	lib/namespaces
+	namespace
+	
+strategies
+	store-all = topdown(try(store-declarations)); topdown(try(store-references))
+	
+rules // declarations
+	
+	store-declarations : d@ObjectDef(name, _) -> d 
+		where <store-declaration(|Vars())> (name, d)	
+		
+	store-declarations : d@ComponentDef(name, _) -> d 
+		where <store-declaration(|Vars())> (name, d)	
+		
+	store-declarations : d@StateDef(name, _) -> d 
+		where <store-declaration(|States())> (name, d)
+		
+	store-declarations : d@EventDef(name, _) -> d 
+		where <store-declaration(|Events())> (name, d)
+		
+	store-declarations : d@VarDef(name, _) -> d 
+		where <store-declaration(|Vars())> (name, d) 
+			
+rules // references
+	
+	store-references : r@VarRef(name) -> r
+		where <store-reference(|Vars())> name
