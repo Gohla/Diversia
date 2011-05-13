@@ -21,8 +21,8 @@ function Create()
   Ball.Entity = Ball.Object:CreateComponent( ComponentType.Entity, "Entity", false );
   Ball.Entity.Material = "Ball";
   -- Light
-  --Ball.Light = Ball.Object:CreateComponent( ComponentType.Light, "Light", false );
-  --Ball.Light.Type = LightType.Spot;
+  Ball.Light = Ball.Object:CreateComponent( ComponentType.Light, "Light", false );
+  Ball.Light.Type = LightType.Spot;
   
   -- CollisionShape
   Ball.CollisionShape = Ball.Object:CreateComponent( ComponentType.CollisionShape, "CollisionShape", false );
@@ -95,9 +95,9 @@ function Frame( TimeSinceLastFrame )
     if Mouse.State.Z.Relative > 0 then
       Distance = Distance - Distance / 12;
       if Distance < 5 then Distance = 5; end -- Minimum distance
-    --elseif Mouse.State.Z.Relative < 0 then
-    --  Distance = Distance + Distance / 12;
-    --  if Distance > 50 then Distance = 50; end -- Maximum distance
+    elseif Mouse.State.Z.Relative < 0 then
+      Distance = Distance + Distance / 12;
+      if Distance > 50 then Distance = 50; end -- Maximum distance
     end
     Ball.Camera.Object.Position = Vector3.new( 0, 0, Distance );
   
@@ -113,44 +113,44 @@ end
 function KeyPressed( Key )
   if Key == KeyboardButton.W then 
     State.Move = State.Move + 1;
-  --elseif Key == KeyboardButton.S then 
-  --  State.Move = State.Move - 1;
-  --elseif Key == KeyboardButton.A then 
-  --  State.Strafe = State.Strafe + 1;
-  --elseif Key == KeyboardButton.D then 
-  --  State.Strafe = State.Strafe - 1; 
-  --elseif Key == KeyboardButton.Shift then
-  --  State.SpeedMultiplier = 20;
+  elseif Key == KeyboardButton.S then 
+    State.Move = State.Move - 1;
+  elseif Key == KeyboardButton.A then 
+    State.Strafe = State.Strafe + 1;
+  elseif Key == KeyboardButton.D then 
+    State.Strafe = State.Strafe - 1; 
+  elseif Key == KeyboardButton.Shift then
+    State.SpeedMultiplier = 20;
   end
 end
 
 function KeyReleased( Key )
   if Key == KeyboardButton.W then 
     State.Move = State.Move - 1;
-  --elseif Key == KeyboardButton.S then 
-  --  State.Move = State.Move + 1;
-  --elseif Key == KeyboardButton.A then 
-  --  State.Strafe = State.Strafe - 1;
-  --elseif Key == KeyboardButton.D then 
-  --  State.Strafe = State.Strafe + 1;
-  --elseif Key == KeyboardButton.Shift then
-  --  State.SpeedMultiplier = 1;
+  elseif Key == KeyboardButton.S then 
+    State.Move = State.Move + 1;
+  elseif Key == KeyboardButton.A then 
+    State.Strafe = State.Strafe - 1;
+  elseif Key == KeyboardButton.D then 
+    State.Strafe = State.Strafe + 1;
+  elseif Key == KeyboardButton.Shift then
+    State.SpeedMultiplier = 1;
   end
 end
 
 function MousePressed( Button )
   if Button == MouseButton.Left then 
     Mouse.Left = true;
-  --elseif Button == MouseButton.Right then 
-  --  Mouse.Right = true; 
+  elseif Button == MouseButton.Right then 
+    Mouse.Right = true; 
   end
 end
 
 function MouseReleased( Button )
   if Button == MouseButton.Left then 
     Mouse.Left = false;
-  --elseif Button == MouseButton.Right then 
-  --  Mouse.Right = false; 
+  elseif Button == MouseButton.Right then 
+    Mouse.Right = false; 
   end
 end
 
