@@ -40,12 +40,29 @@ namespace OgreClient
 class DIVERSIA_OGRECLIENT_API ScaleGizmo : public Gizmo
 {
 public:
-    ScaleGizmo( ClientObject& rControlledObject );
-    virtual ~ScaleGizmo();
+    /**
+    Constructor. 
+    
+    @param [in,out] pControlledObject   The object this gizmo should control or 0 to control no 
+                                        object. Defaults to 0.
+    **/
+    ScaleGizmo( ClientObject* pControlledObject = 0 );
+    /**
+    Destructor. 
+    **/
+    ~ScaleGizmo();
 
-	
+    /**
+    Sets gizmo visibility.
+    
+    @param  visible True to show, false to hide. 
+    **/
+    void setVisible( bool visible );
     
 private:
+    void controlGizmo( bool control, int param, const Vector3& rPosition, bool duplicate, 
+        Gizmo* pController );
+    inline void controlUpdate() { /*ScaleGizmo::update();*/ }
 
 };
 

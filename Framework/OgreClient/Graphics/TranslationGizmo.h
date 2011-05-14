@@ -43,13 +43,25 @@ public:
     /**
     Constructor. 
     
-    @param [in,out] rControlledObject   The object this gizmo should control. 
+    @param [in,out] pControlledObject   The object this gizmo should control or 0 to control no 
+                                        object. Defaults to 0.
     **/
-    TranslationGizmo( ClientObject& rControlledObject );
+    TranslationGizmo( ClientObject* pControlledObject = 0 );
     /**
     Destructor. 
     **/
     ~TranslationGizmo();
+
+    /**
+    Sets gizmo visibility.
+    
+    @param  visible True to show, false to hide. 
+    **/
+    void setVisible( bool visible );
+    /**
+    Call this if the transform is changed and the gizmo needs to update this.
+    **/
+    void transformChanged();
     
 private:
     Ogre::Entity* createSelectionHelperBox( const Ogre::Vector3& center, 
@@ -57,8 +69,11 @@ private:
     
     void hover( bool hoverIn, int param );
     void drag( bool dragStart, int param, const Vector3& rPosition );
+    void controlGizmo( bool control, int param, const Vector3& rPosition, bool duplicate, 
+        Gizmo* pController );
     void checkHighlight();
     void update();
+    inline void controlUpdate() { TranslationGizmo::update(); }
     void transformChange( const Node& rNode );
 
     static const Real mSelectionHelperSize;
@@ -81,6 +96,8 @@ private:
     camp::UserObject mUserObject;
     sigc::connection mUpdateConnection;
     sigc::connection mPositionChangeConnection;
+    TranslationGizmo* mController;
+    bool mClearMouseState;
 
 };
 

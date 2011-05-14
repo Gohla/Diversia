@@ -24,6 +24,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "OgreClient/Graphics/GraphicsManager.h"
 #include "OgreClient/Graphics/QueryFlags.h"
+#include "OgreClient/Input/ObjectSelection.h"
 #include "OgreClient/Object/Entity.h"
 #include "OgreClient/Object/Mesh.h"
 #include "OgreClient/Object/SceneNode.h"
@@ -55,6 +56,8 @@ Entity::Entity( const String& rName, Mode mode, NetworkingType networkingType,
 Entity::~Entity()
 {
     if( mEntity ) GlobalsBase::mScene->destroyEntity( mEntity );
+
+    GlobalsBase::mSelection->removeObject( mUserObject );
 }
 
 void Entity::setMaterial( const String& rMaterial )

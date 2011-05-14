@@ -37,9 +37,10 @@ namespace OgreClient
 
 Gizmo::GizmoMouse* Gizmo::mMouse = 0;
 
-Gizmo::Gizmo( ClientObject& rControlledObject ):
-    mGizmoNode( GlobalsBase::mScene->createSceneNode() ),
-    mControlledObject( rControlledObject ),
+Gizmo::Gizmo( ClientObject* pControlledObject /*= 0*/ ):
+    mGizmoNode( GlobalsBase::mScene->getRootSceneNode()->createChildSceneNode() ),
+    mControlledObject( pControlledObject ),
+    mControlledGizmos( 0 ),
     mSnapToGrid( false )
 {
     mGizmoNode->setInheritScale( false );
@@ -51,6 +52,44 @@ Gizmo::Gizmo( ClientObject& rControlledObject ):
 Gizmo::~Gizmo()
 {
     GlobalsBase::mScene->destroySceneNode( mGizmoNode );
+
+    mUpdateConnection.disconnect();
+}
+
+bool Gizmo::controlGizmos( bool control, int param /*= 0*/, 
+    const Vector3& rPosition /*= Vector3::ZERO*/, bool duplicate /*= false*/ )
+{
+    if( mControlledGizmos )
+    {
+        for( std::set<Gizmo*>::const_iterator i = mControlledGizmos->begin(); 
+            i != mControlledGizmos->end(); ++i )
+        {
+            (*i)->controlGizmo( control, param, rPosition, duplicate, this );
+        }
+
+        if( control ) mUpdateConnection = GlobalsBase::mUpdateSignal->connect( 
+            sigc::mem_fun( this, &Gizmo::update ) );
+        else mUpdateConnection.disconnect();
+
+        return true;
+    }
+
+    return false;
+}
+
+void Gizmo::update()
+{
+    // Update this (controller) gizmo first.
+    controlUpdate();
+
+    // Update controlled gizmo's
+    for( std::set<Gizmo*>::const_iterator i = mControlledGizmos->begin(); 
+        i != mControlledGizmos->end(); ++i )
+    {
+        (*i)->controlUpdate();
+    }
+
+    mMouse->mMouseState.clear();
 }
 
 //------------------------------------------------------------------------------

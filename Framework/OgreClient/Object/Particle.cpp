@@ -22,10 +22,11 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "OgreClient/Platform/StableHeaders.h"
 
+#include "OgreClient/Graphics/QueryFlags.h"
+#include "OgreClient/Input/ObjectSelection.h"
 #include "OgreClient/Object/Particle.h"
 #include "OgreClient/Object/SceneNode.h"
 #include "OgreClient/Resource/ResourceManager.h"
-#include "OgreClient/Graphics/QueryFlags.h"
 
 namespace Diversia
 {
@@ -55,6 +56,8 @@ Particle::Particle( const String& rName, Mode mode, NetworkingType networkingTyp
 Particle::~Particle()
 {
     if( mParticleSystem ) GlobalsBase::mScene->destroyParticleSystem( mParticleSystem );
+
+    GlobalsBase::mSelection->removeObject( mUserObject );
 }
 
 void Particle::setParticleSystemName( const String& rParticleSystemName )
