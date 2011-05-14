@@ -38,16 +38,6 @@ exports
 	
   lexical syntax  %% Spacing
     [\ \t\n\r] -> LAYOUT
-    
-    %% Block comments
-	BlockComment			-> LAYOUT
-	"/*" CommentPart* "*/"	-> BlockComment
-	~[\/\*]      			-> CommentPart
-	Asterisk     			-> CommentPart
-	Slash        			-> CommentPart
-	BlockComment 			-> CommentPart
-	[\/] 					-> Slash
-	[\*] 					-> Asterisk
 
 	%% Comments
 	"--" ~[\n\r]* ([\n\r] | EOF)     -> LAYOUT
@@ -72,9 +62,6 @@ exports
 	"return"    -/- [a-zA-Z0-9\_]
 	"while"     -/- [a-zA-Z0-9\_]
     
-	Asterisk -/- [\/]
-	Slash    -/- [\*]
-    
     %% EOF may not be followed by any char
     
     EOF           -/- ~[]
@@ -84,5 +71,4 @@ exports
     %% Ensure greedy matching for comments
 
     LAYOUT? -/- [\ \t\n\r]
-    LAYOUT? -/- [\/].[\/]
-    LAYOUT? -/- [\/].[\*]
+    LAYOUT? -/- [\-].[\-]

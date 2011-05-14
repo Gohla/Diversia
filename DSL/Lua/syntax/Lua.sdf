@@ -1,5 +1,3 @@
-%% Grammar for the Lua language
-%% By default, based on an example "entities" syntax
 module Lua
 
 imports Lexical
@@ -18,8 +16,8 @@ exports
     Chunk -> Block
     
     %% Statement
-    VarRefList "=" ExpList -> Statement {cons("Assignment")}
-    FunctionCall -> Statement {cons("Call")}
+    {VarRef ","}+ "=" {Exp ","}+ -> Statement {cons("Assignment")}
+    FunctionCall -> Statement
 	"do" Block "end" -> Statement {cons("DoWhile")}
 	"while" Exp "do" Block "end" -> Statement {cons("While")}
 	"repeat" Block "until" Exp -> Statement {cons("Repeat")}
@@ -30,63 +28,65 @@ exports
 	"if" Exp "then" Block ElseIfPart+ "else" Block "end" -> Statement {cons("If")}
 	"," Exp -> ExpPart {cons("ExpPart")}
 	"for" Id "=" Exp "," Exp ExpPart? "do" Block "end" -> Statement {cons("For")}
-	"for" IdList "in" ExpList "do" Block "end" -> Statement {cons("ForIn")}
-	"function" FunctionName FunctionBody -> Statement {cons("Function")}
-	"local" "function" Id FunctionBody -> Statement {cons("LocalFunction")}
-	"local" IdList -> Statement {cons("LocalVariable")}
-	"local" IdList "=" ExpList -> Statement {cons("LocalVariableInit")}
+	"for" {Id ","}+ "in" {Exp ","}+ "do" Block "end" -> Statement {cons("ForIn")}
+	"function" FunctionName FunctionBody -> Statement {cons("FuncDef")}
+	"local" "function" Id FunctionBody -> Statement {cons("LocalFuncDef")}
+	"local" {Id ","}+ -> Statement {cons("LocalVarDef")}
+	"local" {Id ","}+ "=" {Exp ","}+ -> Statement {cons("LocalVarDef")}
 	Statement -> StatementClosure
     Statement ";" -> StatementClosure
     
 	%% Last statement
 	"return" -> LastStatement {cons("Return")}
-	"return" ExpList -> LastStatement {cons("ReturnExp")}
+	"return" {Exp ","}+ -> LastStatement {cons("Return")}
 	"break" -> LastStatement {cons("Break")}
 	LastStatement -> LastStatementClosure
     LastStatement ";" -> LastStatementClosure
     
     %% Function
     "." Id -> DotIdPart {cons("DotIdPart")}
-    ":" Id -> ColonIdPart {cons("ColonIdPart")}
-    Id DotIdPart* ColonIdPart? -> FunctionName {cons("FunctionName")}
-    PrefixExp Args -> FunctionCall
-    PrefixExp ":" Id Args -> FunctionCall
-    "function" FunctionBody -> Function
+    Id -> FunctionName {cons("FunctionName")}
+    Id ":" Id -> FunctionName {cons("FunctionName")}
+    Id DotIdPart+ -> FunctionName {cons("FunctionName")}
+    Id DotIdPart+ ":" Id -> FunctionName {cons("FunctionName")}
+    PrefixExp Args -> FunctionCall {cons("Call")}
+    PrefixExp ":" Id Args -> FunctionCall {cons("Call")}
     "(" ParList ")" Block "end" -> FunctionBody {cons("FunctionBody")}
     
     %% Args
-    "(" ExpListOptional ")" -> Args
-    TableConstructor -> Args
+    "(" {Exp ","}* ")" -> Args
+    Table -> Args
     StrConst -> Args
     
     %% Variable
     Id -> VarRef {cons("VarRef")}
     PrefixExp "[" Exp "]" -> VarRef {cons("TableVarRef")}
-    PrefixExp "." Id -> VarRef {cons("AccessVarRef")}
+    PrefixExp "." Id -> VarRef {cons("Access")}
     
     %% Field
-    "[" Exp "]" "=" Exp -> Field
-    Id "=" Exp -> Field
-    Exp -> Field
-    "," -> FieldSep
-    ";" -> FieldSep
-    "{" FieldList "}" -> TableConstructor
+    "[" Exp "]" "=" Exp -> Field {cons("Field")}
+    Id "=" Exp -> Field {cons("Field")}
+    Exp -> Field {cons("Field")}
+    "{" "}" -> Table {cons("Table")}
+    "{" Field "}" -> Table {cons("Table"), prefer}
+    "{" {Field ","}+ "}" -> Table {cons("Table")}
+    "{" {Field ";"}+ "}" -> Table {cons("Table")}
     
     %% Expression
-	"nil" -> Exp {cons("nil")}
+	"nil" -> Exp {cons("Nil")}
 	"false" -> Exp {cons("False")}
 	"true" -> Exp {cons("True")}
 	IntConst -> Exp {cons("Number")}
 	FloatConst -> Exp {cons("Number")}
 	StrConst -> Exp {cons("String")}
 	"..." -> Exp {cons("Nothing")}
-	Function -> Exp {cons("Function")}
+	"function" FunctionBody -> Exp {cons("Function")}
 	PrefixExp -> Exp
-	TableConstructor -> Exp {cons("TableConstructor")}
+	Table -> Exp
 	
 	%% Prefix expression
 	VarRef -> PrefixExp
-	FunctionCall -> PrefixExp {cons("FunctionCallPrefix")}
+	FunctionCall -> PrefixExp
 	"(" Exp ")" -> PrefixExp {bracket}
 	
 	%% Operators
@@ -110,20 +110,13 @@ exports
     Exp "or" Exp    -> Exp {cons("Or"), left}
 	
 	%% Lists
-	{Exp ","}+ -> ExpList
-	{Exp ","}* -> ExpListOptional
-	{VarRef ","}+ -> VarRefList
-	{VarRef ","}* -> VarRefListOptional
-	{Id ","}+ -> IdList
-	{Id ","}* -> IdListOptional
 	"..." -> ParList {cons("VaradicParList")}
-	IdList "," "..." -> ParList {cons("PartialVaradicParList")}
-	IdList -> ParList {cons("ParList")}
+	{Id ","}+ "," "..." -> ParList {cons("PartialVaradicParList")}
+	{Id ","}+ -> ParList {cons("ParList")}
 	-> ParList {cons("ParList")}
-	{Field FieldSep}* -> FieldList
 	
     context-free priorities
-    %% Operators, following the operator predecence from: http://www.uni-bonn.de/~manfear/javaoperators.php
+    %% Operators, following the operator predecence from: http://www.lua.org/manual/5.1/manual.html#2.5.6
     {
     	right:
     	Exp "^" Exp -> Exp
@@ -157,7 +150,7 @@ exports
     {
         left:
         Exp "==" Exp -> Exp
-        Exp "!=" Exp -> Exp
+        Exp "~=" Exp -> Exp
         Exp "<" Exp -> Exp
         Exp "<=" Exp -> Exp
         Exp ">" Exp -> Exp
