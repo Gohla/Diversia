@@ -43,10 +43,11 @@ public:
     /**
     Constructor. 
     
-    @param [in,out] pControlledObject   The object this gizmo should control or 0 to control no 
-                                        object. Defaults to 0.
+    @param [in,out] pControlledObject   The object this gizmo should control or 0 to control no
+                                        object. Defaults to 0. 
+    @param  rName                       The name used to create the gizmo meshes. 
     **/
-    RotationGizmo( ClientObject* pControlledObject = 0 );
+    RotationGizmo( ClientObject* pControlledObject = 0, const String& rName = "" );
     /**
     Destructor. 
     **/

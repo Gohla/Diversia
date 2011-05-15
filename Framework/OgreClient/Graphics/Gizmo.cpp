@@ -79,15 +79,15 @@ bool Gizmo::controlGizmos( bool control, int param /*= 0*/,
 
 void Gizmo::update()
 {
-    // Update this (controller) gizmo first.
-    controlUpdate();
-
     // Update controlled gizmo's
     for( std::set<Gizmo*>::const_iterator i = mControlledGizmos->begin(); 
         i != mControlledGizmos->end(); ++i )
     {
         (*i)->controlUpdate();
     }
+
+    // Update this (controller) gizmo.
+    controlUpdate();
 
     mMouse->mMouseState.clear();
 }

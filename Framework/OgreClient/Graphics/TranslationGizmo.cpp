@@ -223,6 +223,7 @@ void TranslationGizmo::controlGizmo( bool control, int param, const Vector3& rPo
     {
         mDragAxis = (Axis)param;
         mController = static_cast<TranslationGizmo*>( pController );
+        mDesiredPosition = Gizmo::getControlledObject()->getPosition();
         if( duplicate && Gizmo::getControlledObject() ) Gizmo::getControlledObject()->duplicate();
     }
     else

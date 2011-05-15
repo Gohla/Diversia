@@ -19,6 +19,30 @@ namespace QtOgreEditor
 {
 //------------------------------------------------------------------------------
 
+class MultiSelection : public QObject
+{
+    Q_OBJECT
+
+public:
+    MultiSelection();
+
+    void init();
+    void selectionChange( EditorObject* pObject, bool selected );
+    void gizmoChange( EditorObject* pObject );
+
+private slots:
+    void gizmoModeChange( QAction* action );
+    void snapToGridChange( bool snap );
+
+private:
+    std::set<EditorObject*> mSelectedObjects;
+    std::set<Gizmo*> mControlledGizmos;
+    Gizmo* mMultiGizmo;
+
+};
+
+//------------------------------------------------------------------------------
+
 class EditorObject : public QObject, public ClientObject
 {
     Q_OBJECT
@@ -45,7 +69,8 @@ private slots:
     void snapToGridChange( bool snap );
 
 private:
-    friend class EditorObjectManager;	///< Only the EditorObjectManager class may construct objects. 
+    friend class EditorObjectManager;	///< Only the EditorObjectManager class may construct objects.
+    friend class MultiSelection; 	///< For access to mGizmo, mSnapToGrid and mGizmoMode. 
 
     EditorObject( const String& rName, Mode mode, NetworkingType type, const String& rDisplayName, 
         RakNet::RakNetGUID source, RakNet::RakNetGUID ownGUID, RakNet::RakNetGUID serverGUID, 
@@ -55,17 +80,16 @@ private:
     virtual ~EditorObject();
 
     void checkGizmo();
-    static void selectionChange( EditorObject* pObject, bool selected );
-    static Gizmo* createGizmo( GizmoMode mode, EditorObject* pObject = 0 );
+    static GizmoMode getGizmoMode( QAction* action );
+    static Gizmo* createGizmo( GizmoMode mode, EditorObject* pObject = 0, const String& rName = "" );
 
     Gizmo* mGizmo;
+    Gizmo* mLastGizmo;
     bool mSelected;
 
     static GizmoMode mGizmoMode;
-    static std::set<EditorObject*> mSelectedObjects;
-    static std::set<Gizmo*> mControlledGizmos;
-    static Gizmo* mMultiGizmo;
     static bool mSnapToGrid;
+    static MultiSelection mMultiSelection;
 
     CAMP_CLASS(EditorObject)
 

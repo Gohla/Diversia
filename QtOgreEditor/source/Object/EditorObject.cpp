@@ -23,9 +23,130 @@ namespace QtOgreEditor
 
 EditorObject::GizmoMode EditorObject::mGizmoMode = EditorObject::NONE;
 bool EditorObject::mSnapToGrid = false;
-std::set<EditorObject*> EditorObject::mSelectedObjects = std::set<EditorObject*>();
-std::set<Gizmo*> EditorObject::mControlledGizmos = std::set<Gizmo*>();
-Gizmo* EditorObject::mMultiGizmo = 0;
+MultiSelection EditorObject::mMultiSelection = MultiSelection();
+
+MultiSelection::MultiSelection() :
+    mMultiGizmo( 0 )
+{
+
+}
+
+void MultiSelection::init()
+{
+    QObject::connect( EditorGlobals::mMainWindow->mGizmoActions, SIGNAL( triggered(QAction*) ), 
+        this, SLOT( gizmoModeChange(QAction*) ) );
+    QObject::connect( EditorGlobals::mMainWindow->mUI.actionSnap_to_grid, SIGNAL( toggled(bool) ),
+        this, SLOT( snapToGridChange(bool) ) );
+}
+
+void MultiSelection::selectionChange( EditorObject* pObject, bool selected )
+{
+    if( selected )
+    {
+        mSelectedObjects.insert( pObject );
+        if( pObject->mGizmo ) mControlledGizmos.insert( pObject->mGizmo );
+    }
+    else
+    {
+        mSelectedObjects.erase( pObject );
+        if( pObject->mGizmo ) mControlledGizmos.erase( pObject->mGizmo );
+    }
+
+    if( EditorObject::mGizmoMode == EditorObject::NONE ) return; 
+
+    if( mSelectedObjects.size() > 1 )
+    {
+        Vector3 centerPosition( Vector3::ZERO );
+
+        for( std::set<EditorObject*>::iterator i = mSelectedObjects.begin(); 
+            i != mSelectedObjects.end(); ++i )
+        {
+            (*i)->mGizmo->setVisible( false );
+            centerPosition += (*i)->_getDerivedPosition();
+        }
+
+        if( !mMultiGizmo && EditorObject::mGizmoMode != EditorObject::NONE )
+        {
+            mMultiGizmo = EditorObject::createGizmo( EditorObject::mGizmoMode, 0, 
+                "MultiSelectGizmo" );
+            mMultiGizmo->setControlledGizmos( mControlledGizmos );
+        }
+        if( mMultiGizmo ) 
+        {
+            mMultiGizmo->getSceneNode()->setPosition( toVector3<Ogre::Vector3>( 
+                centerPosition / mSelectedObjects.size() ) );
+            mMultiGizmo->transformChanged();
+            mMultiGizmo->setSnapToGrid( EditorObject::mSnapToGrid );
+        }
+    }
+    else if( mSelectedObjects.size() )
+    {
+        (*mSelectedObjects.begin())->mGizmo->setVisible( true );
+
+        if( mMultiGizmo )
+        {
+            delete mMultiGizmo;
+            mMultiGizmo = 0;
+        }
+    }
+}
+
+void MultiSelection::gizmoChange( EditorObject* pObject )
+{
+    if( mSelectedObjects.find( pObject ) == mSelectedObjects.end() ) return;
+
+    if( pObject->mLastGizmo ) mControlledGizmos.erase( pObject->mLastGizmo );
+    if( pObject->mGizmo ) 
+    {
+        mControlledGizmos.insert( pObject->mGizmo );
+        if( mSelectedObjects.size() ) pObject->mGizmo->setVisible( false );
+    }
+
+    if( mMultiGizmo ) mMultiGizmo->setControlledGizmos( mControlledGizmos );
+}
+
+void MultiSelection::gizmoModeChange( QAction* action )
+{
+    if( !mSelectedObjects.size() ) return;
+
+    Vector3 position = Vector3::ZERO;
+    if( mMultiGizmo ) 
+    {
+        position = toVector3<Vector3>( mMultiGizmo->getSceneNode()->getPosition() );
+        delete mMultiGizmo;
+        mMultiGizmo = 0;
+    }
+
+    if( EditorObject::getGizmoMode( action ) == EditorObject::NONE ) return;
+
+    if( position == Vector3::ZERO )
+    {
+        for( std::set<EditorObject*>::iterator i = mSelectedObjects.begin(); 
+            i != mSelectedObjects.end(); ++i )
+        {
+            position += (*i)->_getDerivedPosition();
+        }
+
+        position /= mSelectedObjects.size();
+    }
+
+    mMultiGizmo = EditorObject::createGizmo( EditorObject::mGizmoMode, 0, "MultiSelectGizmo" );
+    mMultiGizmo->setControlledGizmos( mControlledGizmos );
+    mMultiGizmo->getSceneNode()->setPosition( toVector3<Ogre::Vector3>( position ) );
+    mMultiGizmo->transformChanged();
+    mMultiGizmo->setSnapToGrid( EditorObject::mSnapToGrid );
+}
+
+void MultiSelection::snapToGridChange( bool snap )
+{
+    if( mMultiGizmo ) 
+    {
+        mMultiGizmo->setSnapToGrid( snap );
+        mMultiGizmo->transformChanged();
+    }
+}
+
+//------------------------------------------------------------------------------
 
 EditorObject::EditorObject( const String& rName, Mode mode, NetworkingType type, 
     const String& rDisplayName, RakNet::RakNetGUID source, RakNet::RakNetGUID ownGUID, 
@@ -37,6 +158,7 @@ EditorObject::EditorObject( const String& rName, Mode mode, NetworkingType type,
     ClientObject( rName, mode, type, rDisplayName, source, ownGUID, serverGUID, rUpdateSignal, 
         rObjectManager, rPermissionManager, rReplicaManager, rNetworkIDManager, rRPC3 ),
     mGizmo( 0 ),
+    mLastGizmo( 0 ),
     mSelected( false )
 {
     if( EditorGlobals::mMainWindow->mUI.actionMovement_mode->isChecked() ) mGizmoMode = MOVEMENT;
@@ -50,6 +172,8 @@ EditorObject::EditorObject( const String& rName, Mode mode, NetworkingType type,
         this, SLOT( gizmoModeChange(QAction*) ) );
     QObject::connect( EditorGlobals::mMainWindow->mUI.actionSnap_to_grid, SIGNAL( toggled(bool) ),
         this, SLOT( snapToGridChange(bool) ) );
+
+    static bool init = true; if( init ) { mMultiSelection.init(); init = false; }
 }
 
 EditorObject::~EditorObject()
@@ -66,22 +190,18 @@ void EditorObject::setSelected( bool selected )
     if( selected )
     {
         EditorObject::checkGizmo();
-        EditorObject::selectionChange( this, true );
+        mMultiSelection.selectionChange( this, true );
     }
     else
     {
-        EditorObject::selectionChange( this, false );
+        mMultiSelection.selectionChange( this, false );
         EditorObject::checkGizmo();
     }
 }
 
 void EditorObject::gizmoModeChange( QAction* action )
 {
-    if( action == EditorGlobals::mMainWindow->mUI.actionMovement_mode ) mGizmoMode = MOVEMENT;
-    else if( action == EditorGlobals::mMainWindow->mUI.actionRotation_mode ) mGizmoMode = ROTATION;
-    else if( action == EditorGlobals::mMainWindow->mUI.actionScaling_mode ) mGizmoMode = SCALING;
-    else if( action == EditorGlobals::mMainWindow->mUI.actionSelection_mode ) mGizmoMode = NONE;
-
+    mGizmoMode = EditorObject::getGizmoMode( action );
     EditorObject::checkGizmo();
 }
 
@@ -95,13 +215,15 @@ void EditorObject::checkGizmo()
 {
     if( mGizmo ) 
     {
+        mLastGizmo = mGizmo;
         delete mGizmo;
         mGizmo = 0;
     }
 
     if( mSelected )
     {
-        mGizmo = EditorObject::createGizmo( mGizmoMode, this );
+        mGizmo = EditorObject::createGizmo( mGizmoMode, this, 
+            boost::lexical_cast<String>( NetworkIDObject::GetNetworkID() ) );
 
         if( mGizmo ) 
         {
@@ -112,64 +234,27 @@ void EditorObject::checkGizmo()
             mGizmo->setSnapToGrid( mSnapToGrid );
         }
     }
+
+    mMultiSelection.gizmoChange( this );
 }
 
-void EditorObject::selectionChange( EditorObject* pObject, bool selected )
+EditorObject::GizmoMode EditorObject::getGizmoMode( QAction* action )
 {
-    if( selected )
-    {
-        mSelectedObjects.insert( pObject );
-        if( pObject->mGizmo ) mControlledGizmos.insert( pObject->mGizmo );
-    }
-    else
-    {
-        mSelectedObjects.erase( pObject );
-        if( pObject->mGizmo ) mControlledGizmos.erase( pObject->mGizmo );
-    }
+    if( action == EditorGlobals::mMainWindow->mUI.actionMovement_mode ) return MOVEMENT;
+    else if( action == EditorGlobals::mMainWindow->mUI.actionRotation_mode ) return ROTATION;
+    else if( action == EditorGlobals::mMainWindow->mUI.actionScaling_mode ) return SCALING;
+    else if( action == EditorGlobals::mMainWindow->mUI.actionSelection_mode ) return NONE;
 
-    if( mGizmoMode == NONE ) return; 
-
-    if( mSelectedObjects.size() > 1 )
-    {
-        Ogre::Vector3 centerPosition( Ogre::Vector3::ZERO );
-
-        for( std::set<EditorObject*>::iterator i = mSelectedObjects.begin(); 
-            i != mSelectedObjects.end(); ++i )
-        {
-            (*i)->mGizmo->setVisible( false );
-            centerPosition += (*i)->mGizmo->getSceneNode()->_getDerivedPosition();
-        }
-
-        if( !mMultiGizmo && mGizmoMode != NONE )
-        {
-            mMultiGizmo = EditorObject::createGizmo( mGizmoMode );
-            mMultiGizmo->setControlledGizmos( mControlledGizmos );
-        }
-        if( mMultiGizmo ) 
-        {
-            mMultiGizmo->getSceneNode()->setPosition( centerPosition / mSelectedObjects.size() );
-            mMultiGizmo->transformChanged();
-            mMultiGizmo->setSnapToGrid( mSnapToGrid );
-        }
-    }
-    else if( mSelectedObjects.size() )
-    {
-        (*mSelectedObjects.begin())->mGizmo->setVisible( true );
-
-        if( mMultiGizmo )
-        {
-            delete mMultiGizmo;
-            mMultiGizmo = 0;
-        }
-    }
+    return NONE;
 }
 
-Gizmo* EditorObject::createGizmo( GizmoMode mode, EditorObject* pObject /*= 0*/ )
+Gizmo* EditorObject::createGizmo( GizmoMode mode, EditorObject* pObject /*= 0*/, 
+    const String& rName /*= ""*/ )
 {
     switch( mode )
     {
         case MOVEMENT: return new TranslationGizmo( pObject );
-        case ROTATION: return new RotationGizmo( pObject );
+        case ROTATION: return new RotationGizmo( pObject, rName );
         case SCALING: return new ScaleGizmo( pObject );
         case NONE: return 0;
     }
@@ -178,5 +263,6 @@ Gizmo* EditorObject::createGizmo( GizmoMode mode, EditorObject* pObject /*= 0*/ 
 }
 
 //------------------------------------------------------------------------------
+
 } // Namespace QtOgreEditor
 } // Namespace Diversia

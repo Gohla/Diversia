@@ -42,11 +42,12 @@ namespace OgreClient
 
 const Real RotationGizmo::mRadius = 1.0f;
 
-RotationGizmo::RotationGizmo( ClientObject* pControlledObject /*= 0*/ ):
+RotationGizmo::RotationGizmo( ClientObject* pControlledObject /*= 0*/, const String& rName /*= ""*/ ):
     Gizmo( pControlledObject ),
     mHoverAxis( NO_AXIS ),
     mDragAxis( NO_AXIS ),
-    mName( boost::lexical_cast<String>( pControlledObject->GetNetworkID() ) ),
+    mName( pControlledObject ? boost::lexical_cast<String>( pControlledObject->GetNetworkID() ) : 
+        rName ),
     mCircleX( GeometryHelper::createCircleYZ( "Axis_X", mRadius, mSides ) ),
     mCircleY( GeometryHelper::createCircleXZ( "Axis_Y", mRadius, mSides ) ),
     mCircleZ( GeometryHelper::createCircleXY( "Axis_Z", mRadius, mSides ) ),
