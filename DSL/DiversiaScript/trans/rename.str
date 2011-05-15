@@ -18,6 +18,7 @@ rules
 			new-scope (
 				<rename-all> statements => statements'
 			)
+	
 			
 	rename :
 		StateDef(name, statements) -> StateDef(name', statements')
@@ -36,7 +37,7 @@ rules
 			)
 
 	rename : 
-		VarDef(name, exp) -> VarDef(name', exp)
+		VarDef(name, type, exp) -> VarDef(name', type, exp)
 		where
 			<rename-declaration(|Vars())> name => name'
 			
