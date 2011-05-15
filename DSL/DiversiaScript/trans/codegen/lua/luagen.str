@@ -1,0 +1,26 @@
+module codegen/lua/luagen
+
+imports
+	libstratego-gpp
+	include/DiversiaScript
+	include/Lua
+	lib/namespaces
+	namespace
+	name-project
+	
+rules
+	
+	lua-tostring: ast ->
+		<box2text-string( |100 )> <ast2abox( | [ <import-term( include/Lua.generated.pp.af )>, <import-term( include/Lua.pp.af )> ] )>
+	
+	lua-funcdef: (name, content) -> FuncDef(FunctionName(name), FunctionBody(ParList(), Chunk(content)))
+	lua-funcdef: (name, paramNames, content) -> FuncDef(FunctionName(name), FunctionBody(ParList(paramNames), Chunk(content)))
+	
+	// Global definitions to lua files.
+	to-lua: Start(definitions) -> Chunk(<map(to-lua)> definitions)
+	to-lua: ObjectDef(name, definitions) -> <lua-funcdef> ("Create", components)
+		where components := <map(to-lua)> <get-all-components> name
+	
+	// TODO: Convert properties
+	to-lua: ComponentDef(name, properties) -> Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", [Access(VarRef("ComponentType"), name), String(name), False()])])
+		

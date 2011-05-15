@@ -6,6 +6,13 @@ imports
   libstratego-aterm
   include/DiversiaScript
   lib/editor-common.generated
+  rename
+  store
+  codegen/lua/luagen
+  
+ strategies
+	
+	analyse-all = store-all
 
 rules // Main editor interface (defined by editor/DiversiaScript-Builders and -References.esv)
   
@@ -24,7 +31,12 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
     (selected, position, ast, path, project-path) -> (filename, result)
     with
       filename := <guarantee-extension(|"lua")> path;
-      result   := ""
+      result   := <lua-tostring> <to-lua> <analyse-all> selected
+  generate-lua-aterm:
+  (selected, position, ast, path, project-path) -> (filename, result)
+    with
+      filename := <guarantee-extension(|"aterm")> path;
+      result   := <to-lua> <analyse-all> selected
       
   // Transforms a selection to C++
   generate-cpp:

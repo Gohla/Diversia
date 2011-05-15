@@ -1,0 +1,18 @@
+module name-project
+
+imports
+	include/DiversiaScript
+	lib/namespaces
+	namespace
+	
+rules // Name-based projections
+	
+	get-name: ObjectDef(n, _) -> n
+	get-name: ComponentDef(n, _) -> n
+	get-name: VarDef(n, _, _) -> n
+	get-name: EventDef(n, _) -> n
+	get-name: StateDef(n, _) -> n
+	
+rules // Name-based look-up transformations
+	
+	get-all-components: objectName -> <get-all-declarations(|Components(objectName))>

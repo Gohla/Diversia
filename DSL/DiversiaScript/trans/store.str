@@ -6,40 +6,75 @@ imports
 	namespace
 	
 strategies
-	store-all = topdown(try(store-declarations)); topdown(try(store-references))
+	store-all = store-declarations; topdown(try(store-references))
 	
 rules // declarations
-	
-	store-declarations : d@ObjectDef(name, _) -> d 
+	// Starting point
+	store-declarations: d@Start(definitions) -> d
+		where <map(store-declarations)> definitions
+		
+	// Object definitions
+	store-declarations: d@ObjectDef(name, definitions) -> d
 		where <store-declaration(|Objects())> (name, d)
+		where <map(store-declarations(|name))> definitions
 		
-	store-declarations : d@ExternalObjectDef(name) -> d 
-		where <store-declaration(|Objects())> (name, d)
-		
-	store-declarations : d@ComponentDef(name, _) -> d 
-		where <store-declaration(|Vars())> (name, d)	
-		
-	store-declarations : d@StateDef(name, _) -> d 
-		where <store-declaration(|States())> (name, d)
-		
-	store-declarations : d@DefaultStateDef(name, _) -> d 
-		where <store-declaration(|States())> (name, d)
-		
-	store-declarations : d@EventDef(name, _) -> d 
+	// Global event definitions
+	store-declarations: d@EventDef(name, _) -> d
 		where <store-declaration(|Events())> (name, d)
 		
-	store-declarations : d@VarDef(name, _, _) -> d 
-		where <store-declaration(|Vars())> (name, d) 
+	// Ignore prop assigns in object.
+	store-declarations(|object): d@PropAssign(_, _) -> d
+		
+	// Component definitions in object.
+	store-declarations(|object): d@ComponentDef(name, _) -> d
+		where <store-declaration(|Components(object))> (name, d)
+		
+	// Variable definitions in object.
+	store-declarations(|object): d@VarDef(name, _, _) -> d
+		where <store-declaration(|Vars(object))> (name, d)
+		
+	// Event definitions in object.
+	store-declarations(|object): d@EventDef(name, statements) -> d
+		where <store-declaration(|Events(object))> (name, d)
+	store-declarations(|object): d@EventDef(name, _, statements) -> d
+		where <store-declaration(|Events(object))> (name, d)
+		// TODO: store vars in event? not sure if these need to be stored since they
+		// are just statements that can be directly converted to lua/c++?
+		
+	// State definitions in object.
+	store-declarations(|object): d@DefaultStateDef(name, definitions) -> d
+		where <store-declaration(|States(object))> (name, d)
+		where <store-declaration(|DefaultStates(object))> (name, d)
+		where <map(store-declarations(|object, name))> definitions
+	store-declarations(|object): d@StateDef(name, definitions) -> d
+		where <store-declaration(|States(object))> (name, d)
+		where <map(store-declarations(|object, name))> definitions
+		
+	// Component definitions in object and state.
+	store-declarations(|object, state): d@ComponentDef(name, _) -> d
+		where <store-declaration(|Components(object))> ((name, state), d)
+	store-declarations(|object, state): d@ComponentDef(name, _) -> d
+		where <store-declaration(|Components(object))> ((name, state), d)
+	
+	// Event definitions in object and state
+	store-declarations(|object, state): d@EventDef(name, statements) -> d
+		where <store-declaration(|Events(object))> ((name, state), d)
+	store-declarations(|object, state): d@EventDef(name, _, statements) -> d
+		where <store-declaration(|Events(object))> ((name, state), d)
+		// TODO: store vars in event? not sure if these need to be stored since they
+		// are just statements that can be directly converted to lua/c++?
 			
 rules // references
 	
+	// TODO: Fix reference mappings
+	
 	store-references : r@VarRef(name) -> r
-		where <store-reference(|Vars())> name
+		//where <store-reference(|Vars())> name
 		
 	store-references : r@ObjectRef(name) -> r
-		where <store-reference(|Objects())> name 
+		//where <store-reference(|Objects())> name 
 		
 	store-references : r@StateRef(name) -> r
-		where <store-reference(|States())> name
+		//where <store-reference(|States())> name
 	
 	

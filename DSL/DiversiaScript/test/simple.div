@@ -23,7 +23,7 @@ def Mine {
     default state Armed {
         on Collision(OtherObject) {
             // Explode mine if another object hits this.
-            //setstate Exploding;
+            setstate Exploding;
         }
     }
     state Exploding {
@@ -38,9 +38,9 @@ def Mine {
         
         on StateEnter { // Event is fired after state is entered.
             // Destroy this object after 2 seconds of explosion.
-            //in 2 seconds {
-            //    this.Destroy();
-            //}
+            in 2 seconds {
+                this.Destroy();
+            }
         }
     }
 }

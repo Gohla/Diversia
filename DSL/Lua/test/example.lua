@@ -1,7 +1,7 @@
-Ball = { Camera = {} }
-Mouse = { State = nil, Left = false, Right = false }
-State = { Move = 0, Strafe = 0, SpeedMultiplier = 1 }
-Settings = { Speed = 10, MouseRotation = 0.25, MaximumPitch = Degree.new( 85 ), MinimumPitch = Degree.new( -85 ) }
+local Ball = { Camera = {} }
+local Mouse = { State = nil, Left = false, Right = false }
+local State = { Move = 0, Strafe = 0, SpeedMultiplier = 1 }
+local Settings = { Speed = 10, MouseRotation = 0.25, MaximumPitch = Degree.new( 85 ), MinimumPitch = Degree.new( -85 ) }
 Vector3.Zero = Vector3.new( 0, 0, 0 );
 
 function Create()
