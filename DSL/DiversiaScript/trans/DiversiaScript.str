@@ -10,7 +10,10 @@ imports
   store
   codegen/lua/luagen
   
- strategies
+  lib/namespaces
+  namespace
+  
+strategies
 	
 	analyse-all = store-all
 

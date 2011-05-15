@@ -3,9 +3,11 @@ module namespace
 signature constructors // namespaces
 	
 	Objects 		: Namespace
-	States 			: ObjectDef -> Namespace
-	DefaultStates	: ObjectDef -> Namespace
-	Components 		: ObjectDef -> Namespace
+	States 			: ObjectDef 			-> Namespace
+	DefaultStates	: ObjectDef 			-> Namespace
+	Components 		: ObjectDef 			-> Namespace
+	Components 		: ObjectDef * StateDef 	-> Namespace
 	Events			: Namespace
-	Events 			: ObjectDef -> Namespace
-	Vars 			: ObjectDef -> Namespace
+	Events 			: ObjectDef 			-> Namespace
+	Events 			: ObjectDef * StateDef 	-> Namespace
+	Vars 			: ObjectDef 			-> Namespace

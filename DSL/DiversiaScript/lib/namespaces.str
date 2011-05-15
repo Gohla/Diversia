@@ -1,4 +1,4 @@
-module namespaces
+module lib/namespaces
 
 imports
 	libstratego-gpp

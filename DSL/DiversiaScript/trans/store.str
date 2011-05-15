@@ -53,14 +53,13 @@ rules // declarations
 	// Component definitions in object and state.
 	store-declarations(|object, state): d@ComponentDef(name, _) -> d
 		where <store-declaration(|Components(object))> ((name, state), d)
-	store-declarations(|object, state): d@ComponentDef(name, _) -> d
-		where <store-declaration(|Components(object))> ((name, state), d)
+		where <store-declaration(|Components(object, state))> (name, d)
 	
 	// Event definitions in object and state
 	store-declarations(|object, state): d@EventDef(name, statements) -> d
-		where <store-declaration(|Events(object))> ((name, state), d)
+		where <store-declaration(|Events(object, state))> (name, d)
 	store-declarations(|object, state): d@EventDef(name, _, statements) -> d
-		where <store-declaration(|Events(object))> ((name, state), d)
+		where <store-declaration(|Events(object, state))> (name, d)
 		// TODO: store vars in event? not sure if these need to be stored since they
 		// are just statements that can be directly converted to lua/c++?
 			
