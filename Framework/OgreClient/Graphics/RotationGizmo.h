@@ -43,21 +43,32 @@ public:
     /**
     Constructor. 
     
-    @param [in,out] rControlledObject   The object this gizmo should control. 
+    @param [in,out] pControlledObject   The object this gizmo should control or 0 to control no 
+                                        object. Defaults to 0.
     **/
-    RotationGizmo( ClientObject& rControlledObject );
+    RotationGizmo( ClientObject* pControlledObject = 0 );
     /**
     Destructor. 
     **/
     ~RotationGizmo();
+
+    /**
+    Sets gizmo visibility.
+    
+    @param  visible True to show, false to hide. 
+    **/
+    void setVisible( bool visible );
     
 private:
     Ogre::Entity* createSelectionHelperBox( const String& rName );
 
     void hover( bool hoverIn, int param );
     void drag( bool dragStart, int param, const Vector3& rPosition );
+    void controlGizmo( bool control, int param, const Vector3& rPosition, bool duplicate, 
+        Gizmo* pController );
     void checkHighlight();
     void update();
+    inline void controlUpdate() { RotationGizmo::update(); }
 
     static const int mSides = 0x18;
     static const Real mRadius;

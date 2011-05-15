@@ -55,11 +55,16 @@ private:
     virtual ~EditorObject();
 
     void checkGizmo();
+    static void selectionChange( EditorObject* pObject, bool selected );
+    static Gizmo* createGizmo( GizmoMode mode, EditorObject* pObject = 0 );
 
     Gizmo* mGizmo;
     bool mSelected;
 
     static GizmoMode mGizmoMode;
+    static std::set<EditorObject*> mSelectedObjects;
+    static std::set<Gizmo*> mControlledGizmos;
+    static Gizmo* mMultiGizmo;
     static bool mSnapToGrid;
 
     CAMP_CLASS(EditorObject)

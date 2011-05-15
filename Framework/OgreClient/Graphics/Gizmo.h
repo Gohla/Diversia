@@ -42,9 +42,10 @@ public:
     /**
     Constructor. 
     
-    @param [in,out] rControlledObject   The object this gizmo should control. 
+    @param [in,out] pControlledObject   The object this gizmo should control or 0 to control no 
+                                        object. Defaults to 0.
     **/
-    Gizmo( ClientObject& rControlledObject );
+    Gizmo( ClientObject* pControlledObject = 0 );
     /**
     Destructor. 
     **/
@@ -57,7 +58,19 @@ public:
     /**
     Gets the gizmo scene node. 
     **/
-    inline ClientObject& getControlledObject() const { return mControlledObject; }
+    inline ClientObject* getControlledObject() const { return mControlledObject; }
+    /**
+    Sets the controlled gizmo's.
+    
+    @param rGizmos  Reference to controlled gizmo's. 
+    **/
+    inline void setControlledGizmos( const std::set<Gizmo*>& rGizmos ) { mControlledGizmos = &rGizmos; }
+    /**
+    Gets the controlled gizmo's. 
+    
+    @return The controlled gizmo's or 0 if there are no controlled gizmo's.
+    **/
+    inline const std::set<Gizmo*>* getControlledGizmos() const { return mControlledGizmos; }
     /**
     Sets if the gizmo should snap to grid.
     
@@ -70,6 +83,16 @@ public:
     @return True if snapping to grid, false if not.
     **/
     inline bool isSnappingToGrid() const { return mSnapToGrid; }
+    /**
+    Sets gizmo visibility.
+    
+    @param  visible True to show, false to hide. 
+    **/
+    virtual void setVisible( bool visible ) = 0;
+    /**
+    Call this if the transform is changed and the gizmo needs to update this.
+    **/
+    inline virtual void transformChanged() {}
    
 protected:
     enum Axis 
@@ -79,6 +102,30 @@ protected:
         Z_AXIS,
         NO_AXIS
     };
+    /**
+    Starts or stops controlling the controlled gizmo's (if any). 
+    
+    @param  control     True to control, false to stop controlling. 
+    @param  param       The drag parameter (axis)
+    @param  rPosition   The drag start/stop position. 
+    @param  duplicate   True to duplicate drag, false to normal drag.
+    **/
+    bool controlGizmos( bool control, int param = 0, const Vector3& rPosition = Vector3::ZERO, 
+        bool duplicate = false );
+    /**
+    Called if this gizmo should be controlled or stop being controlled.
+    
+    @param  control     True to control, false to stop controlling. 
+    @param  param       The drag parameter (axis)
+    @param  rPosition   The drag start/stop position. 
+    @param  duplicate   True to duplicate drag, false to normal drag.
+    **/
+    virtual void controlGizmo( bool control, int param, const Vector3& rPosition, bool duplicate, 
+        Gizmo* pController ) = 0;
+    /**
+    Controlled gizmo update.
+    **/
+    virtual void controlUpdate() = 0;
 
     struct GizmoMouse : public MouseListener
     {
@@ -94,9 +141,13 @@ protected:
     static GizmoMouse* mMouse;
 
 private:
-    Ogre::SceneNode*    mGizmoNode;
-    ClientObject&       mControlledObject;
-    bool                mSnapToGrid;
+    void update();
+
+    Ogre::SceneNode*        mGizmoNode;
+    ClientObject*           mControlledObject;
+    const std::set<Gizmo*>* mControlledGizmos;
+    sigc::connection        mUpdateConnection;
+    bool                    mSnapToGrid;
 
 };
 

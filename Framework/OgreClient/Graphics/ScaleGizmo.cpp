@@ -34,13 +34,24 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-ScaleGizmo::ScaleGizmo( ClientObject& rControlledObject ):
-    Gizmo( rControlledObject )
+ScaleGizmo::ScaleGizmo( ClientObject* pControlledObject /*= 0*/ ):
+    Gizmo( pControlledObject )
 {
 
 }
 
 ScaleGizmo::~ScaleGizmo()
+{
+
+}
+
+void ScaleGizmo::setVisible( bool visible )
+{
+
+}
+
+void ScaleGizmo::controlGizmo( bool control, int param, const Vector3& rPosition, bool duplicate, 
+    Gizmo* pController )
 {
 
 }

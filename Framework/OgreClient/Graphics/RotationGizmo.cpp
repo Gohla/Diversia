@@ -42,11 +42,11 @@ namespace OgreClient
 
 const Real RotationGizmo::mRadius = 1.0f;
 
-RotationGizmo::RotationGizmo( ClientObject& rControlledObject ):
-    Gizmo( rControlledObject ),
+RotationGizmo::RotationGizmo( ClientObject* pControlledObject /*= 0*/ ):
+    Gizmo( pControlledObject ),
     mHoverAxis( NO_AXIS ),
     mDragAxis( NO_AXIS ),
-    mName( boost::lexical_cast<String>( rControlledObject.GetNetworkID() ) ),
+    mName( boost::lexical_cast<String>( pControlledObject->GetNetworkID() ) ),
     mCircleX( GeometryHelper::createCircleYZ( "Axis_X", mRadius, mSides ) ),
     mCircleY( GeometryHelper::createCircleXZ( "Axis_Y", mRadius, mSides ) ),
     mCircleZ( GeometryHelper::createCircleXY( "Axis_Z", mRadius, mSides ) ),
@@ -140,6 +140,16 @@ RotationGizmo::~RotationGizmo()
     mUpdateConnection.disconnect();
 
     if( mDragAxis != NO_AXIS ) mMouse->mCapture = false;
+}
+
+void RotationGizmo::setVisible( bool visible )
+{
+    mCircleX->setVisible( visible );
+    mCircleY->setVisible( visible );
+    mCircleZ->setVisible( visible );
+    mDiscX->setVisible( visible );
+    mDiscY->setVisible( visible );
+    mDiscZ->setVisible( visible );
 }
 
 Ogre::Entity* RotationGizmo::createSelectionHelperBox( const String& rName )
@@ -248,6 +258,12 @@ void RotationGizmo::drag( bool dragStart, int param, const Vector3& rPosition )
     }
 }
 
+void RotationGizmo::controlGizmo( bool control, int param, const Vector3& rPosition, 
+    bool duplicate, Gizmo* pController )
+{
+ 
+}
+
 void RotationGizmo::checkHighlight()
 {
     mCircleX->setMaterialName( 0, mHoverAxis == X_AXIS || mDragAxis == X_AXIS ? "Axis_Selected" : "Axis_X" );
@@ -267,20 +283,20 @@ void RotationGizmo::update()
 
         if( mRotationAccumulator.valueDegrees() >= 45 )
         {
-            Gizmo::getControlledObject().rotate( toVector3<Vector3>( mRotationAxis ), 
+            Gizmo::getControlledObject()->rotate( toVector3<Vector3>( mRotationAxis ), 
                 Radian( Degree( 45 ) ), Node::TS_LOCAL );
             mRotationAccumulator = 0;
         }
         else if( mRotationAccumulator.valueDegrees() <= -45 )
         {
-            Gizmo::getControlledObject().rotate( toVector3<Vector3>( mRotationAxis ), 
+            Gizmo::getControlledObject()->rotate( toVector3<Vector3>( mRotationAxis ), 
                 Radian( Degree( -45 ) ), Node::TS_LOCAL );
             mRotationAccumulator = 0;
         }
     }
     else
     {
-        Gizmo::getControlledObject().rotate( toVector3<Vector3>( mRotationAxis ), 
+        Gizmo::getControlledObject()->rotate( toVector3<Vector3>( mRotationAxis ), 
             toRadian<Radian>( rfAngle ), Node::TS_LOCAL );
     }
 
