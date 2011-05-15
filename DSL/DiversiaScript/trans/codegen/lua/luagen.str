@@ -22,5 +22,5 @@ rules
 		where components := <map(to-lua)> <get-all-components> name
 	
 	// TODO: Convert properties
-	to-lua: ComponentDef(name, properties) -> Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", [Access(VarRef("ComponentType"), name), String(name), False()])])
+	to-lua: ComponentDef(name, properties) -> Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), name), String($["[name]"]), False()]))])
 		

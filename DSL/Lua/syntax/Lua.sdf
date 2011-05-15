@@ -54,7 +54,7 @@ exports
     "(" ParList ")" Block "end" -> FunctionBody {cons("FunctionBody")}
     
     %% Args
-    "(" {Exp ","}* ")" -> Args
+    "(" {Exp ","}* ")" -> Args {cons("Args")}
     Table -> Args
     StrConst -> Args
     
