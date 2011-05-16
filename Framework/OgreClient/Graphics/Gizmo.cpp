@@ -44,7 +44,7 @@ Gizmo::Gizmo( ClientObject* pControlledObject /*= 0*/ ):
     mSnapToGrid( false )
 {
     mGizmoNode->setInheritScale( false );
-    mGizmoNode->setScale( 3.0, 3.0, 3.0 );
+    mGizmoNode->setScale( 5.0, 5.0, 5.0 );
 
     if( !mMouse ) mMouse = new Gizmo::GizmoMouse();
 }

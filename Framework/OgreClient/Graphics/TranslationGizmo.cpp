@@ -79,6 +79,14 @@ TranslationGizmo::TranslationGizmo( ClientObject* pControlledObject /*= 0*/ ):
 
     Gizmo::getSceneNode()->setInheritOrientation( false );
 
+    // Set render queues
+    mLineX->setRenderQueueGroup( Ogre::RENDER_QUEUE_9);
+    mLineY->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
+    mLineZ->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
+    mConeX->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
+    mConeY->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
+    mConeZ->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
+
     // Setup axis geometry
     Gizmo::getSceneNode()->attachObject( mLineX ); 
     Gizmo::getSceneNode()->attachObject( mLineY ); 
@@ -150,6 +158,19 @@ void TranslationGizmo::setVisible( bool visible )
     mConeX->setVisible( visible );
     mConeY->setVisible( visible );
     mConeZ->setVisible( visible );
+
+    if( visible )
+    {
+        mSelectionHelperX->setQueryFlags( QueryFlags_Gizmo );
+        mSelectionHelperY->setQueryFlags( QueryFlags_Gizmo );
+        mSelectionHelperZ->setQueryFlags( QueryFlags_Gizmo );
+    }
+    else 
+    {
+        mSelectionHelperX->setQueryFlags( QueryFlags_NonSelectable );
+        mSelectionHelperY->setQueryFlags( QueryFlags_NonSelectable );
+        mSelectionHelperZ->setQueryFlags( QueryFlags_NonSelectable );
+    }
 }
 
 void TranslationGizmo::transformChanged()

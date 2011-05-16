@@ -10,6 +10,9 @@ material Axis_X
 			specular 0 0 0 1
 			
 			fog_override true none
+			depth_check off
+			depth_write off
+			cull_hardware none
 		}
 	}
 }
@@ -26,6 +29,9 @@ material Axis_Y
 			specular 0 0 0 1
 			
 			fog_override true none
+			depth_check off
+			depth_write off
+			cull_hardware none
 		}
 	}
 }
@@ -42,6 +48,9 @@ material Axis_Z
 			specular 0 0 0 1
 			
 			fog_override true none
+			depth_check off
+			depth_write off
+			cull_hardware none
 		}
 	}
 }
@@ -58,6 +67,9 @@ material Axis_Selected
 			specular 0 0 0 1
 			
 			fog_override true none
+			depth_check off
+			depth_write off
+			cull_hardware none
 		}
 	}
 }
@@ -73,8 +85,8 @@ material Disc_X
 			diffuse 0 0 0
 			specular 0 0 0 1
 			scene_blend add
-			fog_override true none
 
+			fog_override true none
 			depth_check off
 			depth_write off
 			cull_hardware none
@@ -93,8 +105,8 @@ material Disc_Y
 			diffuse 0 0 0
 			specular 0 0 0 1
 			scene_blend add
+			
 			fog_override true none
-
 			depth_check off
 			depth_write off
 			cull_hardware none
@@ -113,8 +125,8 @@ material Disc_Z
 			diffuse 0 0 0
 			specular 0 0 0 1
 			scene_blend add
-			fog_override true none
 
+			fog_override true none
 			depth_check off
 			depth_write off
 			cull_hardware none

@@ -30,6 +30,7 @@ This file is part of Diversia.
 #include <QFileDialog>
 #include <QPainter>
 #include <QSignalMapper>
+#include <sigc++/adaptors/retype_return.h>
 
 namespace Diversia
 {
@@ -232,7 +233,18 @@ void MainWindow::exit()
     msgBox.setStandardButtons( QMessageBox::Yes | QMessageBox::No );
     msgBox.setDefaultButton( QMessageBox::No );
     if( msgBox.exec() == QMessageBox::Yes )
-        QWidget::close();
+    {
+        // First pop to edit (stopped) state, if we are in played or paused state.
+        EditorGlobals::mState->popTo( 3 );
+
+        // Pop to initial state in the next tick so that plugins can handle the transition to the
+        // stop state.
+        DelayedCall::create( sigc::bind( sigc::mem_fun( EditorGlobals::mState, 
+            &StateMachine::popTo ), 1 ), 0 );
+        // Close the main widget after popping to the initial state.
+        DelayedCall::create( sigc::hide_return( sigc::mem_fun( this, 
+            &QWidget::close ) ), 0 );
+    }
 }
 
 void MainWindow::disconnect()
