@@ -3,6 +3,7 @@
 	<name>DiversiaScript</name>
 	<comment></comment>
 	<projects>
+		<project>Lua</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

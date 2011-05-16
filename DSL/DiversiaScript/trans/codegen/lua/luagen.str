@@ -11,7 +11,7 @@ imports
 rules
 	
 	lua-tostring: ast ->
-		<box2text-string( |100 )> <ast2abox( | [ <import-term( include/Lua.generated.pp.af )>, <import-term( include/Lua.pp.af )> ] )>
+		<box2text-string( |100 )> <ast2box(|[<import-term( ../Lua/include/Lua.pp.af )>])>
 	
 	lua-funcdef: (name, content) -> FuncDef(FunctionName(name), FunctionBody(ParList(), Chunk(content)))
 	lua-funcdef: (name, paramNames, content) -> FuncDef(FunctionName(name), FunctionBody(ParList(paramNames), Chunk(content)))
