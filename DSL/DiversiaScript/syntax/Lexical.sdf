@@ -58,14 +58,6 @@ exports
 	"linearly"		-> InterpolationType
 	"exponentially"	-> InterpolationType
 	
-  %%  lexical syntax  %% Unarray minus
-	
-	 %% "-" 			-> UnarrayMinus
-	
-  %%  lexical restrictions
-  	
-   %% 	UnarrayMinus	-/- [\-]
-	
   lexical syntax  %% Spacing
     [\ \t\n\r] -> LAYOUT
     
