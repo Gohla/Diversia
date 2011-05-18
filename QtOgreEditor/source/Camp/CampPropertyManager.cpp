@@ -202,6 +202,52 @@ bool CampValueMapPropertyData::lessThan( const CampPropertyDataInterface* other 
     return false;
 }
 
+CampArrayPropertyData::CampArrayPropertyData( const camp::ArrayProperty& rProperty, 
+    const camp::UserObject& rObject, std::size_t index ):
+    mProperty( rProperty ),
+    mObject( rObject ),
+    mIndex( index )
+{
+
+}
+
+void CampArrayPropertyData::set( const camp::Value& rValue )
+{
+    mProperty.set( mObject, mIndex, rValue );
+}
+
+void CampArrayPropertyData::setWithUndo( const camp::Value& rValue )
+{
+    // TODO: Fix undo
+    CampArrayPropertyData::set( rValue );
+}
+
+QString CampArrayPropertyData::valueText() const
+{
+    return "";
+}
+
+CampArrayPropertyData* CampArrayPropertyData::clone() const
+{
+    return new CampArrayPropertyData( mProperty, mObject, mIndex );
+}
+
+bool CampArrayPropertyData::lessThan( const CampPropertyDataInterface* other ) const
+{
+    // This is ok because CampPropertyDataInterface::operator< checks if other is of this type.
+    const CampArrayPropertyData* data = static_cast<const CampArrayPropertyData*>( other );
+
+    if( &mProperty < &data->mProperty ) return true;
+    if( &data->mProperty < &mProperty ) return false;
+
+    if( mObject < data->mObject ) return true;
+    if( data->mObject < mObject ) return false;
+
+    if( mIndex < data->mIndex ) return true;
+
+    return false;
+}
+
 //------------------------------------------------------------------------------
 
 CampCompoundPropertyManager::CampCompoundPropertyManager( CampPropertyManager* pParent /*= 0*/ ):
@@ -344,12 +390,14 @@ void QtFix::enumValueChanged( QtProperty* pProperty, int val )
 CampPropertyManager::CampPropertyManager( QObject* pParent /*= 0*/ ):
     QObject( pParent ),
     mGroupManager( new QtGroupPropertyManager( this ) ),
+    mStringGroupManager( new QtStringPropertyManager( this ) ),
     mBoolManager( new QtBoolPropertyManager( this ) ),
     mIntManager( new QtIntPropertyManager( this ) ),
     mDoubleManager( new QtDoublePropertyManager( this ) ),
     mStringManager( new QtStringPropertyManager( this ) ),
     mEnumManager( new QtEnumPropertyManager( this ) ),
     mCompoundManager( new CampCompoundPropertyManager( this ) ),
+    mArrayIntManager( new QtIntPropertyManager( this ) ),
     mCheckBoxFactory( new QtCheckBoxFactory( this ) ),
     mSpinBoxFactory( new QtSpinBoxFactory( this ) ),
     mDoubleSpinBoxFactory( new QtDoubleSpinBoxFactory( this ) ),
@@ -360,6 +408,8 @@ CampPropertyManager::CampPropertyManager( QObject* pParent /*= 0*/ ):
         SLOT( boolValueChanged(QtProperty*, bool) ) );
     QObject::connect( mIntManager, SIGNAL( valueChanged(QtProperty*, int) ), this, 
         SLOT( intValueChanged(QtProperty*, int) ) );
+    QObject::connect( mArrayIntManager, SIGNAL( valueChanged(QtProperty*, int) ), this, 
+        SLOT( arraySizeChanged(QtProperty*, int) ) );
     QObject::connect( mDoubleManager, SIGNAL( valueChanged(QtProperty*, double) ), this, 
         SLOT( doubleValueChanged(QtProperty*, double) ) );
     QObject::connect( mStringManager, SIGNAL( valueChanged(QtProperty*, const QString&) ), this, 
@@ -393,6 +443,7 @@ void CampPropertyManager::setPropertyBrowser( QtTreePropertyBrowser* pBrowser )
 {
     pBrowser->setFactoryForManager( mBoolManager, mCheckBoxFactory );
     pBrowser->setFactoryForManager( mIntManager, mSpinBoxFactory );
+    pBrowser->setFactoryForManager( mArrayIntManager, mSpinBoxFactory );
     pBrowser->setFactoryForManager( mDoubleManager, mDoubleSpinBoxFactory );
     pBrowser->setFactoryForManager( mStringManager, mLineEditFactory );
     pBrowser->setFactoryForManager( mEnumManager, mEnumFactory );
@@ -475,8 +526,33 @@ QtProperty* CampPropertyManager::addProperty( CampPropertyDataInterface* pData,
             break;
         }
         case camp::arrayType:
-            // TODO: Support arrays
+        {
+            camp::UserObject object = pData->parentObject();
+            const camp::ArrayProperty& arrayProperty = static_cast<const camp::ArrayProperty&>( 
+                pData->property() );
+            std::size_t size = arrayProperty.size( object );
+
+            // Create array property and array size property.
+            prop = mStringGroupManager->addProperty( QString::fromStdString( arrayProperty.name() ) );
+            QtProperty* sizeProp = mArrayIntManager->addProperty( "Array size" );
+            mArrayIntManager->setValue( sizeProp, size );
+            mArrayIntManager->setMinimum( sizeProp, 0 );
+            mArrayIntManager->setSingleStep( sizeProp, 1 );
+            prop->addSubProperty( sizeProp );
+            mArraySizeToArray.insert( std::make_pair( sizeProp, prop ) );
+            CampPropertyManager::ArrayData* arrayData = new CampPropertyManager::ArrayData( 
+                arrayProperty, object );
+            mArrayProperties.insert( std::make_pair( prop, arrayData ) );
+
+            // Create properties for array entries.
+            for( std::size_t i = 0; i < size; ++i )
+            {
+                arrayData->mProperties.push_back( CampPropertyManager::addProperty( 
+                    new CampArrayPropertyData( arrayProperty, object, i ), prop ) );
+            }
+
             break;
+        }
         case camp::dictionaryType:
             // TODO: Support dictionaries
             break;
@@ -630,18 +706,53 @@ void CampPropertyManager::enumValueChanged( QtProperty* pProperty, int val )
     }
 }
 
+void CampPropertyManager::arraySizeChanged( QtProperty* pProperty, int val )
+{
+    ArraySizeToArray::iterator s = mArraySizeToArray.find( pProperty );
+    if( s == mArraySizeToArray.end() ) return;
+    ArrayProperties::iterator i = mArrayProperties.find( s->second );
+    if( i == mArrayProperties.end() ) return;
+
+    CampPropertyManager::ArrayData* arrayData = i->second;
+    const camp::ArrayProperty& arrayProperty = arrayData->mProperty;
+    const camp::UserObject& object = arrayData->mObject;
+    std::vector<QtProperty*>& properties = arrayData->mProperties;
+
+    if( !arrayProperty.dynamic() ) return;
+    std::size_t size = arrayProperty.size( object );
+    if( val == size ) return;
+
+    arrayProperty.resize( object, val );
+    if( val > size )
+    {
+        // Increasing size of array.
+        for( std::size_t i = size; i < val; ++i )
+        {
+            properties.push_back( CampPropertyManager::addProperty( 
+                new CampArrayPropertyData( arrayProperty, object, i ), s->second ) );
+        }
+    }
+    else
+    {
+        // TODO: Decreasing size of array.
+
+    }
+}
+
 void CampPropertyManager::clear()
 {
     CampPropertyManager::setBlockSlots( true );
     mPropertyChangeSignal.disconnect();
 
     mGroupManager->clear();
+    mStringGroupManager->clear();
     mBoolManager->clear();
     mIntManager->clear();
     mDoubleManager->clear();
     mStringManager->clear();
     mEnumManager->clear();
     mCompoundManager->clearMe();
+    mArrayIntManager->clear();
 
     for( QtPropertyDataMap::iterator i = mData.begin(); i != mData.end(); ++i )
     {
@@ -649,6 +760,12 @@ void CampPropertyManager::clear()
     }
     mData.clear();
     mProperties.clear();
+    for( ArrayProperties::iterator i = mArrayProperties.begin(); i != mArrayProperties.end(); ++i )
+    {
+        delete i->second;
+    }
+    mArrayProperties.clear();
+    mArraySizeToArray.clear();
     mContinuousUpdateMap.clear();
 }
 
@@ -727,6 +844,5 @@ void CampPropertyManager::update()
 }
 
 //------------------------------------------------------------------------------
-
 } // Namespace QtOgreEditor
 } // Namespace Diversia

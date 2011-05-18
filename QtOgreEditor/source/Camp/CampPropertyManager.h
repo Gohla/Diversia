@@ -31,6 +31,8 @@ struct CampPropertyDataInterface
     virtual void setWithUndo( const camp::Value& rValue ) = 0;
     virtual camp::Value get() const = 0;
     virtual camp::Type type() const = 0;
+    virtual const camp::Property& property() const = 0;
+    virtual const camp::UserObject& parentObject() const = 0;
     virtual String name() const = 0;
     virtual bool ignore() const = 0;
     virtual QString valueText() const = 0;
@@ -66,6 +68,8 @@ struct CampPropertyData : public CampPropertyDataInterface
     void setWithUndo( const camp::Value& rValue );
     inline camp::Value get() const { return mProperty.get( mObject ); }
     inline camp::Type type() const { return mProperty.type(); }
+    inline const camp::Property& property() const { return mProperty; }
+    inline const camp::UserObject& parentObject() const { return mObject; }
     inline String name() const { return mProperty.name(); }
     bool ignore() const;
     QString valueText() const;
@@ -91,6 +95,8 @@ struct CampValueMapPropertyData : public CampPropertyDataInterface
     void setWithUndo( const camp::Value& rValue );
     inline camp::Value get() const { return mProperty.get( mObject, mKey ); }
     inline camp::Type type() const { return get().type(); /* TODO: Use class? */ }
+    inline const camp::DictionaryProperty& property() const { return mProperty; }
+    inline const camp::UserObject& parentObject() const { return mObject; }
     inline String name() const { return mKey; }
     inline bool ignore() const { return false; }
     QString valueText() const;
@@ -105,6 +111,33 @@ struct CampValueMapPropertyData : public CampPropertyDataInterface
     const camp::DictionaryProperty& mProperty;
     camp::UserObject                mObject;
     String                          mKey;
+};
+
+struct CampArrayPropertyData : public CampPropertyDataInterface
+{
+    CampArrayPropertyData( const camp::ArrayProperty& rProperty, 
+        const camp::UserObject& rObject, std::size_t index );
+
+    void set( const camp::Value& rValue );
+    void setWithUndo( const camp::Value& rValue );
+    inline camp::Value get() const { return mProperty.get( mObject, mIndex ); }
+    inline camp::Type type() const { return get().type(); /* TODO: Use class? */ }
+    inline const camp::ArrayProperty& property() const { return mProperty; }
+    inline const camp::UserObject& parentObject() const { return mObject; }
+    inline String name() const { return boost::lexical_cast<String>( mIndex ); }
+    inline bool ignore() const { return false; }
+    QString valueText() const;
+    inline bool hasTag( const camp::Value& rTag ) const { return false; }
+    inline camp::Value tag( const camp::Value& rTag ) const { return camp::Value::nothing; }
+    inline bool writable() const { return true; }
+    CampArrayPropertyData* clone() const;
+    inline CampPropertyDataInterface* parent() const { return 0; }
+
+    bool lessThan(const CampPropertyDataInterface* other) const;
+
+    const camp::ArrayProperty&  mProperty;
+    camp::UserObject            mObject;
+    std::size_t                 mIndex;
 };
 
 //------------------------------------------------------------------------------
@@ -301,9 +334,20 @@ private slots:
     void doubleValueChanged( QtProperty* pProperty, double val );
     void stringValueChanged( QtProperty* pProperty, const QString& rCal );
     void enumValueChanged( QtProperty* pProperty, int val );
+    void arraySizeChanged( QtProperty* pProperty, int val );
 
 private:
     friend class CampCompoundPropertyManager;
+
+    struct ArrayData 
+    {
+        ArrayData( const camp::ArrayProperty& rProperty, const camp::UserObject& rObject ): 
+            mProperty( rProperty ), mObject( rObject ) {}
+
+        const camp::ArrayProperty& mProperty;
+        camp::UserObject mObject;
+        std::vector<QtProperty*> mProperties;
+    };
 
     QtProperty* addClassInternal( const camp::Class& rClass, const camp::UserObject& rObject, 
         const String& rName, std::set<String>& rAddedProperties, 
@@ -355,21 +399,27 @@ private:
     void update();
 
     typedef std::map<CampPropertyDataInterface*, QtProperty*, CampPropertyDataInterface::Compare> PropertyMap;
+    typedef std::map<QtProperty*, ArrayData*> ArrayProperties;
+    typedef std::map<QtProperty*, QtProperty*> ArraySizeToArray;
     typedef std::set<CampPropertyDataInterface*> ContinuousUpdateMap;
 
     QtPropertyDataMap               mData;
     PropertyMap                     mProperties;
+    ArrayProperties                 mArrayProperties;
+    ArraySizeToArray                mArraySizeToArray;
     ContinuousUpdateMap             mContinuousUpdateMap;
     sigc::connection                mPropertyChangeSignal;
     bool                            mBlockChangeSignal;
 
     QtGroupPropertyManager*         mGroupManager;
+    QtStringPropertyManager*        mStringGroupManager;
     QtBoolPropertyManager*          mBoolManager;
     QtIntPropertyManager*           mIntManager;
     QtDoublePropertyManager*        mDoubleManager;
     QtStringPropertyManager*        mStringManager;
     QtEnumPropertyManager*          mEnumManager;
     CampCompoundPropertyManager*    mCompoundManager;
+    QtIntPropertyManager*           mArrayIntManager;
 
     QtCheckBoxFactory*          mCheckBoxFactory;
     QtSpinBoxFactory*           mSpinBoxFactory;
