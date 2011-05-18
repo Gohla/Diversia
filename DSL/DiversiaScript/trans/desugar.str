@@ -1,0 +1,43 @@
+module desugar
+
+imports 
+	include/DiversiaScript
+	signatures
+
+strategies
+	desugar-all = /*topdown(try(desuger-object));*/ innermost(desuger) //; innermost(desugar-type)
+
+rules
+
+	desuger: EventDef(name,statements) -> EventDef(name,[],statements)
+	desuger: VarDefNoInit(name,type) -> VarDef(name,type,Null())
+	
+	desuger-object: ObjectDef(object-name, defs) -> ObjectDef(object-name, propAssigns, varDefs, defaultStateDef, stateDefs, eventDefs)
+		where
+			<filter(?PropAssign(_,_))> defs => propAssigns;
+			<filter(?ObjectDef(_,_))> defs => objectDefs; // needs more here
+			<filter(?VarDef(_,_,_))> defs => varDefs;
+			<filter(?DefaultStateDef(_,_))> defs => defaultStateDef;
+			<filter(?StateDef(_,_))> defs => stateDefs;
+			<filter(?PropAssign(_,_))> defs => eventDefs
+
+	
+	
+	// TODO need to following type rules to do type inf.
+    get-param-types: name -> []
+    typeof: name -> ""
+    
+	desuger-type: EventDef(event-name,params, statements) -> EventDef(event-name,params',statements) 
+	where 
+		<get-param-types> event-name => param-types;
+		<zip(desuger-params)> (params, param-types) => params'
+	
+	desuger-params: (Param(name),type) -> Param(name, type)
+    desuger-type: VarDefNoType(name, value) -> VarDef(name, <typeof> value, value) // might need te be changed
+    
+    
+
+    
+
+	
+	

@@ -1,0 +1,7 @@
+module signatures
+
+signature constructors // signatures
+
+	ObjectDef: Id * List(PropAssign) * List(VarDef) * StateDef * List(StateDef) * List(EventDef) -> ObjectDef
+	
+	
