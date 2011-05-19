@@ -115,7 +115,7 @@ exports
         %% Operators, following the operator predecence from: http://www.uni-bonn.de/~manfear/javaoperators.php
         {
             left:
-            Exp "." Exp -> Exp
+            Exp "." Id -> Exp
             Exp "." Id "(" {Exp ","}* ")" -> Exp
         }
         >
