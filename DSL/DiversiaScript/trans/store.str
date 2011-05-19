@@ -4,6 +4,7 @@ imports
 	include/DiversiaScript
 	lib/namespaces
 	namespace
+	signatures
 	
 strategies
 	store-all = store-declarations; topdown(try(store-references))
@@ -13,10 +14,15 @@ rules // declarations
 	store-declarations: d@Start(definitions) -> d
 		where <map(store-declarations)> definitions
 		
-	// Object definitions
-	store-declarations: d@ObjectDef(name, definitions) -> d
+	// Object definitions	
+	store-declarations: d@ObjectDef(name, propAssigns, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> d
 		where <store-declaration(|Objects())> (name, d)
-		where <map(store-declarations(|name))> definitions
+		where <map(store-declarations(|name))> propAssigns
+		where <map(store-declarations(|name))> componentDefs
+		where <map(store-declarations(|name))> varDefs
+		where <map(store-declarations(|name))> defaultStateDef
+		where <map(store-declarations(|name))> stateDefs
+		where <map(store-declarations(|name))> eventDefs
 		
 	// Global event definitions
 	store-declarations: d@EventDef(name, _) -> d
@@ -34,18 +40,27 @@ rules // declarations
 		where <store-declaration(|Vars(object))> (name, d)
 		
 	// Event definitions in object.
-	store-declarations(|object): d@EventDef(name, statements) -> d
-		where <store-declaration(|Events(object))> (name, d)
 	store-declarations(|object): d@EventDef(name, _, statements) -> d
 		where <store-declaration(|Events(object))> (name, d)
 		// TODO: store vars in event? not sure if these need to be stored since they
 		// are just statements that can be directly converted to lua/c++?
 		
 	// State definitions in object.
-	store-declarations(|object): d@DefaultStateDef(name, definitions) -> d
+	store-declarations(|object): d@DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs) -> d
 		where <store-declaration(|States(object))> (name, d)
 		where <store-declaration(|DefaultStates(object))> (name, d)
-		where <map(store-declarations(|object, name))> definitions
+		where <map(store-declarations(|object, name))> propAssigns
+		where <map(store-declarations(|object, name))> componentDefs
+		where <map(store-declarations(|object, name))> varDefs
+		where <map(store-declarations(|object, name))> eventDefs
+	
+	store-declarations(|object): d@StateDef(name, propAssigns, componentDefs, varDefs, eventDefs) -> d
+		where <store-declaration(|States(object))> (name, d)
+		where <map(store-declarations(|object, name))> propAssigns
+		where <map(store-declarations(|object, name))> componentDefs
+		where <map(store-declarations(|object, name))> varDefs
+		where <map(store-declarations(|object, name))> eventDefs
+		
 	store-declarations(|object): d@StateDef(name, definitions) -> d
 		where <store-declaration(|States(object))> (name, d)
 		where <map(store-declarations(|object, name))> definitions
@@ -56,8 +71,6 @@ rules // declarations
 		where <store-declaration(|Components(object, state))> (name, d)
 	
 	// Event definitions in object and state
-	store-declarations(|object, state): d@EventDef(name, statements) -> d
-		where <store-declaration(|Events(object, state))> (name, d)
 	store-declarations(|object, state): d@EventDef(name, _, statements) -> d
 		where <store-declaration(|Events(object, state))> (name, d)
 		// TODO: store vars in event? not sure if these need to be stored since they

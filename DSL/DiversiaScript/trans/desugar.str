@@ -5,35 +5,48 @@ imports
 	signatures
 
 strategies
-	desugar-all = /*topdown(try(desuger-object));*/ innermost(desuger) //; innermost(desugar-type)
+	desugar-all = innermost(desugar) //; topdown(try(desugar-object));  //; innermost(desugar-type)
 
 rules
 
-	desuger: EventDef(name,statements) -> EventDef(name,[],statements)
-	desuger: VarDefNoInit(name,type) -> VarDef(name,type,Null())
+	desugar: EventDef(name,statements) -> EventDef(name,[],statements)
+	desugar: VarDefNoInit(name,type) -> VarDef(name,type,Null())
 	
-	desuger-object: ObjectDef(object-name, defs) -> ObjectDef(object-name, propAssigns, varDefs, defaultStateDef, stateDefs, eventDefs)
+	desugar-object: ObjectDef(name, defs) -> ObjectDef(name, propAssigns, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
 		where
 			<filter(?PropAssign(_,_))> defs => propAssigns;
 			<filter(?ObjectDef(_,_))> defs => objectDefs; // needs more here
+			<filter(?ComponentDef(_,_))> defs => componentDefs;
 			<filter(?VarDef(_,_,_))> defs => varDefs;
 			<filter(?DefaultStateDef(_,_))> defs => defaultStateDef;
 			<filter(?StateDef(_,_))> defs => stateDefs;
-			<filter(?PropAssign(_,_))> defs => eventDefs
-
+			<filter(?EventDef(_,_,_))> defs => eventDefs
 	
+	desugar-state: StateDef(name, defs) -> StateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
+		where
+			<filter(?PropAssign(_,_))> defs => propAssigns;
+			<filter(?ComponentDef(_,_))> defs => componentDefs;
+			<filter(?VarDef(_,_,_))> defs => varDefs;
+			<filter(?EventDef(_,_))> defs => eventDefs
+			
+	desugar-state: DefaultStateDef(name, defs) -> DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
+		where
+			<filter(?PropAssign(_,_))> defs => propAssigns;
+			<filter(?ComponentDef(_,_))> defs => componentDefs;
+			<filter(?VarDef(_,_,_))> defs => varDefs;
+			<filter(?EventDef(_,_,_))> defs => eventDefs	
 	
 	// TODO need to following type rules to do type inf.
     get-param-types: name -> []
     typeof: name -> ""
     
-	desuger-type: EventDef(event-name,params, statements) -> EventDef(event-name,params',statements) 
+	desugar-type: EventDef(event-name,params, statements) -> EventDef(event-name,params',statements) 
 	where 
 		<get-param-types> event-name => param-types;
-		<zip(desuger-params)> (params, param-types) => params'
+		<zip(desugar-params)> (params, param-types) => params'
 	
-	desuger-params: (Param(name),type) -> Param(name, type)
-    desuger-type: VarDefNoType(name, value) -> VarDef(name, <typeof> value, value) // might need te be changed
+	desugar-params: (Param(name),type) -> Param(name, type)
+    desugar-type: VarDefNoType(name, value) -> VarDef(name, <typeof> value, value) // might need te be changed
     
     
 

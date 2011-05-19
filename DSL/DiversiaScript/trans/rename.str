@@ -1,5 +1,5 @@
 module rename
-
+/*
 imports 
 	include/DiversiaScript
 	lib/namespaces
@@ -45,4 +45,4 @@ rules
 		ComponentDef(name, params) -> ComponentDef(name', params)
 		where
 			<rename-declaration(|Components())> name => name'
-			
+	*/		
