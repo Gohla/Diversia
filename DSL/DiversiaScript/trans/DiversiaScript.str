@@ -8,6 +8,7 @@ imports
   lib/editor-common.generated
   rename
   store
+  desugar
   codegen/lua/luagen
   
   lib/namespaces
@@ -15,7 +16,7 @@ imports
   
 strategies
 	
-	analyse-all = store-all
+	analyse-all = desugar-all; store-all
 
 rules // Main editor interface (defined by editor/DiversiaScript-Builders and -References.esv)
   

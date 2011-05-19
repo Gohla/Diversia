@@ -60,7 +60,7 @@ exports
     "this"                              -> Exp {cons("This")}
     "null"                              -> Exp {cons("Null")}
     Id "(" {Exp ","}* ")"               -> Exp {cons("New")}
-    Exp "." Exp                         -> Exp {cons("Access"), left, avoid}
+    Exp "." Id                        	-> Exp {cons("Access"), left, avoid}
     Exp "." Id "(" {Exp ","}* ")"   	-> Exp {cons("Call"), left}
     "(" Exp ")"                         -> Exp {bracket}
     
@@ -92,7 +92,7 @@ exports
     %% Statements
     "{" Statement* "}"                                  							-> Statement {cons("Statements")}
     "if" "(" Exp ")" Statement "else" Statement   									-> Statement {cons("If")}
-    "if" "(" Exp ")" Statement    													-> Statement {cons("IfNoElse")} %% desugered
+    "if" "(" Exp ")" Statement    													-> Statement {cons("If")}
     "while" "(" Exp ")" Statement                       							-> Statement {cons("While")}
     Exp "=" Exp ";"                                     							-> Statement {cons("Assign")}
     "new" ObjectRef "{" PropAssign* "}"        										-> Statement {cons("ObjectNew")}
@@ -109,7 +109,8 @@ exports
     "Float" -> Type {cons("FloatType")}
     "Bool" -> Type {cons("BoolType")}
     Id -> Type {cons("CustomType")}
-    
+
+
     context-free priorities
         %% Operators, following the operator predecence from: http://www.uni-bonn.de/~manfear/javaoperators.php
         {
