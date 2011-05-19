@@ -48,10 +48,11 @@ exports
     VarDef -> InsideDef
     
     %% Expressions
-    BoolConst                           -> Exp {cons("BoolConst")}
+    "true"                           	-> Exp {cons("True")}
+    "false"                           	-> Exp {cons("False")}
     IntConst                            -> Exp {cons("IntConst")}
     FloatConst                          -> Exp {cons("FloatConst")}
-    StrConst                            -> Exp
+    StrConst                            -> Exp {cons("StrConst")}
     "[" Exp "," Exp "]"                 -> Exp {cons("Vector2Const")}
     "[" Exp "," Exp "," Exp "]"         -> Exp {cons("Vector3Const")}
     "[" Exp "," Exp "," Exp "," Exp "]" -> Exp {cons("Vector4Const")}

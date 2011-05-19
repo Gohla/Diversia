@@ -3,8 +3,8 @@
 <project name="build.generated">
 
         <target name="spoofaximp.default" depends="spoofaximp.default.ctree"/>
-        <target name="spoofaximp.default.ctree" depends="check-classpath,init,sdf2table,meta-sdf2table,ppgen,pppack,stratego.aster,java.jar,stratego.ctree,sdf2imp,refresh"/>
-        <target name="spoofaximp.default.jar" depends="check-classpath,init,sdf2table,meta-sdf2table,ppgen,pppack,stratego.aster,java.jar,stratego.jar,  sdf2imp,refresh"/>
+        <target name="spoofaximp.default.ctree" depends="check-classpath,init,sdf2table,meta-sdf2table,ppgen,pppack,stratego.aster,stratego.ctree,java.jar,sdf2imp,refresh"/>
+        <target name="spoofaximp.default.jar" depends="check-classpath,init,sdf2table,meta-sdf2table,ppgen,pppack,stratego.aster,stratego.jar,  java.jar,sdf2imp,refresh"/>
     
         <!-- Initialization -->
         <available file="${build}/Lua/strategies/Main.class" property="java.jar.enabled"/>
@@ -24,9 +24,6 @@
         </condition>
         <condition property="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter">
             <isset property="eclipse.running"/>
-        </condition>
-        <condition property="build.compiler" value="org.eclipse.jdt.core.JDTCompilerAdapter">
-            <available classname="org.eclipse.jdt.core.JDTCompilerAdapter"/>
         </condition>
         <condition property="externaljarflags" value="${externaljarflags}" else="">
             <isset property="externaljarflags"/>
@@ -265,10 +262,9 @@
                 <arg value="org.strategoxt.tools.main-ppgen"/>
                 <arg value="-i"/>
                 <arg value="${include}/${sdfmodule}.def"/>
-                <arg value="-t"/>
-                <arg value="-b"/>
                 <arg value="-o"/>
                 <arg value="${include}/${sdfmodule}.generated.pp.af"/>
+                <arg value="-t"/>
             </java>
             <java classname="run" failonerror="false">
                 <arg value="org.strategoxt.tools.main-pp-pp-table"/>
@@ -312,10 +308,9 @@
         <!-- Aster to Stratego -->
         <target name="stratego.aster">
             <available file="${trans}/${strmodule}.rtree" property="aster-output.available"/>
-            <fileset dir="${basedir}" id="aster-input-set">
-              <include name="**/*.astr"/>
-            </fileset>
-            <pathconvert pathsep=" " setonempty="false" property="aster-input" refid="aster-input-set"/>
+            <pathconvert property="aster-input" setonempty="false" pathsep=" ">
+                <path><fileset dir="${basedir}" includes="*.astr"/></path>
+            </pathconvert>
             <dependset>
                 <srcfileset dir="${basedir}">
                     <include name="**/*.astr"/>
@@ -335,7 +330,9 @@
         <target name="stratego.aster.helper" if="aster-input" unless="aster-output.uptodate">
             <java classname="org.strategoxt.aster.Main" failonerror="true">
                 <arg value="-i"/>
-                <arg line="${aster-input}"/>
+                <fileset dir="${basedir}">
+                    <include name="**/*.astr"/>
+                </fileset>
             </java>
         </target>
         
@@ -445,7 +442,6 @@
         
         <target name="clean" description="clean up">
             <delete dir="${build}"/>
-            <delete file="${include}/${sdfmodule}.def"/>
-            <delete dir="${src-gen}/trans"/>
+            <delete file="${src-gen}/trans/Main.java"/>
         </target>
     </project>

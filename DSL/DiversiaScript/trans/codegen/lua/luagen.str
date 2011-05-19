@@ -3,9 +3,10 @@ module codegen/lua/luagen
 imports
 	libstratego-gpp
 	include/DiversiaScript
-	include/Lua
+	../Lua/include/Lua
 	lib/namespaces
 	namespace
+	signatures
 	name-project
 	
 rules
@@ -18,9 +19,29 @@ rules
 	
 	// Global definitions to lua files.
 	to-lua: Start(definitions) -> Chunk(<map(to-lua)> definitions)
-	to-lua: ObjectDef(name, definitions) -> <lua-funcdef> ("Create", components)
-		where components := <map(to-lua)> <get-all-components> name
+	to-lua: ObjectDef(name, propAssigns, components, varDefs, defaultStateDef, stateDefs, eventDefs) -> <lua-funcdef> ("Create", componentCreations)
+		where componentCreations := <map(to-lua)> components
 	
 	// TODO: Convert properties
-	to-lua: ComponentDef(name, properties) -> Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), name), String($["[name]"]), False()]))])
-		
+	to-lua: ComponentDef(name, properties) -> [
+		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), name), String($["[name]"]), False()]))]),
+		<map(to-lua(|name))> properties
+	]
+	to-lua(|componentName): PropAssign(name, exp) -> Assignment([Access(name, VarRef(componentName))], <to-lua> exp)
+	
+rules // Expressions
+	
+	to-lua: True() -> True()
+	to-lua: False() -> False()
+	to-lua: IntConst(int) -> Number(int)
+	to-lua: FloatConst(float) -> Number(float)
+	to-lua: StrConst(string) -> String(string)
+	to-lua: Vector2Const(exp1, exp2) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2]))
+	to-lua: Vector3Const(exp1, exp2, exp3) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3]))
+	to-lua: Vector4Const(exp1, exp2, exp3, exp4) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3, <to-lua> exp4]))
+	to-lua: VarRef(name) -> VarRef(name)
+	to-lua: Null() -> Nil()
+	// TODO: New
+	// TODO: this
+	
+	
