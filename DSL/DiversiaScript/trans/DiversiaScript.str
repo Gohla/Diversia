@@ -54,4 +54,4 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
     (selected, position, ast, path, project-path) -> (filename, result)
     with
       filename := <guarantee-extension(|"aterm")> path;
-      result   := selected
+      result   := <analyse-all> selected

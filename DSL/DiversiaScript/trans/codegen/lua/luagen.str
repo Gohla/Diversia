@@ -27,7 +27,7 @@ rules
 		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), name), String($["[name]"]), False()]))]),
 		<map(to-lua(|name))> properties
 	]
-	to-lua(|componentName): PropAssign(name, exp) -> Assignment([Access(name, VarRef(componentName))], <to-lua> exp)
+	to-lua(|componentName): PropAssign(name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
 	
 rules // Expressions
 	
