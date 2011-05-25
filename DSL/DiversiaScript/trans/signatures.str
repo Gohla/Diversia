@@ -3,6 +3,7 @@ module signatures
 signature constructors // signatures
 
 	ObjectDef: Id * List(PropAssign) * List(ComponentDef) * List(VarDef) * StateDef * List(StateDef) * List(EventDef) -> ObjectDef
+	ObjectDef: Id * List(PropAssign) * List(ComponentDef) * List(ObjectDef) * List(VarDef) * StateDef * List(StateDef) * List(EventDef) -> ObjectDef
 	
 	
 	StateDef: Id * List(PropAssign) * List(ComponentDef) * List(VarDef) * List(EventDef) -> StateDef
