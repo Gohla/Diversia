@@ -3,6 +3,7 @@ module name-project
 imports
 	include/DiversiaScript
 	lib/namespaces
+	data/events
 	namespace
 	
 rules // Name-based projections
@@ -22,6 +23,7 @@ rules // Name-based look-up transformations
 	get-all-events = get-all-declarations(|Events())
 	get-all-events: objectName -> <get-all-declarations(|Events(objectName))>
 	get-all-events: (objectName, stateName) -> <get-all-declarations(|Events(objectName, stateName))>
+	get-all-objectevents: (objectName, eventName) -> <get-all-declarations(|ObjectEvents(objectName, eventName))>
 	get-all-states: objectName -> <get-all-declarations(|States(objectName))>
 	get-all-defaultstates: objectName -> <get-all-declarations(|DefaultStates(objectName))>
 	
@@ -42,3 +44,12 @@ rules // Name-based look-up transformations
 	get-event(|objectName, stateName): eventName -> <get-declaration(|Events(objectName, stateName))> eventName
 	get-state(|objectName): stateName -> <get-declaration(|States(objectName))> stateName
 	get-defaultstate(|objectName): stateName -> <get-declaration(|DefaultStates(objectName))> stateName
+	
+rules // Event
+	
+	object-events(|objectName): Event(name, _) -> <concat> [ [ ("", objectEvent) ], stateEvents ]
+		where objectEvent := <get-event> (objectName, name)
+		where stateEvents := <get-all-objectevents> (objectName, name)
+	object-events(|objectName): Event(name, _) -> stateEvents
+		where not( <get-event> (objectName, name) )
+		where stateEvents := <get-all-objectevents> (objectName, name)

@@ -73,6 +73,7 @@ rules // declarations
 	// Event definitions in object and state
 	store-declarations(|object, state): d@EventDef(name, _, statements) -> d
 		where <store-declaration(|Events(object, state))> (name, d)
+		where <store-declaration(|ObjectEvents(object, name))> (state, (state, d))
 		// TODO: store vars in event? not sure if these need to be stored since they
 		// are just statements that can be directly converted to lua/c++?
 			

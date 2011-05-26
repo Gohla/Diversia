@@ -1,0 +1,10 @@
+module data/events
+
+signature constructors
+	
+	Event: Id * List(Id) -> Event
+
+rules
+	shared-events = ![ Event("Create", []), Event("Destroy", []), Event("Update", []), Event("Frame", ["Real"]) ]
+	object-events = <concat> [ <shared-events>, [ Event("StateEnter", []), Event("Collision", ["Object"]) ] ]
+	global-events = <concat> [ <shared-events>, [  ] ]

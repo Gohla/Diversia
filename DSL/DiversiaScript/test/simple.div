@@ -20,7 +20,7 @@ def Mine {
         AngularDampening = 0.7
     }
     
-    default state Armed {
+    state Armed {
         on Collision(OtherObject) {
             // Explode mine if another object hits this.
             setstate Exploding;

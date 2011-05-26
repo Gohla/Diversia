@@ -1,0 +1,7 @@
+module util
+
+rules
+	
+	take-1: [elem|rest] -> (elem, rest)
+	get-1: [elem|_] -> elem
+	take-2: [elem1|[elem2|rest]] -> (elem1, elem2, rest)

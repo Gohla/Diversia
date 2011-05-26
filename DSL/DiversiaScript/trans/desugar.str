@@ -16,7 +16,7 @@ rules
 			<filter(?PropAssign(_,_))> defs => propAssigns;
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
 			<filter(?VarDef(_,_,_))> defs => varDefs;
-			<filter(?EventDef(_,_))> defs => eventDefs	
+			<filter(?EventDef(_,_,_))> defs => eventDefs	
 	desugar: DefaultStateDef(name, defs) -> DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
 			<filter(?PropAssign(_,_))> defs => propAssigns;

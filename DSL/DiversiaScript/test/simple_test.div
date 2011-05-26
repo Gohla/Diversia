@@ -1,0 +1,49 @@
+def Test {
+	Position = [0, 0.5, 0]
+	
+    component Mesh {
+        ShapeType = Mesh
+        ShapeFile = "Landmine.mesh"
+    }
+    component Entity {
+        Material = "Landmine"
+    }
+    component CollisionShape {
+        ShapeType = Mesh
+        ShapeFile = "Landmine.bullet"
+    }
+    component RigidBody {
+        PhysicsType = Dynamic
+        Restitution = 0.3
+        LinearDampening = 0.7
+        AngularDampening = 0.7
+    }
+    
+    on Create() {
+    	Bla = 1;
+    }
+    on Update() {
+    	Bla = Bla + 1;
+    }
+    
+    default state TestState1 {
+	    on Update() {
+	    	//Bla = Bla + 2;
+	    }
+	    on Frame(TimeElapsed) {
+	    	Bla = Bla + 3;
+	    }    	
+    }
+    state TestState2 {
+		on Update(){
+	    	//Bla = Bla + 3;
+	    }
+	    on Frame(TimeElapsed) {
+	    	Bla = Bla + 4;
+	    }
+	    on Destroy() {
+	    	Bla = 0;
+	    }
+    }
+    state TestState3 {}
+}
