@@ -65,8 +65,8 @@ rules
 	update-event(|objects): [] -> [EventDef("Create",[], news)]
 		where 
 			 <map(create-new-object)> objects => news
-	
-	update-event(|objects): [EventDef("Create",params, statements)] -> [EventDef("Create",params, <conc>[news,statements])]
+
+	update-event(|objects): [EventDef("Create",params, statements)] -> [EventDef("Create",params, <concat>[news,statements])]
 		where
 			<map(create-new-object)> objects => news
 	/*
