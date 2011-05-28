@@ -64,6 +64,7 @@ namespace ObjectSystem
 
 // Forward declarations
 class Component;
+class ComponentHandle;
 class ComponentFactory;
 class ComponentTemplate;
 class Object;

@@ -80,6 +80,7 @@ class ServerAbstract;
 class Server;
 class OfflineServer;
 class ServerConnection;
+class ServerNeighborsPlugin;
 
 // Lua
 class LuaPlugin;

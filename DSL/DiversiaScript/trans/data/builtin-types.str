@@ -1,0 +1,876 @@
+module data/builtin-types
+
+signature constructors
+	
+	BuiltinType: Name * List(BuiltinType) * List(Constructor) * List(Property) * List(Function) -> BuiltinType
+	Property: Name * Type -> Property
+	Function: Name * ReturnType * List(ParamType) -> Function
+
+rules
+	
+	builtin-types = ![
+	BuiltinType("ClientComponent",
+	["Component", "PropertySynchronization"],
+	[], 
+	[
+		Property("ResourceList", "Array")
+	], 
+	[
+		
+	])
+	, BuiltinType("ClientComponentTemplate",
+	["ComponentTemplate", "PropertySynchronization"],
+	[], 
+	[
+		
+	], 
+	[
+		
+	])
+	, BuiltinType("ClientObject",
+	["Object"],
+	[], 
+	[
+		
+	], 
+	[
+		
+	])
+	, BuiltinType("ClientObjectManager",
+	["ObjectManager", "ServerPlugin"],
+	[], 
+	[
+		
+	], 
+	[
+		
+	])
+	, BuiltinType("ClientObjectTemplate",
+	["ObjectTemplate", "PropertySynchronization"],
+	[], 
+	[
+		
+	], 
+	[
+		
+	])
+	, BuiltinType("ClientObjectTemplateManager",
+	["ObjectTemplateManager", "ServerPlugin"],
+	[], 
+	[
+		
+	], 
+	[
+		
+	])
+	, BuiltinType("Lua",
+	["ServerPlugin"],
+	[], 
+	[
+		
+	], 
+	[
+		Function("Run garbage collection", "", [])
+	])
+	, BuiltinType("PermissionManager",
+	["ServerPlugin"],
+	[], 
+	[
+		
+	], 
+	[
+		
+	])
+	, BuiltinType("ServerNeighborsPlugin",
+	["ServerPlugin"],
+	[], 
+	[
+		Property("ServerNeighbors", "ServerNeighbors")
+	], 
+	[
+		
+	])
+	, BuiltinType("ServerPlugin",
+	["ClientServerPlugin", "PropertySynchronization"],
+	[], 
+	[
+		
+	], 
+	[
+		Function("ForceSerialize", "", [])
+	])
+	, BuiltinType("ClientServerPlugin",
+	[],
+	[], 
+	[
+		Property("Type", "Enum"), 
+		Property("TypeName", "String"), 
+		Property("Mode", "Enum"), 
+		Property("PluginManager", "ClientServerPluginManager")
+	], 
+	[
+		
+	])
+	, BuiltinType("ClientServerPluginManager",
+	[],
+	[], 
+	[
+		Property("Mode", "Enum"), 
+		Property("Plugins", "Dictionary")
+	], 
+	[
+		Function("CreatePlugin", "", []), 
+		Function("GetPlugin", "", []), 
+		Function("HasPlugin", "", []), 
+		Function("DestroyPlugin", "", [])
+	])
+	, BuiltinType("Component",
+	[],
+	[], 
+	[
+		Property("Type", "Int"), 
+		Property("TypeName", "String"), 
+		Property("Object", "Object"), 
+		Property("Mode", "Enum"), 
+		Property("NetworkingType", "Enum"), 
+		Property("Source", "Enum"), 
+		Property("SourceGUID", "RakNetGUID"), 
+		Property("OwnGUID", "RakNetGUID"), 
+		Property("ServerGUID", "RakNetGUID"), 
+		Property("IsCreatedByOwnGUID", "Bool"), 
+		Property("IsCreatedByServer", "Bool"), 
+		Property("LocalOverride", "Bool"), 
+		Property("TemplateName", "String"), 
+		Property("OverriddenProperties", "Dictionary")
+	], 
+	[
+		Function("IsCreatedBy", "", []), 
+		Function("IsCreatedBySource", "", []), 
+		Function("Destroy", "", [])
+	])
+	, BuiltinType("ComponentTemplate",
+	[],
+	[], 
+	[
+		Property("Type", "Int"), 
+		Property("TypeName", "String"), 
+		Property("ObjectTemplate", "ObjectTemplate"), 
+		Property("Mode", "Enum"), 
+		Property("NetworkingType", "Enum"), 
+		Property("Source", "Enum"), 
+		Property("SourceGUID", "RakNetGUID"), 
+		Property("OwnGUID", "RakNetGUID"), 
+		Property("ServerGUID", "RakNetGUID"), 
+		Property("IsCreatedByOwnGUID", "Bool"), 
+		Property("IsCreatedByServer", "Bool"), 
+		Property("LocalOverride", "Bool"), 
+		Property("Properties", "Dictionary")
+	], 
+	[
+		Function("IsCreatedBy", "", []), 
+		Function("IsCreatedBySource", "", []), 
+		Function("Destroy", "", []), 
+		Function("SetProperty", "", [])
+	])
+	, BuiltinType("Object",
+	["Node"],
+	[], 
+	[
+		Property("Name", "String"), 
+		Property("ObjectManager", "ObjectManager"), 
+		Property("IsDelayedDestroying", "Bool"), 
+		Property("Mode", "Enum"), 
+		Property("Source", "Enum"), 
+		Property("SourceGUID", "RakNetGUID"), 
+		Property("OwnGUID", "RakNetGUID"), 
+		Property("ServerGUID", "RakNetGUID"), 
+		Property("IsCreatedByOwnGUID", "Bool"), 
+		Property("IsCreatedByServer", "Bool"), 
+		Property("DisplayName", "String"), 
+		Property("NetworkingType", "Enum"), 
+		Property("ParentName", "String"), 
+		Property("TemplateName", "String"), 
+		Property("Components", "Dictionary")
+	], 
+	[
+		Function("IsCreatedBy", "", []), 
+		Function("IsCreatedBySource", "", []), 
+		Function("CreateChildObject", "", []), 
+		Function("CreateComponent", "", []), 
+		Function("CreateComponentByHandle", "", []), 
+		Function("GetComponent", "", []), 
+		Function("HasComponent", "", []), 
+		Function("DestroyComponent", "", []), 
+		Function("Destroy", "", [])
+	])
+	, BuiltinType("ObjectManager",
+	[],
+	[], 
+	[
+		Property("Mode", "Enum"), 
+		Property("OwnGUID", "RakNetGUID"), 
+		Property("ServerGUID", "RakNetGUID"), 
+		Property("Objects", "Dictionary")
+	], 
+	[
+		Function("CreateLocalObject", "", []), 
+		Function("CreateNormalLocalObject", "", []), 
+		Function("CreateRemoteObject", "", []), 
+		Function("CreateObject", "", []), 
+		Function("GetObject", "", []), 
+		Function("HasObject", "", []), 
+		Function("DestroyObject", "", []), 
+		Function("DestroyObjectTree", "", []), 
+		Function("DestroyWholeObjectTree", "", [])
+	])
+	, BuiltinType("ObjectTemplate",
+	["Node"],
+	[], 
+	[
+		Property("Name", "String"), 
+		Property("ObjectTemplateManager", "ObjectTemplateManager"), 
+		Property("Mode", "Enum"), 
+		Property("Source", "Enum"), 
+		Property("SourceGUID", "RakNetGUID"), 
+		Property("OwnGUID", "RakNetGUID"), 
+		Property("ServerGUID", "RakNetGUID"), 
+		Property("IsCreatedByOwnGUID", "Bool"), 
+		Property("IsCreatedByServer", "Bool"), 
+		Property("DisplayName", "String"), 
+		Property("NetworkingType", "Enum"), 
+		Property("ParentName", "String"), 
+		Property("ComponentTemplates", "Dictionary")
+	], 
+	[
+		Function("IsCreatedBy", "", []), 
+		Function("IsCreatedBySource", "", []), 
+		Function("CreateChildObjectTemplate", "", []), 
+		Function("CreateComponentTemplate", "", []), 
+		Function("CreateComponentTemplateByHandle", "", []), 
+		Function("GetComponentTemplate", "", []), 
+		Function("HasComponentTemplate", "", []), 
+		Function("DestroyComponentTemplate", "", []), 
+		Function("Destroy", "", [])
+	])
+	, BuiltinType("ObjectTemplateManager",
+	[],
+	[], 
+	[
+		Property("Mode", "Enum"), 
+		Property("OwnGUID", "RakNetGUID"), 
+		Property("ServerGUID", "RakNetGUID"), 
+		Property("ObjectTemplates", "Dictionary")
+	], 
+	[
+		Function("CreateLocalObjectTemplate", "", []), 
+		Function("CreateRemoteObjectTemplate", "", []), 
+		Function("CreateObjectTemplate", "", []), 
+		Function("GetObjectTemplate", "", []), 
+		Function("HasObjectTemplate", "", []), 
+		Function("DestroyObjectTemplate", "", []), 
+		Function("DestroyObjectTemplateTree", "", []), 
+		Function("DestroyWholeObjectTemplateTree", "", [])
+	])
+	, BuiltinType("Animation",
+	["ClientComponent"],
+	[], 
+	[
+		Property("AnimationName", "String"), 
+		Property("Speed", "Real"), 
+		Property("Enabled", "Bool"), 
+		Property("Loop", "Bool"), 
+		Property("Position", "Real"), 
+		Property("Length", "Real"), 
+		Property("AutoLength", "Bool"), 
+		Property("Weight", "Real")
+	], 
+	[
+		Function("HasEnded", "", []), 
+		Function("AddTime", "", [])
+	])
+	, BuiltinType("AreaTrigger",
+	["ClientComponent"],
+	[], 
+	[
+		
+	], 
+	[
+		
+	])
+	, BuiltinType("Audio",
+	["ClientComponent"],
+	[], 
+	[
+		Property("File", "String"), 
+		Property("Volume", "Real"), 
+		Property("VolumeSmooth", "Real"), 
+		Property("VolumeSmoothTimescale", "Real"), 
+		Property("Loop", "Bool"), 
+		Property("AutoPlay", "Bool"), 
+		Property("Pitch", "Real"), 
+		Property("MinDistance", "Real"), 
+		Property("MaxDistance", "Real"), 
+		Property("MinVolume", "Real"), 
+		Property("MaxVolume", "Real"), 
+		Property("Strength", "Real"), 
+		Property("DopplerStrength", "Real"), 
+		Property("RolloffFactor", "Real")
+	], 
+	[
+		Function("Play", "", []), 
+		Function("Stop", "", []), 
+		Function("Pause", "", [])
+	])
+	, BuiltinType("Axis",
+	[],
+	[], 
+	[
+		Property("Absolute", "Int"), 
+		Property("Relative", "Int")
+	], 
+	[
+		Function("Clear", "", [])
+	])
+	, BuiltinType("Camera",
+	["ClientComponent"],
+	[], 
+	[
+		Property("Active", "Bool")
+	], 
+	[
+		
+	])
+	, BuiltinType("CollisionShape",
+	["ClientComponent"],
+	[], 
+	[
+		Property("IsReceivingCollisionCallbacks", "Bool"), 
+		Property("CollisionFile", "String"), 
+		Property("ShapeType", "Enum"), 
+		Property("ShapeParameters", "Vector3"), 
+		Property("CollisionPriority", "Int")
+	], 
+	[
+		
+	])
+	, BuiltinType("Entity",
+	["ClientComponent"],
+	[], 
+	[
+		Property("Material", "String"), 
+		Property("CastShadows", "Bool"), 
+		Property("Visible", "Bool")
+	], 
+	[
+		
+	])
+	, BuiltinType("ForceField",
+	["ClientComponent"],
+	[], 
+	[
+		Property("Enabled", "Bool"), 
+		Property("Force", "Vector3")
+	], 
+	[
+		
+	])
+	, BuiltinType("GameMode",
+	["ServerPlugin"],
+	[], 
+	[
+		Property("ClientLoadDefaultGamemode", "Bool"), 
+		Property("ClientScriptFiles", "Array"), 
+		Property("ClientSecurityLevel", "Enum"), 
+		Property("ServerScriptFiles", "Array"), 
+		Property("ServerSecurityLevel", "Enum"), 
+		Property("MousePriority", "Int"), 
+		Property("KeyboardPriority", "Int")
+	], 
+	[
+		Function("Reload script", "", []), 
+		Function("Destroy script", "", []), 
+		Function("Create script", "", []), 
+		Function("Disconnect", "", []), 
+		Function("IsDisconnect", "", []), 
+		Function("Connect", "", []), 
+		Function("IsConnected", "", []), 
+		Function("Block", "", []), 
+		Function("IsBlocked", "", []), 
+		Function("DisconnectAll", "", []), 
+		Function("ConnectAll", "", []), 
+		Function("BlockAll", "", [])
+	])
+	, BuiltinType("InputManager",
+	[],
+	[], 
+	[
+		Property("MouseState", "MouseState"), 
+		Property("KeyboardState", "KeyboardState"), 
+		Property("WindowWidth", "Int"), 
+		Property("WindowHeight", "Int")
+	], 
+	[
+		
+	])
+	, BuiltinType("KeyboardState",
+	[],
+	[], 
+	[
+		
+	], 
+	[
+		Function("IsButtonDown", "", []), 
+		Function("Clear", "", [])
+	])
+	, BuiltinType("Light",
+	["ClientComponent"],
+	[], 
+	[
+		Property("LightType", "Enum"), 
+		Property("CastShadows", "Bool"), 
+		Property("DiffuseColour", "Colour"), 
+		Property("SpecularColour", "Colour"), 
+		Property("PowerScale", "Real"), 
+		Property("SpotlightFalloff", "Real"), 
+		Property("SpotlightInnerAngle", "Radian"), 
+		Property("SpotlightOuterAngle", "Radian")
+	], 
+	[
+		
+	])
+	, BuiltinType("LuaObjectScript",
+	["ClientComponent"],
+	[], 
+	[
+		Property("ClientScriptFile", "String"), 
+		Property("ClientEnvironmentName", "String"), 
+		Property("ClientSecurityLevel", "Enum"), 
+		Property("ServerScriptFile", "String"), 
+		Property("ServerEnvironmentName", "String"), 
+		Property("ServerSecurityLevel", "Enum")
+	], 
+	[
+		Function("Reload script", "", []), 
+		Function("Destroy script", "", []), 
+		Function("Create script", "", []), 
+		Function("Disconnect", "", []), 
+		Function("IsDisconnect", "", []), 
+		Function("Connect", "", []), 
+		Function("IsConnected", "", []), 
+		Function("Block", "", []), 
+		Function("IsBlocked", "", []), 
+		Function("DisconnectAll", "", []), 
+		Function("ConnectAll", "", []), 
+		Function("BlockAll", "", [])
+	])
+	, BuiltinType("Mesh",
+	["ClientComponent"],
+	[], 
+	[
+		Property("MeshFile", "String"), 
+		Property("ShapeType", "Enum"), 
+		Property("ShapeParameters", "Vector3"), 
+		Property("ShapeUV", "Vector2"), 
+		Property("ShapeXSegments", "Int"), 
+		Property("ShapeYSegments", "Int"), 
+		Property("ShapeZSegments", "Int"), 
+		Property("ShapeRadius", "Real"), 
+		Property("ShapeRadius2", "Real")
+	], 
+	[
+		
+	])
+	, BuiltinType("MouseState",
+	[],
+	[], 
+	[
+		Property("X", "Axis"), 
+		Property("Y", "Axis"), 
+		Property("Z", "Axis")
+	], 
+	[
+		Function("IsButtonDown", "", []), 
+		Function("Clear", "", [])
+	])
+	, BuiltinType("Particle",
+	["ClientComponent"],
+	[], 
+	[
+		Property("Name", "String"), 
+		Property("Quota", "Int"), 
+		Property("Enabled", "Bool"), 
+		Property("Speed", "Real")
+	], 
+	[
+		Function("Clear", "", [])
+	])
+	, BuiltinType("ResourceManager",
+	["ServerPlugin"],
+	[], 
+	[
+		Property("Type", "Enum"), 
+		Property("ResourceLocation", "String"), 
+		Property("Group", "String")
+	], 
+	[
+		
+	])
+	, BuiltinType("RigidBody",
+	["ClientComponent"],
+	[], 
+	[
+		Property("PhysicsType", "Enum"), 
+		Property("Mass", "Real"), 
+		Property("Friction", "Real"), 
+		Property("Restitution", "Real"), 
+		Property("LinearDampening", "Real"), 
+		Property("AngularDampening", "Real"), 
+		Property("LinearSleepingThreshold", "Real"), 
+		Property("AngularSleepingThreshold", "Real")
+	], 
+	[
+		Function("Activate", "", []), 
+		Function("ApplyForce", "", []), 
+		Function("ApplyCentralForce", "", []), 
+		Function("ApplyImpulse", "", []), 
+		Function("ApplyCentralImpulse", "", []), 
+		Function("ApplyTorque", "", [])
+	])
+	, BuiltinType("SceneManager",
+	["ServerPlugin"],
+	[], 
+	[
+		Property("SkyType", "Enum"), 
+		Property("SkyEnabled", "Bool"), 
+		Property("SkyMaterial", "String"), 
+		Property("SkyDistance", "Real"), 
+		Property("SkyDrawFirst", "Bool"), 
+		Property("SkyOrientation", "Quaternion"), 
+		Property("SkyDomeCurvature", "Real"), 
+		Property("SkyDomeTiling", "Real"), 
+		Property("SkyDomeXSegments", "Int"), 
+		Property("SkyDomeYSegments", "Int"), 
+		Property("SkyDomeKeepYSegments", "Int"), 
+		Property("AmbientLight", "Colour")
+	], 
+	[
+		
+	])
+	, BuiltinType("SceneNode",
+	["ClientComponent"],
+	[], 
+	[
+		
+	], 
+	[
+		
+	])
+	, BuiltinType("Sky",
+	["ServerPlugin"],
+	[], 
+	[
+		Property("Timescale", "Real"), 
+		Property("FogDensity", "Real"), 
+		Property("FogColour", "Colour"), 
+		Property("ObserverLongitude", "Degree"), 
+		Property("ObserverLatitude", "Degree"), 
+		Property("CloudSpeed", "Vector2"), 
+		Property("CloudBlendTime", "Real"), 
+		Property("CloudCoverage", "Real"), 
+		Property("CloudHeight", "Real"), 
+		Property("PrecipitationType", "Enum"), 
+		Property("PrecipitationIntensity", "Real"), 
+		Property("PrecipitationSpeed", "Real"), 
+		Property("PrecipitationCameraSpeedScale", "Real"), 
+		Property("SunAmbientMultiplier", "Colour"), 
+		Property("SunSpecularMultiplier", "Colour"), 
+		Property("SunDiffuseMultiplier", "Colour")
+	], 
+	[
+		
+	])
+	, BuiltinType("Terrain",
+	["ServerPlugin"],
+	[], 
+	[
+		Property("TerrainType", "Enum"), 
+		Property("HeightmapType", "Enum"), 
+		Property("ClientHeightmapFile", "String"), 
+		Property("InputScale", "Real"), 
+		Property("HeightOffset", "Real"), 
+		Property("LayerInstances", "Array"), 
+		Property("MinHeight0", "Real"), 
+		Property("FadeDistance0", "Real"), 
+		Property("MinHeight1", "Real"), 
+		Property("FadeDistance1", "Real")
+	], 
+	[
+		
+	])
+	, BuiltinType("Text",
+	["ClientComponent"],
+	[], 
+	[
+		Property("Caption", "String"), 
+		Property("Colour", "Colour")
+	], 
+	[
+		
+	])
+	, BuiltinType("PropertySynchronization",
+	[],
+	[], 
+	[
+		
+	], 
+	[
+		
+	])
+	, BuiltinType("ServerNeighbors",
+	[],
+	[], 
+	[
+		
+	], 
+	[
+		Function("AddServer", "", []), 
+		Function("GetServer", "", []), 
+		Function("HasServer", "", []), 
+		Function("RemoveServer", "", []), 
+		Function("Clear", "", [])
+	])
+	, BuiltinType("Angle",
+	[],
+	[], 
+	[
+		Property("Radian", "Radian"), 
+		Property("Degree", "Degree"), 
+		Property("Angle", "Real")
+	], 
+	[
+		
+	])
+	, BuiltinType("Colour",
+	[],
+	[], 
+	[
+		Property("R", "Real"), 
+		Property("G", "Real"), 
+		Property("B", "Real"), 
+		Property("A", "Real")
+	], 
+	[
+		
+	])
+	, BuiltinType("Degree",
+	[],
+	[], 
+	[
+		Property("Radians", "Real"), 
+		Property("AngleUnits", "Real"), 
+		Property("Degrees", "Real")
+	], 
+	[
+		Function("AddDegree", "", []), 
+		Function("AddRadian", "", []), 
+		Function("SubtractDegree", "", []), 
+		Function("SubtractRadian", "", []), 
+		Function("MultiplyDegree", "", []), 
+		Function("MultiplyReal", "", []), 
+		Function("DivideReal", "", []), 
+		Function("UnaryMinus", "", []), 
+		Function("EqualsDegree", "", []), 
+		Function("LessDegree", "", []), 
+		Function("LessEqualsDegree", "", [])
+	])
+	, BuiltinType("Matrix3",
+	[],
+	[], 
+	[
+		
+	], 
+	[
+		
+	])
+	, BuiltinType("Matrix4",
+	[],
+	[], 
+	[
+		
+	], 
+	[
+		
+	])
+	, BuiltinType("Node",
+	[],
+	[], 
+	[
+		Property("LocalAxes", "Matrix3"), 
+		Property("FullTransform", "Matrix4"), 
+		Property("DerivedScale", "Vector3"), 
+		Property("InitialPosition", "Vector3"), 
+		Property("InitialOrientation", "Quaternion"), 
+		Property("InitialScale", "Vector3"), 
+		Property("Position", "Vector3"), 
+		Property("DerivedPosition", "Vector3"), 
+		Property("Orientation", "Quaternion"), 
+		Property("DerivedOrientation", "Quaternion"), 
+		Property("Scale", "Vector3"), 
+		Property("InheritOrientation", "Bool"), 
+		Property("InheritScale", "Bool")
+	], 
+	[
+		Function("Translate", "", []), 
+		Function("Roll", "", []), 
+		Function("Pitch", "", []), 
+		Function("Yaw", "", []), 
+		Function("Rotate", "", []), 
+		Function("SetInitialState", "", []), 
+		Function("ResetToInitialState", "", []), 
+		Function("ConvertWorldToLocalPosition", "", []), 
+		Function("ConvertLocalToWorldPosition", "", []), 
+		Function("ConvertWorldToLocalOrientation", "", []), 
+		Function("ConvertLocalToWorldOrientation", "", [])
+	])
+	, BuiltinType("Quaternion",
+	[],
+	[], 
+	[
+		Property("X", "Real"), 
+		Property("Y", "Real"), 
+		Property("Z", "Real"), 
+		Property("W", "Real"), 
+		Property("XAxis", "Vector3"), 
+		Property("YAxis", "Vector3"), 
+		Property("ZAxis", "Vector3"), 
+		Property("NormalizedCopy", "Real"), 
+		Property("Inverse", "Quaternion"), 
+		Property("UnitInverse", "Quaternion"), 
+		Property("Exp", "Quaternion"), 
+		Property("Log", "Quaternion"), 
+		Property("IsNaN", "Bool"), 
+		Property("Roll", "Radian"), 
+		Property("ShortestRoll", "Radian"), 
+		Property("Pitch", "Radian"), 
+		Property("ShortestPitch", "Radian"), 
+		Property("Yaw", "Radian"), 
+		Property("ShortestYaw", "Radian")
+	], 
+	[
+		Function("Dot", "", []), 
+		Function("Normalize", "", []), 
+		Function("AddQuaternion", "", []), 
+		Function("SubtractQuaternion", "", []), 
+		Function("MultiplyQuaternion", "", []), 
+		Function("MultiplyVector3", "", []), 
+		Function("MultiplyReal", "", []), 
+		Function("UnaryMinus", "", []), 
+		Function("EqualsQuaternion", "", [])
+	])
+	, BuiltinType("Radian",
+	[],
+	[], 
+	[
+		Property("Degrees", "Real"), 
+		Property("AngleUnits", "Real"), 
+		Property("Radians", "Real")
+	], 
+	[
+		Function("AddRadian", "", []), 
+		Function("AddDegree", "", []), 
+		Function("SubtractRadian", "", []), 
+		Function("SubtractDegree", "", []), 
+		Function("MultiplyRadian", "", []), 
+		Function("MultiplyReal", "", []), 
+		Function("DivideReal", "", []), 
+		Function("UnaryMinus", "", []), 
+		Function("EqualsRadian", "", []), 
+		Function("LessRadian", "", []), 
+		Function("LessEqualsRadian", "", [])
+	])
+	, BuiltinType("Vector2",
+	[],
+	[], 
+	[
+		Property("X", "Real"), 
+		Property("Y", "Real"), 
+		Property("Length", "Real"), 
+		Property("SquaredLength", "Real"), 
+		Property("IsZeroLength", "Bool"), 
+		Property("NormalisedCopy", "Vector2")
+	], 
+	[
+		Function("Dot", "", []), 
+		Function("Normalize", "", []), 
+		Function("MidPoint", "", []), 
+		Function("MakeFloor", "", []), 
+		Function("MakeCeil", "", []), 
+		Function("Perpendicular", "", []), 
+		Function("Cross", "", []), 
+		Function("RandomDeviant", "", []), 
+		Function("Reflect", "", [])
+	])
+	, BuiltinType("Vector3",
+	[],
+	[], 
+	[
+		Property("X", "Real"), 
+		Property("Y", "Real"), 
+		Property("Z", "Real"), 
+		Property("Zero", "Vector3"), 
+		Property("Length", "Real"), 
+		Property("SquaredLength", "Real"), 
+		Property("IsZeroLength", "Bool"), 
+		Property("NormalisedCopy", "Vector3")
+	], 
+	[
+		Function("Distance", "", []), 
+		Function("SquaredDistance", "", []), 
+		Function("Dot", "", []), 
+		Function("AbsDot", "", []), 
+		Function("Normalize", "", []), 
+		Function("Cross", "", []), 
+		Function("MidPoint", "", []), 
+		Function("MakeFloor", "", []), 
+		Function("MakeCeil", "", []), 
+		Function("Perpendicular", "", []), 
+		Function("RandomDeviant", "", []), 
+		Function("AngleBetween", "", []), 
+		Function("GetRotationTo", "", []), 
+		Function("Reflect", "", []), 
+		Function("PositionEquals", "", []), 
+		Function("PositionCloses", "", []), 
+		Function("DirectionEquals", "", []), 
+		Function("AddVector3", "", []), 
+		Function("SubtractVector3", "", []), 
+		Function("MultiplyVector3", "", []), 
+		Function("MultiplyReal", "", []), 
+		Function("DivideVector3", "", []), 
+		Function("DivideReal", "", []), 
+		Function("UnaryMinus", "", []), 
+		Function("EqualsVector3", "", []), 
+		Function("LessVector3", "", []), 
+		Function("LessEqualsVector3", "", [])
+	])
+	, BuiltinType("Vector4",
+	[],
+	[], 
+	[
+		Property("X", "Real"), 
+		Property("Y", "Real"), 
+		Property("Z", "Real"), 
+		Property("W", "Real")
+	], 
+	[
+		Function("Dot", "", [])
+	])
+	, BuiltinType("RakNetGUID",
+	[],
+	[], 
+	[
+		Property("ID", "Int")
+	], 
+	[
+		
+	])
+	]

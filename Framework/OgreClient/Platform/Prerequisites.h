@@ -91,6 +91,7 @@ class CameraManager;
 class Canvas;
 class Fader;
 class Gizmo;
+class OgreResourceParams;
 class GraphicsManager;
 class RotationGizmo;
 class ScaleGizmo;
@@ -136,6 +137,8 @@ class PhysicsManager;
 class GenericResource;
 class GenericResourceManager;
 class ResourceManager;
+class URLArchiveParams;
+class URLArchiveParamsHolder;
 class URLArchive;
 
 } // namespace OgreClient

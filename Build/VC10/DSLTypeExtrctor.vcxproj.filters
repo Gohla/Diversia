@@ -1,0 +1,21 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Platform">
+      <UniqueIdentifier>{b50c2d37-3a77-4752-8493-33b797cfd8c5}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\Platform\Prerequisites.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\Platform\StableHeaders.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\Platform\StableHeaders.cpp">
+      <Filter>Platform</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -67,6 +67,7 @@ using namespace Diversia::ObjectSystem;
 
 // Forward declarations
 // Camp
+class PropertySynchronization;
 class PropertyTransaction;
 
 // ClientServerPlugin
@@ -100,6 +101,9 @@ class PhysicsHeightfield;
 
 // Resource
 class ResourceInfo;
+
+// Terrain
+class LayerInstance;
 
 // Defines
 // Replica type
