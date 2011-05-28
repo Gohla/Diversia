@@ -24,13 +24,13 @@ exports
 	"elseif" Exp "then" Block -> ElseIfPart {cons("ElseIfPart")}
 	"if" Exp "then" Block "end" -> Statement {cons("If")}
 	"if" Exp "then" Block "else" Block "end" -> Statement {cons("If")}
-	"if" Exp "then" Block ElseIfPart+ "end" -> Statement {cons("If")}
+	"if" Exp "then" Block ElseIfPart+ "end" -> Statement {cons("IfElseIf")}
 	"if" Exp "then" Block ElseIfPart+ "else" Block "end" -> Statement {cons("If")}
 	"," Exp -> ExpPart {cons("ExpPart")}
 	"for" Id "=" Exp "," Exp ExpPart? "do" Block "end" -> Statement {cons("For")}
 	"for" {Id ","}+ "in" {Exp ","}+ "do" Block "end" -> Statement {cons("ForIn")}
-	"function" FunctionName FunctionBody -> Statement {cons("FuncDef")}
-	"local" "function" Id FunctionBody -> Statement {cons("LocalFuncDef")}
+	"function" FunctionName "(" ParList ")" Block "end" -> Statement {cons("FuncDef")}
+	"local" "function" Id "(" ParList ")" Block "end" -> Statement {cons("LocalFuncDef")}
 	"local" {Id ","}+ -> Statement {cons("LocalVarDef")}
 	"local" {Id ","}+ "=" {Exp ","}+ -> Statement {cons("LocalVarDef")}
 	Statement -> StatementClosure
@@ -51,7 +51,6 @@ exports
     Id DotIdPart+ ":" Id -> FunctionName {cons("FunctionName")}
     PrefixExp Args -> FunctionCall {cons("Call")}
     PrefixExp ":" Id Args -> FunctionCall {cons("Call")}
-    "(" ParList ")" Block "end" -> FunctionBody {cons("FunctionBody")}
     
     %% Args
     "(" {Exp ","}* ")" -> Args {cons("Args")}
@@ -80,7 +79,7 @@ exports
 	FloatConst -> Exp {cons("Number")}
 	StrConst -> Exp {cons("String")}
 	"..." -> Exp {cons("Nothing")}
-	"function" FunctionBody -> Exp {cons("Function")}
+	"function" "(" ParList ")" Block "end" -> Exp {cons("Function")}
 	PrefixExp -> Exp
 	Table -> Exp
 	

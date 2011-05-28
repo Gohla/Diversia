@@ -16,23 +16,25 @@ rules
 	lua-tostring: ast ->
 		<box2text-string( |100 )> <ast2box(|[<import-term( ../Lua/include/Lua.pp.af )>])>
 	
-	lua-dummy = !Assignment([VarRef("Dummy")], [String("Dummy")])
-	lua-funcdef: (name, content) -> FuncDef(FunctionName(name), FunctionBody(ParList(), Chunk(content)))
-	lua-funcdef: (name, paramNames, content) -> FuncDef(FunctionName(name), FunctionBody(ParList(paramNames), Chunk(content)))
+	lua-funcdef: (name, content) -> FuncDef(FunctionName(name), ParList(), Chunk(content))
+	lua-funcdef: (name, paramNames, content) -> FuncDef(FunctionName(name), ParList(paramNames), Chunk(content))
+		where(<gt> (<length> paramNames, 0))
+	lua-funcdef: (name, paramNames, content) -> <lua-funcdef> (name, content)
+		where(<eq> (<length> paramNames, 0))
 	lua-stateref = !VarRef("State")
 		
 	// Global definitions to lua files.
 	to-lua: Start(definitions) -> Chunk(<flatten-list> <map(to-lua)> definitions)
 	to-lua: ObjectDef(name, properties, components, varDefs, [ DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
 		[ Assignment([<lua-stateref>], [String(defaultStateName)]), <lua-funcdef> ("Create", components' ), events' ]
-		//where properties' := <lua-dummy> // TODO: Object properties
+		//where properties' := // TODO: Object properties
 		where components' := <flatten-list> <map(to-lua)> components
-		//where states' := <lua-dummy> // TODO: State switch code
-		where events' := <map(events-to-lua)> <debug> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
+		//where states' := // TODO: State switch code
+		where events' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
 	
 	// Convert components 
 	to-lua: ComponentDef(name, properties) -> [
-		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), name), String($["[name]"]), False()]))]),
+		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), name), String(name), False()]))]),
 		<map(to-lua(|name))> properties
 	]
 	// Convert properties
@@ -40,7 +42,7 @@ rules
 	
 	// Events
 	events-to-lua-filter: events -> events where not( <eq> (<length> events, 0) ) 
-	events-to-lua: events -> <lua-funcdef> (name, params, [
+	events-to-lua: events -> <lua-funcdef> (name, <map(to-lua)> params, [
 			If(Eq(<lua-stateref>, String(stateName)), 
 			Chunk(<map(to-lua)> stateEventStatements), // If part
 			Chunk(<map(to-lua)> objectEventStatements)) // Else part
@@ -48,29 +50,29 @@ rules
 		where <eq> (<length> events, 2)
 		where EventDef(name, params, objectEventStatements) := <lookup> ("", events)
 		where (_, (stateName, EventDef(_, _, stateEventStatements)), _) := <take-2> events
-	events-to-lua: events -> <lua-funcdef> (name, params, [
+	events-to-lua: events -> <lua-funcdef> (name, <map(to-lua)> params, [
 			If(Eq(<lua-stateref>, String(stateName)), 
-			Chunk(<debug> <map(debug; to-lua)> stateEventStatements), // If part
+			Chunk(<map(to-lua)> stateEventStatements), // If part
 			<map(\ (elseIfState, EventDef(_, _, elseIfStatements)) -> // ElseIf parts 
-				ElseIfPart(Eq(<lua-stateref>, String(elseIfState)), Chunk(<map(to-lua)> elseIfStatements)) \)> <debug> otherEvents, 
-			Chunk(<debug> <map(to-lua)> <debug> objectEventStatements)) // Else parts
+				ElseIfPart(Eq(<lua-stateref>, String(elseIfState)), Chunk(<map(to-lua)> elseIfStatements)) \)> otherEvents, 
+			Chunk(<map(to-lua)> objectEventStatements)) // Else parts
 		]) 
 		where <gt> (<length> events, 2)
 		where EventDef(name, params, objectEventStatements) := <lookup> ("", events)
 		where (_, (stateName, EventDef(_, _, stateEventStatements)), otherEvents) := <take-2> events
-	events-to-lua: events -> <lua-funcdef> (name, params, <map(to-lua)> statements)
+	events-to-lua: events -> <lua-funcdef> (name, <map(to-lua)> params, <map(to-lua)> statements)
 		where <eq> (<length> events, 1)
 		where EventDef(name, params, statements) := <lookup> ("", events)
-	events-to-lua: events -> <lua-funcdef> (name, params, [
+	events-to-lua: events -> <lua-funcdef> (name, <map(to-lua)> params, [
 			If(Eq(<lua-stateref>, String(stateName)), Chunk(<map(to-lua)> statements)) // If part
 		])
 		where not( <lookup> ("", events) )
 		where <eq> (<length> events, 1)
 		where (stateName, EventDef(name, params, statements)) := <get-1> events
-	events-to-lua: events -> <lua-funcdef> (name, params, [
-			If(Eq(<lua-stateref>, String(stateName)), Chunk(<map(to-lua)> statements)), // If part
+	events-to-lua: events -> <lua-funcdef> (name, <map(to-lua)> params, [
+			IfElseIf(Eq(<lua-stateref>, String(stateName)), Chunk(<map(to-lua)> statements), // If part
 			<map(\ (elseIfState, EventDef(_, _, elseIfStatements)) -> // ElseIf parts 
-				ElseIfPart(Eq(<lua-stateref>, String(elseIfState)), Chunk(<map(to-lua)> elseIfStatements)) \)> otherEvents  
+				ElseIfPart(Eq(<lua-stateref>, String(elseIfState)), Chunk(<map(to-lua)> elseIfStatements)) \)> otherEvents)  
 		])
 		where not( <lookup> ("", events) )
 		where <gt> (<length> events, 1)
@@ -82,13 +84,16 @@ rules // Expressions
 	to-lua: False() -> False()
 	to-lua: IntConst(int) -> Number(int)
 	to-lua: FloatConst(float) -> Number(float)
+	to-lua: StrConst(string) -> String(string')
+		where string' := <un-double-quote> string
 	to-lua: StrConst(string) -> String(string)
+		where not(<un-double-quote> string)
 	to-lua: Vector2Const(exp1, exp2) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2]))
 	to-lua: Vector3Const(exp1, exp2, exp3) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3]))
 	to-lua: Vector4Const(exp1, exp2, exp3, exp4) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3, <to-lua> exp4]))
 	to-lua: VarRef(name) -> VarRef(name)
 	to-lua: Null() -> Nil()
-	to-lua: Add(left, right) -> Add(<debug> <to-lua> left, <debug> <to-lua> right)
+	to-lua: Add(l, r) -> Add(<to-lua> l, <to-lua> r)
 	// TODO: new built in type
 	// TODO: this
 	// TODO: operators
@@ -99,11 +104,16 @@ rules // Statements
 	to-lua: If(condition, statements) -> If(<to-lua> condition, Chunk(<map(to-lua)> statements))
 	to-lua: If(condition, trueStatements, falseStatements) -> If(<to-lua> condition, Chunk(<map(to-lua)> trueStatements), Chunk(<map(to-lua)> falseStatements))
 	to-lua: While(condition, statements) -> While(<to-lua> condition, Chunk(<map(to-lua)> statements))
-	to-lua: Assign(exp, val) -> Assignment([<debug> <to-lua> <debug> exp], [<debug> <to-lua> <debug> val])
+	to-lua: Assign(exp, val) -> Assignment([<to-lua> exp], [<to-lua> val])
 	// TODO: new object
 	// TODO: state change
 	// TODO: switch
 	// TODO: delayed statements
 	// TODO: interpolation
+	
+rules // Other
+	
+	to-lua: Param(name) -> name
+	to-lua: Param(name, _) -> name
 	
 	
