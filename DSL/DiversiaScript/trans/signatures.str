@@ -1,10 +1,26 @@
 module signatures
 
-signature constructors // signatures
+signature constructors // Operators
+	
+	ADD	: ArithmeticOp
+	SUB	: ArithmeticOp
+	MUL	: ArithmeticOp
+	DIV : ArithmeticOp
+	EQ	: BooleanOp
+	NEQ	: BooleanOp
+	LT	: BooleanOp
+	LTE	: BooleanOp
+	GT	: BooleanOp
+	GTE	: BooleanOp
+	AND	: BooleanOp
+	OR	: BooleanOp
+	AOp	: ArithmeticOp * Exp * Exp -> Exp
+	BOp	: BooleanOp * Exp * Exp -> Exp
+
+signature constructors // Object & state
 
 	ObjectDef: Id * List(PropAssign) * List(ComponentDef)                   * List(VarDef) * StateDef * List(StateDef) * List(EventDef) -> ObjectDef
 	ObjectDef: Id * List(PropAssign) * List(ComponentDef) * List(ObjectDef) * List(VarDef) * StateDef * List(StateDef) * List(EventDef) -> ObjectDef
-	
 	
 	StateDef: Id * List(PropAssign) * List(ComponentDef) * List(VarDef) * List(EventDef) -> StateDef
 	DefaultStateDef: Id * List(PropAssign) * List(ComponentDef) * List(VarDef) * List(EventDef) -> StateDef

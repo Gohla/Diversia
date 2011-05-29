@@ -23,20 +23,20 @@ def Test {
     	Bla = 1;
     }
     on Update() {
-    	Bla = Bla + 1;
+    	Bla++;
     }
     
     default state TestState1 {
 	    on Update() {
-	    	Bla = Bla + 2;
+	    	Bla = --Bla + 1;
 	    }
 	    on Frame(TimeElapsed) {
-	    	Bla = Bla + 3;
+	    	Bla = Bla / 3;
 	    }    	
     }
     state TestState2 {
 		on Update(){
-	    	Bla = Bla + 3;
+	    	Bla = Bla * 3;
 	    }
 	    on Frame(TimeElapsed) {
 	    	Bla = Bla + 4;

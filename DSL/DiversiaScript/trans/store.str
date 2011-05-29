@@ -7,7 +7,7 @@ imports
 	signatures
 	
 strategies
-	store-all = store-declarations; topdown(try(store-references))
+	store-all = try(store-declarations); topdown(try(store-references))
 	
 rules // declarations
 	// Starting point

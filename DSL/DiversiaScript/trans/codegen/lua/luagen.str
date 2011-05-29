@@ -93,11 +93,34 @@ rules // Expressions
 	to-lua: Vector4Const(exp1, exp2, exp3, exp4) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3, <to-lua> exp4]))
 	to-lua: VarRef(name) -> VarRef(name)
 	to-lua: Null() -> Nil()
-	to-lua: Add(l, r) -> Add(<to-lua> l, <to-lua> r)
 	// TODO: new built in type
 	// TODO: this
-	// TODO: operators
-	
+	to-lua: AOp(ADD(), l, r) -> Add(<to-lua> l, <to-lua> r)
+	to-lua: AOp(SUB(), l, r) -> Sub(<to-lua> l, <to-lua> r)
+	to-lua: AOp(MUL(), l, r) -> Mul(<to-lua> l, <to-lua> r)
+	to-lua: AOp(DIV(), l, r) -> Div(<to-lua> l, <to-lua> r)
+	to-lua: BOp(EQ(), l, r) -> Eq(<to-lua> l, <to-lua> r)
+	to-lua: BOp(NEQ(), l, r) -> Neq(<to-lua> l, <to-lua> r)
+	to-lua: BOp(LT(), l, r) -> Lt(<to-lua> l, <to-lua> r)
+	to-lua: BOp(LTE(), l, r) -> Lte(<to-lua> l, <to-lua> r)
+	to-lua: BOp(GT(), l, r) -> Gt(<to-lua> l, <to-lua> r)
+	to-lua: BOp(GTE(), l, r) -> Gte(<to-lua> l, <to-lua> r)
+	to-lua: BOp(AND(), l, r) -> And(<to-lua> l, <to-lua> r)
+	to-lua: BOp(OR(), l, r) -> Or(<to-lua> l, <to-lua> r)
+	to-lua: Not(exp) -> Not(<to-lua> exp)
+	to-lua: Umin(exp) -> Umin(<to-lua> exp)
+	to-lua: PreDec(exp) -> Sub(<to-lua> exp, Number(1))
+	to-lua: PostDec(exp) -> Sub(<to-lua> exp, Number(1)) // TODO: Proper post decrement
+	to-lua: Expression(PreDec(exp)) -> Assignment(exp', Sub(exp', Number(1)))
+		where exp' := <to-lua> exp
+	to-lua: Expression(PostDec(exp)) -> Assignment(exp', Sub(exp', Number(1)))
+		where exp' := <to-lua> exp
+	to-lua: PreInc(exp) -> Add(<to-lua> exp, Number(1))
+	to-lua: PostInc(exp) -> Add(<to-lua> exp, Number(1)) // TODO: Proper post inc
+	to-lua: Expression(PreInc(exp)) -> Assignment(exp', Add(exp', Number(1)))
+		where exp' := <to-lua> exp
+	to-lua: Expression(PostInc(exp)) -> Assignment(exp', Add(exp', Number(1)))
+		where exp' := <to-lua> exp
 	
 rules // Statements
 	

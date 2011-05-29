@@ -2,15 +2,28 @@ module desugar
 
 imports 
 	include/DiversiaScript
-	
 	signatures
 
 strategies
-	desugar-all = desugar-object; innermost(desugar)
+	
+	desugar-all = try(desugar-object); innermost(desugar)
+	
 rules
 
 	desugar: EventDef(name,statements) -> EventDef(name,[],statements)
 	desugar: VarDefNoInit(name,type) -> VarDef(name,type,Null())
+	desugar: Add(e1, e2) 	-> AOp(ADD(), e1, e2)
+	desugar: Sub(e1, e2) 	-> AOp(SUB(), e1, e2)
+	desugar: Mul(e1, e2) 	-> AOp(MUL(), e1, e2)
+	desugar: Div(e1, e2) 	-> AOp(DIV(), e1, e2)
+	desugar: Eq(e1, e2) 	-> BOp(EQ(), e1, e2)
+	desugar: Neq(e1, e2) 	-> BOp(NEQ(), e1, e2)
+	desugar: Lt(e1, e2) 	-> BOp(LT(), e1, e2)
+	desugar: Lte(e1, e2) 	-> BOp(LTE(), e1, e2)
+	desugar: Gt(e1, e2) 	-> BOp(GT(), e1, e2)
+	desugar: Gte(e1, e2) 	-> BOp(GTE(), e1, e2)
+	desugar: And(e1, e2) 	-> BOp(AND(), e1, e2)
+	desugar: Or(e1, e2) 	-> BOp(OR(), e1, e2)
 	desugar: StateDef(name, defs) -> StateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
 			<filter(?PropAssign(_,_))> defs => propAssigns;
@@ -23,42 +36,41 @@ rules
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
 			<filter(?VarDef(_,_,_))> defs => varDefs;
 			<filter(?EventDef(_,_,_))> defs => eventDefs	
-
-
 	
 	desugar-object: Start(defs) -> Start(<concat>[allobjects, events])
 		where 
-			<map(desugar-object)><filter(?ObjectDef(_,_))> defs => objects;
-			<map(delete-child-refs)><collect-all(?ObjectDef(_,_,_,_,_,_,_,_))> objects => allobjects;
+			<map(desugar-object)> <filter(?ObjectDef(_,_))> defs => objects;
+			<map(delete-child-refs)> <collect-all(?ObjectDef(_,_,_,_,_,_,_,_))> objects => allobjects;
 			<filter(?EventDef(_,_,_))> defs => events
 			
 	delete-child-refs: ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> 
-					   ObjectDef(name, propAssigns, componentDefs,             varDefs, defaultStateDef, stateDefs, eventDefs)
+		ObjectDef(name, propAssigns, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
 	
-	desugar-object: ObjectDef(name, defs) -> ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
+	desugar-object: ObjectDef(name, defs) -> 
+		ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
 		where
 			<filter(?PropAssign(_,_))> defs => propAssigns;
-			<map(add-parent(|name))><map(desugar-object)><filter(?ObjectDef(_,_))> defs => objectDefs;
+			<map(add-parent(|name))> <map(desugar-object)> <filter(?ObjectDef(_,_))> defs => objectDefs;
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
 			<filter(?VarDef(_,_,_))> defs => varDefs;
 			<filter(?DefaultStateDef(_,_))> defs => defaultStateDef;
 			<filter(?StateDef(_,_))> defs => stateDefs;
-			<add-children(|<map(get-name)> objectDefs)><filter(?EventDef(_,_,_))> defs => eventDefs
-			
+			<add-children(|<map(get-name)> objectDefs)> <filter(?EventDef(_,_,_))> defs => eventDefs
 		
 	get-name: ObjectDef(name, _, _, _, _, _, _, _) -> name
 	
 	create-new-object: object -> ObjectNew(ObjectRef(object),[])
 	create-parent-prop: object -> PropAssign("Parent", object)
 	
-	add-parent(|parent): ObjectDef(name, props, components, objects, vars, defaultState, states, events) -> ObjectDef(name, props', components, objects, vars, defaultState, states, events)
+	add-parent(|parent): ObjectDef(name, props, components, objects, vars, defaultState, states, events) -> 
+		ObjectDef(name, props', components, objects, vars, defaultState, states, events)
 		where 
 			<create-parent-prop> parent => parentProp;
 	 		![parentProp|props] => props'
 
 	add-children(|children): events -> events'
 		where
-			<update-event(|children)><filter(?EventDef("Create",_,_))> events => createEvent;
+			<update-event(|children)> <filter(?EventDef("Create",_,_))> events => createEvent;
 	 		<filter(not(?EventDef("Create",_,_)))> events => otherEvents;
 	 		<concat>[createEvent,otherEvents] => events' 
 	
@@ -66,7 +78,8 @@ rules
 		where 
 			 <map(create-new-object)> objects => news
 
-	update-event(|objects): [EventDef("Create",params, statements)] -> [EventDef("Create",params, <concat>[news,statements])]
+	update-event(|objects): [EventDef("Create",params, statements)] -> 
+		[EventDef("Create",params, <concat>[news,statements])]
 		where
 			<map(create-new-object)> objects => news
 	/*
