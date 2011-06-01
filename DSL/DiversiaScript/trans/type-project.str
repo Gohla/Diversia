@@ -1,0 +1,41 @@
+module type-project
+
+imports
+	include/DiversiaScript
+	signatures
+
+rules  // expr
+
+	type-of: True() -> BoolType()
+	type-of: False() -> BoolType()
+	type-of: IntConst(_) -> IntType()
+	type-of: FloatConst(_) -> RealType()
+	type-of: StrConst(_) -> StringType()
+	type-of: Null() -> VoidType()
+	
+	type-of: Vector2Const(_,_) -> CustomType("Vector2")
+	type-of: Vector3Const(_,_,_) -> CustomType("Vector3")
+	type-of: Vector4Const(_,_,_,_) -> CustomType("Vector4")
+
+	type-of: VarRef(name) -> "TODO: can be anything execpt VoidType"
+	type-of: This() -> "TODO: CustomType(object)"
+	type-of: New(object,_) -> CustomType(object)
+	
+	type-of: Access(object, prop) -> "TODO: can be anything execpt VoidType"
+	type-of: Call(object, function, params) -> "TODO: can be anything"
+	
+	type-of: ObjectRef(name) -> CustomType(name)
+	// type-of: StateRef(name) -> CustomType(name)
+
+rules // defs
+	type-of: ObjectDef(name, _, _, _, _, _, _) -> CustomType(name)
+	type-of: ExternalObjectDef(name) -> CustomType(name)
+   
+	//type-of: ComponentDef(name, _) -> CustomType(name)
+	//type-of: StateDef(name, _, _, _, _) -> CustomType(name)
+	//type-of: DefaultStateDef(name, _, _, _, _) -> CustomType(name)
+	//type-of: EventDef(name, _, _) -> CustomType(name)
+   
+	type-of: Param(_, type) -> type
+    type-of: VarDef(_, type, _) -> type	
+	
