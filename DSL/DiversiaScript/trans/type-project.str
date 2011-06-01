@@ -3,9 +3,36 @@ module type-project
 imports
 	include/DiversiaScript
 	signatures
+	
+rules // util
+	printable: BoolType() -> "boolean"
+	printable: IntType() -> "int"
+	printable: RealType() -> "real"
+	printable: StringType() -> "string"
+	printable: VoidType() -> "void"
+	printable: CustomType(name) -> name
+	printable: odd -> odd
+		where not(
+			<?BoolType()> odd;
+			<?IntType()> odd;
+			<?RealType()> odd;
+			<?StringType()> odd;
+			<?VoidType()> odd
+		)
 
 rules  // expr
+	
+	type-of: BOp(_, _, _) -> BoolType()
+	type-of: AOp(_, exp1, exp2) -> RealType()
+		where 
+			<?RealType()><type-of> exp1;
+			<?RealType()><type-of> exp2
 
+	type-of: AOp(_, exp1, exp2) -> IntType()
+		where 
+			<?IntType()><type-of> exp1;
+			<?IntType()><type-of> exp2
+	
 	type-of: True() -> BoolType()
 	type-of: False() -> BoolType()
 	type-of: IntConst(_) -> IntType()
@@ -26,9 +53,10 @@ rules  // expr
 	
 	type-of: ObjectRef(name) -> CustomType(name)
 	// type-of: StateRef(name) -> CustomType(name)
+	type-of: PropAssign(name,_) -> "TODO: can be anything execpt VoidType"
 
 rules // defs
-	type-of: ObjectDef(name, _, _, _, _, _, _) -> CustomType(name)
+	type-of: ObjectDef(name, _, _, _, _, _, _, _) -> CustomType(name)
 	type-of: ExternalObjectDef(name) -> CustomType(name)
    
 	//type-of: ComponentDef(name, _) -> CustomType(name)
