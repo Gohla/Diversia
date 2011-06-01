@@ -15,7 +15,7 @@ rules // declarations
 		where <map(store-declarations)> definitions
 		
 	// Object definitions	
-	store-declarations: d@ObjectDef(name, propAssigns, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> d
+	store-declarations: d@ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> d
 		where <store-declaration(|Objects())> (name, d)
 		where <map(store-declarations(|name))> propAssigns
 		where <map(store-declarations(|name))> componentDefs

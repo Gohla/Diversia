@@ -5,10 +5,10 @@ imports
 	signatures
 
 strategies
+	desugar-all = topdown(repeat(desugar))
+	post-desugar-all = desugar-object
 	
-	desugar-all = try(desugar-object); innermost(desugar)
-	
-rules
+rules  // simple desugars
 
 	desugar: EventDef(name,statements) -> EventDef(name,[],statements)
 	desugar: VarDefNoInit(name,type) -> VarDef(name,type,Null())
@@ -35,32 +35,39 @@ rules
 			<filter(?PropAssign(_,_))> defs => propAssigns;
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
 			<filter(?VarDef(_,_,_))> defs => varDefs;
-			<filter(?EventDef(_,_,_))> defs => eventDefs	
-	
-	desugar-object: Start(defs) -> Start(<concat>[allobjects, events])
-		where 
-			<map(desugar-object)> <filter(?ObjectDef(_,_))> defs => objects;
-			<map(delete-child-refs)> <collect-all(?ObjectDef(_,_,_,_,_,_,_,_))> objects => allobjects;
-			<filter(?EventDef(_,_,_))> defs => events
-			
-	delete-child-refs: ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> 
-		ObjectDef(name, propAssigns, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
-	
-	desugar-object: ObjectDef(name, defs) -> 
-		ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
+			<filter(?EventDef(_,_,_))> defs => eventDefs
+				
+	desugar: ObjectDef(name, defs) -> ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
 		where
 			<filter(?PropAssign(_,_))> defs => propAssigns;
-			<map(add-parent(|name))> <map(desugar-object)> <filter(?ObjectDef(_,_))> defs => objectDefs;
+			<filter(?ObjectDef(_,_))> defs => objectDefs;
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
 			<filter(?VarDef(_,_,_))> defs => varDefs;
 			<filter(?DefaultStateDef(_,_))> defs => defaultStateDef;
 			<filter(?StateDef(_,_))> defs => stateDefs;
-			<add-children(|<map(get-name)> objectDefs)> <filter(?EventDef(_,_,_))> defs => eventDefs
+			<filter(?EventDef(_,_,_))> defs => eventDefs
+
+rules   // post desugar stuff
+
+	desugar-object: Start(defs) -> Start(<concat>[allobjects, events])
+		where 
+			<map(desugar-object)><filter(?ObjectDef(_,_,_,_,_,_,_,_))> defs => objects;
+			<map(delete-child-refs)> <collect-all(?ObjectDef(_,_,_,_,_,_,_,_))> objects => allobjects;
+			<filter(?EventDef(_,_,_))> defs => events
+			
+	delete-child-refs: 	ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> 
+						ObjectDef(name, propAssigns, componentDefs, 			varDefs, defaultStateDef, stateDefs, eventDefs)
+	
+	desugar-object: ObjectDef(name, propAssigns, componentDefs, objectDefs , varDefs, defaultStateDef, stateDefs, eventDefs ) -> 
+					ObjectDef(name, propAssigns, componentDefs, objectDefs', varDefs, defaultStateDef, stateDefs, eventDefs')
+		where
+			<map(add-parent(|name))> <map(desugar-object)> objectDefs => objectDefs';
+			<add-children(|<map(get-name)> objectDefs)> eventDefs => eventDefs'
 		
 	get-name: ObjectDef(name, _, _, _, _, _, _, _) -> name
 	
 	create-new-object: object -> ObjectNew(ObjectRef(object),[])
-	create-parent-prop: object -> PropAssign("Parent", object)
+	create-parent-prop: object -> PropAssign("Parent", VarRef(object))
 	
 	add-parent(|parent): ObjectDef(name, props, components, objects, vars, defaultState, states, events) -> 
 		ObjectDef(name, props', components, objects, vars, defaultState, states, events)
@@ -82,6 +89,8 @@ rules
 		[EventDef("Create",params, <concat>[news,statements])]
 		where
 			<map(create-new-object)> objects => news
+	
+	
 	/*
 	// TODO need to following type rules to do type inf.
     get-param-types: name -> []
