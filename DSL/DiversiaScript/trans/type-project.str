@@ -5,11 +5,11 @@ imports
 	signatures
 	
 rules // util
-	printable: BoolType() -> "boolean"
-	printable: IntType() -> "int"
-	printable: RealType() -> "real"
-	printable: StringType() -> "string"
-	printable: VoidType() -> "void"
+	printable: BoolType() -> "Boolean"
+	printable: IntType() -> "Int"
+	printable: RealType() -> "Real"
+	printable: StringType() -> "String"
+	printable: VoidType() -> "Void"
 	printable: CustomType(name) -> name
 	printable: odd -> odd
 		where not(

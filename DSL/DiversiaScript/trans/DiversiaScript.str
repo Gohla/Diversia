@@ -17,7 +17,7 @@ imports
   
 strategies
 	
-	analyse-all = desugar-all; store-all
+	analyse-all = desugar-all; store-all; post-desugar-all
 	pre-generation = desugar-all; store-all; post-desugar-all
 
 rules // Main editor interface (defined by editor/DiversiaScript-Builders and -References.esv)
@@ -69,15 +69,19 @@ generate-aterm: (selected, position, ast, path, project-path) -> (filename, resu
 		filename := <guarantee-extension(|"aterm")> path;
 		result   := <analyse-all> selected
 	|}
-	
-	
-/*	
+
+// Hover tooltip.
 editor-hover: (node, position, ast, path, project-path) ->  $[Type: [<printable> type]]
 	where 
 		<desugar-all> ast => ast';
-		<desugar-position(desugar|ast)> position => position';
+		<desugar-position-innermost(desugar|ast)> position => position';
 		<term-at-position(|position')> ast' => node';
-		//<debug> node';
-		//<debug> node;
+		<debug> node';
 		<type-of> node' => type
-*/
+		
+		
+desugar-position-innermost(desugar|ast): position -> position'
+    where
+      ast'  := <at-position(!<id>{MARKER()}|position)> ast;
+      ast'' := <innermost(preserve-annos({?x; desugar; not(?x)}))> ast';
+      position' := <position-of-term({?_{a*}; <one(?MARKER())> a*})> ast''

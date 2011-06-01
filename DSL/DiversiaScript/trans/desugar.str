@@ -3,15 +3,17 @@ module desugar
 imports 
 	include/DiversiaScript
 	signatures
+	type-project
 
 strategies
-	desugar-all = topdown(repeat(desugar))
+	desugar-all = innermost(desugar) //topdown(repeat(desugar))
 	post-desugar-all = desugar-object
 	
 rules  // simple desugars
 
 	desugar: EventDef(name,statements) -> EventDef(name,[],statements)
 	desugar: VarDefNoInit(name,type) -> VarDef(name,type,Null())
+	desugar: VarDefNoType(name, exp) -> VarDef(name, <type-of> exp, exp)
 	desugar: Add(e1, e2) 	-> AOp(ADD(), e1, e2)
 	desugar: Sub(e1, e2) 	-> AOp(SUB(), e1, e2)
 	desugar: Mul(e1, e2) 	-> AOp(MUL(), e1, e2)
@@ -24,28 +26,35 @@ rules  // simple desugars
 	desugar: Gte(e1, e2) 	-> BOp(GTE(), e1, e2)
 	desugar: And(e1, e2) 	-> BOp(AND(), e1, e2)
 	desugar: Or(e1, e2) 	-> BOp(OR(), e1, e2)
+	
+	isVarDef = ?VarDef(_,_,_)
+	isVarDef = ?VarDefNoType(_,_)
+	isVarDef = ?VarDefNoInit(_,_)
+	isEventDef = ?EventDef(_,_)
+	isEventDef = ?EventDef(_,_,_)	
+	
 	desugar: StateDef(name, defs) -> StateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
 			<filter(?PropAssign(_,_))> defs => propAssigns;
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
-			<filter(?VarDef(_,_,_))> defs => varDefs;
-			<filter(?EventDef(_,_,_))> defs => eventDefs	
+			<filter(isVarDef)> defs => varDefs;
+			<filter(isEventDef)> defs => eventDefs	
 	desugar: DefaultStateDef(name, defs) -> DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
 			<filter(?PropAssign(_,_))> defs => propAssigns;
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
-			<filter(?VarDef(_,_,_))> defs => varDefs;
-			<filter(?EventDef(_,_,_))> defs => eventDefs
+			<filter(isVarDef)> defs => varDefs;
+			<filter(isEventDef)> defs => eventDefs
 				
 	desugar: ObjectDef(name, defs) -> ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
 		where
 			<filter(?PropAssign(_,_))> defs => propAssigns;
 			<filter(?ObjectDef(_,_))> defs => objectDefs;
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
-			<filter(?VarDef(_,_,_))> defs => varDefs;
+			<filter(isVarDef)> defs => varDefs;
 			<filter(?DefaultStateDef(_,_))> defs => defaultStateDef;
 			<filter(?StateDef(_,_))> defs => stateDefs;
-			<filter(?EventDef(_,_,_))> defs => eventDefs
+			<filter(isEventDef)> defs => eventDefs
 
 rules   // post desugar stuff
 
