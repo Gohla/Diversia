@@ -1,0 +1,17 @@
+def Object1 {
+
+    var boolLit = false;
+    var vactor2Lit = [4,5];
+    var vactor3Lit = [2,4,5];
+    var vactor4Lit = [2,4,5,6];
+    var stringLit = "cool";
+    var RandomBull = FunBuildIn();
+    var intOp = 4 + 7;
+    var intOp = 4 / 7;
+    var intOp = 4.0 * 8.0;
+    var nothingness = null;
+    var boolOp = 34 > 34;
+    var boolOp2 = true && false;
+    
+}
+    
