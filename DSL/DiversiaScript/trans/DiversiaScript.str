@@ -17,7 +17,7 @@ imports
   
 strategies
 	
-	analyse-all = desugar-all; store-all; post-desugar-all
+	analyse-all = desugar-all; store-all
 	pre-generation = desugar-all; store-all; post-desugar-all
 
 rules // Main editor interface (defined by editor/DiversiaScript-Builders and -References.esv)

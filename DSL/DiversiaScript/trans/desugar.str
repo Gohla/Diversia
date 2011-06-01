@@ -32,6 +32,12 @@ rules  // simple desugars
 	isVarDef = ?VarDefNoInit(_,_)
 	isEventDef = ?EventDef(_,_)
 	isEventDef = ?EventDef(_,_,_)	
+	isStateDef = ?StateDef(_,_)
+	isStateDef = ?StateDef(_,_,_,_,_)
+	isDefaultStateDef = ?DefaultStateDef(_,_)
+	isDefaultStateDef = ?DefaultStateDef(_,_,_,_,_)
+	isObjectDef = ?ObjectDef(_,_)
+	isObjectDef = ?ObjectDef(_,_,_,_,_,_,_,_)
 	
 	desugar: StateDef(name, defs) -> StateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
@@ -49,11 +55,11 @@ rules  // simple desugars
 	desugar: ObjectDef(name, defs) -> ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
 		where
 			<filter(?PropAssign(_,_))> defs => propAssigns;
-			<filter(?ObjectDef(_,_))> defs => objectDefs;
+			<filter(isObjectDef)> defs => objectDefs;
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
 			<filter(isVarDef)> defs => varDefs;
-			<filter(?DefaultStateDef(_,_))> defs => defaultStateDef;
-			<filter(?StateDef(_,_))> defs => stateDefs;
+			<filter(isDefaultStateDef)> defs => defaultStateDef;
+			<filter(isStateDef)> defs => stateDefs;
 			<filter(isEventDef)> defs => eventDefs
 
 rules   // post desugar stuff
