@@ -106,8 +106,10 @@ exports
    	
     %% Types
     "Int" -> Type {cons("IntType")}
-    "Float" -> Type {cons("FloatType")}
+    "Float" -> Type {cons("RealType")}
     "Bool" -> Type {cons("BoolType")}
+    "String" -> Type {cons("StringType")}
+    "Void"  -> Type {cons("VoidType")}
     Id -> Type {cons("CustomType")}
 
 
