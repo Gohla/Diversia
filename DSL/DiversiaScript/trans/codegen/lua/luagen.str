@@ -28,20 +28,12 @@ rules
 		
 	// Global definitions to lua files.
 	to-lua: Start(definitions) -> Chunk(<flatten-list> <map(to-lua)> definitions)
-	to-lua: ObjectDef(name, properties, components, varDefs, [ DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
-		[ Assignment([<lua-stateref>], [String(defaultStateName)]), functions'' ]
-		//where properties' := // TODO: Object properties
-		//where states' := // TODO: State switch code
+	to-lua: ObjectDef(name, properties, components, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
+		[ Assignment([<lua-stateref>], [String(defaultStateName)]), functions'''' ]
 		where functions' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
 		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> components, functions')
-	
-	// Convert components 
-	to-lua: ComponentDef(name, properties) -> [
-		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), name), String(name), False()]))]),
-		<map(to-lua(|name))> properties
-	]
-	// Convert properties
-	to-lua(|componentName): PropAssign(name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
+		where functions''' := <objectprops-to-lua> (properties, functions'')
+		where functions'''' := <states-to-lua> (<concat> [[defState], stateDefs], functions''')
 	
 	// Events
 	events-to-lua-filter: events -> events where not( <eq> (<length> events, 0) ) 
@@ -85,9 +77,54 @@ rules
 	components-to-lua: (statements, functions) -> <lua-replace-function(|"Create", createFunc)> functions
 		where createFunc := <lua-prepend-statements(|statements)> <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions
 	components-to-lua: (statements, functions) -> functions'
-		where not( <fetch-elem(?FuncDef(FunctionName("Create"), createParams, Chunk(createStatements)))> functions )
-		where functions' := <concat> [[<lua-funcdef> ("Create", statements)], functions]
-			
+		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
+		where functions' := <concat> [[<lua-funcdef> ("Create", statements)], functions] 
+	to-lua: ComponentDef(name, properties) -> [
+		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), name), String(name), False()]))]),
+		<map(componentprop-to-lua(|name))> properties
+	]
+	componentprop-to-lua(|componentName): PropAssign(name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
+	destroy-component-to-lua: name -> Call(VarRef(name), "Destroy", Args([]))
+	
+	// Object properties
+	objectprops-to-lua: (properties, functions) -> <lua-replace-function(|"Create", createFunc)> functions
+		where createFunc := <lua-prepend-statements(|<map(objectprop-to-lua)> properties)> <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions
+	objectprops-to-lua: (properties, functions) -> functions'
+		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
+		where functions' := <concat> [[<lua-funcdef> ("Create", <map(objectprop-to-lua)> properties)], functions]	
+	objectprop-to-lua: PropAssign(name, exp) -> Assignment([Access("Object", VarRef(name))], <to-lua> exp)
+
+	// States
+	states-to-lua: (states, functions) -> <concat> [functions, <map(state-to-lua)> states]
+	state-to-lua: StateDef(name, propAssigns, componentDefs, varDefs, eventDefs) -> <state-to-lua> (name, propAssigns, componentDefs, varDefs, eventDefs)
+	state-to-lua: DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs) -> <state-to-lua> (name, propAssigns, componentDefs, varDefs, eventDefs)
+	state-to-lua: (name, propAssigns, componentDefs, varDefs, eventDefs) -> [enterFunc, exitFunc]
+		where <gt> (<length> componentDefs, 0) <+ <gt> (<length> propAssigns, 0) <+ <fetch-elem(?EventDef("StateEnter", _, _))> eventDefs 
+		where <gt> (<length> componentDefs, 0) <+ <fetch-elem(?EventDef("StateExit", _, _))> eventDefs
+		where enterFunc := <state-to-lua-enterFunc> (name, propAssigns, componentDefs, eventDefs)
+		where exitFunc := <state-to-lua-exitFunc> (name, componentDefs, eventDefs)
+	state-to-lua: (name, propAssigns, componentDefs, varDefs, eventDefs) -> [enterFunc]
+		where <gt> (<length> propAssigns, 0) <+ <fetch-elem(?EventDef("StateEnter", _, _))> eventDefs
+		where not (<gt> (<length> componentDefs, 0) <+ <fetch-elem(?EventDef("StateExit", _, _))> eventDefs )
+		where enterFunc := <state-to-lua-enterFunc> (name, propAssigns, componentDefs, eventDefs)
+	state-to-lua: (name, propAssigns, componentDefs, varDefs, eventDefs) -> []
+		where not (<gt> (<length> propAssigns, 0) <+ <fetch-elem(?EventDef("StateEnter", _, _))> eventDefs)
+		where not (<gt> (<length> componentDefs, 0) <+ <fetch-elem(?EventDef("StateExit", _, _))> eventDefs )
+		
+	state-to-lua-enterFunc: (name, propAssigns, componentDefs, eventDefs) -> 
+		<lua-funcdef> ($[StateEnter_[name]], <concat> [<map(objectprop-to-lua)> propAssigns, <map(to-lua)> componentDefs, <state-to-lua-enterFunc> eventDefs])
+	state-to-lua-enterFunc: eventDefs -> <map(to-lua)> statements
+		where <fetch-elem(?EventDef("StateEnter", _, statements))> eventDefs
+	state-to-lua-enterFunc: eventDefs -> []
+		where not (<fetch-elem(?EventDef("StateEnter", _, _))> eventDefs)
+	state-to-lua-enterFunc: eventDefs -> ""
+	state-to-lua-exitFunc: (name, componentDefs, eventDefs) -> <lua-funcdef> ($[StateExit_[name]], <concat> [[<map(get-name; destroy-component-to-lua)> componentDefs], 
+		<state-to-lua-exitFunc> eventDefs]) 
+	state-to-lua-exitFunc: eventDefs -> <map(to-lua)> statements
+		where <fetch-elem(?EventDef("StateExit", _, statements))> eventDefs
+	state-to-lua-exitFunc: eventDefs -> []
+		where not (<fetch-elem(?EventDef("StateExit", _, _))> eventDefs)
+				
 rules // Expressions
 	
 	to-lua: True() -> True()

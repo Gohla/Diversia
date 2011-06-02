@@ -49,14 +49,14 @@ rules // declarations
 	store-declarations(|object): d@DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs) -> d
 		where <store-declaration(|States(object))> (name, d)
 		where <store-declaration(|DefaultStates(object))> (name, d)
-		where <map(store-declarations(|object, name))> propAssigns
+		//where <map(store-declarations(|object, name))> propAssigns
 		where <map(store-declarations(|object, name))> componentDefs
 		where <map(store-declarations(|object, name))> varDefs
 		where <map(store-declarations(|object, name))> eventDefs
 	
 	store-declarations(|object): d@StateDef(name, propAssigns, componentDefs, varDefs, eventDefs) -> d
 		where <store-declaration(|States(object))> (name, d)
-		where <map(store-declarations(|object, name))> propAssigns
+		//where <map(store-declarations(|object, name))> propAssigns
 		where <map(store-declarations(|object, name))> componentDefs
 		where <map(store-declarations(|object, name))> varDefs
 		where <map(store-declarations(|object, name))> eventDefs

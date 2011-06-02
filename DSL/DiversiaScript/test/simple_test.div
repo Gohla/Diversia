@@ -19,6 +19,8 @@ def Test {
         AngularDampening = 0.7
     }
     
+    var Bla = 0;
+    
     on Create() {
     	Bla = 1;
     }
@@ -27,6 +29,8 @@ def Test {
     }
     
     default state TestState1 {
+    	Position = [0, 10, 0]
+    	
 	    on Update() {
 	    	Bla = --Bla + 1;
 	    }
@@ -35,6 +39,10 @@ def Test {
 	    }    	
     }
     state TestState2 {
+	    component Entity {
+        	Material = "Landmine"
+    	}
+    	
 		on Update(){
 	    	Bla = Bla * 3;
 	    }
@@ -45,5 +53,12 @@ def Test {
 	    	Bla = 0;
 	    }
     }
-    state TestState3 {}
+    state TestState3 {
+    	on StateEnter {
+    		++Bla;
+    	}
+    	on StateExit {
+    		--Bla;
+    	}
+    }
 }
