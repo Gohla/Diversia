@@ -7,7 +7,7 @@ imports
 	signatures
 	
 strategies
-	store-all = store-declarations; topdown(try(store-declarations2)); topdown(try(store-references))
+	store-all = try(store-declarations); topdown(try(store-declarations2)); topdown(try(store-references))
 	
 rules // declarations
 	// Starting point
@@ -26,9 +26,6 @@ rules // declarations
 	// Global event definitions
 	store-declarations: d@EventDef(name, _) -> d
 		where <store-declaration(|Events())> (name, d)
-		
-	// Ignore prop assigns in object.
-	store-declarations(|object): d@PropAssign(_, _) -> d
 		
 	// Component definitions in object.
 	store-declarations(|object): d@ComponentDef(name, _) -> d
@@ -57,15 +54,15 @@ rules // declarations
 		where <map(store-declarations(|object, name))> componentDefs
 		where <map(store-declarations(|object, name))> varDefs
 		where <map(store-declarations(|object, name))> eventDefs
-		
-	store-declarations(|object): d@StateDef(name, definitions) -> d
-		where <store-declaration(|States(object))> (name, d)
-		where <map(store-declarations(|object, name))> definitions
-		
+
 	// Component definitions in object and state.
 	store-declarations(|object, state): d@ComponentDef(name, _) -> d
 		where <store-declaration(|Components(object))> ((name, state), d)
 		where <store-declaration(|Components(object, state))> (name, d)
+		
+	// Variable definitions in object and state
+	store-declarations(|object, state): d@VarDef(name, _, _) -> d
+		where <store-declaration(|Vars(object))> (name, d)
 	
 	// Event definitions in object and state
 	store-declarations(|object, state): d@EventDef(name, _, statements) -> d
