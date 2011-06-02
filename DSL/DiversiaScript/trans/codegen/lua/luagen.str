@@ -27,13 +27,17 @@ rules
 	lua-stateref = !VarRef("State")
 		
 	// Global definitions to lua files.
-	to-lua: Start(definitions) -> Chunk(<flatten-list> <map(to-lua)> definitions)
-	to-lua: ObjectDef(name, properties, components, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
-		[ Assignment([<lua-stateref>], [String(defaultStateName)]), functions'''' ]
+	to-lua: Start(definitions) -> Chunk(<map(to-lua)> definitions)
+	to-lua: obj@ObjectDef(name, properties, components, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
+		<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions'''' ]
+		where vars := <map(to-lua)> <object-vars> obj 
 		where functions' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
 		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> components, functions')
 		where functions''' := <objectprops-to-lua> (properties, functions'')
 		where functions'''' := <states-to-lua> (<concat> [[defState], stateDefs], functions''')
+	
+	// Variables
+	to-lua: VarDef(_{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value]) 
 	
 	// Events
 	events-to-lua-filter: events -> events where not( <eq> (<length> events, 0) ) 
@@ -138,8 +142,9 @@ rules // Expressions
 	to-lua: Vector2Const(exp1, exp2) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2]))
 	to-lua: Vector3Const(exp1, exp2, exp3) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3]))
 	to-lua: Vector4Const(exp1, exp2, exp3, exp4) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3, <to-lua> exp4]))
-	to-lua: VarRef(name) -> VarRef(name)
-	to-lua: Null() -> Nil()
+	to-lua: VarRef(_{name}) -> VarRef(name)
+	to-lua: Null() -> LuaNil()
+	
 	// TODO: new built in type
 	// TODO: this
 	to-lua: AOp(ADD(), l, r) -> Add(<to-lua> l, <to-lua> r)

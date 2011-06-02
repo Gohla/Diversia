@@ -72,7 +72,7 @@ exports
     "{" {Field ";"}+ "}" -> Table {cons("Table")}
     
     %% Expression
-	"nil" -> Exp {cons("Nil")}
+	"nil" -> Exp {cons("LuaNil")}
 	"false" -> Exp {cons("False")}
 	"true" -> Exp {cons("True")}
 	IntConst -> Exp {cons("Number")}

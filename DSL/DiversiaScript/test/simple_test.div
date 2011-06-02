@@ -33,6 +33,8 @@ def Test {
     default state TestState1 {
     	Position = [0, 10, 0]
     	
+    	var Bla : Int = 0;
+    	
 	    on Update() {
 	    	Bla = --Bla + 1;
 	    	Test = Degree(10);

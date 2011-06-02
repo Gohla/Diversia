@@ -56,7 +56,7 @@
    Table.1:iter-sep                 -- _1 KW[","],
    Table                            -- KW["{"] _1 KW["}"],
    Table.1:iter-sep                 -- _1 KW[";"],
-   Nil                              -- KW["nil"],
+   LuaNil                           -- KW["nil"],
    False                            -- KW["false"],
    True                             -- KW["true"],
    Number                           -- NUM[_1],

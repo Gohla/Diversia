@@ -5,6 +5,7 @@ imports
 	lib/namespaces
 	data/events
 	namespace
+	signatures
 	
 rules // Name-based projections
 	
@@ -54,3 +55,10 @@ rules // Event
 	object-events(|objectName): Event(name, _) -> stateEvents
 		where not( <get-event> (objectName, name) )
 		where stateEvents := <get-all-objectevents> (objectName, name)
+		
+rules // Vars
+	
+	object-vars: ObjectDef(_, _, _, varDefs, defaultStateDef, stateDefs, _) -> <concat> [varDefs,<concat> <map(state-vars)> <concat> [defaultStateDef, stateDefs]]
+	state-vars: StateDef(_, _, _, varDefs, _) -> varDefs
+	state-vars: DefaultStateDef(_, _, _, varDefs, _) -> varDefs
+	
