@@ -1,5 +1,9 @@
 module data/builtin-types
 
+imports
+	include/DiversiaScript
+
+
 signature constructors
 	
 	BuiltinType: Name * List(BuiltinType) * List(Constructor) * List(Property) * List(Function) -> BuiltinType
@@ -7,6 +11,27 @@ signature constructors
 	Function: Name * ReturnType * List(ParamType) -> Function
 
 rules
+	
+	type-of: Property(_,type) -> type
+	type-of: Function(_,type,_) -> type
+	
+	is-builtin-object(|object) = <get-builtin-object> object
+
+	get-builtin-object: object -> 
+		<fetch-elem(has-name(|object))><builtin-types>
+		
+	get-builtin-property: (object, property) -> 
+		<fetch-elem(has-name(|property))><get-properties><get-builtin-object> object
+	
+	get-builtin-function: (object, function) -> 
+		<fetch-elem(has-name(|function))><get-functions><get-builtin-object> object
+
+	has-name(|name) =  ?BuiltinType(name,_,_,_,_)
+	has-name(|name) =  ?Property(name,_)
+	has-name(|name) =  ?Function(name,_,_)
+
+	get-properties: BuiltinType(_,_,_,properties,_) -> properties
+	get-functions: BuiltinType(_,_,_,_,functions) -> functions
 	
 	builtin-types = ![
 	BuiltinType("ClientComponent",
