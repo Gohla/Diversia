@@ -4,4 +4,7 @@ imports DiversiaScript-Colorer.generated
 
 colorer
 
-	FloatConst: darkgreen
+	FloatConst	: 0 0 172		                          
+  	Type      	: 0 64 0
+  	StrConst  	: blue
+ 
