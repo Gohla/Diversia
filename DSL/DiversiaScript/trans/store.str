@@ -7,7 +7,7 @@ imports
 	signatures
 	
 strategies
-	store-all = try(store-declarations); topdown(try(store-references))
+	store-all = try(store-declarations); topdown(try(store-declarations2)); topdown(try(store-references))
 	
 rules // declarations
 	// Starting point
@@ -76,6 +76,15 @@ rules // declarations
 		where <store-declaration(|ObjectEvents(object, name))> (state, (state, d))
 		// TODO: store vars in event? not sure if these need to be stored since they
 		// are just statements that can be directly converted to lua/c++?
+
+	store-declarations2: d@VarDef(name,_,_) -> d
+		where <store-declaration(|Vars())> (name, d)
+	//store-declarations2: d@VarDefNoType(name,_) -> d
+	//	where <store-declaration(|Vars())> (name, d)
+	store-declarations2: d@Param(name,_) -> d
+		where <store-declaration(|Vars())> (name, d)
+	//store-declarations2: d@Param(name) -> d
+	//	where <store-declaration(|Vars())> (name, d)
 			
 rules // references
 	

@@ -17,8 +17,8 @@ imports
   
 strategies
 	
-	analyse-all = desugar-all; store-all
-	pre-generation = desugar-all; store-all; post-desugar-all
+	analyse-all = desugar-all; rename-all; store-all
+	pre-generation = desugar-all; rename-all; store-all; post-desugar-all
 
 rules // Main editor interface (defined by editor/DiversiaScript-Builders and -References.esv)
   
@@ -35,7 +35,7 @@ editor-analyze: (ast, path, project-path) -> (ast', errors, warnings, notes)
 generate: (selected, position, ast, path, project-path) -> (filename, result)
 	with
     {| Declared, Referred:
-    	filename := <guarantee-extension(|"lua")> path;
+    	filename := <guarantee-extension(|"aterm")> path;
     	result   := <pre-generation> selected
     |}
   

@@ -12,3 +12,4 @@ signature constructors // namespaces
 	Events 			: Object * State 	-> Namespace
 	ObjectEvents	: Object * Event	-> Namespace
 	Vars 			: Object 			-> Namespace
+	Vars			: Namespace

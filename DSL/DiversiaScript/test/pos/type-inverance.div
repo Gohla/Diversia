@@ -1,17 +1,19 @@
 def Object1 {
 
-    var boolLit = false;
-    var vactor2Lit = [4,5];
-    var vactor3Lit = [2,4,5];
-    var vactor4Lit = [2,4,5,6];
-    var stringLit = "cool";
-    var RandomBull = FunBuildIn();
-    var intOp = 4 + 7;
-    var intOp = 4 / 7;
-    var intOp = 4.0 * 8.0;
-    var nothingness = null;
-    var boolOp = 34 > 34;
-    var boolOp2 = true && false;
+    var boolLit:Bool = false;
+    var vector2Lit:Vector2 = [4,5];
+    var vector3Lit:Vector3 = [2,4,5];
+    var vector4Lit:Vector4 = [2,4,5,6];
+    var stringLit:String = "cool";
+    var RandomBull:BuildIn = BuildIn();
+    var intOp:Int = 4 + 7;
+    var intOp:Int = 4 / 7;
+    var intOp:Real = 4.0 * 8.0;
+    var nothingness:Void = null;
+    var boolOp:Bool = 34 > 34;
+    var boolOp2:Bool = true && false;
+    
+    var bob:Bool = boolOp2;     
     
 }
     

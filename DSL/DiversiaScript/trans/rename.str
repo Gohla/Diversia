@@ -1,48 +1,77 @@
 module rename
-/*
+
 imports 
 	include/DiversiaScript
 	lib/namespaces
 	namespace
+	signatures
 	
 strategies
 
 	rename-all = alltd(rename)
 
-rules
+rules //defs
 	
 	rename :
-		ObjectDef(name, statements) -> ObjectDef(name', statements')
+		ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> 
+		ObjectDef(name, propAssigns, componentDefs, objectDefs', varDefs', defaultStateDef', stateDefs', eventDefs')
 		where 
-			<rename-declaration(|Vars())> name => name';
+			<rename-all> objectDefs => objectDefs'; // all objects are always global
 			new-scope (
-				<rename-all> statements => statements'
+				<rename-all> varDefs => varDefs';
+				<rename-all> defaultStateDef => defaultStateDef';
+				<rename-all> stateDefs => stateDefs';
+				<rename-all> eventDefs => eventDefs'
 			)
+			
 	
 			
 	rename :
-		StateDef(name, statements) -> StateDef(name', statements')
+		StateDef(name, propAssigns, componentDefs, varDefs, eventDefs) ->  
+		StateDef(name, propAssigns, componentDefs, varDefs', eventDefs')
 		where 
-			<rename-declaration(|States())> name => name';
 			new-scope (
-				<rename-all> statements => statements'
+				<rename-all> varDefs => varDefs';
+				<rename-all> eventDefs => eventDefs'
+			)
+	rename :
+		DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs) ->  
+		DefaultStateDef(name, propAssigns, componentDefs, varDefs', eventDefs')
+		where 
+			new-scope (
+				<rename-all> varDefs => varDefs';
+				<rename-all> eventDefs => eventDefs'
 			)
 			
 	rename :
-		EventDef(name, statements) -> EventDef(name', statements')
+		EventDef(name, params, statements) -> EventDef(name, params', statements')	
 		where 
-			<rename-declaration(|Events())> name => name';
 			new-scope (
+				<rename-all> params => params';
 				<rename-all> statements => statements'
 			)
-
-	rename : 
-		VarDef(name, type, exp) -> VarDef(name', type, exp)
+	rename :
+		Param(name,type) -> Param(name',type)
 		where
 			<rename-declaration(|Vars())> name => name'
-			
-	rename :
-		ComponentDef(name, params) -> ComponentDef(name', params)
+
+	rename : 
+		VarDef(name, type, exp) -> VarDef(name', type, exp')
 		where
-			<rename-declaration(|Components())> name => name'
-	*/		
+			<rename-declaration(|Vars())> name => name';
+			<rename-all> exp => exp'
+	//rename : 
+	//	VarDefNoType(name, exp) -> VarDefNoType(name', exp')
+	//	where
+	//		<rename-declaration(|Vars())> name => name';
+	//		<rename-all> exp => exp'
+			
+		
+rules // refs
+		
+	rename :
+		PropRef(name) -> VarRef(name')
+		where
+			<rename-reference(|Vars())> name => name'
+			
+		

@@ -31,6 +31,7 @@ rules // Name-based look-up transformations
 	get-component: (objectName, componentName) -> <get-declaration(|Components(objectName))> componentName
 	get-component: (objectName, stateName, componentName) -> <get-declaration(|Components(objectName, stateName))> componentName
 	get-var: (objectName, varName) -> <get-declaration(|Vars(objectName))> varName
+	get-var2: varName -> <get-declaration(|Vars())> varName
 	get-event: eventName -> <get-declaration(|Events())> eventName
 	get-event: (objectName, eventName) -> <get-declaration(|Events(objectName))> eventName
 	get-event: (objectName, stateName, eventName) -> <get-declaration(|Events(objectName, stateName))> eventName

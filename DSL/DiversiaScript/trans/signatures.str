@@ -24,3 +24,5 @@ signature constructors // Object & state
 	
 	StateDef: Id * List(PropAssign) * List(ComponentDef) * List(VarDef) * List(EventDef) -> StateDef
 	DefaultStateDef: Id * List(PropAssign) * List(ComponentDef) * List(VarDef) * List(EventDef) -> StateDef
+	
+	PropRef: Id -> PropRef

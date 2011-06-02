@@ -13,7 +13,8 @@ rules  // simple desugars
 
 	desugar: EventDef(name,statements) -> EventDef(name,[],statements)
 	desugar: VarDefNoInit(name,type) -> VarDef(name,type,Null())
-	desugar: VarDefNoType(name, exp) -> VarDef(name, <type-of> exp, exp)
+	//desugar: VarDefNoType(name, exp) -> VarDef(name, <type-of> exp, exp) // only gets the easy exp
+	desugar: VarRef(name) 	-> PropRef(name)
 	desugar: Add(e1, e2) 	-> AOp(ADD(), e1, e2)
 	desugar: Sub(e1, e2) 	-> AOp(SUB(), e1, e2)
 	desugar: Mul(e1, e2) 	-> AOp(MUL(), e1, e2)
@@ -28,7 +29,7 @@ rules  // simple desugars
 	desugar: Or(e1, e2) 	-> BOp(OR(), e1, e2)
 	
 	isVarDef = ?VarDef(_,_,_)
-	isVarDef = ?VarDefNoType(_,_)
+	//isVarDef = ?VarDefNoType(_,_)
 	isVarDef = ?VarDefNoInit(_,_)
 	isEventDef = ?EventDef(_,_)
 	isEventDef = ?EventDef(_,_,_)	

@@ -3,6 +3,7 @@ module type-project
 imports
 	include/DiversiaScript
 	signatures
+	name-project
 	
 rules // util
 	printable: BoolType() -> "Boolean"
@@ -44,7 +45,7 @@ rules  // expr
 	type-of: Vector3Const(_,_,_) -> CustomType("Vector3")
 	type-of: Vector4Const(_,_,_,_) -> CustomType("Vector4")
 
-	type-of: VarRef(name) -> "TODO: can be anything execpt VoidType"
+	type-of: d@VarRef(name) -> <type-of><get-var2> name
 	type-of: This() -> "TODO: CustomType(object)"
 	type-of: New(object,_) -> CustomType(object)
 	
