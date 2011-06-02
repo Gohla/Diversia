@@ -5,6 +5,20 @@ def Obj{
 	var ObjectVar1:Int = 0;
 	
 	var ObjectVar2:Int = ObjectVar1;
+	
+	def Obj2{
+		var SubObjectVar1:Int = 0;
+		default state TestState1 {
+    	
+	    	var SubStateVar1:String = "34";
+	
+		    on Frame(TimeElapsed:Int) {
+		    	StateVar2 = StateVar1 * ObjectVar1;
+		    	TimeElapsed = 3;
+		    }    	
+	    }
+	}
+	
 	    
     on Create() {
     	ObjectVar = 1;

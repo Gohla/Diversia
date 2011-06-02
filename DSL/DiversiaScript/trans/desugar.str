@@ -6,7 +6,7 @@ imports
 	type-project
 
 strategies
-	desugar-all = innermost(desugar) //topdown(repeat(desugar))
+	desugar-all = innermost(desugar); desugar-object //topdown(repeat(desugar))
 	post-desugar-all = desugar-object
 	
 rules  // simple desugars
@@ -14,7 +14,6 @@ rules  // simple desugars
 	desugar: EventDef(name,statements) -> EventDef(name,[],statements)
 	desugar: VarDefNoInit(name,type) -> VarDef(name,type,Null())
 	//desugar: VarDefNoType(name, exp) -> VarDef(name, <type-of> exp, exp) // only gets the easy exp
-	desugar: VarRef(name) 	-> PropRef(name)
 	desugar: Add(e1, e2) 	-> AOp(ADD(), e1, e2)
 	desugar: Sub(e1, e2) 	-> AOp(SUB(), e1, e2)
 	desugar: Mul(e1, e2) 	-> AOp(MUL(), e1, e2)
@@ -83,7 +82,7 @@ rules   // post desugar stuff
 	get-name: ObjectDef(name, _, _, _, _, _, _, _) -> name
 	
 	create-new-object: object -> ObjectNew(ObjectRef(object),[])
-	create-parent-prop: object -> PropAssign("Parent", VarRef(object))
+	create-parent-prop: object -> PropAssign("Parent", ObjectRef(object))
 	
 	add-parent(|parent): ObjectDef(name, props, components, objects, vars, defaultState, states, events) -> 
 		ObjectDef(name, props', components, objects, vars, defaultState, states, events)

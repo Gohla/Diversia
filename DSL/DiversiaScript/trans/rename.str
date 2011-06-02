@@ -13,10 +13,10 @@ strategies
 rules //defs
 	
 	rename :
-		ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> 
-		ObjectDef(name, propAssigns, componentDefs, objectDefs', varDefs', defaultStateDef', stateDefs', eventDefs')
+		ObjectDef(name, propAssigns, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) -> 
+		ObjectDef(name, propAssigns, componentDefs, /*objectDefs',*/ varDefs', defaultStateDef', stateDefs', eventDefs')
 		where 
-			<rename-all> objectDefs => objectDefs'; // all objects are always global
+			//<rename-all> objectDefs => objectDefs'; // all objects are always global
 			new-scope (
 				<rename-all> varDefs => varDefs';
 				<rename-all> defaultStateDef => defaultStateDef';
@@ -70,7 +70,7 @@ rules //defs
 rules // refs
 		
 	rename :
-		PropRef(name) -> VarRef(name')
+		PropRef(name, object) -> VarRef(name')
 		where
 			<rename-reference(|Vars())> name => name'
 			

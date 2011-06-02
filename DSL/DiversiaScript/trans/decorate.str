@@ -1,0 +1,26 @@
+module decorate
+
+imports 
+	include/DiversiaScript
+	signatures
+	type-project
+	name-project
+
+strategies
+	decorate-all = topdown(try(decorate))
+	
+rules  // add inferred type data
+
+	
+	decorate: ObjectDef(name, propAssigns, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) ->
+			  ObjectDef(name, propAssigns', componentDefs', /*objectDefs,*/ varDefs', defaultStateDef', stateDefs', eventDefs')
+			 where	
+			 	<innermost(decorate(|name))> propAssigns => propAssigns';
+			 	<innermost(decorate(|name))> componentDefs => componentDefs';
+			 	<innermost(decorate(|name))> varDefs => varDefs';
+			 	<innermost(decorate(|name))> defaultStateDef => defaultStateDef';
+			 	<innermost(decorate(|name))> stateDefs => stateDefs';
+			 	<innermost(decorate(|name))> eventDefs => eventDefs'
+			 	
+			 	
+	decorate(|object): VarRef(name) -> PropRef(name, object)
