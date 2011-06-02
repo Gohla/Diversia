@@ -21,16 +21,19 @@ rules
 		where(<gt> (<length> paramNames, 0))
 	lua-funcdef: (name, paramNames, content) -> <lua-funcdef> (name, content)
 		where(<eq> (<length> paramNames, 0))
+	lua-append-statements(|statements): FuncDef(name, params, Chunk(content)) -> FuncDef(name, params, Chunk(<concat> [content, statements]))
+	lua-prepend-statements(|statements): FuncDef(name, params, Chunk(content)) -> FuncDef(name, params, Chunk(<concat> [statements, content]))
+	lua-replace-function(|name, function): functions -> <map(\ FuncDef(FunctionName(n), _, _) -> function where <eq>(n, name) \ <+ id)> functions
 	lua-stateref = !VarRef("State")
 		
 	// Global definitions to lua files.
 	to-lua: Start(definitions) -> Chunk(<flatten-list> <map(to-lua)> definitions)
 	to-lua: ObjectDef(name, properties, components, varDefs, [ DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
-		[ Assignment([<lua-stateref>], [String(defaultStateName)]), <lua-funcdef> ("Create", components' ), events' ]
+		[ Assignment([<lua-stateref>], [String(defaultStateName)]), functions'' ]
 		//where properties' := // TODO: Object properties
-		where components' := <flatten-list> <map(to-lua)> components
 		//where states' := // TODO: State switch code
-		where events' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
+		where functions' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
+		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> components, functions')
 	
 	// Convert components 
 	to-lua: ComponentDef(name, properties) -> [
@@ -77,7 +80,14 @@ rules
 		where not( <lookup> ("", events) )
 		where <gt> (<length> events, 1)
 		where ((stateName, EventDef(name, params, statements)), otherEvents) := <take-1> events
-	
+		
+	// Components
+	components-to-lua: (statements, functions) -> <lua-replace-function(|"Create", createFunc)> functions
+		where createFunc := <lua-prepend-statements(|statements)> <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions
+	components-to-lua: (statements, functions) -> functions'
+		where not( <fetch-elem(?FuncDef(FunctionName("Create"), createParams, Chunk(createStatements)))> functions )
+		where functions' := <concat> [[<lua-funcdef> ("Create", statements)], functions]
+			
 rules // Expressions
 	
 	to-lua: True() -> True()
