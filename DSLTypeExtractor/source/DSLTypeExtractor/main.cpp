@@ -43,19 +43,19 @@ Diversia::Util::String typeName( const camp::Property& rProp )
 {
     switch( rProp.type() )
     {
-        case camp::noType: return "None";
-        case camp::boolType: return "Bool";
-        case camp::intType: return "Int";
-        case camp::realType: return "Real";
-        case camp::stringType: return "String";
-        case camp::enumType: return "Enum";
-        case camp::arrayType: return "Array";
-        case camp::dictionaryType: return "Dictionary";
-        case camp::valueType: return "Value";
+        case camp::noType: return "VoidType()";
+        case camp::boolType: return "BoolType()";
+        case camp::intType: return "IntType()";
+        case camp::realType: return "RealType()";
+        case camp::stringType: return "StringType()";
+        case camp::enumType: return "CustomType(\"Enum\")";
+        case camp::arrayType: return "VoidType()";
+        case camp::dictionaryType: return "VoidType()";
+        case camp::valueType: return "VoidType()";
         case camp::userType: 
         {
             const camp::UserProperty& prop = static_cast<const camp::UserProperty&>( rProp );
-            return prop.getClass().name();
+            return "CustomType(\"" + prop.getClass().name() + "\")";
         }
     }
 
@@ -193,7 +193,7 @@ int main( int argc, char* argv[] )
             const camp::Property& prop = metaclass.property( j, true );
 
             if( !first ) file << ", \n\t";
-            file << "Property(\"" << prop.name() << "\", \"" << typeName( prop ) << "\")";
+            file << "Property(\"" << prop.name() << "\", " << typeName( prop ) << ")";
             first = false;
         }
         file << "\n], \n[\n\t";
