@@ -110,7 +110,7 @@ exports
     "Bool" -> Type {cons("BoolType")}
     "String" -> Type {cons("StringType")}
     "Void"  -> Type {cons("VoidType")}
-    Id -> Type {cons("CustomType")}
+    Id -> Type {cons("CustomType"), avoid}
 
 
     context-free priorities
