@@ -900,3 +900,11 @@ rules
 		
 	])
 	]
+
+	components = ![
+		"Animation", "AreaTrigger", "Audio", "Camera", "CollisionShape", "Entity", "ForceField", "Light", "LuaObjectScript", "Mesh", "Particle", "RigidBody", "SceneNode", "Text"
+	]
+	
+	plugins = ![
+		"ClientObjectManager", "ClientObjectTemplateManager", "Lua", "PermissionManager", "ServerNeighborsPlugin", "GameMode", "ResourceManager", "SceneManager", "Sky", "Terrain"
+	]

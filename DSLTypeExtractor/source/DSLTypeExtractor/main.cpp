@@ -36,6 +36,7 @@
 #include "OgreClient/Object/SceneNode.h"
 #include "OgreClient/Object/Text.h"
 #include "OgreClient/Resource/ResourceManager.h"
+#include "Util/Camp/CampUtils.h"
 #include "Util/Log/Logger.h"
 #include "Util/Math/Node.h"
 
@@ -161,12 +162,19 @@ int main( int argc, char* argv[] )
 
     file << "builtin-types = ![\n";
 
+    std::vector<String> components;
+    std::vector<String> plugins;
     std::size_t classCount = camp::classCount();
     bool classFirst = true;
     for( std::size_t i = 0; i < classCount; ++i )
     {
         const camp::Class& metaclass = camp::classByIndex( i );
         LOGI << metaclass.name();
+
+        if( camp::hasBase( metaclass, camp::classByType<ClientComponent>() ) ) 
+            components.push_back( metaclass.name() );
+        else if( camp::hasBase( metaclass, camp::classByType<ServerPlugin>() ) ) 
+            plugins.push_back( metaclass.name() );
 
         if( !classFirst ) file << ", ";
         file << "BuiltinType(\"" << metaclass.name() << "\",\n[";
@@ -212,8 +220,29 @@ int main( int argc, char* argv[] )
         file << "\n])\n";
         classFirst = false;
     }
+    file << "]\n\n";
 
-    file << "]";
+    // Components
+    file << "components = ![\n\t";
+    bool componentFirst = true;
+    for( std::vector<String>::const_iterator i = components.begin(); i != components.end(); ++i)
+    {
+        if( !componentFirst ) file << ", ";
+        file << "\"" << *i << "\"";
+        componentFirst = false;
+    }
+    file << "\n]\n\n";
+
+    // Plugins
+    file << "plugins = ![\n\t";
+    bool pluginFirst = true;
+    for( std::vector<String>::const_iterator i = plugins.begin(); i != plugins.end(); ++i)
+    {
+        if( !pluginFirst ) file << ", ";
+        file << "\"" << *i << "\"";
+        pluginFirst = false;
+    }
+    file << "\n]";
 
     file.close();
 
