@@ -145,9 +145,9 @@ rules // Expressions
 	to-lua: VarRef(_{name}) -> VarRef(name)
 	to-lua: PropRef(name, _) -> Access(VarRef("Object"), name)
 	to-lua: Null() -> LuaNil()
-	
-	// TODO: new built in type
+	to-lua: New(type, args) -> Call(VarRef(type), "new", Args(<map(to-lua)> args))
 	// TODO: this
+	
 	to-lua: AOp(ADD(), l, r) -> Add(<to-lua> l, <to-lua> r)
 	to-lua: AOp(SUB(), l, r) -> Sub(<to-lua> l, <to-lua> r)
 	to-lua: AOp(MUL(), l, r) -> Mul(<to-lua> l, <to-lua> r)
@@ -181,7 +181,7 @@ rules // Statements
 	to-lua: If(condition, trueStatements, falseStatements) -> If(<to-lua> condition, Chunk(<map(to-lua)> trueStatements), Chunk(<map(to-lua)> falseStatements))
 	to-lua: While(condition, statements) -> While(<to-lua> condition, Chunk(<map(to-lua)> statements))
 	to-lua: Assign(exp, val) -> Assignment([<to-lua> exp], [<to-lua> val])
-	to-lua: New(type, args) -> Call(VarRef(type), "new", Args(<map(to-lua)> args))
+	// TODO: new object
 	// TODO: state change
 	// TODO: switch
 	// TODO: delayed statements
