@@ -174,7 +174,7 @@ void EditorApplication::init()
         camp::classByType<SceneManagerPlugin>();
         TemplatePluginFactory<LuaPlugin, ServerPluginManager>::registerFactory();
         camp::classByType<LuaPlugin>();
-        ClientServerPluginManager::addAutoCreateComponent<LuaPlugin>();
+        ClientServerPluginManager::addAutoCreatePlugin<LuaPlugin>();
 
         // Override the client's default game mode with one for the editor.
         TemplatePluginFactory<GameModePlugin, ServerPluginManager>::registerFactory();

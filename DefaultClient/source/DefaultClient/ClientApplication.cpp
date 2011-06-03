@@ -158,7 +158,7 @@ void ClientApplication::init()
         TemplatePluginFactory<SkyPlugin, ServerPluginManager>::registerFactory();
         TemplatePluginFactory<Terrain, ServerPluginManager>::registerFactory();
         TemplatePluginFactory<LuaPlugin, ServerPluginManager>::registerFactory();
-        ClientServerPluginManager::addAutoCreateComponent<LuaPlugin>();
+        ClientServerPluginManager::addAutoCreatePlugin<LuaPlugin>();
 
         // Override the default game mode.
         TemplatePluginFactory<GameModePlugin, ServerPluginManager>::registerFactory();

@@ -464,31 +464,6 @@ rules
 	[
 		
 	])
-	, BuiltinType("LuaObjectScript",
-	["ClientComponent"],
-	[], 
-	[
-		Property("ClientScriptFile", StringType()), 
-		Property("ClientEnvironmentName", StringType()), 
-		Property("ClientSecurityLevel", CustomType("Enum")), 
-		Property("ServerScriptFile", StringType()), 
-		Property("ServerEnvironmentName", StringType()), 
-		Property("ServerSecurityLevel", CustomType("Enum"))
-	], 
-	[
-		Function("Reload script", "", []), 
-		Function("Destroy script", "", []), 
-		Function("Create script", "", []), 
-		Function("Disconnect", "", []), 
-		Function("IsDisconnect", "", []), 
-		Function("Connect", "", []), 
-		Function("IsConnected", "", []), 
-		Function("Block", "", []), 
-		Function("IsBlocked", "", []), 
-		Function("DisconnectAll", "", []), 
-		Function("ConnectAll", "", []), 
-		Function("BlockAll", "", [])
-	])
 	, BuiltinType("Mesh",
 	["ClientComponent"],
 	[], 
@@ -900,11 +875,15 @@ rules
 		
 	])
 	]
-
+	
 	components = ![
-		"Animation", "AreaTrigger", "Audio", "Camera", "CollisionShape", "Entity", "ForceField", "Light", "LuaObjectScript", "Mesh", "Particle", "RigidBody", "SceneNode", "Text"
+		"Entity", "Mesh", "Light", "Animation", "Particle", "CollisionShape", "RigidBody", "AreaTrigger", "ForceField", "Audio", "Text", "Camera"
+	]
+	
+	multiple-components = ![
+		"Animation", "Particle", "Audio", "Text"
 	]
 	
 	plugins = ![
-		"ClientObjectManager", "ClientObjectTemplateManager", "Lua", "PermissionManager", "ServerNeighborsPlugin", "GameMode", "ResourceManager", "SceneManager", "Sky", "Terrain"
+		"ServerNeighbors", "Sky", "Terrain", "SceneManager"
 	]

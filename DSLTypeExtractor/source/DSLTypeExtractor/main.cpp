@@ -36,6 +36,10 @@
 #include "OgreClient/Object/SceneNode.h"
 #include "OgreClient/Object/Text.h"
 #include "OgreClient/Resource/ResourceManager.h"
+#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/ClientServerPlugin/Factories/ObjectManagerFactory.h"
+#include "Shared/ClientServerPlugin/Factories/TemplatePluginFactory.h"
+#include "Shared/Object/TemplateComponentFactory.h"
 #include "Util/Camp/CampUtils.h"
 #include "Util/Log/Logger.h"
 #include "Util/Math/Node.h"
@@ -116,7 +120,7 @@ int main( int argc, char* argv[] )
     camp::classByType<RigidBody>();
     camp::classByType<Audio>();
     //camp::classByType<AudioManager>();
-    camp::classByType<LuaObjectScript>();
+    //camp::classByType<LuaObjectScript>();
     camp::classByType<Particle>();
     camp::classByType<Axis>();
     camp::classByType<MouseState>();
@@ -156,25 +160,75 @@ int main( int argc, char* argv[] )
     camp::classByType<ClientObjectTemplateManager>();
     camp::classByType<ClientObjectTemplate>();
 
+    // Add component factories, get camp class to ensure that the class is registered.
+    TemplateComponentFactory<SceneNode, ClientObject, false, false, true>::registerFactory();
+    Object::addAutoCreateComponent<SceneNode>( "Node" );
+    camp::classByType<SceneNode>();
+    TemplateComponentFactory<Mesh, ClientObject, false>::registerFactory();
+    camp::classByType<Mesh>();
+    TemplateComponentFactory<Entity, ClientObject, false>::registerFactory();
+    camp::classByType<Entity>();
+    TemplateComponentFactory<Light, ClientObject, false>::registerFactory();
+    camp::classByType<Light>();
+    TemplateComponentFactory<Camera, ClientObject, false, true, true>::registerFactory();
+    camp::classByType<Camera>();
+    TemplateComponentFactory<Animation, ClientObject, true>::registerFactory();
+    camp::classByType<Animation>();
+    TemplateComponentFactory<Text, ClientObject, true>::registerFactory();
+    camp::classByType<Text>();
+    TemplateComponentFactory<CollisionShape, ClientObject, false>::registerFactory();
+    camp::classByType<CollisionShape>();
+    TemplateComponentFactory<RigidBody, ClientObject, false>::registerFactory();
+    camp::classByType<RigidBody>();
+    TemplateComponentFactory<AreaTrigger, ClientObject, false>::registerFactory();
+    camp::classByType<AreaTrigger>();
+    TemplateComponentFactory<ForceField, ClientObject, false>::registerFactory();
+    camp::classByType<ForceField>();
+    TemplateComponentFactory<Audio, ClientObject, true>::registerFactory();
+    camp::classByType<Audio>();
+    //TemplateComponentFactory<LuaObjectScript, ClientObject, true>::registerFactory();
+    //camp::classByType<LuaObjectScript>();
+    TemplateComponentFactory<Particle, ClientObject, true>::registerFactory();
+    camp::classByType<Particle>();
+
+    // Add plugin factories, get camp class to ensure that the class is registered.
+    TemplatePluginFactory<PermissionManager, ServerPluginManager>::registerFactory();
+    camp::classByType<PermissionManager>();
+    ClientServerPluginManager::addAutoCreatePlugin<PermissionManager>();
+    TemplatePluginFactory<ResourceManager, ServerPluginManager>::registerFactory();
+    camp::classByType<ResourceManager>();
+    ClientServerPluginManager::addAutoCreatePlugin<ResourceManager>();
+    TemplatePluginFactory<ClientObjectTemplateManager, ServerPluginManager>::registerFactory();
+    camp::classByType<ClientObjectTemplateManager>();
+    ClientServerPluginManager::addAutoCreatePlugin<ClientObjectTemplateManager>();
+    sigc::signal<void> dummySignal;
+    ObjectManagerFactory<ClientObjectManager, ServerPluginManager>::registerFactory( dummySignal, dummySignal );
+    camp::classByType<ClientObjectManager>();
+    ClientServerPluginManager::addAutoCreatePlugin<ClientObjectManager>();
+    TemplatePluginFactory<ServerNeighborsPlugin, ServerPluginManager>::registerFactory();
+    camp::classByType<ServerNeighborsPlugin>();
+    TemplatePluginFactory<SkyPlugin, ServerPluginManager>::registerFactory();
+    camp::classByType<SkyPlugin>();
+    TemplatePluginFactory<Terrain, ServerPluginManager>::registerFactory();
+    camp::classByType<Terrain>();
+    TemplatePluginFactory<SceneManagerPlugin, ServerPluginManager>::registerFactory();
+    camp::classByType<SceneManagerPlugin>();
+    TemplatePluginFactory<LuaPlugin, ServerPluginManager>::registerFactory();
+    camp::classByType<LuaPlugin>();
+    ClientServerPluginManager::addAutoCreatePlugin<LuaPlugin>();
+
     // Create output file
     std::ofstream file;
     file.open( "builtin-types.str", std::ios::out | std::ios::trunc );
 
     file << "builtin-types = ![\n";
 
-    std::vector<String> components;
-    std::vector<String> plugins;
     std::size_t classCount = camp::classCount();
     bool classFirst = true;
     for( std::size_t i = 0; i < classCount; ++i )
     {
         const camp::Class& metaclass = camp::classByIndex( i );
         LOGI << metaclass.name();
-
-        if( camp::hasBase( metaclass, camp::classByType<ClientComponent>() ) ) 
-            components.push_back( metaclass.name() );
-        else if( camp::hasBase( metaclass, camp::classByType<ServerPlugin>() ) ) 
-            plugins.push_back( metaclass.name() );
 
         if( !classFirst ) file << ", ";
         file << "BuiltinType(\"" << metaclass.name() << "\",\n[";
@@ -225,21 +279,38 @@ int main( int argc, char* argv[] )
     // Components
     file << "components = ![\n\t";
     bool componentFirst = true;
-    for( std::vector<String>::const_iterator i = components.begin(); i != components.end(); ++i)
+    const ComponentFactories& components = ComponentFactoryManager::getComponentFactories();
+    for( ComponentFactories::const_iterator i = components.begin(); i != components.end(); ++i )
     {
+        if( Object::hasAutoCreateComponent( i->first ) ) continue;
         if( !componentFirst ) file << ", ";
-        file << "\"" << *i << "\"";
+        file << "\"" << i->second->getTypeName() << "\"";
         componentFirst = false;
     }
     file << "\n]\n\n";
 
-    // Plugins
+    // Components that can have multiple instances
+    file << "multiple-components = ![\n\t";
+    bool multipleComponentFirst = true;
+    for( ComponentFactories::const_iterator i = components.begin(); i != components.end(); ++i )
+    {
+        if( Object::hasAutoCreateComponent( i->first ) ) continue;
+        if( !i->second->multiple() ) continue;
+        if( !multipleComponentFirst ) file << ", ";
+        file << "\"" << i->second->getTypeName() << "\"";
+        multipleComponentFirst = false;
+    }
+    file << "\n]\n\n";
+
+    // ClientServerPlugins
     file << "plugins = ![\n\t";
     bool pluginFirst = true;
-    for( std::vector<String>::const_iterator i = plugins.begin(); i != plugins.end(); ++i)
+    const ClientServerPluginFactories& plugins = ClientServerPluginFactoryManager::getPluginFactories();
+    for( ClientServerPluginFactories::const_iterator i = plugins.begin(); i != plugins.end(); ++i )
     {
+        if( ClientServerPluginManager::hasAutoCreatePlugin( i->first ) ) continue;
         if( !pluginFirst ) file << ", ";
-        file << "\"" << *i << "\"";
+        file << "\"" << i->second->getTypeName() << "\"";
         pluginFirst = false;
     }
     file << "\n]";

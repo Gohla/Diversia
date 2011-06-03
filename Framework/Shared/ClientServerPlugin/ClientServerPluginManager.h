@@ -144,23 +144,31 @@ public:
     **/
     void destroyPlugin( ClientServerPluginTypeEnum type );
     /**
-    Adds a plugin to the auto create component list. All plugin in that list will be
-    automatically created locally.
-    
-    @param  rName   The name the component will be given.
+    Adds a plugin to the auto create plugin list. All plugin in that list will be
+    automatically created. This should only be used on the client because the server already has
+    code that automatically creates plugins using the ConfigManager.
     **/
-    template<class T> static void addAutoCreateComponent()
+    template<class T> static void addAutoCreatePlugin()
     {
-        ClientServerPluginManager::addAutoCreateComponent( T::getTypeStatic() );
+        ClientServerPluginManager::addAutoCreatePlugin( T::getTypeStatic() );
     }
     /**
-    Adds a plugin to the auto create component list. All plugin in that list will be
+    Adds a plugin to the auto create plugin list. All plugin in that list will be
     automatically created. This should only be used on the client because the server already has
     code that automatically creates plugins using the ConfigManager.
     
     @param  type    The type of the plugin. 
     **/
-    static void addAutoCreateComponent( ClientServerPluginTypeEnum type );
+    static void addAutoCreatePlugin( ClientServerPluginTypeEnum type );
+    /**
+    Query if given plugin type will be automatically created on plugin manager creation
+    
+    @param  type    The plugin type. 
+    
+    @return True if given plugin type will be automatically created on plugin manager creation, 
+            false otherwise.       
+    **/
+    static bool hasAutoCreatePlugin( ClientServerPluginTypeEnum type );
     /**
     Gets the plugin state. 
     **/

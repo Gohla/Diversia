@@ -142,7 +142,7 @@ void ClientServerPluginManager::destroyPlugin( ClientServerPluginTypeEnum type )
     }
 }
 
-void ClientServerPluginManager::addAutoCreateComponent( ClientServerPluginTypeEnum type )
+void ClientServerPluginManager::addAutoCreatePlugin( ClientServerPluginTypeEnum type )
 {
     mAutoCreatePlugins.insert( type );
 }
@@ -208,6 +208,11 @@ void ClientServerPluginManager::update()
 
     // Block updates until a plugin must be added or destroyed.
     mUpdateConnection.block( true );
+}
+
+bool ClientServerPluginManager::hasAutoCreatePlugin( ClientServerPluginTypeEnum type )
+{
+    return mAutoCreatePlugins.find( type ) != mAutoCreatePlugins.end();
 }
 
 //------------------------------------------------------------------------------
