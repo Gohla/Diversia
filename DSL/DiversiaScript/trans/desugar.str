@@ -13,6 +13,9 @@ rules  // simple desugars
 
 	desugar: EventDef(name,statements) -> EventDef(name,[],statements)
 	desugar: VarDefNoInit(name,type) -> VarDef(name,type,Null())
+	desugar: ComponentDef(CustomType(type),props) -> ComponentDef(type,CustomType(type),props)
+	desugar: PluginDef(CustomType(type),props) -> PluginDef(type,CustomType(type),props)
+	
 	//desugar: VarDefNoType(name, exp) -> VarDef(name, <type-of> exp, exp) // only gets the easy exp
 	desugar: Add(e1, e2) 	-> AOp(ADD(), e1, e2)
 	desugar: Sub(e1, e2) 	-> AOp(SUB(), e1, e2)
@@ -38,17 +41,19 @@ rules  // simple desugars
 	isDefaultStateDef = ?DefaultStateDef(_,_,_,_,_)
 	isObjectDef = ?ObjectDef(_,_)
 	isObjectDef = ?ObjectDef(_,_,_,_,_,_,_,_)
+	isComponentDef = ?ComponentDef(_,_)
+	isComponentDef = ?ComponentDef(_,_,_)	
 	
 	desugar: StateDef(name, defs) -> StateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
 			<filter(?ObjectProp(_,_))> defs => propAssigns;
-			<filter(?ComponentDef(_,_))> defs => componentDefs;
+			<filter(isComponentDef)> defs => componentDefs;
 			<filter(isVarDef)> defs => varDefs;
 			<filter(isEventDef)> defs => eventDefs	
 	desugar: DefaultStateDef(name, defs) -> DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
 			<filter(?ObjectProp(_,_))> defs => propAssigns;
-			<filter(?ComponentDef(_,_))> defs => componentDefs;
+			<filter(isComponentDef)> defs => componentDefs;
 			<filter(isVarDef)> defs => varDefs;
 			<filter(isEventDef)> defs => eventDefs
 				
@@ -56,7 +61,7 @@ rules  // simple desugars
 		where
 			<filter(?ObjectProp(_,_))> defs => propAssigns;
 			<filter(isObjectDef)> defs => objectDefs;
-			<filter(?ComponentDef(_,_))> defs => componentDefs;
+			<filter(isComponentDef)> defs => componentDefs;
 			<filter(isVarDef)> defs => varDefs;
 			<filter(isDefaultStateDef)> defs => defaultStateDef;
 			<filter(isStateDef)> defs => stateDefs;

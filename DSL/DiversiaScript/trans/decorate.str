@@ -24,3 +24,15 @@ rules  // add inferred type data
 			 	
 			 	
 	decorate(|object): VarRef(name) -> PropRef(name, object)
+	
+		
+	
+	/*decorate(|object): 
+		ObjectNew(ObjectRef(object2), propAssigns) -> ObjectNew(ObjectRef(object2), propAssigns')
+		where 
+			<map(decorate(|object2))> propAssigns => propAssigns'
+	
+	decorate(|object): ObjectProp(name, expr) -> ObjectProp(object, name, expr)*/
+	
+                     
+	
