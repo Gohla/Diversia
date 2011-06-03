@@ -1,0 +1,28 @@
+module error-check
+
+imports 
+	include/DiversiaScript
+	signatures
+	type-project
+	name-project
+	data/builtin-types
+
+rules  
+	
+	
+	editor-error: e@VarDef(name, type, expr)-> (e, $[Expected [<printable>type] but found [<printable>type2].])
+		where 
+			<type-of> expr => type2;
+			not(<?type> type2)
+	
+	editor-error: e@Assign(exp1, exp2) -> (e, $[Expected [<printable>type1] but found [<printable>type2].]) 
+		where
+			<type-of> exp1 => type1;
+			<type-of> exp2 => type2;
+			not(<?type1> type2)
+	
+	editor-error: e@PropRef(name, object) -> (e, $[Undefined variable or property.])
+		where
+			is-object-type(|object);
+			not(is-builtin-property(|"ClientObject", name))
+	

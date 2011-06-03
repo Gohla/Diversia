@@ -1,0 +1,12 @@
+module warning-check
+
+imports 
+	include/DiversiaScript
+	signatures
+	type-project
+	name-project
+
+rules  
+	
+	
+	editor-warning: x -> <fail> x

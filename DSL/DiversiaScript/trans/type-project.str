@@ -4,6 +4,7 @@ imports
 	include/DiversiaScript
 	signatures
 	name-project
+	data/builtin-types
 	
 rules // util
 	printable: BoolType() -> "Boolean"
@@ -12,13 +13,14 @@ rules // util
 	printable: StringType() -> "String"
 	printable: VoidType() -> "Void"
 	printable: CustomType(name) -> name
-	printable: odd -> odd
+	printable: todo -> todo
 		where not(
-			<?BoolType()> odd;
-			<?IntType()> odd;
-			<?RealType()> odd;
-			<?StringType()> odd;
-			<?VoidType()> odd
+			<?BoolType()> todo;
+			<?IntType()> todo;
+			<?RealType()> todo;
+			<?StringType()> todo;
+			<?VoidType()> todo;
+			<?CustomType(_)> todo
 		)
 
 rules  // expr
@@ -44,8 +46,19 @@ rules  // expr
 	type-of: Vector2Const(_,_) -> CustomType("Vector2")
 	type-of: Vector3Const(_,_,_) -> CustomType("Vector3")
 	type-of: Vector4Const(_,_,_,_) -> CustomType("Vector4")
+	
+	type-of: Property(_,type) -> type  
+	type-of: Function(_,type,_) -> type
 
-	type-of: d@VarRef(name) -> <type-of><get-var2> name
+	type-of: VarRef(name) -> <type-of><get-var2> name
+	type-of: PropRef(name, object) -> <type-of><get-builtin-property>(object, name)
+	type-of: PropRef(name, object) -> type
+		where
+			is-object-type(|object);
+			//<debug> "isobject";
+			<type-of><get-builtin-property> ("ClientObject", name) => type
+			//<debug> type		
+			
 	type-of: This() -> "TODO: CustomType(object)"
 	type-of: New(object,_) -> CustomType(object)
 	

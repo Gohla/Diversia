@@ -15,11 +15,15 @@ imports
   lib/namespaces
   namespace
   type-project
+  data/builtin-types
+  
+  note-check
+  error-check
+  warning-check
   
 strategies
 	
 	analyse-all = desugar-all; decorate-all; rename-all; store-all
-	// pre-generation = desugar-all; decorate-all; rename-all; store-all //; post-desugar-all
 
 rules // Main editor interface (defined by editor/DiversiaScript-Builders and -References.esv)
   
@@ -29,16 +33,16 @@ editor-analyze: (ast, path, project-path) -> (ast', errors, warnings, notes)
 	with
     	editor-init;
     	<analyse-all> ast => ast';
-      	errors   := <fail> ast';
-      	warnings := <fail> ast';
-      	notes    := <fail> ast'
+		<collect-all(editor-error, conc)> ast' => errors ;
+		<collect-all(editor-warning, conc)> ast' => warnings ;
+		<collect-all(editor-note, conc)> ast' => notes
 
-generate: (selected, position, ast, path, project-path) -> (filename, result)
-	with
-    {| Declared, Referred:
-    	filename := <guarantee-extension(|"aterm")> path;
-    	result   := <analyse-all> selected
-    |}
+test-rule: (selected, position, ast, path, project-path) -> (<guarantee-extension(|"aterm")> path, ast)
+	//with
+    //{| Declared, Referred:
+    	//<debug><get-builtin-type> "ComponentTemplate";
+    	//<debug><get-builtin-property> ("ComponentTemplate","Source")
+   // |}
   
   // Transforms a selection to Lua
 generate-lua: (selected, position, ast, path, project-path) -> (filename, result)

@@ -17,6 +17,8 @@ rules // Name-based projections
 	
 rules // Name-based look-up transformations
 	
+	is-object-type(|object) = <get-object> object
+	
 	get-all-objects = get-all-declarations(|Objects())
 	get-all-components: objectName -> <get-all-declarations(|Components(objectName))>
 	get-all-components: (objectName, stateName) -> <get-all-declarations(|Components(objectName, stateName))>

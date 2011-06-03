@@ -14,10 +14,10 @@ builders
   provider                  : include/diversiascript.ctree                                                                     
   provider                  : include/diversiascript-java.jar
   
-  //observer					: editor-analyze
+  observer					: editor-analyze
   
   builder                   : "Show abstract syntax" = generate-aterm (openeditor) (realtime) (meta) (source)                                                                                                                               
-  builder                   : "Generation AST" = generate (openeditor) (realtime) (meta) (source)       
+  builder                   : "Test rule" = test-rule (openeditor) (realtime) (meta) (source)       
   builder                   : "Generate Lua code" = generate-lua (openeditor) (realtime)
   builder                   : "Generate Lua abstract syntax" = generate-lua-aterm (openeditor) (realtime)
   builder                   : "Generate C++ code" = generate-cpp (openeditor) (realtime)                                                                                           
