@@ -5,10 +5,7 @@ def Test {
         ShapeType = "Mesh"
         ShapeFile = "Landmine.mesh"
     }
-    component Entity {
-        Material = "Landmine"
-    }
-    component CollisionShape {
+    component TEST : CollisionShape {
         ShapeType = "Mesh"
         ShapeFile = "Landmine.bullet"
     }
@@ -20,7 +17,7 @@ def Test {
     }
     
     var Bla : Int = 0;
-    var Test : Degree;
+    var Test : Degree = Degree(0);
     
     on Create() {
     	Bla = 1;
@@ -48,7 +45,7 @@ def Test {
 	    }    	
     }
     state TestState2 {
-	    component Entity {
+	    component LOL : Entity {
         	Material = "Landmine"
     	}
     	
@@ -60,6 +57,8 @@ def Test {
 	    on Frame(TimeElapsed) {
 	    	Bla = Bla + 4;
 	    	Scale = [3, 3, 3];
+	    	
+	    	setstate TestState3;
 	    }
 	    on Destroy() {
 	    	Bla = 0;
@@ -68,6 +67,8 @@ def Test {
     state TestState3 {
     	on StateEnter {
     		++Bla;
+    		
+    		setstate TestState1;
     	}
     	on StateExit {
     		--Bla;

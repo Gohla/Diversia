@@ -28,7 +28,7 @@ rules // declarations
 		where <store-declaration(|Events())> (name, d)
 		
 	// Component definitions in object.
-	store-declarations(|object): d@ComponentDef(name, _) -> d
+	store-declarations(|object): d@ComponentDef(name, _, _) -> d
 		where <store-declaration(|Components(object))> (name, d)
 		
 	// Variable definitions in object.
@@ -56,7 +56,7 @@ rules // declarations
 		where <map(store-declarations(|object, name))> eventDefs
 
 	// Component definitions in object and state.
-	store-declarations(|object, state): d@ComponentDef(name, _) -> d
+	store-declarations(|object, state): d@ComponentDef(name, _, _) -> d
 		where <store-declaration(|Components(object))> ((name, state), d)
 		where <store-declaration(|Components(object, state))> (name, d)
 		

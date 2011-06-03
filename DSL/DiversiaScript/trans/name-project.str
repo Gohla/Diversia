@@ -10,7 +10,7 @@ imports
 rules // Name-based projections
 	
 	get-name: ObjectDef(n, _) -> n
-	get-name: ComponentDef(n, _) -> n
+	get-name: ComponentDef(n, _, _) -> n
 	get-name: VarDef(n, _, _) -> n
 	get-name: EventDef(n, _) -> n
 	get-name: StateDef(n, _) -> n

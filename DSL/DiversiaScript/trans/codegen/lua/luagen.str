@@ -89,8 +89,8 @@ rules
 	components-to-lua: (statements, functions) -> functions'
 		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
 		where functions' := <concat> [[<lua-funcdef> ("Create", statements)], functions] 
-	to-lua: ComponentDef(name, properties) -> [
-		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), name), String(name), False()]))]),
+	to-lua: ComponentDef(name, CustomType(type), properties) -> [
+		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), type), String(name), False()]))]),
 		<map(componentprop-to-lua(|name))> properties
 	]
 	componentprop-to-lua(|componentName): ComponentProp(name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
@@ -125,17 +125,16 @@ rules
 		where exitFunc := <lua-funcdef(|$[StateExit_[name]])>
 		
 	state-to-lua-enterFunc: (name, propAssigns, componentDefs, eventDefs) -> 
-		<lua-funcdef> ($[StateEnter_[name]], <concat> [<map(objectprop-to-lua)> propAssigns, <map(to-lua)> componentDefs, <state-to-lua-enterFunc> eventDefs])
-	state-to-lua-enterFunc: eventDefs -> <map(to-lua)> statements
+		<lua-funcdef> ($[StateEnter_[name]], <concat> [<map(objectprop-to-lua)> propAssigns, <map(to-lua)> componentDefs, <state-to-lua-enterFunc-event> eventDefs])
+	state-to-lua-enterFunc-event: eventDefs -> <map(to-lua)> statements
 		where <fetch-elem(?EventDef("StateEnter", _, statements))> eventDefs
-	state-to-lua-enterFunc: eventDefs -> []
+	state-to-lua-enterFunc-event: eventDefs -> []
 		where not (<fetch-elem(?EventDef("StateEnter", _, _))> eventDefs)
-	state-to-lua-enterFunc: eventDefs -> ""
-	state-to-lua-exitFunc: (name, componentDefs, eventDefs) -> <lua-funcdef> ($[StateExit_[name]], <concat> [[<map(get-name; destroy-component-to-lua)> componentDefs], 
-		<state-to-lua-exitFunc> eventDefs]) 
-	state-to-lua-exitFunc: eventDefs -> <map(to-lua)> statements
+	state-to-lua-exitFunc: (name, componentDefs, eventDefs) -> 
+		<lua-funcdef> ($[StateExit_[name]], <concat> [<map(get-name; destroy-component-to-lua)> componentDefs, <state-to-lua-exitFunc-event> eventDefs]) 
+	state-to-lua-exitFunc-event: eventDefs -> <map(to-lua)> statements
 		where <fetch-elem(?EventDef("StateExit", _, statements))> eventDefs
-	state-to-lua-exitFunc: eventDefs -> []
+	state-to-lua-exitFunc-event: eventDefs -> []
 		where not (<fetch-elem(?EventDef("StateExit", _, _))> eventDefs)
 				
 rules // Expressions
