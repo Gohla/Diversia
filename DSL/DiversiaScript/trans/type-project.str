@@ -67,7 +67,7 @@ rules  // expr
 	
 	type-of: ObjectRef(name) -> CustomType(name)
 	// type-of: StateRef(name) -> CustomType(name)
-	type-of: PropAssign(name,_) -> "TODO: can be anything execpt VoidType"
+	//type-of: ObjectProp(name,_) -> "TODO: can be anything execpt VoidType"
 
 rules // defs
 	type-of: ObjectDef(name, _, _, _, _, _, _, _) -> CustomType(name)

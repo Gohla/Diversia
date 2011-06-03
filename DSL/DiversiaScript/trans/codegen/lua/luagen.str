@@ -87,7 +87,7 @@ rules
 		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), name), String(name), False()]))]),
 		<map(componentprop-to-lua(|name))> properties
 	]
-	componentprop-to-lua(|componentName): PropAssign(name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
+	componentprop-to-lua(|componentName): ComponentProp(name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
 	destroy-component-to-lua: name -> Call(VarRef(name), "Destroy", Args([]))
 	
 	// Object properties
@@ -96,7 +96,7 @@ rules
 	objectprops-to-lua: (properties, functions) -> functions'
 		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
 		where functions' := <concat> [[<lua-funcdef> ("Create", <map(objectprop-to-lua)> properties)], functions]	
-	objectprop-to-lua: PropAssign(name, exp) -> Assignment([Access("Object", VarRef(name))], <to-lua> exp)
+	objectprop-to-lua: ObjectProp(name, exp) -> Assignment([Access("Object", VarRef(name))], <to-lua> exp)
 
 	// States
 	states-to-lua: (states, functions) -> <concat> [functions, <map(state-to-lua)> states]

@@ -19,7 +19,8 @@ exports
     Id -> ObjectRef {cons("ObjectRef")}
     
     %% Component
-    "component" Id "{" PropAssign* "}" -> InsideDef {cons("ComponentDef")}
+    "component" Id "{" ComponentProp* "}" -> InsideDef {cons("ComponentDef")}
+    Id "=" Exp -> ComponentProp {cons("ComponentProp")}
     
     %% State
     "state" Id "{" InsideDef* "}" -> StateDef {cons("StateDef")}
@@ -34,8 +35,8 @@ exports
     EventDef -> InsideDef
     
     %% Property
-    Id "=" Exp -> PropAssign {cons("PropAssign")}
-    PropAssign -> InsideDef
+    Id "=" Exp -> ObjectProp {cons("ObjectProp")}
+    ObjectProp -> InsideDef
     
     %% Parameter
     Id ":" Type -> Param {cons("Param")}
@@ -95,7 +96,7 @@ exports
     "if" "(" Exp ")" Statement    													-> Statement {cons("If")}
     "while" "(" Exp ")" Statement                       							-> Statement {cons("While")}
     Exp "=" Exp ";"                                     							-> Statement {cons("Assign")}
-    "new" ObjectRef "{" PropAssign* "}"        										-> Statement {cons("ObjectNew")}
+    "new" ObjectRef "{" ObjectProp* "}"        										-> Statement {cons("ObjectNew")}
     "setstate" StateRef ";"                                   						-> Statement {cons("StateChange")}
     "switch" "(" Exp ")" "{" Case* "}"                  							-> Statement {cons("Switch")}
     "case" Exp ":" Statement                       									-> Case {cons("Case")}

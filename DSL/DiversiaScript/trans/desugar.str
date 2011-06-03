@@ -41,20 +41,20 @@ rules  // simple desugars
 	
 	desugar: StateDef(name, defs) -> StateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
-			<filter(?PropAssign(_,_))> defs => propAssigns;
+			<filter(?ObjectProp(_,_))> defs => propAssigns;
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
 			<filter(isVarDef)> defs => varDefs;
 			<filter(isEventDef)> defs => eventDefs	
 	desugar: DefaultStateDef(name, defs) -> DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
-			<filter(?PropAssign(_,_))> defs => propAssigns;
+			<filter(?ObjectProp(_,_))> defs => propAssigns;
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
 			<filter(isVarDef)> defs => varDefs;
 			<filter(isEventDef)> defs => eventDefs
 				
 	desugar: ObjectDef(name, defs) -> ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
 		where
-			<filter(?PropAssign(_,_))> defs => propAssigns;
+			<filter(?ObjectProp(_,_))> defs => propAssigns;
 			<filter(isObjectDef)> defs => objectDefs;
 			<filter(?ComponentDef(_,_))> defs => componentDefs;
 			<filter(isVarDef)> defs => varDefs;
@@ -82,7 +82,7 @@ rules   // post desugar stuff
 	get-name: ObjectDef(name, _, _, _, _, _, _, _) -> name
 	
 	create-new-object: object -> ObjectNew(ObjectRef(object),[])
-	create-parent-prop: object -> PropAssign("Parent", ObjectRef(object))
+	create-parent-prop: object -> ObjectProp("Parent", ObjectRef(object))
 	
 	add-parent(|parent): ObjectDef(name, props, components, objects, vars, defaultState, states, events) -> 
 		ObjectDef(name, props', components, objects, vars, defaultState, states, events)
