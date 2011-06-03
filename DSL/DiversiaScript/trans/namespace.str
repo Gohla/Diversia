@@ -5,11 +5,13 @@ signature constructors // namespaces
 	Objects 		: Namespace
 	States 			: Object 			-> Namespace
 	DefaultStates	: Object 			-> Namespace
+	Components 		: Namespace
 	Components 		: Object 			-> Namespace
 	Components 		: Object * State 	-> Namespace
 	Events			: Namespace
 	Events 			: Object 			-> Namespace
 	Events 			: Object * State 	-> Namespace
 	ObjectEvents	: Object * Event	-> Namespace
+	Plugins			: Namespace
 	Vars 			: Object 			-> Namespace
 	Vars			: Namespace

@@ -65,7 +65,7 @@ rules  // expr
 	type-of: Access(object, prop) -> "TODO: can be anything execpt VoidType"
 	type-of: Call(object, function, params) -> "TODO: can be anything"
 	
-	type-of: ObjectRef(name) -> CustomType(name)
+	// type-of: ObjectRef(name) -> CustomType(name)
 	// type-of: StateRef(name) -> CustomType(name)
 	//type-of: ObjectProp(name,_) -> "TODO: can be anything execpt VoidType"
 

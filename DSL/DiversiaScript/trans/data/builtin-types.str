@@ -15,6 +15,8 @@ rules
 	is-builtin-type(|type) = <get-builtin-type> type
 	is-builtin-property(|type,property) = <get-builtin-property> (type,property) 
 	is-builtin-function(|type,function) = <get-builtin-property> (type,function)
+	is-builtin-plugin(|name) = <elem(?name)><plugins>
+	is-builtin-component(|name) = <elem(?name)><conc>(<components>,<multiple-components>)
 
 	get-builtin-type: type -> <fetch-elem(has-name(|type))><builtin-types> 
 		

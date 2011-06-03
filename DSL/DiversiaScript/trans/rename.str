@@ -8,70 +8,105 @@ imports
 	
 strategies
 
-	rename-all = alltd(rename)
+	rename-all = /*enable-namespace-debugging;*/ rename-all-defs  
+	rename-all-refs = alltd(rename-ref)
+	rename-all-defs = alltd(rename-def)
 
 rules //defs
 	
-	rename :
-		ObjectDef(name, propAssigns, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) -> 
-		ObjectDef(name, propAssigns, componentDefs, /*objectDefs',*/ varDefs', defaultStateDef', stateDefs', eventDefs')
-		where 
-			//<rename-all> objectDefs => objectDefs'; // all objects are always global
-			new-scope (
-				<rename-all> varDefs => varDefs';
-				<rename-all> defaultStateDef => defaultStateDef';
-				<rename-all> stateDefs => stateDefs';
-				<rename-all> eventDefs => eventDefs'
+	rename-def :
+		Start(defs) -> Start(defs')
+		where
+			new-scope(
+				<rename-all-defs> defs => defs'
 			)
-			
 	
-			
-	rename :
+	rename-def :
+		ObjectDef(name, propAssigns, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) -> 
+		ObjectDef(name', propAssigns', componentDefs', /*objectDefs',*/ varDefs', defaultStateDef', stateDefs', eventDefs')
+		where 
+			<rename-declaration(|Vars())> name => name';
+			new-scope (	
+				<rename-all-defs> componentDefs => componentDefs';
+				<rename-all-defs> varDefs => varDefs';
+				<rename-all-defs> defaultStateDef => defaultStateDef';
+				<rename-all-defs> stateDefs => stateDefs';
+				<rename-all-defs> eventDefs => eventDefs';
+				<rename-all-refs> componentDefs' => componentDefs';
+				<rename-all-refs> varDefs' => varDefs'';
+				<rename-all-refs> defaultStateDef' => defaultStateDef'';
+				<rename-all-refs> stateDefs' => stateDefs'';
+				<rename-all-refs> eventDefs' => eventDefs'';
+				<rename-all-refs> propAssigns => propAssigns'				
+			)
+	rename-def :
 		StateDef(name, propAssigns, componentDefs, varDefs, eventDefs) ->  
-		StateDef(name, propAssigns, componentDefs, varDefs', eventDefs')
+		StateDef(name, propAssigns', componentDefs', varDefs', eventDefs')
 		where 
 			new-scope (
-				<rename-all> varDefs => varDefs';
-				<rename-all> eventDefs => eventDefs'
+				<rename-all-defs> componentDefs => componentDefs';
+				<rename-all-defs> varDefs => varDefs';
+				<rename-all-defs> eventDefs => eventDefs';
+				<rename-all-refs> componentDefs' => componentDefs'';
+				<rename-all-refs> varDefs' => varDefs'';
+				<rename-all-refs> eventDefs' => eventDefs'';
+				<rename-all-refs> propAssigns => propAssigns'
 			)
-	rename :
+	rename-def :
 		DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs) ->  
-		DefaultStateDef(name, propAssigns, componentDefs, varDefs', eventDefs')
+		DefaultStateDef(name, propAssigns', componentDefs'', varDefs'', eventDefs'')
 		where 
 			new-scope (
-				<rename-all> varDefs => varDefs';
-				<rename-all> eventDefs => eventDefs'
+				<rename-all-defs> componentDefs => componentDefs';
+				<rename-all-defs> varDefs => varDefs';
+				<rename-all-defs> eventDefs => eventDefs';
+				<rename-all-refs> componentDefs' => componentDefs'';
+				<rename-all-refs> varDefs' => varDefs'';
+				<rename-all-refs> eventDefs' => eventDefs'';
+				<rename-all-refs> propAssigns => propAssigns'
 			)
 			
-	rename :
-		EventDef(name, params, statements) -> EventDef(name, params', statements')	
+	rename-def :
+		EventDef(name, params, statements) -> EventDef(name, params', statements'')	
 		where 
 			new-scope (
-				<rename-all> params => params';
-				<rename-all> statements => statements'
+				<rename-all-defs> params => params';
+				<rename-all-defs> statements => statements';
+				<rename-all-refs> statements' => statements''
 			)
-	rename :
+	
+	rename-def :
 		Param(name,type) -> Param(name',type)
 		where
-			<rename-declaration(|Vars())> name => name'
+			<rename-declaration(|Vars())> name => name'		
+	rename-def:
+		ComponentDef(name, type, props)-> ComponentDef(name',type, props)
+		where
+			<rename-declaration(|Components())> name => name'
+	rename-def:
+		PluginDef(name, type, props)-> PluginDef(name',type, props)
+		where
+			<rename-declaration(|Plugins())> name => name'
 
-	rename : 
-		VarDef(name, type, exp) -> VarDef(name', type, exp')
+	rename-def: 
+		VarDef(name, type, exp) -> VarDef(name', type, exp)
 		where
-			<rename-declaration(|Vars())> name => name';
-			<rename-all> exp => exp'
-	//rename : 
-	//	VarDefNoType(name, exp) -> VarDefNoType(name', exp')
-	//	where
-	//		<rename-declaration(|Vars())> name => name';
-	//		<rename-all> exp => exp'
-			
-		
+			<rename-declaration(|Vars())> name => name'
+						
 rules // refs
-		
-	rename :
+	
+	rename-ref :
 		PropRef(name, object) -> VarRef(name')
-		where
-			<rename-reference(|Vars())> name => name'
+		where <rename-reference(|Vars())> name => name'
+	rename-ref :
+		PropRef(name, object) -> ObjectRef(name')
+		where <rename-reference(|Objects())> name => name'
+	rename-ref :
+		PropRef(name, object) -> PluginRef(name')
+		where <rename-reference(|Plugins())> name => name'
+	rename-ref :
+		PropRef(name, object) -> ComponentRef(name')
+		where <rename-reference(|Components())> name => name'
+	
 			
 		
