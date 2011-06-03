@@ -43,6 +43,8 @@ def Test {
 	    on Frame(TimeElapsed) {
 	    	Bla = Bla / 3;
 	    	Scale = [2, 2, 2];
+	    	
+	    	setstate TestState2;
 	    }    	
     }
     state TestState2 {

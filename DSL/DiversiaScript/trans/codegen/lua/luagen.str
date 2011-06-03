@@ -11,11 +11,16 @@ imports
 	data/events
 	util
 	
+strategies
+	
+	lua-flatten-all = topdown(try(lua-flatten-chunk))
+	
 rules
 	
 	lua-tostring: ast ->
 		<box2text-string( |100 )> <ast2box(|[<import-term( ../Lua/include/Lua.pp.af )>])>
 	
+	lua-funcdef(|name) = !FuncDef(FunctionName(name), ParList(), Chunk([]))
 	lua-funcdef: (name, content) -> FuncDef(FunctionName(name), ParList(), Chunk(content))
 	lua-funcdef: (name, paramNames, content) -> FuncDef(FunctionName(name), ParList(paramNames), Chunk(content))
 		where(<gt> (<length> paramNames, 0))
@@ -25,9 +30,10 @@ rules
 	lua-prepend-statements(|statements): FuncDef(name, params, Chunk(content)) -> FuncDef(name, params, Chunk(<concat> [statements, content]))
 	lua-replace-function(|name, function): functions -> <map(\ FuncDef(FunctionName(n), _, _) -> function where <eq>(n, name) \ <+ id)> functions
 	lua-stateref = !VarRef("State")
+	lua-flatten-chunk: Chunk(statements) -> Chunk(<flatten-list> statements)
 		
 	// Global definitions to lua files.
-	to-lua: Start(definitions) -> Chunk(<map(to-lua)> definitions)
+	to-lua: Start(definitions) -> <lua-flatten-all> Chunk(<map(to-lua)> definitions)
 	to-lua: obj@ObjectDef(name, properties, components, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
 		<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions'''' ]
 		where vars := <map(to-lua)> <object-vars> obj 
@@ -107,13 +113,16 @@ rules
 		where <gt> (<length> componentDefs, 0) <+ <fetch-elem(?EventDef("StateExit", _, _))> eventDefs
 		where enterFunc := <state-to-lua-enterFunc> (name, propAssigns, componentDefs, eventDefs)
 		where exitFunc := <state-to-lua-exitFunc> (name, componentDefs, eventDefs)
-	state-to-lua: (name, propAssigns, componentDefs, varDefs, eventDefs) -> [enterFunc]
+	state-to-lua: (name, propAssigns, componentDefs, varDefs, eventDefs) -> [enterFunc, exitFunc]
 		where <gt> (<length> propAssigns, 0) <+ <fetch-elem(?EventDef("StateEnter", _, _))> eventDefs
 		where not (<gt> (<length> componentDefs, 0) <+ <fetch-elem(?EventDef("StateExit", _, _))> eventDefs )
 		where enterFunc := <state-to-lua-enterFunc> (name, propAssigns, componentDefs, eventDefs)
-	state-to-lua: (name, propAssigns, componentDefs, varDefs, eventDefs) -> []
+		where exitFunc := <lua-funcdef(|$[StateExit_[name]])>
+	state-to-lua: (name, propAssigns, componentDefs, varDefs, eventDefs) -> [enterFunc, exitFunc]
 		where not (<gt> (<length> propAssigns, 0) <+ <fetch-elem(?EventDef("StateEnter", _, _))> eventDefs)
 		where not (<gt> (<length> componentDefs, 0) <+ <fetch-elem(?EventDef("StateExit", _, _))> eventDefs )
+		where enterFunc := <lua-funcdef(|$[StateEnter_[name]])>
+		where exitFunc := <lua-funcdef(|$[StateExit_[name]])>
 		
 	state-to-lua-enterFunc: (name, propAssigns, componentDefs, eventDefs) -> 
 		<lua-funcdef> ($[StateEnter_[name]], <concat> [<map(objectprop-to-lua)> propAssigns, <map(to-lua)> componentDefs, <state-to-lua-enterFunc> eventDefs])
@@ -182,7 +191,10 @@ rules // Statements
 	to-lua: While(condition, statements) -> While(<to-lua> condition, Chunk(<map(to-lua)> statements))
 	to-lua: Assign(exp, val) -> Assignment([<to-lua> exp], [<to-lua> val])
 	// TODO: new object
-	// TODO: state change
+	to-lua: StateChange(StateRef(name)) -> [exitCall, change, enterCall]
+		where exitCall := Call(TableVarRef(VarRef("_G"), Concat(String("StateExit_"), <lua-stateref>)), Args([]))
+		where change := Assignment([<lua-stateref>], [String(name)])
+		where enterCall := Call(VarRef($[StateEnter_[name]]), Args([]))
 	// TODO: switch
 	// TODO: delayed statements
 	// TODO: interpolation
