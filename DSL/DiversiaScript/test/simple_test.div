@@ -38,9 +38,11 @@ def Test {
 	    on Update() {
 	    	Bla = --Bla + 1;
 	    	Test = Degree(10);
+	    	Position = [1, 2, 3];
 	    }
 	    on Frame(TimeElapsed) {
 	    	Bla = Bla / 3;
+	    	Scale = [2, 2, 2];
 	    }    	
     }
     state TestState2 {
@@ -51,9 +53,11 @@ def Test {
 		on Update(){
 	    	Bla = Bla * 3;
 	    	Test = Degree(20);
+	    	Position = [3, 4, 5];
 	    }
 	    on Frame(TimeElapsed) {
 	    	Bla = Bla + 4;
+	    	Scale = [3, 3, 3];
 	    }
 	    on Destroy() {
 	    	Bla = 0;

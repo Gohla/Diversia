@@ -140,9 +140,10 @@ rules // Expressions
 	to-lua: StrConst(string) -> String(string)
 		where not(<un-double-quote> string)
 	to-lua: Vector2Const(exp1, exp2) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2]))
-	to-lua: Vector3Const(exp1, exp2, exp3) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3]))
-	to-lua: Vector4Const(exp1, exp2, exp3, exp4) -> Call(VarRef("Vector2"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3, <to-lua> exp4]))
+	to-lua: Vector3Const(exp1, exp2, exp3) -> Call(VarRef("Vector3"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3]))
+	to-lua: Vector4Const(exp1, exp2, exp3, exp4) -> Call(VarRef("Vector4"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3, <to-lua> exp4]))
 	to-lua: VarRef(_{name}) -> VarRef(name)
+	to-lua: PropRef(name, _) -> Access(VarRef("Object"), name)
 	to-lua: Null() -> LuaNil()
 	
 	// TODO: new built in type
