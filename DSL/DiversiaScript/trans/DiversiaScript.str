@@ -27,65 +27,56 @@ strategies
 
 rules // Main editor interface (defined by editor/DiversiaScript-Builders and -References.esv)
   
-// Analyzes the current program, returning a tuple with errors, warnings, and notes;
-// each a list of (term, message) tuples or simply (message) terms.
-editor-analyze: (ast, path, project-path) -> (ast', errors, warnings, notes)
-	where
-    	editor-init;
-    	<analyse-all> ast => ast';
-		<collect-all(editor-error, conc)> ast' => errors ;
-		<collect-all(editor-warning, conc)> ast' => warnings ;
-		<collect-all(editor-note, conc)> ast' => notes
-
-test-rule: (selected, position, ast, path, project-path) -> (<guarantee-extension(|"aterm")> path, ast)
-	//with
-    //{| Declared, Referred:
-    	//<debug><get-builtin-type> "ComponentTemplate";
-    	//<debug><get-builtin-property> ("ComponentTemplate","Source")
-   // |}
-  
-  // Transforms a selection to Lua
-generate-lua: (selected, position, ast, path, project-path) -> (filename, result)
-	with
-    {| Declared, Referred:
-    	filename := <guarantee-extension(|"lua")> path;
-    	result   := <lua-tostring> <to-lua> <analyse-all> selected
-    |}
-generate-lua-aterm: (selected, position, ast, path, project-path) -> (filename, result)
-	with 
-    {| Declared, Referred:
-    	filename := <guarantee-extension(|"aterm")> path;
-      	result   := <to-lua> <analyse-all> selected
-      	    	
-	|}
+	// Analyzes the current program, returning a tuple with errors, warnings, and notes;
+	// each a list of (term, message) tuples or simply (message) terms.
+	editor-analyze: (ast, path, project-path) -> (ast', errors, warnings, notes)
+		where
+	    	editor-init;
+	    	<analyse-all> ast => ast';
+			<collect-all(editor-error, conc)> ast' => errors ;
+			<collect-all(editor-warning, conc)> ast' => warnings ;
+			<collect-all(editor-note, conc)> ast' => notes
+	  
+	// Transforms a selection to Lua
+	generate-lua-files: (selected, position, ast, path, project-path) -> ()
+		where
+			editor-init;
+	    	<lua-tofiles(|path)> <to-lua> <analyse-all> selected
+	generate-lua-strings: (selected, position, ast, path, project-path) -> (filename, result)
+		where
+			editor-init;
+	    	filename := <guarantee-extension(|"lua")> path;
+	    	result   := <lua-tostrings> <to-lua> <analyse-all> selected
+	generate-lua-aterm: (selected, position, ast, path, project-path) -> (filename, result)
+		where 
+	    	editor-init;
+	    	filename := <guarantee-extension(|"aterm")> path;
+	      	result   := <to-lua> <analyse-all> selected
+		
+	// Transforms a selection to C++
+	generate-cpp: (selected, position, ast, path, project-path) -> (filename, result)
+		where
+	    	editor-init;
+	    	filename := <guarantee-extension(|"cpp")> path;
+	    	result   := ""
+	  	
+	// Prints the abstract syntax ATerm of a selection.
+	generate-aterm: (selected, position, ast, path, project-path) -> (filename, result)
+		where
+			editor-init;
+			filename := <guarantee-extension(|"aterm")> path;
+			result   := <analyse-all> selected
 	
-// Transforms a selection to C++
-generate-cpp: (selected, position, ast, path, project-path) -> (filename, result)
-	with
-    {| Declared, Referred:
-    	filename := <guarantee-extension(|"cpp")> path;
-    	result   := ""
-  	|}
-  	
-// Prints the abstract syntax ATerm of a selection.
-generate-aterm: (selected, position, ast, path, project-path) -> (filename, result)
-	where
-		editor-init;
-		filename := <guarantee-extension(|"aterm")> path;
-		result   := <analyse-all> selected
-
-// Hover tooltip.
-editor-hover: (node, position, ast, path, project-path) ->  $[Type: [<printable> type]]
-	where 
-		<desugar-all> ast => ast';
-		<desugar-position-innermost(desugar|ast)> position => position';
-		<term-at-position(|position')> ast' => node';
-		<debug> node';
-		<type-of> node' => type
-		
-		
-desugar-position-innermost(desugar|ast): position -> position'
-    where
-      ast'  := <at-position(!<id>{MARKER()}|position)> ast;
-      ast'' := <innermost(preserve-annos({?x; desugar; not(?x)}))> ast';
-      position' := <position-of-term({?_{a*}; <one(?MARKER())> a*})> ast''
+	// Hover tooltip.
+	editor-hover: (node, position, ast, path, project-path) ->  $[Type: [<printable> type]]
+		where 
+			<desugar-all> ast => ast';
+			<desugar-position-innermost(desugar|ast)> position => position';
+			<term-at-position(|position')> ast' => node';
+			<debug> node';
+			<type-of> node' => type
+	desugar-position-innermost(desugar|ast): position -> position'
+	    where
+	      ast'  := <at-position(!<id>{MARKER()}|position)> ast;
+	      ast'' := <innermost(preserve-annos({?x; desugar; not(?x)}))> ast';
+	      position' := <position-of-term({?_{a*}; <one(?MARKER())> a*})> ast''
