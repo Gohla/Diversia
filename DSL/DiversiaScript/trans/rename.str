@@ -15,15 +15,20 @@ strategies
 rules //defs
 	
 	rename-def :
-		Start(defs) -> Start(defs')
+		Start(pluginDefs, objectDefs, eventDefs) -> Start(pluginDefs', objectDefs', eventDefs'')
 		where
 			new-scope(
-				<rename-all-defs> defs => defs'
+				<rename-all-defs> pluginDefs => pluginDefs';
+				<rename-all-defs> objectDefs => objectDefs';
+				<rename-all-defs> eventDefs => eventDefs';
+				<rename-all-refs> objectDefs' => objectDefs''; // plugin refs and object refs
+				<rename-all-refs> eventDefs' => eventDefs'' // plugin refs and object refs
+				//<rename-all-refs> pluginDefs => pluginDefs'  not need unless we allow varDefs here.
 			)
 	
 	rename-def :
 		ObjectDef(name, propAssigns, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) -> 
-		ObjectDef(name', propAssigns', componentDefs', /*objectDefs',*/ varDefs', defaultStateDef', stateDefs', eventDefs')
+		ObjectDef(name', propAssigns', componentDefs'', /*objectDefs',*/ varDefs'', defaultStateDef'', stateDefs'', eventDefs')
 		where 
 			<rename-declaration(|Vars())> name => name';
 			new-scope (	
@@ -32,7 +37,7 @@ rules //defs
 				<rename-all-defs> defaultStateDef => defaultStateDef';
 				<rename-all-defs> stateDefs => stateDefs';
 				<rename-all-defs> eventDefs => eventDefs';
-				<rename-all-refs> componentDefs' => componentDefs';
+				<rename-all-refs> componentDefs' => componentDefs'';
 				<rename-all-refs> varDefs' => varDefs'';
 				<rename-all-refs> defaultStateDef' => defaultStateDef'';
 				<rename-all-refs> stateDefs' => stateDefs'';

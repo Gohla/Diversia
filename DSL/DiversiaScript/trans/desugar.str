@@ -43,6 +43,14 @@ rules  // simple desugars
 	isObjectDef = ?ObjectDef(_,_,_,_,_,_,_,_)
 	isComponentDef = ?ComponentDef(_,_)
 	isComponentDef = ?ComponentDef(_,_,_)	
+	isPluginDef = ?PluginDef(_,_) 
+	isPluginDef = ?PluginDef(_,_,_)
+	
+	desugar: Start(defs) -> Start(pluginDefs, objectDefs, eventDefs)
+		where
+			<filter(isPluginDef)> defs => pluginDefs;
+			<filter(isObjectDef)> defs => objectDefs;
+			<filter(isEventDef)> defs => eventDefs	
 	
 	desugar: StateDef(name, defs) -> StateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
@@ -50,6 +58,7 @@ rules  // simple desugars
 			<filter(isComponentDef)> defs => componentDefs;
 			<filter(isVarDef)> defs => varDefs;
 			<filter(isEventDef)> defs => eventDefs	
+
 	desugar: DefaultStateDef(name, defs) -> DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
 			<filter(?ObjectProp(_,_))> defs => propAssigns;
@@ -69,11 +78,10 @@ rules  // simple desugars
 
 rules   // post desugar stuff
 
-	desugar-object: Start(defs) -> Start(<concat>[allobjects, events])
+	desugar-object: Start(pluginDefs, objectDefs, eventDefs) -> Start(pluginDefs, objectDefs'', eventDefs)
 		where 
-			<map(desugar-object)><filter(?ObjectDef(_,_,_,_,_,_,_,_))> defs => objects;
-			<map(delete-child-refs)> <collect-all(?ObjectDef(_,_,_,_,_,_,_,_))> objects => allobjects;
-			<filter(?EventDef(_,_,_))> defs => events
+			<map(desugar-object)> objectDefs => objectDefs'; // addeds extra stuff
+			<map(delete-child-refs)><collect-all(isObjectDef)> objectDefs' => objectDefs'' 
 			
 	delete-child-refs: 	ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> 
 						ObjectDef(name, propAssigns, componentDefs, 			varDefs, defaultStateDef, stateDefs, eventDefs)

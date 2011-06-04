@@ -11,8 +11,10 @@ strategies
 	
 rules // declarations
 	// Starting point
-	store-declarations: d@Start(definitions) -> d
-		where <map(store-declarations)> definitions
+	store-declarations: d@Start(pluginDefs, objectDefs, eventDefs) -> d
+		where <map(store-declarations)> pluginDefs
+		where <map(store-declarations)> objectDefs
+		where <map(store-declarations)> eventDefs
 		
 	// Object definitions	
 	store-declarations: d@ObjectDef(name, propAssigns, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> d
