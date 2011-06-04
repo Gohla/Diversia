@@ -8,6 +8,7 @@ signature constructors // namespaces
 	Components 		: Namespace
 	Components 		: Object 			-> Namespace
 	Components 		: Object * State 	-> Namespace
+	Props			: Object -> Namespace
 	Events			: Namespace
 	Events 			: Object 			-> Namespace
 	Events 			: Object * State 	-> Namespace

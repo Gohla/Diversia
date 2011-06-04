@@ -70,7 +70,7 @@ rules  // expr
 	//type-of: ObjectProp(name,_) -> "TODO: can be anything execpt VoidType"
 
 rules // defs
-	type-of: ObjectDef(name, _, _, _, _, _, _, _) -> CustomType(name)
+	type-of: ObjectDef(name, _, _, _, _, _, _, _, _) -> CustomType(name)
 	type-of: ExternalObjectDef(name) -> CustomType(name)
    
 	//type-of: ComponentDef(name, _) -> CustomType(name)

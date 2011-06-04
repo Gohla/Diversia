@@ -25,13 +25,14 @@ rules // declarations
 		where <store-declaration(|Events())> (name, d)
 		
 	// Object definitions	
-	store-declarations: d@ObjectDef(name, propAssigns, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> d
+	store-declarations: d@ObjectDef(name, propAssigns, propDefs, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> d
 		where <store-declaration(|Objects())> (name, d)
 		where <map(store-declarations(|name))> componentDefs
 		where <map(store-declarations(|name))> varDefs
 		where <map(store-declarations(|name))> defaultStateDef
 		where <map(store-declarations(|name))> stateDefs
 		where <map(store-declarations(|name))> eventDefs
+		where <map(store-declarations(|name))> propDefs
 		
 	// Component definitions in object.
 	store-declarations(|object): d@ComponentDef(name, _, _) -> d
@@ -40,6 +41,10 @@ rules // declarations
 	// Variable definitions in object.
 	store-declarations(|object): d@VarDef(name, _, _) -> d
 		where <store-declaration(|Vars(object))> (name, d)
+	
+	// Proptery definitions in object and state
+	store-declarations(|object, state): d@PropDef(name, _, _) -> d
+		where <store-declaration(|Props(object))> (name, d)
 		
 	// Event definitions in object.
 	store-declarations(|object): d@EventDef(name, _, statements) -> d

@@ -4,6 +4,7 @@ imports
 	include/DiversiaScript
 	signatures
 	type-project
+	name-project
 
 strategies
 	desugar-all = innermost(desugar); desugar-object //topdown(repeat(desugar))
@@ -40,11 +41,13 @@ rules  // simple desugars
 	isDefaultStateDef = ?DefaultStateDef(_,_)
 	isDefaultStateDef = ?DefaultStateDef(_,_,_,_,_)
 	isObjectDef = ?ObjectDef(_,_)
-	isObjectDef = ?ObjectDef(_,_,_,_,_,_,_,_)
+	isObjectDef = ?ObjectDef(_,_,_,_,_,_,_,_,_)
 	isComponentDef = ?ComponentDef(_,_)
 	isComponentDef = ?ComponentDef(_,_,_)	
 	isPluginDef = ?PluginDef(_,_) 
 	isPluginDef = ?PluginDef(_,_,_)
+	isPropDef = ?PropDef(_,_,_)
+	isPropDef = ?PropDefNoInit(_,_)
 	
 	desugar: Start(defs) -> Start(pluginDefs, objectDefs, eventDefs)
 		where
@@ -66,7 +69,7 @@ rules  // simple desugars
 			<filter(isVarDef)> defs => varDefs;
 			<filter(isEventDef)> defs => eventDefs
 				
-	desugar: ObjectDef(name, defs) -> ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
+	desugar: ObjectDef(name, defs) -> ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
 		where
 			<filter(?ObjectProp(_,_))> defs => propAssigns;
 			<filter(isObjectDef)> defs => objectDefs;
@@ -74,6 +77,7 @@ rules  // simple desugars
 			<filter(isVarDef)> defs => varDefs;
 			<filter(isDefaultStateDef)> defs => defaultStateDef;
 			<filter(isStateDef)> defs => stateDefs;
+			<filter(isPropDef)> defs => propDefs;
 			<filter(isEventDef)> defs => eventDefs
 
 rules   // post desugar stuff
@@ -83,22 +87,20 @@ rules   // post desugar stuff
 			<map(desugar-object)> objectDefs => objectDefs'; // addeds extra stuff
 			<map(delete-child-refs)><collect-all(isObjectDef)> objectDefs' => objectDefs'' 
 			
-	delete-child-refs: 	ObjectDef(name, propAssigns, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> 
-						ObjectDef(name, propAssigns, componentDefs, 			varDefs, defaultStateDef, stateDefs, eventDefs)
+	delete-child-refs: 	ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> 
+						ObjectDef(name, propAssigns, propDefs, componentDefs, 			varDefs, defaultStateDef, stateDefs, eventDefs)
 	
-	desugar-object: ObjectDef(name, propAssigns, componentDefs, objectDefs , varDefs, defaultStateDef, stateDefs, eventDefs ) -> 
-					ObjectDef(name, propAssigns, componentDefs, objectDefs', varDefs, defaultStateDef, stateDefs, eventDefs')
+	desugar-object: ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs , varDefs, defaultStateDef, stateDefs, eventDefs ) -> 
+					ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs', varDefs, defaultStateDef, stateDefs, eventDefs')
 		where
 			<map(add-parent(|name))> <map(desugar-object)> objectDefs => objectDefs';
 			<add-children(|<map(get-name)> objectDefs)> eventDefs => eventDefs'
-		
-	get-name: ObjectDef(name, _, _, _, _, _, _, _) -> name
 	
 	create-new-object: object -> ObjectNew(ObjectRef(object),[])
 	create-parent-prop: object -> ObjectProp("Parent", ObjectRef(object))
 	
-	add-parent(|parent): ObjectDef(name, props, components, objects, vars, defaultState, states, events) -> 
-		ObjectDef(name, props', components, objects, vars, defaultState, states, events)
+	add-parent(|parent): ObjectDef(name, props, propDefs, components, objects, vars, defaultState, states, events) -> 
+		ObjectDef(name, props', propDefs, components, objects, vars, defaultState, states, events)
 		where 
 			<create-parent-prop> parent => parentProp;
 	 		![parentProp|props] => props'
