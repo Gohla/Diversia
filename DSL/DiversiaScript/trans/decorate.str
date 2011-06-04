@@ -12,6 +12,12 @@ strategies
 rules  // add inferred type data
 
 	
+	decorate: EventDef(name, params, statements) -> 
+			  EventDef(name, params', statements')
+			where
+				<innermost(decorate(|name))> params => params';
+			 	<innermost(decorate(|name))> statements => statements'
+
 	decorate: ObjectDef(name, propAssigns, propDefs, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) ->
 			  ObjectDef(name, propAssigns', propDefs', componentDefs', /*objectDefs,*/ varDefs', defaultStateDef', stateDefs', eventDefs')
 			 where	
@@ -23,11 +29,10 @@ rules  // add inferred type data
 			 	<innermost(decorate(|name))> eventDefs => eventDefs';
 			 	<innermost(decorate(|name))> propDefs => propDefs'
 			 	
-			 	
 	decorate(|object): VarRef(name) -> PropRef(name, object)
 	decorate(|object): PropDef(name,type,expr) -> PropDef(object,name,type,expr)
-	
-		
+	//decorate(|object): ObjectProp(name , expr) -> ObjectProp(PropRef(name, object) , expr)
+	//	where not(<?PropRef(_,_)> name)
 	
 	/*decorate(|object): 
 		ObjectNew(ObjectRef(object2), propAssigns) -> ObjectNew(ObjectRef(object2), propAssigns')
