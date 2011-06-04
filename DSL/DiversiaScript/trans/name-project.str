@@ -7,9 +7,9 @@ imports
 	namespace
 	signatures
 	
-rules // Name-based projections
+rules // Name-based projections  //TODO need to check these
 	
-	get-name: ObjectDef(n, _) -> n
+	get-name: ObjectDef(n, _, _, _, _, _, _, _, _) -> n
 	get-name: ComponentDef(n, _, _) -> n
 	get-name: VarDef(n, _, _) -> n
 	get-name: EventDef(n, _) -> n
@@ -60,7 +60,7 @@ rules // Event
 		
 rules // Vars
 	
-	object-vars: ObjectDef(_, _, _, varDefs, defaultStateDef, stateDefs, _) -> <concat> [varDefs,<concat> <map(state-vars)> <concat> [defaultStateDef, stateDefs]]
+	object-vars: ObjectDef(_, _, _, _, varDefs, defaultStateDef, stateDefs, _) -> <concat> [varDefs,<concat> <map(state-vars)> <concat> [defaultStateDef, stateDefs]]
 	state-vars: StateDef(_, _, _, varDefs, _) -> varDefs
 	state-vars: DefaultStateDef(_, _, _, varDefs, _) -> varDefs
 	

@@ -12,15 +12,16 @@ strategies
 rules  // add inferred type data
 
 	
-	decorate: ObjectDef(name, propAssigns, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) ->
-			  ObjectDef(name, propAssigns', componentDefs', /*objectDefs,*/ varDefs', defaultStateDef', stateDefs', eventDefs')
+	decorate: ObjectDef(name, propAssigns, propDefs, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) ->
+			  ObjectDef(name, propAssigns', propDefs', componentDefs', /*objectDefs,*/ varDefs', defaultStateDef', stateDefs', eventDefs')
 			 where	
 			 	<innermost(decorate(|name))> propAssigns => propAssigns';
 			 	<innermost(decorate(|name))> componentDefs => componentDefs';
 			 	<innermost(decorate(|name))> varDefs => varDefs';
 			 	<innermost(decorate(|name))> defaultStateDef => defaultStateDef';
 			 	<innermost(decorate(|name))> stateDefs => stateDefs';
-			 	<innermost(decorate(|name))> eventDefs => eventDefs'
+			 	<innermost(decorate(|name))> eventDefs => eventDefs';
+			 	<innermost(decorate(|name))> propDefs => propDefs'
 			 	
 			 	
 	decorate(|object): VarRef(name) -> PropRef(name, object)

@@ -27,8 +27,8 @@ rules //defs
 			)
 	
 	rename-def :
-		ObjectDef(name, propAssigns, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) -> 
-		ObjectDef(name', propAssigns', componentDefs'', /*objectDefs',*/ varDefs'', defaultStateDef'', stateDefs'', eventDefs')
+		ObjectDef(name, propAssigns, propDefs, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) -> 
+		ObjectDef(name', propAssigns', propDefs, componentDefs'', /*objectDefs',*/ varDefs'', defaultStateDef'', stateDefs'', eventDefs')
 		where 
 			<rename-declaration(|Vars())> name => name';
 			new-scope (	
@@ -42,7 +42,8 @@ rules //defs
 				<rename-all-refs> defaultStateDef' => defaultStateDef'';
 				<rename-all-refs> stateDefs' => stateDefs'';
 				<rename-all-refs> eventDefs' => eventDefs'';
-				<rename-all-refs> propAssigns => propAssigns'				
+				<rename-all-refs> propAssigns => propAssigns';
+				<rename-all-refs> propDefs => propDefs' 				
 			)
 	rename-def :
 		StateDef(name, propAssigns, componentDefs, varDefs, eventDefs) ->  

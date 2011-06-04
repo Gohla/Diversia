@@ -12,10 +12,11 @@ exports
     GlobalDef* -> Start {cons("Start")}
     
     %% Object
-    "def" Id "{" InsideDef*  "}" -> ObjectDef {cons("ObjectDef")}
+    "def" Id "{" InsideObjectDef*  "}" -> ObjectDef {cons("ObjectDef")}
     "external" "def" Id -> ObjectDef {cons("ExternalObjectDef")}
     ObjectDef -> GlobalDef
     ObjectDef -> InsideDef
+    InsideDef -> InsideObjectDef
     Id -> ObjectRef {cons("ObjectRef")}
     
     %% Component
@@ -46,13 +47,19 @@ exports
     
     %% Parameter
     Id ":" Type -> Param {cons("Param")}
-    Id -> Param {cons("Param")} %% desugared
+    Id -> Param {cons("Param")} %% type inferance
     
     %% Variable
     "var" Id ":" Type "=" Exp ";" -> VarDef {cons("VarDef")}
     "var" Id ":" Type ";" ->  VarDef {cons("VarDefNoInit")} %% desugared
-    "var" Id "=" Exp ";" -> VarDef {cons("VarDefNoType")} %% desugared
+    "var" Id "=" Exp ";" -> VarDef {cons("VarDefNoType")} %% type inferance
     VarDef -> InsideDef
+    
+    %% Property Def
+    "prop" Id ":" Type "=" Exp ";" -> PropDef {cons("PropDef")}
+    "prop" Id ":" Type ";" ->  PropDef {cons("PropDefNoInit")} %% desugared
+    "prop" Id "=" Exp ";" -> VarDef {cons("PropDefNoType")} %% type inferance
+    PropDef -> InsideObjectDef
     
     %% Expressions
     "true"                           	-> Exp {cons("True")}
