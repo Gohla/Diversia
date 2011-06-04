@@ -13,7 +13,7 @@ def CameraYaw {
     }
 
     // Variable definitions
-    var mRMB = false;
+    var mRMB : Bool = false;
     var mMouseState : MouseState = null;
     
     // States
@@ -34,16 +34,16 @@ def CameraYaw {
                 this.Yaw(Radian(Degree(-mMouseState.X.Relative)));
 
                 // Pitch the camera
-                var Pitch = CameraPitch.Orientation.Pitch;
-                var DegreeChange = Degree(-mMouseState.Y.Relative);
-                var NewPitch = DegreeChange + Pitch;
+                var Pitch : Real = CameraPitch.Orientation.Pitch;
+                var DegreeChange : Degree = Degree(-mMouseState.Y.Relative);
+                var NewPitch : Degree = DegreeChange + Pitch;
                 if(NewPitch < Degree(85) && NewPitch > Degree(-85)) {
                     CameraPitch.Pitch(Radian(DegreeChange));
                 }
             }
             if(mMouseState != null) {
                 // Camera distance
-                var Distance = CameraPitch.Camera.Position.Z;
+                var Distance : Real = CameraPitch.Camera.Position.Z;
                 if(mMouseState.Z.Relative > 0) {
                      Distance = Distance - Distance / 12;
                      if(Distance < 5) Distance = 5;
@@ -88,12 +88,12 @@ def Ball {
     }
     
     // Child objects
-    external def CameraYaw // Add the CameraYaw object definition as a child object.
+    //external def CameraYaw // Add the CameraYaw object definition as a child object.
 
     default state Alive {
-        var mMove = 0;
-        var mStrafe = 0;
-        var mSpeedMultiplier = 1;
+        var mMove : Int = 0;
+        var mStrafe : Int = 0;
+        var mSpeedMultiplier : Int = 1;
         
         on KeyPressed(Key) {
             switch(key) {
@@ -192,7 +192,7 @@ def Mine {
 
 def Floor {
     component Mesh {
-        ShapeType = Plane
+        ShapeType = "Plane"
         ShapeParameters = [1000, 1000, 1]
         ShapeUV = [1000, 1000]
         ShapeXSegments = 50
@@ -202,11 +202,11 @@ def Floor {
         Material = "Floor"
     }
     component CollisionShape {
-        ShapeType = Plane
+        ShapeType = "Plane"
         ShapeParameters = [1000, 1000, 1]
     }
     component RigidBody {
-        PhysicsType = Static
+        PhysicsType = "Static"
         Restitution = 0.3
     }
 }
@@ -214,7 +214,7 @@ def Floor {
 // Global event, the 'main' function
 on Create() {
     // Create an object of type Floor at position 0, 0, 0.
-    new Floor {
+    /*new Floor {
         Position = [0, 0, 0]
     }
     new Ball {
@@ -222,5 +222,5 @@ on Create() {
     }
     new Mine {
         Position = [0, 10, 10]
-    }
+    }*/
 }

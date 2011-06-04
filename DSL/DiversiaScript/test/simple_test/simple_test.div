@@ -66,9 +66,15 @@ def Test {
     	}
     	
 		on Update(){
-	    	Bla = Bla * 3;
-	    	Test = Degree(20);
-	    	Position = [3, 4, 5];
+			if(true) {
+				if(this.Position.Y > 0.5) this.Yaw(Radian(Degree(-90)));
+		    	Test = Degree(20);
+		    	Position = [3, 4, 5];
+	    	} else if(false) {
+	    		this.Destroy();
+	    	} else {
+	    		this.OMG();
+	    	}
 	    }
 	    on Frame(TimeElapsed) {
 	    	Bla = Bla + 4;

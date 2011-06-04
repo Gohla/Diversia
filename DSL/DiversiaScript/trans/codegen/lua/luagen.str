@@ -204,12 +204,17 @@ rules // Expressions
 	to-lua: Vector3Const(exp1, exp2, exp3) -> Call(VarRef("Vector3"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3]))
 	to-lua: Vector4Const(exp1, exp2, exp3, exp4) -> Call(VarRef("Vector4"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3, <to-lua> exp4]))
 	to-lua: VarRef(_{name}) -> VarRef(name)
+	to-lua: ComponentRef(_{name}) -> VarRef(name)
+	to-lua: PluginRef(_{name}) -> VarRef(name)
+	to-lua: ObjectRef(_) -> VarRef("Object")
 	to-lua: PropRef(name, objectName) -> Access(VarRef("Object"), name)
 		where is-builtin-property(|objectName, name)
 	to-lua: PropRef(name, objectName) -> VarRef(name)
 		where not (is-builtin-property(|objectName, name))
 	to-lua: Null() -> LuaNil()
 	to-lua: New(type, args) -> Call(VarRef(type), "new", Args(<map(to-lua)> args))
+	to-lua: Call(obj, name, args) -> Call(<to-lua> obj, name, Args(<map(to-lua)> args))
+	to-lua: Access(exp, name) -> Access(<to-lua> exp, name)
 	to-lua: This() -> VarRef("Object")
 	
 	to-lua: AOp(ADD(), l, r) -> Add(<to-lua> l, <to-lua> r)
@@ -244,11 +249,10 @@ rules // Statements
 	to-lua: Expression(exp) -> <to-lua> exp
 		where not (<?PreDec(_)> exp <+ <?PostDec(_)> exp <+ <?PreInc(_)> exp <+ <?PostInc(_)> exp)
 	to-lua: Statements(statements) -> <map(to-lua)> statements
-	to-lua: If(condition, statements) -> If(<to-lua> condition, Chunk(<map(to-lua)> statements))
-	to-lua: If(condition, trueStatements, falseStatements) -> If(<to-lua> condition, Chunk(<map(to-lua)> trueStatements), Chunk(<map(to-lua)> falseStatements))
+	to-lua: If(condition, statements) -> If(<to-lua> condition, Chunk([<to-lua> statements]))
+	to-lua: If(condition, trueStatements, falseStatements) -> If(<to-lua> condition, Chunk([<to-lua> trueStatements]), Chunk([<to-lua> falseStatements]))
 	to-lua: While(condition, statements) -> While(<to-lua> condition, Chunk(<map(to-lua)> statements))
 	to-lua: Assign(exp, val) -> Assignment([<to-lua> exp], [<to-lua> val])
-	to-lua: Call(obj, name, args) -> Call(<to-lua> obj, name, Args(<map(to-lua)> args))
 	// TODO: new object
 	to-lua: StateChange(StateRef(name)) -> [exitCall, change, enterCall]
 		where exitCall := Call(TableVarRef(VarRef("_G"), Concat(String("StateExit_"), <lua-stateref>)), Args([]))
