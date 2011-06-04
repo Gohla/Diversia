@@ -62,12 +62,18 @@ rules
 	// Global definitions to lua files.
 	to-lua: Start(pluginDefs, objectDefs, eventDefs) -> LuaScripts(<concat> [[<gamemode-to-lua> (pluginDefs, eventDefs)], <map(objects-to-lua)> objectDefs])
 	objects-to-lua: obj@ObjectDef(name, properties, components, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
-		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions'''' ]))
+		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions'''']))
 		where vars := <map(to-lua)> <object-vars> obj 
 		where functions' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
 		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> components, functions')
 		where functions''' := <objectprops-to-lua> (properties, functions'')
 		where functions'''' := <states-to-lua> (<concat> [[defState], stateDefs], functions''')
+	objects-to-lua: obj@ObjectDef(name, properties, components, varDefs, [], _, eventDefs) -> 
+		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [vars, functions''']))
+		where vars := <map(to-lua)> <object-vars> obj 
+		where functions' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
+		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> components, functions')
+		where functions''' := <objectprops-to-lua> (properties, functions'')
 	gamemode-to-lua: (pluginDefs, objectDefs) -> LuaGameModeScript(Chunk([]))
 	
 	// Variables
