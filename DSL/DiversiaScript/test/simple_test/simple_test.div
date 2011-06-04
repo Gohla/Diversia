@@ -1,3 +1,8 @@
+def Test2 {
+    default state TestState1 {
+    }
+}
+
 def Test {
 	Position = [0, 0.5, 0]
 	

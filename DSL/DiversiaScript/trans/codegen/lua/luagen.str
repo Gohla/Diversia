@@ -1,15 +1,24 @@
 module codegen/lua/luagen
 
 imports
+	libstratego-lib
 	libstratego-gpp
+	
 	include/DiversiaScript
 	../Lua/include/Lua
+	
 	lib/namespaces
 	namespace
 	signatures
 	name-project
 	data/events
 	util
+	
+signature constructors
+	
+	LuaScripts: List(LuaScripts) -> LuaScripts 
+	LuaObjectScript: Id * List(Statements) 	-> LuaScript
+	LuaGameModeScript: List(Statements)	-> LuaScript
 	
 strategies
 	
@@ -19,6 +28,24 @@ rules
 	
 	lua-tostring: ast ->
 		<box2text-string( |100 )> <ast2box(|[<import-term( ../Lua/include/Lua.pp.af )>])>
+	lua-script-tostring: LuaObjectScript(name, statements) -> 
+		$[------------------------------ Start object script [name] -----------------------------
+		[<lua-tostring> statements]
+		------------------------------- End object script [name] ------------------------------
+		]
+	lua-script-tostring: LuaGameModeScript(statements) -> 
+		$[-------------------------------- Start gamemode script --------------------------------
+		[<lua-tostring> statements]
+		--------------------------------- End gamemode script ---------------------------------
+		]
+	lua-tostrings: LuaScripts(scripts) -> <concat-strings> <map(lua-script-tostring)> scripts
+	
+	lua-tofile(|path, name): ast -> ast
+		where <debug> $[Writing lua script [name] to [path][name].lua.]
+		where <fclose> <fputs>( <lua-tostring> ast, <fopen>( $[[path][name].lua], "w" ) )
+	lua-tofile(|path): LuaObjectScript(name, statements) -> <lua-tofile(|path, name)> statements
+	lua-tofile(|path): LuaGameModeScript(statements) -> <lua-tofile(|path, "GameMode")> statements
+	lua-tofiles(|path): LuaScripts(scripts) -> <map(lua-tofile(|path))> scripts
 	
 	lua-funcdef(|name) = !FuncDef(FunctionName(name), ParList(), Chunk([]))
 	lua-funcdef: (name, content) -> FuncDef(FunctionName(name), ParList(), Chunk(content))
@@ -33,14 +60,15 @@ rules
 	lua-flatten-chunk: Chunk(statements) -> Chunk(<flatten-list> statements)
 		
 	// Global definitions to lua files.
-	to-lua: Start(definitions) -> <lua-flatten-all> Chunk(<map(to-lua)> definitions)
-	to-lua: obj@ObjectDef(name, properties, components, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
-		<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions'''' ]
+	to-lua: Start(pluginDefs, objectDefs, eventDefs) -> LuaScripts(<concat> [[<gamemode-to-lua> (pluginDefs, eventDefs)], <map(objects-to-lua)> objectDefs])
+	objects-to-lua: obj@ObjectDef(name, properties, components, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
+		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions'''' ]))
 		where vars := <map(to-lua)> <object-vars> obj 
 		where functions' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
 		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> components, functions')
 		where functions''' := <objectprops-to-lua> (properties, functions'')
 		where functions'''' := <states-to-lua> (<concat> [[defState], stateDefs], functions''')
+	gamemode-to-lua: (pluginDefs, objectDefs) -> LuaGameModeScript(Chunk([]))
 	
 	// Variables
 	to-lua: VarDef(_{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value]) 

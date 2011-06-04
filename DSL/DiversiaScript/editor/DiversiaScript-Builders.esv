@@ -16,8 +16,8 @@ builders
   
   observer					: editor-analyze
   
-  builder                   : "Show abstract syntax" = generate-aterm (openeditor) (realtime) (meta) (source)                                                                                                                               
-  builder                   : "Test rule" = test-rule (openeditor) (realtime) (meta) (source)       
-  builder                   : "Generate Lua code" = generate-lua (openeditor) (realtime)
+  builder                   : "Show abstract syntax" = generate-aterm (openeditor) (realtime) (meta) (source)
+  builder                   : "Generate Lua files" = generate-lua-files (openeditor) (realtime)                                                                                                                                      
+  builder                   : "Generate Lua code" = generate-lua-strings (openeditor) (realtime)
   builder                   : "Generate Lua abstract syntax" = generate-lua-aterm (openeditor) (realtime)
   builder                   : "Generate C++ code" = generate-cpp (openeditor) (realtime)                                                                                           
