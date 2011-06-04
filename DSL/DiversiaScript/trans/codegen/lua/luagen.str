@@ -63,19 +63,21 @@ rules
 	// Global definitions to lua files.
 	to-lua: Start(pluginDefs, objectDefs, eventDefs) -> LuaScripts(<concat> [[<gamemode-to-lua> (pluginDefs, eventDefs)], <map(objects-to-lua)> objectDefs])
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
-		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions'''']))
-		where vars := <map(to-lua)> <debug> <object-vars> obj 
-		where functions' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> componenDefs, functions')
-		where functions''' := <propassigns-to-lua> (propAssigns, functions'')
-		where functions'''' := <states-to-lua> (<concat> [[defState], stateDefs], functions''')
-	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [], _, eventDefs) -> 
-		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [vars, functions''']))
+		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions''']))
 		where vars := <map(to-lua)> <object-vars> obj 
-		where functions' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> componenDefs, functions')
-		where functions''' := <propassigns-to-lua> (propAssigns, functions'')
-	gamemode-to-lua: (pluginDefs, objectDefs) -> LuaGameModeScript(Chunk([]))
+		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
+		where functions' := <components-to-lua> (<map(to-lua)> componenDefs, functions)
+		where functions'' := <propassigns-to-lua> (propAssigns, functions')
+		where functions''' := <states-to-lua> (<concat> [[defState], stateDefs], functions'')
+	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [], _, eventDefs) -> 
+		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [vars, functions'']))
+		where vars := <map(to-lua)> <object-vars> obj 
+		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
+		where functions' := <components-to-lua> (<flatten-list> <map(to-lua)> componenDefs, functions)
+		where functions'' := <propassigns-to-lua> (propAssigns, functions')
+	gamemode-to-lua: (pluginDefs, eventDefs) -> LuaGameModeScript(<lua-flatten-all> Chunk(<concat> [functions']))
+		where functions := <map(global-event-to-lua)> eventDefs
+		where functions' := <plugins-to-lua> (<map(to-lua)> pluginDefs, functions)
 	
 	// Variables
 	to-lua: VarDef(_{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
@@ -172,7 +174,22 @@ rules
 		where <fetch-elem(?EventDef("StateExit", _, statements))> eventDefs
 	state-to-lua-exitFunc-event: eventDefs -> []
 		where not (<fetch-elem(?EventDef("StateExit", _, _))> eventDefs)
-				
+		
+	// Plugins
+	plugins-to-lua: (statements, functions) -> <lua-replace-function(|"Create", createFunc)> functions
+		where createFunc := <lua-prepend-statements(|statements)> <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions
+	plugins-to-lua: (statements, functions) -> functions'
+		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
+		where functions' := <concat> [[<lua-funcdef> ("Create", statements)], functions] 
+	to-lua: PluginDef(name, CustomType(type), properties) -> [
+		Assignment([VarRef(name)], [Call(VarRef("PluginManager"), "CreatePlugin", Args([Access(VarRef("PluginType"), type), String(name)]))]),
+		<map(pluginprop-to-lua(|name))> properties
+	]
+	pluginprop-to-lua(|pluginName): PluginProp(name, exp) -> Assignment([Access(pluginName, VarRef(name))], <to-lua> exp)
+	
+	// Global events
+	global-event-to-lua: EventDef(name, params, statements) -> <lua-funcdef> (name, <map(to-lua)> params, <map(to-lua)> statements)
+	
 rules // Expressions
 	
 	to-lua: True() -> True()
