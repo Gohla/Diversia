@@ -46,6 +46,12 @@ def Test {
 	    	Bla = --Bla + 1;
 	    	Test = Degree(10);
 	    	Position = [1, 2, 3];
+	    	
+            switch(Bla) {
+                case 1: ++Bla;
+                case 2: { --Bla; ++Zomg; ++Test; }
+                case 42: this.Destroy();
+           }
 	    }
 	    on Frame(TimeElapsed) {
 	    	Bla = Bla / 3;

@@ -210,7 +210,7 @@ rules // Expressions
 		where not (is-builtin-property(|objectName, name))
 	to-lua: Null() -> LuaNil()
 	to-lua: New(type, args) -> Call(VarRef(type), "new", Args(<map(to-lua)> args))
-	// TODO: this
+	to-lua: This() -> VarRef("Object")
 	
 	to-lua: AOp(ADD(), l, r) -> Add(<to-lua> l, <to-lua> r)
 	to-lua: AOp(SUB(), l, r) -> Sub(<to-lua> l, <to-lua> r)
@@ -243,16 +243,23 @@ rules // Statements
 	
 	to-lua: Expression(exp) -> <to-lua> exp
 		where not (<?PreDec(_)> exp <+ <?PostDec(_)> exp <+ <?PreInc(_)> exp <+ <?PostInc(_)> exp)
+	to-lua: Statements(statements) -> <map(to-lua)> statements
 	to-lua: If(condition, statements) -> If(<to-lua> condition, Chunk(<map(to-lua)> statements))
 	to-lua: If(condition, trueStatements, falseStatements) -> If(<to-lua> condition, Chunk(<map(to-lua)> trueStatements), Chunk(<map(to-lua)> falseStatements))
 	to-lua: While(condition, statements) -> While(<to-lua> condition, Chunk(<map(to-lua)> statements))
 	to-lua: Assign(exp, val) -> Assignment([<to-lua> exp], [<to-lua> val])
+	to-lua: Call(obj, name, args) -> Call(<to-lua> obj, name, Args(<map(to-lua)> args))
 	// TODO: new object
 	to-lua: StateChange(StateRef(name)) -> [exitCall, change, enterCall]
 		where exitCall := Call(TableVarRef(VarRef("_G"), Concat(String("StateExit_"), <lua-stateref>)), Args([]))
 		where change := Assignment([<lua-stateref>], [String(name)])
 		where enterCall := Call(VarRef($[StateEnter_[name]]), Args([]))
-	// TODO: switch
+	to-lua: Switch(exp, []) -> []
+	to-lua: Switch(exp, [Case(cond, statement)|[]]) -> 
+		If(Eq(<to-lua> exp, <to-lua> cond), Chunk(<to-lua> statement))
+	to-lua: Switch(exp, [Case(cond, statement)|cases]) -> 
+		IfElseIf(Eq(<to-lua> exp, <to-lua> cond), Chunk(<to-lua> statement), <map(to-lua(|exp))> cases)
+	to-lua(|exp): Case(cond, statement) -> ElseIfPart(Eq(<to-lua> exp, <to-lua> cond), Chunk(<to-lua> statement)) 
 	// TODO: delayed statements
 	to-lua: Delay(time, timeUnit, statements) -> <map(to-lua)> statements
 	// TODO: interpolation
