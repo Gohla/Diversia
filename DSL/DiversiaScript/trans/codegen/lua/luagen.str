@@ -12,6 +12,7 @@ imports
 	signatures
 	name-project
 	data/events
+	data/builtin-types
 	util
 	
 signature constructors
@@ -61,23 +62,24 @@ rules
 		
 	// Global definitions to lua files.
 	to-lua: Start(pluginDefs, objectDefs, eventDefs) -> LuaScripts(<concat> [[<gamemode-to-lua> (pluginDefs, eventDefs)], <map(objects-to-lua)> objectDefs])
-	objects-to-lua: obj@ObjectDef(name, properties, components, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
+	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
 		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions'''']))
-		where vars := <map(to-lua)> <object-vars> obj 
+		where vars := <map(to-lua)> <debug> <object-vars> obj 
 		where functions' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> components, functions')
-		where functions''' := <objectprops-to-lua> (properties, functions'')
+		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> componenDefs, functions')
+		where functions''' := <propassigns-to-lua> (propAssigns, functions'')
 		where functions'''' := <states-to-lua> (<concat> [[defState], stateDefs], functions''')
-	objects-to-lua: obj@ObjectDef(name, properties, components, varDefs, [], _, eventDefs) -> 
+	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [], _, eventDefs) -> 
 		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [vars, functions''']))
 		where vars := <map(to-lua)> <object-vars> obj 
 		where functions' := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> components, functions')
-		where functions''' := <objectprops-to-lua> (properties, functions'')
+		where functions'' := <components-to-lua> (<flatten-list> <map(to-lua)> componenDefs, functions')
+		where functions''' := <propassigns-to-lua> (propAssigns, functions'')
 	gamemode-to-lua: (pluginDefs, objectDefs) -> LuaGameModeScript(Chunk([]))
 	
 	// Variables
-	to-lua: VarDef(_{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value]) 
+	to-lua: VarDef(_{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
+	to-lua: PropDef(_, name, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
 	
 	// Events
 	events-to-lua-filter: events -> events where not( <eq> (<length> events, 0) ) 
@@ -131,12 +133,12 @@ rules
 	destroy-component-to-lua: name -> Call(VarRef(name), "Destroy", Args([]))
 	
 	// Object properties
-	objectprops-to-lua: (properties, functions) -> <lua-replace-function(|"Create", createFunc)> functions
-		where createFunc := <lua-prepend-statements(|<map(objectprop-to-lua)> properties)> <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions
-	objectprops-to-lua: (properties, functions) -> functions'
+	propassigns-to-lua: (properties, functions) -> <lua-replace-function(|"Create", createFunc)> functions
+		where createFunc := <lua-prepend-statements(|<map(propassign-to-lua)> properties)> <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions
+	propassigns-to-lua: (properties, functions) -> functions'
 		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
-		where functions' := <concat> [[<lua-funcdef> ("Create", <map(objectprop-to-lua)> properties)], functions]	
-	objectprop-to-lua: ObjectProp(name, exp) -> Assignment([Access("Object", VarRef(name))], <to-lua> exp)
+		where functions' := <concat> [[<lua-funcdef> ("Create", <map(propassign-to-lua)> properties)], functions]	
+	propassign-to-lua: ObjectProp(name, exp) -> Assignment([Access("Object", VarRef(name))], <to-lua> exp)
 
 	// States
 	states-to-lua: (states, functions) -> <concat> [functions, <map(state-to-lua)> states]
@@ -159,7 +161,7 @@ rules
 		where exitFunc := <lua-funcdef(|$[StateExit_[name]])>
 		
 	state-to-lua-enterFunc: (name, propAssigns, componentDefs, eventDefs) -> 
-		<lua-funcdef> ($[StateEnter_[name]], <concat> [<map(objectprop-to-lua)> propAssigns, <map(to-lua)> componentDefs, <state-to-lua-enterFunc-event> eventDefs])
+		<lua-funcdef> ($[StateEnter_[name]], <concat> [<map(propassign-to-lua)> propAssigns, <map(to-lua)> componentDefs, <state-to-lua-enterFunc-event> eventDefs])
 	state-to-lua-enterFunc-event: eventDefs -> <map(to-lua)> statements
 		where <fetch-elem(?EventDef("StateEnter", _, statements))> eventDefs
 	state-to-lua-enterFunc-event: eventDefs -> []
@@ -185,7 +187,10 @@ rules // Expressions
 	to-lua: Vector3Const(exp1, exp2, exp3) -> Call(VarRef("Vector3"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3]))
 	to-lua: Vector4Const(exp1, exp2, exp3, exp4) -> Call(VarRef("Vector4"), "new", Args([<to-lua> exp1, <to-lua> exp2, <to-lua> exp3, <to-lua> exp4]))
 	to-lua: VarRef(_{name}) -> VarRef(name)
-	to-lua: PropRef(name, _) -> Access(VarRef("Object"), name)
+	to-lua: PropRef(name, objectName) -> Access(VarRef("Object"), name)
+		where is-builtin-property(|objectName, name)
+	to-lua: PropRef(name, objectName) -> VarRef(name)
+		where not (is-builtin-property(|objectName, name))
 	to-lua: Null() -> LuaNil()
 	to-lua: New(type, args) -> Call(VarRef(type), "new", Args(<map(to-lua)> args))
 	// TODO: this
