@@ -76,6 +76,7 @@ exports
     Id "(" {Exp ","}* ")"               -> Exp {cons("New")}
     Exp "." Id                        	-> Exp {cons("Access"), left, avoid}
     Exp "." Id "(" {Exp ","}* ")"   	-> Exp {cons("Call"), left}
+    "new" ObjectRef "{" ObjectProp* "}" -> Exp {cons("ObjectNew")}
     "(" Exp ")"                         -> Exp {bracket}
     
     %% Operators
@@ -109,7 +110,6 @@ exports
     "if" "(" Exp ")" Statement    													-> Statement {cons("If")}
     "while" "(" Exp ")" Statement                       							-> Statement {cons("While")}
     Exp "=" Exp ";"                                     							-> Statement {cons("Assign")}
-    "new" ObjectRef "{" ObjectProp* "}"        										-> Statement {cons("ObjectNew")}
     "setstate" StateRef ";"                                   						-> Statement {cons("StateChange")}
     "switch" "(" Exp ")" "{" Case* "}"                  							-> Statement {cons("Switch")}
     "case" Exp ":" Statement                       									-> Case {cons("Case")}

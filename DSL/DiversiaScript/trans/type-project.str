@@ -23,6 +23,11 @@ rules // util
 			<?CustomType(_)> todo
 		)
 
+rules // type matching
+	
+	match-type(|var-type,exp-type) = <?var-type> exp-type
+
+
 rules  // expr
 	
 	type-of: BOp(_, _, _) -> BoolType()
@@ -52,12 +57,17 @@ rules  // expr
 
 	type-of: VarRef(name) -> <type-of><get-var2> name
 	type-of: PropRef(name, object) -> <type-of><get-builtin-property>(object, name)
+	
+	
+	
+	get-object-property: (object, property) -> property
+		where 
+		<get-prop> (object, property) <+ <get-builtin-property>("ClientObject", property) => property
+	is-object-property(|object, property) = <get-object-property> (object, property)
+	
 	type-of: PropRef(name, object) -> type
 		where
-			is-object-type(|object);
-			//<debug> "isobject";
-			<type-of><get-builtin-property> ("ClientObject", name) => type
-			//<debug> type		
+			<type-of><get-object-property> (object, name) => type	
 			
 	type-of: This() -> "TODO: CustomType(object)"
 	type-of: New(object,_) -> CustomType(object)

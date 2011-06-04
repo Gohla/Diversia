@@ -7,19 +7,19 @@ imports
 	name-project
 
 strategies
-	decorate-all = topdown(try(decorate))
+	decorate-all = alltd(try(decorate))
+	message(|msg): x->x where <debug> msg
 	
-rules  // add inferred type data
+rules 
 
-	
 	decorate: EventDef(name, params, statements) -> 
-			  EventDef(name, params', statements')
+			  EventDef(name, params',statements')
 			where
 				<innermost(decorate(|name))> params => params';
 			 	<innermost(decorate(|name))> statements => statements'
 
-	decorate: ObjectDef(name, propAssigns, propDefs, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) ->
-			  ObjectDef(name, propAssigns', propDefs', componentDefs', /*objectDefs,*/ varDefs', defaultStateDef', stateDefs', eventDefs')
+	decorate: ObjectDef(name, propAssigns, propDefs, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) ->
+			  ObjectDef(name, propAssigns'', propDefs', componentDefs', varDefs', defaultStateDef', stateDefs', eventDefs')
 			 where	
 			 	<innermost(decorate(|name))> propAssigns => propAssigns';
 			 	<innermost(decorate(|name))> componentDefs => componentDefs';
@@ -27,19 +27,16 @@ rules  // add inferred type data
 			 	<innermost(decorate(|name))> defaultStateDef => defaultStateDef';
 			 	<innermost(decorate(|name))> stateDefs => stateDefs';
 			 	<innermost(decorate(|name))> eventDefs => eventDefs';
-			 	<innermost(decorate(|name))> propDefs => propDefs'
+			 	<innermost(decorate(|name))> propDefs => propDefs';
+			 	<map(decorate2(|name))> propAssigns' => propAssigns''
 			 	
 	decorate(|object): VarRef(name) -> PropRef(name, object)
 	decorate(|object): PropDef(name,type,expr) -> PropDef(object,name,type,expr)
-	//decorate(|object): ObjectProp(name , expr) -> ObjectProp(PropRef(name, object) , expr)
-	//	where not(<?PropRef(_,_)> name)
-	
-	/*decorate(|object): 
-		ObjectNew(ObjectRef(object2), propAssigns) -> ObjectNew(ObjectRef(object2), propAssigns')
-		where 
-			<map(decorate(|object2))> propAssigns => propAssigns'
-	
-	decorate(|object): ObjectProp(name, expr) -> ObjectProp(object, name, expr)*/
+	//decorate(|object): VarDef(name,type,expr) -> VarDef(object,name,type,expr) // not yet! :p
+	decorate(|object): ObjectNew(ObjectRef(name), propAssigns) -> ObjectNew(ObjectRef(name), propAssigns')
+		where <map(decorate2(|name))> propAssigns => propAssigns'
+		
+	decorate2(|object): ObjectProp(name , expr) -> ObjectProp(PropRef(name, object) , expr)
 	
                      
 	
