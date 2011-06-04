@@ -25,6 +25,7 @@ rules  // add inferred type data
 			 	
 			 	
 	decorate(|object): VarRef(name) -> PropRef(name, object)
+	decorate(|object): PropDef(name,type,expr) -> PropDef(object,name,type,expr)
 	
 		
 	
