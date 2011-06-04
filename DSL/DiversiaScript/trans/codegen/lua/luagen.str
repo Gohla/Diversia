@@ -228,15 +228,15 @@ rules // Expressions
 	to-lua: Umin(exp) -> Umin(<to-lua> exp)
 	to-lua: PreDec(exp) -> Sub(<to-lua> exp, Number(1))
 	to-lua: PostDec(exp) -> Sub(<to-lua> exp, Number(1)) // TODO: Proper post decrement
-	to-lua: Expression(PreDec(exp)) -> Assignment(exp', Sub(exp', Number(1)))
+	to-lua: Expression(PreDec(exp)) -> Assignment([exp'], [Sub(exp', Number(1))])
 		where exp' := <to-lua> exp
-	to-lua: Expression(PostDec(exp)) -> Assignment(exp', Sub(exp', Number(1)))
+	to-lua: Expression(PostDec(exp)) -> Assignment([exp'], [Sub(exp', Number(1))])
 		where exp' := <to-lua> exp
 	to-lua: PreInc(exp) -> Add(<to-lua> exp, Number(1))
 	to-lua: PostInc(exp) -> Add(<to-lua> exp, Number(1)) // TODO: Proper post inc
-	to-lua: Expression(PreInc(exp)) -> Assignment(exp', Add(exp', Number(1)))
+	to-lua: Expression(PreInc(exp)) -> Assignment([exp'], [Add(exp', Number(1))])
 		where exp' := <to-lua> exp
-	to-lua: Expression(PostInc(exp)) -> Assignment(exp', Add(exp', Number(1)))
+	to-lua: Expression(PostInc(exp)) -> Assignment([exp'], [Add(exp', Number(1))])
 		where exp' := <to-lua> exp
 	
 rules // Statements
