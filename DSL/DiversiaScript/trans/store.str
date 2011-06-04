@@ -43,7 +43,7 @@ rules // declarations
 		where <store-declaration(|Vars(object))> (name, d)
 	
 	// Proptery definitions in object and state
-	store-declarations(|object, state): d@PropDef(name, _, _) -> d
+	store-declarations(|object, state): d@PropDef(_, name, _, _) -> d
 		where <store-declaration(|Props(object))> (name, d)
 		
 	// Event definitions in object.
