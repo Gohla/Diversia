@@ -1,6 +1,5 @@
-def Test2 {
-    default state TestState1 {
-    }
+plugin Sky {
+	
 }
 
 def Test {
@@ -23,6 +22,7 @@ def Test {
     
     var Bla : Int = 0;
     var Test : Degree = Degree(0);
+    prop Zomg : Int = 1;
     
     on Create() {
     	Bla = 1;
@@ -38,6 +38,7 @@ def Test {
     	var Bla : Int = 0;
     	
 	    on Update() {
+	    	Zomg = 42;
 	    	Bla = --Bla + 1;
 	    	Test = Degree(10);
 	    	Position = [1, 2, 3];
@@ -79,4 +80,15 @@ def Test {
     		--Bla;
     	}
     }
+}
+
+def Test2 {
+	component Mesh {
+        ShapeType = "Mesh"
+        ShapeFile = "Landmine.mesh"
+    }
+}
+
+on Create() {
+	var trololo : Int = 1;
 }
