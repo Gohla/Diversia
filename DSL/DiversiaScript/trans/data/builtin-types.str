@@ -7,7 +7,7 @@ imports
 signature constructors
 	
 	BuiltinType: Name * List(BuiltinType) * List(Constructor) * List(Property) * List(Function) -> BuiltinType
-	Property: Name * Type -> Property
+	Property: Name * Type * Writable -> Property
 	Function: Name * ReturnType * List(ParamType) -> Function
 
 rules
@@ -48,7 +48,7 @@ rules
 	["Component", "PropertySynchronization"],
 	[], 
 	[
-		Property("ResourceList", VoidType())
+		Property("ResourceList", VoidType(), True())
 	], 
 	[
 		
@@ -120,7 +120,7 @@ rules
 	["ServerPlugin"],
 	[], 
 	[
-		Property("ServerNeighbors", CustomType("ServerNeighbors"))
+		Property("ServerNeighbors", CustomType("ServerNeighbors"), True())
 	], 
 	[
 		
@@ -138,10 +138,10 @@ rules
 	[],
 	[], 
 	[
-		Property("Type", CustomType("Enum")), 
-		Property("TypeName", StringType()), 
-		Property("Mode", CustomType("Enum")), 
-		Property("PluginManager", CustomType("ClientServerPluginManager"))
+		Property("Type", CustomType("Enum"), False()), 
+		Property("TypeName", StringType(), False()), 
+		Property("Mode", CustomType("Enum"), False()), 
+		Property("PluginManager", CustomType("ClientServerPluginManager"), True())
 	], 
 	[
 		
@@ -150,8 +150,8 @@ rules
 	[],
 	[], 
 	[
-		Property("Mode", CustomType("Enum")), 
-		Property("Plugins", VoidType())
+		Property("Mode", CustomType("Enum"), False()), 
+		Property("Plugins", VoidType(), True())
 	], 
 	[
 		Function("CreatePlugin", "", []), 
@@ -163,20 +163,20 @@ rules
 	[],
 	[], 
 	[
-		Property("Type", IntType()), 
-		Property("TypeName", StringType()), 
-		Property("Object", CustomType("Object")), 
-		Property("Mode", CustomType("Enum")), 
-		Property("NetworkingType", CustomType("Enum")), 
-		Property("Source", CustomType("Enum")), 
-		Property("SourceGUID", CustomType("RakNetGUID")), 
-		Property("OwnGUID", CustomType("RakNetGUID")), 
-		Property("ServerGUID", CustomType("RakNetGUID")), 
-		Property("IsCreatedByOwnGUID", BoolType()), 
-		Property("IsCreatedByServer", BoolType()), 
-		Property("LocalOverride", BoolType()), 
-		Property("TemplateName", StringType()), 
-		Property("OverriddenProperties", VoidType())
+		Property("Type", IntType(), False()), 
+		Property("TypeName", StringType(), False()), 
+		Property("Object", CustomType("Object"), True()), 
+		Property("Mode", CustomType("Enum"), False()), 
+		Property("NetworkingType", CustomType("Enum"), False()), 
+		Property("Source", CustomType("Enum"), False()), 
+		Property("SourceGUID", CustomType("RakNetGUID"), False()), 
+		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
+		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
+		Property("IsCreatedByOwnGUID", BoolType(), False()), 
+		Property("IsCreatedByServer", BoolType(), False()), 
+		Property("LocalOverride", BoolType(), True()), 
+		Property("TemplateName", StringType(), True()), 
+		Property("OverriddenProperties", VoidType(), True())
 	], 
 	[
 		Function("IsCreatedBy", "", []), 
@@ -187,19 +187,19 @@ rules
 	[],
 	[], 
 	[
-		Property("Type", IntType()), 
-		Property("TypeName", StringType()), 
-		Property("ObjectTemplate", CustomType("ObjectTemplate")), 
-		Property("Mode", CustomType("Enum")), 
-		Property("NetworkingType", CustomType("Enum")), 
-		Property("Source", CustomType("Enum")), 
-		Property("SourceGUID", CustomType("RakNetGUID")), 
-		Property("OwnGUID", CustomType("RakNetGUID")), 
-		Property("ServerGUID", CustomType("RakNetGUID")), 
-		Property("IsCreatedByOwnGUID", BoolType()), 
-		Property("IsCreatedByServer", BoolType()), 
-		Property("LocalOverride", BoolType()), 
-		Property("Properties", VoidType())
+		Property("Type", IntType(), False()), 
+		Property("TypeName", StringType(), False()), 
+		Property("ObjectTemplate", CustomType("ObjectTemplate"), True()), 
+		Property("Mode", CustomType("Enum"), False()), 
+		Property("NetworkingType", CustomType("Enum"), False()), 
+		Property("Source", CustomType("Enum"), False()), 
+		Property("SourceGUID", CustomType("RakNetGUID"), False()), 
+		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
+		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
+		Property("IsCreatedByOwnGUID", BoolType(), False()), 
+		Property("IsCreatedByServer", BoolType(), False()), 
+		Property("LocalOverride", BoolType(), True()), 
+		Property("Properties", VoidType(), True())
 	], 
 	[
 		Function("IsCreatedBy", "", []), 
@@ -211,21 +211,21 @@ rules
 	["Node"],
 	[], 
 	[
-		Property("Name", StringType()), 
-		Property("ObjectManager", CustomType("ObjectManager")), 
-		Property("IsDelayedDestroying", BoolType()), 
-		Property("Mode", CustomType("Enum")), 
-		Property("Source", CustomType("Enum")), 
-		Property("SourceGUID", CustomType("RakNetGUID")), 
-		Property("OwnGUID", CustomType("RakNetGUID")), 
-		Property("ServerGUID", CustomType("RakNetGUID")), 
-		Property("IsCreatedByOwnGUID", BoolType()), 
-		Property("IsCreatedByServer", BoolType()), 
-		Property("DisplayName", StringType()), 
-		Property("NetworkingType", CustomType("Enum")), 
-		Property("ParentName", StringType()), 
-		Property("TemplateName", StringType()), 
-		Property("Components", VoidType())
+		Property("Name", StringType(), False()), 
+		Property("ObjectManager", CustomType("ObjectManager"), True()), 
+		Property("IsDelayedDestroying", BoolType(), False()), 
+		Property("Mode", CustomType("Enum"), False()), 
+		Property("Source", CustomType("Enum"), False()), 
+		Property("SourceGUID", CustomType("RakNetGUID"), False()), 
+		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
+		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
+		Property("IsCreatedByOwnGUID", BoolType(), False()), 
+		Property("IsCreatedByServer", BoolType(), False()), 
+		Property("DisplayName", StringType(), True()), 
+		Property("NetworkingType", CustomType("Enum"), True()), 
+		Property("ParentName", StringType(), True()), 
+		Property("TemplateName", StringType(), True()), 
+		Property("Components", VoidType(), True())
 	], 
 	[
 		Function("IsCreatedBy", "", []), 
@@ -242,10 +242,10 @@ rules
 	[],
 	[], 
 	[
-		Property("Mode", CustomType("Enum")), 
-		Property("OwnGUID", CustomType("RakNetGUID")), 
-		Property("ServerGUID", CustomType("RakNetGUID")), 
-		Property("Objects", VoidType())
+		Property("Mode", CustomType("Enum"), False()), 
+		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
+		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
+		Property("Objects", VoidType(), True())
 	], 
 	[
 		Function("CreateLocalObject", "", []), 
@@ -262,19 +262,19 @@ rules
 	["Node"],
 	[], 
 	[
-		Property("Name", StringType()), 
-		Property("ObjectTemplateManager", CustomType("ObjectTemplateManager")), 
-		Property("Mode", CustomType("Enum")), 
-		Property("Source", CustomType("Enum")), 
-		Property("SourceGUID", CustomType("RakNetGUID")), 
-		Property("OwnGUID", CustomType("RakNetGUID")), 
-		Property("ServerGUID", CustomType("RakNetGUID")), 
-		Property("IsCreatedByOwnGUID", BoolType()), 
-		Property("IsCreatedByServer", BoolType()), 
-		Property("DisplayName", StringType()), 
-		Property("NetworkingType", CustomType("Enum")), 
-		Property("ParentName", StringType()), 
-		Property("ComponentTemplates", VoidType())
+		Property("Name", StringType(), False()), 
+		Property("ObjectTemplateManager", CustomType("ObjectTemplateManager"), True()), 
+		Property("Mode", CustomType("Enum"), False()), 
+		Property("Source", CustomType("Enum"), False()), 
+		Property("SourceGUID", CustomType("RakNetGUID"), False()), 
+		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
+		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
+		Property("IsCreatedByOwnGUID", BoolType(), False()), 
+		Property("IsCreatedByServer", BoolType(), False()), 
+		Property("DisplayName", StringType(), True()), 
+		Property("NetworkingType", CustomType("Enum"), True()), 
+		Property("ParentName", StringType(), True()), 
+		Property("ComponentTemplates", VoidType(), True())
 	], 
 	[
 		Function("IsCreatedBy", "", []), 
@@ -291,10 +291,10 @@ rules
 	[],
 	[], 
 	[
-		Property("Mode", CustomType("Enum")), 
-		Property("OwnGUID", CustomType("RakNetGUID")), 
-		Property("ServerGUID", CustomType("RakNetGUID")), 
-		Property("ObjectTemplates", VoidType())
+		Property("Mode", CustomType("Enum"), False()), 
+		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
+		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
+		Property("ObjectTemplates", VoidType(), True())
 	], 
 	[
 		Function("CreateLocalObjectTemplate", "", []), 
@@ -310,14 +310,14 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("AnimationName", StringType()), 
-		Property("Speed", RealType()), 
-		Property("Enabled", BoolType()), 
-		Property("Loop", BoolType()), 
-		Property("Position", RealType()), 
-		Property("Length", RealType()), 
-		Property("AutoLength", BoolType()), 
-		Property("Weight", RealType())
+		Property("AnimationName", StringType(), True()), 
+		Property("Speed", RealType(), True()), 
+		Property("Enabled", BoolType(), True()), 
+		Property("Loop", BoolType(), True()), 
+		Property("Position", RealType(), True()), 
+		Property("Length", RealType(), True()), 
+		Property("AutoLength", BoolType(), True()), 
+		Property("Weight", RealType(), True())
 	], 
 	[
 		Function("HasEnded", "", []), 
@@ -336,20 +336,20 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("File", StringType()), 
-		Property("Volume", RealType()), 
-		Property("VolumeSmooth", RealType()), 
-		Property("VolumeSmoothTimescale", RealType()), 
-		Property("Loop", BoolType()), 
-		Property("AutoPlay", BoolType()), 
-		Property("Pitch", RealType()), 
-		Property("MinDistance", RealType()), 
-		Property("MaxDistance", RealType()), 
-		Property("MinVolume", RealType()), 
-		Property("MaxVolume", RealType()), 
-		Property("Strength", RealType()), 
-		Property("DopplerStrength", RealType()), 
-		Property("RolloffFactor", RealType())
+		Property("File", StringType(), True()), 
+		Property("Volume", RealType(), True()), 
+		Property("VolumeSmooth", RealType(), True()), 
+		Property("VolumeSmoothTimescale", RealType(), True()), 
+		Property("Loop", BoolType(), True()), 
+		Property("AutoPlay", BoolType(), True()), 
+		Property("Pitch", RealType(), True()), 
+		Property("MinDistance", RealType(), True()), 
+		Property("MaxDistance", RealType(), True()), 
+		Property("MinVolume", RealType(), True()), 
+		Property("MaxVolume", RealType(), True()), 
+		Property("Strength", RealType(), True()), 
+		Property("DopplerStrength", RealType(), True()), 
+		Property("RolloffFactor", RealType(), True())
 	], 
 	[
 		Function("Play", "", []), 
@@ -360,8 +360,8 @@ rules
 	[],
 	[], 
 	[
-		Property("Absolute", IntType()), 
-		Property("Relative", IntType())
+		Property("Absolute", IntType(), True()), 
+		Property("Relative", IntType(), True())
 	], 
 	[
 		Function("Clear", "", [])
@@ -370,7 +370,7 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("Active", BoolType())
+		Property("Active", BoolType(), True())
 	], 
 	[
 		
@@ -379,11 +379,11 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("IsReceivingCollisionCallbacks", BoolType()), 
-		Property("CollisionFile", StringType()), 
-		Property("ShapeType", CustomType("Enum")), 
-		Property("ShapeParameters", CustomType("Vector3")), 
-		Property("CollisionPriority", IntType())
+		Property("IsReceivingCollisionCallbacks", BoolType(), False()), 
+		Property("CollisionFile", StringType(), True()), 
+		Property("ShapeType", CustomType("Enum"), True()), 
+		Property("ShapeParameters", CustomType("Vector3"), True()), 
+		Property("CollisionPriority", IntType(), True())
 	], 
 	[
 		
@@ -392,9 +392,9 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("Material", StringType()), 
-		Property("CastShadows", BoolType()), 
-		Property("Visible", BoolType())
+		Property("Material", StringType(), True()), 
+		Property("CastShadows", BoolType(), True()), 
+		Property("Visible", BoolType(), True())
 	], 
 	[
 		
@@ -403,8 +403,8 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("Enabled", BoolType()), 
-		Property("Force", CustomType("Vector3"))
+		Property("Enabled", BoolType(), True()), 
+		Property("Force", CustomType("Vector3"), True())
 	], 
 	[
 		
@@ -413,13 +413,13 @@ rules
 	["ServerPlugin"],
 	[], 
 	[
-		Property("ClientLoadDefaultGamemode", BoolType()), 
-		Property("ClientScriptFiles", VoidType()), 
-		Property("ClientSecurityLevel", CustomType("Enum")), 
-		Property("ServerScriptFiles", VoidType()), 
-		Property("ServerSecurityLevel", CustomType("Enum")), 
-		Property("MousePriority", IntType()), 
-		Property("KeyboardPriority", IntType())
+		Property("ClientLoadDefaultGamemode", BoolType(), True()), 
+		Property("ClientScriptFiles", VoidType(), True()), 
+		Property("ClientSecurityLevel", CustomType("Enum"), True()), 
+		Property("ServerScriptFiles", VoidType(), True()), 
+		Property("ServerSecurityLevel", CustomType("Enum"), True()), 
+		Property("MousePriority", IntType(), True()), 
+		Property("KeyboardPriority", IntType(), True())
 	], 
 	[
 		Function("Reload script", "", []), 
@@ -439,10 +439,10 @@ rules
 	[],
 	[], 
 	[
-		Property("MouseState", CustomType("MouseState")), 
-		Property("KeyboardState", CustomType("KeyboardState")), 
-		Property("WindowWidth", IntType()), 
-		Property("WindowHeight", IntType())
+		Property("MouseState", CustomType("MouseState"), False()), 
+		Property("KeyboardState", CustomType("KeyboardState"), False()), 
+		Property("WindowWidth", IntType(), False()), 
+		Property("WindowHeight", IntType(), False())
 	], 
 	[
 		
@@ -461,14 +461,14 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("LightType", CustomType("Enum")), 
-		Property("CastShadows", BoolType()), 
-		Property("DiffuseColour", CustomType("Colour")), 
-		Property("SpecularColour", CustomType("Colour")), 
-		Property("PowerScale", RealType()), 
-		Property("SpotlightFalloff", RealType()), 
-		Property("SpotlightInnerAngle", CustomType("Radian")), 
-		Property("SpotlightOuterAngle", CustomType("Radian"))
+		Property("LightType", CustomType("Enum"), True()), 
+		Property("CastShadows", BoolType(), True()), 
+		Property("DiffuseColour", CustomType("Colour"), True()), 
+		Property("SpecularColour", CustomType("Colour"), True()), 
+		Property("PowerScale", RealType(), True()), 
+		Property("SpotlightFalloff", RealType(), True()), 
+		Property("SpotlightInnerAngle", CustomType("Radian"), True()), 
+		Property("SpotlightOuterAngle", CustomType("Radian"), True())
 	], 
 	[
 		
@@ -477,15 +477,15 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("MeshFile", StringType()), 
-		Property("ShapeType", CustomType("Enum")), 
-		Property("ShapeParameters", CustomType("Vector3")), 
-		Property("ShapeUV", CustomType("Vector2")), 
-		Property("ShapeXSegments", IntType()), 
-		Property("ShapeYSegments", IntType()), 
-		Property("ShapeZSegments", IntType()), 
-		Property("ShapeRadius", RealType()), 
-		Property("ShapeRadius2", RealType())
+		Property("MeshFile", StringType(), True()), 
+		Property("ShapeType", CustomType("Enum"), True()), 
+		Property("ShapeParameters", CustomType("Vector3"), True()), 
+		Property("ShapeUV", CustomType("Vector2"), True()), 
+		Property("ShapeXSegments", IntType(), True()), 
+		Property("ShapeYSegments", IntType(), True()), 
+		Property("ShapeZSegments", IntType(), True()), 
+		Property("ShapeRadius", RealType(), True()), 
+		Property("ShapeRadius2", RealType(), True())
 	], 
 	[
 		
@@ -494,9 +494,9 @@ rules
 	[],
 	[], 
 	[
-		Property("X", CustomType("Axis")), 
-		Property("Y", CustomType("Axis")), 
-		Property("Z", CustomType("Axis"))
+		Property("X", CustomType("Axis"), True()), 
+		Property("Y", CustomType("Axis"), True()), 
+		Property("Z", CustomType("Axis"), True())
 	], 
 	[
 		Function("IsButtonDown", "", []), 
@@ -506,10 +506,10 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("Name", StringType()), 
-		Property("Quota", IntType()), 
-		Property("Enabled", BoolType()), 
-		Property("Speed", RealType())
+		Property("Name", StringType(), True()), 
+		Property("Quota", IntType(), True()), 
+		Property("Enabled", BoolType(), True()), 
+		Property("Speed", RealType(), True())
 	], 
 	[
 		Function("Clear", "", [])
@@ -518,9 +518,9 @@ rules
 	["ServerPlugin"],
 	[], 
 	[
-		Property("Type", CustomType("Enum")), 
-		Property("ResourceLocation", StringType()), 
-		Property("Group", StringType())
+		Property("Type", CustomType("Enum"), True()), 
+		Property("ResourceLocation", StringType(), True()), 
+		Property("Group", StringType(), True())
 	], 
 	[
 		
@@ -529,14 +529,14 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("PhysicsType", CustomType("Enum")), 
-		Property("Mass", RealType()), 
-		Property("Friction", RealType()), 
-		Property("Restitution", RealType()), 
-		Property("LinearDampening", RealType()), 
-		Property("AngularDampening", RealType()), 
-		Property("LinearSleepingThreshold", RealType()), 
-		Property("AngularSleepingThreshold", RealType())
+		Property("PhysicsType", CustomType("Enum"), True()), 
+		Property("Mass", RealType(), True()), 
+		Property("Friction", RealType(), True()), 
+		Property("Restitution", RealType(), True()), 
+		Property("LinearDampening", RealType(), True()), 
+		Property("AngularDampening", RealType(), True()), 
+		Property("LinearSleepingThreshold", RealType(), True()), 
+		Property("AngularSleepingThreshold", RealType(), True())
 	], 
 	[
 		Function("Activate", "", []), 
@@ -550,18 +550,18 @@ rules
 	["ServerPlugin"],
 	[], 
 	[
-		Property("SkyType", CustomType("Enum")), 
-		Property("SkyEnabled", BoolType()), 
-		Property("SkyMaterial", StringType()), 
-		Property("SkyDistance", RealType()), 
-		Property("SkyDrawFirst", BoolType()), 
-		Property("SkyOrientation", CustomType("Quaternion")), 
-		Property("SkyDomeCurvature", RealType()), 
-		Property("SkyDomeTiling", RealType()), 
-		Property("SkyDomeXSegments", IntType()), 
-		Property("SkyDomeYSegments", IntType()), 
-		Property("SkyDomeKeepYSegments", IntType()), 
-		Property("AmbientLight", CustomType("Colour"))
+		Property("SkyType", CustomType("Enum"), True()), 
+		Property("SkyEnabled", BoolType(), True()), 
+		Property("SkyMaterial", StringType(), True()), 
+		Property("SkyDistance", RealType(), True()), 
+		Property("SkyDrawFirst", BoolType(), True()), 
+		Property("SkyOrientation", CustomType("Quaternion"), True()), 
+		Property("SkyDomeCurvature", RealType(), True()), 
+		Property("SkyDomeTiling", RealType(), True()), 
+		Property("SkyDomeXSegments", IntType(), True()), 
+		Property("SkyDomeYSegments", IntType(), True()), 
+		Property("SkyDomeKeepYSegments", IntType(), True()), 
+		Property("AmbientLight", CustomType("Colour"), True())
 	], 
 	[
 		
@@ -579,22 +579,22 @@ rules
 	["ServerPlugin"],
 	[], 
 	[
-		Property("Timescale", RealType()), 
-		Property("FogDensity", RealType()), 
-		Property("FogColour", CustomType("Colour")), 
-		Property("ObserverLongitude", CustomType("Degree")), 
-		Property("ObserverLatitude", CustomType("Degree")), 
-		Property("CloudSpeed", CustomType("Vector2")), 
-		Property("CloudBlendTime", RealType()), 
-		Property("CloudCoverage", RealType()), 
-		Property("CloudHeight", RealType()), 
-		Property("PrecipitationType", CustomType("Enum")), 
-		Property("PrecipitationIntensity", RealType()), 
-		Property("PrecipitationSpeed", RealType()), 
-		Property("PrecipitationCameraSpeedScale", RealType()), 
-		Property("SunAmbientMultiplier", CustomType("Colour")), 
-		Property("SunSpecularMultiplier", CustomType("Colour")), 
-		Property("SunDiffuseMultiplier", CustomType("Colour"))
+		Property("Timescale", RealType(), True()), 
+		Property("FogDensity", RealType(), True()), 
+		Property("FogColour", CustomType("Colour"), True()), 
+		Property("ObserverLongitude", CustomType("Degree"), True()), 
+		Property("ObserverLatitude", CustomType("Degree"), True()), 
+		Property("CloudSpeed", CustomType("Vector2"), True()), 
+		Property("CloudBlendTime", RealType(), True()), 
+		Property("CloudCoverage", RealType(), True()), 
+		Property("CloudHeight", RealType(), True()), 
+		Property("PrecipitationType", CustomType("Enum"), True()), 
+		Property("PrecipitationIntensity", RealType(), True()), 
+		Property("PrecipitationSpeed", RealType(), True()), 
+		Property("PrecipitationCameraSpeedScale", RealType(), True()), 
+		Property("SunAmbientMultiplier", CustomType("Colour"), True()), 
+		Property("SunSpecularMultiplier", CustomType("Colour"), True()), 
+		Property("SunDiffuseMultiplier", CustomType("Colour"), True())
 	], 
 	[
 		
@@ -603,16 +603,16 @@ rules
 	["ServerPlugin"],
 	[], 
 	[
-		Property("TerrainType", CustomType("Enum")), 
-		Property("HeightmapType", CustomType("Enum")), 
-		Property("ClientHeightmapFile", StringType()), 
-		Property("InputScale", RealType()), 
-		Property("HeightOffset", RealType()), 
-		Property("LayerInstances", VoidType()), 
-		Property("MinHeight0", RealType()), 
-		Property("FadeDistance0", RealType()), 
-		Property("MinHeight1", RealType()), 
-		Property("FadeDistance1", RealType())
+		Property("TerrainType", CustomType("Enum"), True()), 
+		Property("HeightmapType", CustomType("Enum"), True()), 
+		Property("ClientHeightmapFile", StringType(), True()), 
+		Property("InputScale", RealType(), True()), 
+		Property("HeightOffset", RealType(), True()), 
+		Property("LayerInstances", VoidType(), True()), 
+		Property("MinHeight0", RealType(), True()), 
+		Property("FadeDistance0", RealType(), True()), 
+		Property("MinHeight1", RealType(), True()), 
+		Property("FadeDistance1", RealType(), True())
 	], 
 	[
 		
@@ -621,8 +621,8 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("Caption", StringType()), 
-		Property("Colour", CustomType("Colour"))
+		Property("Caption", StringType(), True()), 
+		Property("Colour", CustomType("Colour"), True())
 	], 
 	[
 		
@@ -653,9 +653,9 @@ rules
 	[],
 	[], 
 	[
-		Property("Radian", CustomType("Radian")), 
-		Property("Degree", CustomType("Degree")), 
-		Property("Angle", RealType())
+		Property("Radian", CustomType("Radian"), False()), 
+		Property("Degree", CustomType("Degree"), False()), 
+		Property("Angle", RealType(), True())
 	], 
 	[
 		
@@ -664,10 +664,10 @@ rules
 	[],
 	[], 
 	[
-		Property("R", RealType()), 
-		Property("G", RealType()), 
-		Property("B", RealType()), 
-		Property("A", RealType())
+		Property("R", RealType(), True()), 
+		Property("G", RealType(), True()), 
+		Property("B", RealType(), True()), 
+		Property("A", RealType(), True())
 	], 
 	[
 		
@@ -676,9 +676,9 @@ rules
 	[],
 	[], 
 	[
-		Property("Radians", RealType()), 
-		Property("AngleUnits", RealType()), 
-		Property("Degrees", RealType())
+		Property("Radians", RealType(), False()), 
+		Property("AngleUnits", RealType(), False()), 
+		Property("Degrees", RealType(), True())
 	], 
 	[
 		Function("AddDegree", "", []), 
@@ -715,19 +715,19 @@ rules
 	[],
 	[], 
 	[
-		Property("LocalAxes", CustomType("Matrix3")), 
-		Property("FullTransform", CustomType("Matrix4")), 
-		Property("DerivedScale", CustomType("Vector3")), 
-		Property("InitialPosition", CustomType("Vector3")), 
-		Property("InitialOrientation", CustomType("Quaternion")), 
-		Property("InitialScale", CustomType("Vector3")), 
-		Property("Position", CustomType("Vector3")), 
-		Property("DerivedPosition", CustomType("Vector3")), 
-		Property("Orientation", CustomType("Quaternion")), 
-		Property("DerivedOrientation", CustomType("Quaternion")), 
-		Property("Scale", CustomType("Vector3")), 
-		Property("InheritOrientation", BoolType()), 
-		Property("InheritScale", BoolType())
+		Property("LocalAxes", CustomType("Matrix3"), False()), 
+		Property("FullTransform", CustomType("Matrix4"), False()), 
+		Property("DerivedScale", CustomType("Vector3"), False()), 
+		Property("InitialPosition", CustomType("Vector3"), False()), 
+		Property("InitialOrientation", CustomType("Quaternion"), False()), 
+		Property("InitialScale", CustomType("Vector3"), False()), 
+		Property("Position", CustomType("Vector3"), True()), 
+		Property("DerivedPosition", CustomType("Vector3"), True()), 
+		Property("Orientation", CustomType("Quaternion"), True()), 
+		Property("DerivedOrientation", CustomType("Quaternion"), True()), 
+		Property("Scale", CustomType("Vector3"), True()), 
+		Property("InheritOrientation", BoolType(), True()), 
+		Property("InheritScale", BoolType(), True())
 	], 
 	[
 		Function("Translate", "", []), 
@@ -746,25 +746,25 @@ rules
 	[],
 	[], 
 	[
-		Property("X", RealType()), 
-		Property("Y", RealType()), 
-		Property("Z", RealType()), 
-		Property("W", RealType()), 
-		Property("XAxis", CustomType("Vector3")), 
-		Property("YAxis", CustomType("Vector3")), 
-		Property("ZAxis", CustomType("Vector3")), 
-		Property("NormalizedCopy", RealType()), 
-		Property("Inverse", CustomType("Quaternion")), 
-		Property("UnitInverse", CustomType("Quaternion")), 
-		Property("Exp", CustomType("Quaternion")), 
-		Property("Log", CustomType("Quaternion")), 
-		Property("IsNaN", BoolType()), 
-		Property("Roll", CustomType("Radian")), 
-		Property("ShortestRoll", CustomType("Radian")), 
-		Property("Pitch", CustomType("Radian")), 
-		Property("ShortestPitch", CustomType("Radian")), 
-		Property("Yaw", CustomType("Radian")), 
-		Property("ShortestYaw", CustomType("Radian"))
+		Property("X", RealType(), True()), 
+		Property("Y", RealType(), True()), 
+		Property("Z", RealType(), True()), 
+		Property("W", RealType(), True()), 
+		Property("XAxis", CustomType("Vector3"), False()), 
+		Property("YAxis", CustomType("Vector3"), False()), 
+		Property("ZAxis", CustomType("Vector3"), False()), 
+		Property("NormalizedCopy", RealType(), False()), 
+		Property("Inverse", CustomType("Quaternion"), False()), 
+		Property("UnitInverse", CustomType("Quaternion"), False()), 
+		Property("Exp", CustomType("Quaternion"), False()), 
+		Property("Log", CustomType("Quaternion"), False()), 
+		Property("IsNaN", BoolType(), False()), 
+		Property("Roll", CustomType("Radian"), False()), 
+		Property("ShortestRoll", CustomType("Radian"), False()), 
+		Property("Pitch", CustomType("Radian"), False()), 
+		Property("ShortestPitch", CustomType("Radian"), False()), 
+		Property("Yaw", CustomType("Radian"), False()), 
+		Property("ShortestYaw", CustomType("Radian"), False())
 	], 
 	[
 		Function("Dot", "", []), 
@@ -781,9 +781,9 @@ rules
 	[],
 	[], 
 	[
-		Property("Degrees", RealType()), 
-		Property("AngleUnits", RealType()), 
-		Property("Radians", RealType())
+		Property("Degrees", RealType(), False()), 
+		Property("AngleUnits", RealType(), False()), 
+		Property("Radians", RealType(), True())
 	], 
 	[
 		Function("AddRadian", "", []), 
@@ -802,12 +802,12 @@ rules
 	[],
 	[], 
 	[
-		Property("X", RealType()), 
-		Property("Y", RealType()), 
-		Property("Length", RealType()), 
-		Property("SquaredLength", RealType()), 
-		Property("IsZeroLength", BoolType()), 
-		Property("NormalisedCopy", CustomType("Vector2"))
+		Property("X", RealType(), True()), 
+		Property("Y", RealType(), True()), 
+		Property("Length", RealType(), False()), 
+		Property("SquaredLength", RealType(), False()), 
+		Property("IsZeroLength", BoolType(), False()), 
+		Property("NormalisedCopy", CustomType("Vector2"), False())
 	], 
 	[
 		Function("Dot", "", []), 
@@ -824,14 +824,14 @@ rules
 	[],
 	[], 
 	[
-		Property("X", RealType()), 
-		Property("Y", RealType()), 
-		Property("Z", RealType()), 
-		Property("Zero", CustomType("Vector3")), 
-		Property("Length", RealType()), 
-		Property("SquaredLength", RealType()), 
-		Property("IsZeroLength", BoolType()), 
-		Property("NormalisedCopy", CustomType("Vector3"))
+		Property("X", RealType(), True()), 
+		Property("Y", RealType(), True()), 
+		Property("Z", RealType(), True()), 
+		Property("Zero", CustomType("Vector3"), False()), 
+		Property("Length", RealType(), False()), 
+		Property("SquaredLength", RealType(), False()), 
+		Property("IsZeroLength", BoolType(), False()), 
+		Property("NormalisedCopy", CustomType("Vector3"), False())
 	], 
 	[
 		Function("Distance", "", []), 
@@ -866,10 +866,10 @@ rules
 	[],
 	[], 
 	[
-		Property("X", RealType()), 
-		Property("Y", RealType()), 
-		Property("Z", RealType()), 
-		Property("W", RealType())
+		Property("X", RealType(), True()), 
+		Property("Y", RealType(), True()), 
+		Property("Z", RealType(), True()), 
+		Property("W", RealType(), True())
 	], 
 	[
 		Function("Dot", "", [])
@@ -878,7 +878,7 @@ rules
 	[],
 	[], 
 	[
-		Property("ID", IntType())
+		Property("ID", IntType(), True())
 	], 
 	[
 		

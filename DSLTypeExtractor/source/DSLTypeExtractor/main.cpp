@@ -255,7 +255,8 @@ int main( int argc, char* argv[] )
             const camp::Property& prop = metaclass.property( j, true );
 
             if( !first ) file << ", \n\t";
-            file << "Property(\"" << prop.name() << "\", " << typeName( prop ) << ")";
+            file << "Property(\"" << prop.name() << "\", " << typeName( prop ) << ", " << 
+                (prop.writable() ? "True()" : "False()") << ")";
             first = false;
         }
         file << "\n], \n[\n\t";
