@@ -52,12 +52,13 @@ rules // Name-based look-up transformations
 	get-plugin: pluginName -> <get-declaration(|Plugins())> pluginName
 	get-var: (objectName, varName) -> <get-declaration(|Vars(objectName))> varName
 	get-prop: (objectName, propName) -> <get-declaration(|Props(objectName))> propName
-	get-var2: varName -> <get-declaration(|Vars())> varName
+	get-var: varName -> <get-declaration(|Vars())> varName
 	get-event: eventName -> <get-declaration(|Events())> eventName
 	get-event: (objectName, eventName) -> <get-declaration(|Events(objectName))> eventName
 	get-event: (objectName, stateName, eventName) -> <get-declaration(|Events(objectName, stateName))> eventName
 	get-state: (objectName, stateName) -> <get-declaration(|States(objectName))> stateName
 	get-defaultstate: (objectName, stateName) -> <get-declaration(|DefaultStates(objectName))> stateName
+	get-state: stateName -> <get-declaration(|States())> stateName
 	
 	get-component(|objectName): componentName -> <get-declaration(|Components(objectName))> componentName
 	get-component(|objectName, stateName): componentName -> <get-declaration(|Components(objectName, stateName))> componentName

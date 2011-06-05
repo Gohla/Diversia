@@ -90,6 +90,10 @@ rules // declarations
 		where <store-declaration(|Components())> (name, d)	
 	store-declarations2: d@PluginDef(name, _, _) -> d
 		where <store-declaration(|Plugins())> (name, d)	
+	store-declarations2: d@StateDef(name, _, _, _, _) -> d
+		where <store-declaration(|States())> (name, d)	
+	store-declarations2: d@DefaultStateDef(name, _, _, _, _) -> d
+		where <store-declaration(|States())> (name, d)	
 
 			
 rules // references

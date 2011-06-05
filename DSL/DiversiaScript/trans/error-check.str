@@ -112,7 +112,15 @@ rules // broken references
 		
 	editor-error: e@ComponentProp(type,name,exp) -> (name, $[Undefined property.])
 		where not(<get-type-property>(type, name))
+
+rules // states
 	
+	editor-error: e@StateRef(name) -> (name, $[Undefined state.])
+		where not(<get-state>name)
+	
+	editor-error: e@ObjectDef(name,_,_,_,_,[],_,_)-> (name, $[Object is missing a default state.])
+
+
 rules // debug errors
 	
 	editor-error: e@ComponentProp(name,exp) -> (e, $[Decorate failed.])

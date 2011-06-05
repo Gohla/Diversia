@@ -4,6 +4,7 @@ signature constructors // namespaces
 	
 	Objects 		: Namespace
 	States 			: Object 			-> Namespace
+	States			: Namespace
 	DefaultStates	: Object 			-> Namespace
 	Components 		: Namespace
 	Components 		: Object 			-> Namespace

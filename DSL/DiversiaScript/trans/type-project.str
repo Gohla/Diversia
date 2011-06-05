@@ -45,7 +45,7 @@ rules  // expr
 	type-of: Vector3Const(_,_,_) -> CustomType("Vector3")
 	type-of: Vector4Const(_,_,_,_) -> CustomType("Vector4")
 	
-	type-of: VarRef(name) -> <type-of><get-var2> name
+	type-of: VarRef(name) -> <type-of><get-var> name
 	type-of: PropRef(property, exp) -> <type-of><get-type-property>(<type-of>exp, property)		
 	type-of: This(name) -> <type-of><get-object> name
 	type-of: New(object,_) -> <type-of>object

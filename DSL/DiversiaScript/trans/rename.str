@@ -47,8 +47,9 @@ rules //defs
 			)
 	rename-def :
 		StateDef(name, propAssigns, componentDefs, varDefs, eventDefs) ->  
-		StateDef(name, propAssigns', componentDefs', varDefs', eventDefs')
+		StateDef(name', propAssigns', componentDefs', varDefs', eventDefs')
 		where 
+			<rename-declaration(|States())> name => name';
 			new-scope (
 				<rename-all-defs> componentDefs => componentDefs';
 				<rename-all-defs> varDefs => varDefs';
@@ -60,8 +61,9 @@ rules //defs
 			)
 	rename-def :
 		DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs) ->  
-		DefaultStateDef(name, propAssigns', componentDefs'', varDefs'', eventDefs'')
+		DefaultStateDef(name', propAssigns', componentDefs'', varDefs'', eventDefs'')
 		where 
+			<rename-declaration(|States())> name => name';
 			new-scope (
 				<rename-all-defs> componentDefs => componentDefs';
 				<rename-all-defs> varDefs => varDefs';
@@ -113,6 +115,9 @@ rules // refs
 	rename-ref :
 		PropRef(name, object) -> ComponentRef(name')
 		where <rename-reference(|Components())> name => name'
+	rename-ref :
+		StateRef(name) -> StateRef(name')
+		where <rename-reference(|States())> name => name'
 	
 			
 		
