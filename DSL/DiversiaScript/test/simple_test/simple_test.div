@@ -26,6 +26,10 @@ def Test {
     
     on Create() {
     	Bla = 1;
+    	
+	    in 2 seconds {
+            Bla = 42;
+        }
     }
     on Update() {
     	Bla++;
@@ -42,6 +46,12 @@ def Test {
 	    	Bla = --Bla + 1;
 	    	Test = Degree(10);
 	    	Position = [1, 2, 3];
+	    	
+            switch(Bla) {
+                case 1: ++Bla;
+                case 2: { --Bla; ++Zomg; ++Test; }
+                case 42: this.Destroy();
+           }
 	    }
 	    on Frame(TimeElapsed) {
 	    	Bla = Bla / 3;
@@ -56,9 +66,15 @@ def Test {
     	}
     	
 		on Update(){
-	    	Bla = Bla * 3;
-	    	Test = Degree(20);
-	    	Position = [3, 4, 5];
+			if(true) {
+				if(this.Position.Y > 0.5) this.Yaw(Radian(Degree(-90)));
+		    	Test = Degree(20);
+		    	Position = [3, 4, 5];
+	    	} else if(false) {
+	    		this.Destroy();
+	    	} else {
+	    		this.OMG();
+	    	}
 	    }
 	    on Frame(TimeElapsed) {
 	    	Bla = Bla + 4;
@@ -90,5 +106,6 @@ def Test2 {
 }
 
 on Create() {
-	var trololo : Int = 1;
+	var Trololo : Real = 5.0;
+	interpolate Trololo linearly from 5.0 to -5.0 over 2 seconds; 
 }
