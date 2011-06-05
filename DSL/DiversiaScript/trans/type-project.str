@@ -63,7 +63,7 @@ rules // defs
     type-of: PropDef(_,_,type,_) -> type
     type-of: ComponentDef(_, type, _) -> type
 	type-of: PluginDef(_, type, _) -> type
-    type-of: Property(_,type) -> type  
+    type-of: Property(_,type,_) -> type  
 	type-of: Function(_,type,_) -> type
 		where not(<?type> "") // TODO: temp stuff
 	type-of: Function(_,"",_) -> VoidType() //  TODO: temp stuff

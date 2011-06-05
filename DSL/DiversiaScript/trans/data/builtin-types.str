@@ -28,7 +28,7 @@ rules
 		<fetch-elem(has-name(|function))><get-builtin-functions> type
 
 	has-name(|name) =  ?BuiltinType(name,_,_,_,_)
-	has-name(|name) =  ?Property(name,_)
+	has-name(|name) =  ?Property(name,_,_)
 	has-name(|name) =  ?Function(name,_,_)
 
 	get-builtin-properties: type -> <get-builtin-properties><get-builtin-type> type	
