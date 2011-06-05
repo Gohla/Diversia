@@ -8,16 +8,15 @@ imports
 	data/builtin-types
 
 strategies
-	decorate-all = try(alltd(decorate))
+	decorate-all = try(alltd(decorate)); try(alltd(decorate-prop))
 rules 
 
 	decorate: EventDef(name, params, statements) -> 
-			  EventDef(name, params,statements')
+			  EventDef(name, params, statements')
 			where
 			 	<innermost(decorate-event)> statements => statements'
 	
 	decorate-event: VarRef(name) -> PropRef(name, "ShouldNotHereAfterRename")
-	
 
 	decorate: ObjectDef(name, propAssigns, propDefs, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) ->
 			  ObjectDef(name, propAssigns', propDefs', componentDefs', varDefs', defaultStateDef', stateDefs', eventDefs')
@@ -28,22 +27,35 @@ rules
 			 	<innermost(decorate-object(|name))> defaultStateDef => defaultStateDef';
 			 	<innermost(decorate-object(|name))> stateDefs => stateDefs';
 			 	<innermost(decorate-object(|name))> eventDefs => eventDefs';
-			 	<innermost(decorate-object(|name))> propDefs => propDefs'//;
-			 	//<map(decorate2(|name))> propAssigns' => propAssigns''
+			 	<innermost(decorate-object(|name))> propDefs => propDefs'
 			 	
 	decorate-object(|object): VarRef(name) -> PropRef(name, This())
 	decorate-object(|object): PropDef(name,type,expr) -> PropDef(object,name,type,expr)
 	decorate-object(|object): New(name, params) -> Call(This(), name, params)
-		where not(is-builtin-type(|name))
+		where not(is-builtin-type(|name)) //TODO match with constructor too.
 	decorate-object(|object): This() -> This(object)
 	
-		
-	//decorate(|object): VarDef(name,type,expr) -> VarDef(object,name,type,expr) // not yet! :p
-	//decorate(|object): ObjectNew(ObjectRef(name), propAssigns) -> ObjectNew(ObjectRef(name), propAssigns')
-	//	where <map(decorate2(|name))> propAssigns => propAssigns'
-		
-	//decorate2(|object): ObjectProp(name , expr) -> ObjectProp(PropRef(name, object) , expr)
-	//	where not(<?PropRef(_,_)> name)
+	
+	decorate-prop: ObjectDef(name, props, propDefs, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) ->
+			  ObjectDef(name, props', propDefs, componentDefs', varDefs, defaultStateDef', stateDefs', eventDefs')
+			where 
+				<map(decorate-prop(|CustomType(name)))> props => props';
+				<alltd(decorate-prop)> componentDefs => componentDefs';
+				<alltd(decorate-prop)> defaultStateDef => defaultStateDef'; 
+				<alltd(decorate-prop)> stateDefs => stateDefs';
+				<alltd(decorate-prop)> eventDefs => eventDefs'
+	
+	decorate-prop: ComponentDef(name, type, props) -> ComponentDef(name, type, props')
+			where <map(decorate-prop(|type))> props => props'
+	decorate-prop: PluginDef(name, type, props) -> PluginDef(name, type, props')
+			where <map(decorate-prop(|type))> props => props'		
+	decorate-prop: ObjectNew(ObjectRef(name), props) -> ObjectNew(ObjectRef(name), props')
+			where <map(decorate-prop(|CustomType(name)))> props => props'		
+	
+	decorate-prop(|type): ComponentProp(name, expr) -> ComponentProp(type, name, expr)
+	decorate-prop(|type): PluginProp(name, expr) -> PluginProp(type, name, expr)
+	decorate-prop(|type): ObjectProp(name, expr) -> ObjectProp(type, name, expr)
+	
 	
                      
 	

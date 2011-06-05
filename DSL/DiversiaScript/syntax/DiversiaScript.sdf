@@ -56,9 +56,9 @@ exports
     VarDef -> InsideDef
     
     %% Property Def
-    "prop" Id ":" Type "=" Exp ";" -> PropDef {cons("PropDef")}
-    "prop" Id ":" Type ";" ->  PropDef {cons("PropDefNoInit")} %% desugared
-    "prop" Id "=" Exp ";" -> VarDef {cons("PropDefNoType")} %% type inferance
+    "prop" Id ":" Type "=" Exp -> PropDef {cons("PropDef")}
+    "prop" Id ":" Type ->  PropDef {cons("PropDefNoInit")} %% desugared
+    "prop" Id "=" Exp -> VarDef {cons("PropDefNoType")} %% type inferance
     PropDef -> InsideObjectDef
     
     %% Expressions

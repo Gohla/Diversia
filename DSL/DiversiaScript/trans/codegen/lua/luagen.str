@@ -131,7 +131,7 @@ rules
 		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), type), String(name), False()]))]),
 		<map(componentprop-to-lua(|name))> properties
 	]
-	componentprop-to-lua(|componentName): ComponentProp(name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
+	componentprop-to-lua(|componentName): ComponentProp(type, name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
 	destroy-component-to-lua: name -> Call(VarRef(name), "Destroy", Args([]))
 	
 	// Object properties
@@ -140,7 +140,7 @@ rules
 	propassigns-to-lua: (properties, functions) -> functions'
 		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
 		where functions' := <concat> [[<lua-funcdef> ("Create", <map(propassign-to-lua)> properties)], functions]	
-	propassign-to-lua: ObjectProp(name, exp) -> Assignment([Access("Object", VarRef(name))], <to-lua> exp)
+	propassign-to-lua: ObjectProp(type, name, exp) -> Assignment([Access("Object", VarRef(name))], <to-lua> exp)
 
 	// States
 	states-to-lua: (states, functions) -> <concat> [functions, <map(state-to-lua)> states]
@@ -185,7 +185,7 @@ rules
 		Assignment([VarRef(name)], [Call(VarRef("PluginManager"), "CreatePlugin", Args([Access(VarRef("PluginType"), type), String(name)]))]),
 		<map(pluginprop-to-lua(|name))> properties
 	]
-	pluginprop-to-lua(|pluginName): PluginProp(name, exp) -> Assignment([Access(pluginName, VarRef(name))], <to-lua> exp)
+	pluginprop-to-lua(|pluginName): PluginProp(type, name, exp) -> Assignment([Access(pluginName, VarRef(name))], <to-lua> exp)
 	
 	// Global events
 	global-event-to-lua: EventDef(name, params, statements) -> <lua-funcdef> (name, <map(to-lua)> params, <map(to-lua)> statements)

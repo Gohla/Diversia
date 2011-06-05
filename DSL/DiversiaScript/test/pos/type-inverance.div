@@ -5,7 +5,6 @@ def Object1 {
     var vector3Lit:Vector3 = [2,4,5];
     var vector4Lit:Vector4 = [2,4,5,6];
     var stringLit:String = "cool";
-    var RandomBull:BuildIn = BuildIn();
     var intOp:Int = 4 + 7;
     var intOp:Int = 4 / 7;
     var intOp:Real = 4.0 * 8.0;

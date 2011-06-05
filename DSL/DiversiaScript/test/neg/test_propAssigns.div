@@ -1,0 +1,68 @@
+plugin Sky{
+	bob = 2
+	Timescale = 2.3
+	SunAmbientMultiplier = false	
+}
+def Bob{
+	
+	var tempPos:Vector2 = [0,0,0];
+	
+	component lol:Mesh{ 
+		bob = 4
+		MeshFile = "cool"
+		ShapeYSegments = false
+	}
+	
+	Position = [4,3]
+	Lala = [4,4]
+	
+	prop Lala:Vector2 = [4,4]
+	prop Lala2:Vector3 = 3
+	
+	state we{
+		Lala = [2,3]
+		Lala2 = [5,6]
+		component lol2:Mesh{
+			bob5 = 4
+			MeshFile = "cool"
+			ShapeYSegments = false
+		}
+		component lol7:Mesh{
+			bob2 = 4
+			MeshFile = "cool"
+			ShapeYSegments = false
+		}
+		on Jump3(){
+			var Dude:Bob = new Bob{
+				Position = [1,2,3]
+				Lala = 5
+			};
+		}
+	}
+	default state we{
+		component hous:Mesh{
+			bob2 = 4
+		}
+		component low:Mesh{
+			bob2 = 4
+		}
+		on Jump2(){
+			var Dude:Bob = new Bob{
+				Position = [1,2,3]
+				Lala = 5
+			};
+		}
+	}
+	on Jump(){
+		var Dude:Bob = new Bob{
+			Position = tempPos
+			Lala = 5
+		};
+	}
+}
+on Frame(){	
+	var Dude:Bob = new Bob{
+		Position = [1,2,3]
+		Lala = 5
+	};
+}

@@ -37,3 +37,5 @@ signature constructors // Object & state
 	This: Id -> This
 	
 	ObjectProp: Id * Id * Exp -> ObjectProp
+	PluginProp: Id * Id * Exp -> PluginProp
+	ComponentProp: Id * Id * Exp -> ComponentProp

@@ -31,10 +31,12 @@ rules // defs
 
 	
 	
-rules // 
+rules // read-only/writeable
 	
 	editor-error: e@Assign(exp, _) -> (exp, $[Not a reference or Read-only.]) 
 		where <read-only> exp
+
+rules // types
 	
 	editor-error: e@Assign(exp1, exp2) -> (e, $[Expected [<printable>type1] but found [<printable>type2].]) 
 		where
@@ -49,15 +51,33 @@ rules //
 			<type-of> expr => type2;
 			not(<match-type>(type1,type2))
 			
-	editor-error: e@AOp(_, _, exp) -> (exp, $[Expected Int or Real but found [<printable>type2]])
+	editor-error: e@AOp(_, _, exp) -> (exp, $[Expected Int or Real but found [<printable>type]])
 		where 
-			<type-of> exp => type2;
-			not(<match-type>(<type-of> e,type2))
+			<type-of> exp => type;
+			not(<match-type>(<type-of> e,type))
 			
-	editor-error: e@AOp(_, exp, _) -> (exp, $[Expected Int or Real but found [<printable>type2]])
+	editor-error: e@AOp(_, exp, _) -> (exp, $[Expected Int or Real but found [<printable>type]])
 		where 
-			<type-of> exp => type2;
-			not(<match-type>(<type-of> e,type2))
+			<type-of> exp => type;
+			not(<match-type>(<type-of> e,type))
+			
+	editor-error: e@ObjectProp(type,name,exp) -> (exp, $[Expected [<printable>type2] but found [<printable>type3].])
+		where
+			<type-of><get-type-property>(type, name) => type2;
+			<type-of> exp => type3;
+			not(<match-type>(type2,type3))
+		
+	editor-error: e@PluginProp(type,name,exp) -> (exp, $[Expected [<printable>type2] but found [<printable>type3].])
+		where 
+			<type-of><get-type-property>(type, name) => type2;
+			<type-of> exp => type3;
+			not(<match-type>(type2,type3))
+		
+	editor-error: e@ComponentProp(type,name,exp) -> (exp, $[Expected [<printable>type2] but found [<printable>type3].])
+		where 
+			<type-of><get-type-property>(type, name) => type2;
+			<type-of> exp => type3;
+			not(<match-type>(type2,type3))
 
 rules // broken references
 	
@@ -69,4 +89,14 @@ rules // broken references
 	
 	editor-error: e@Call(This(object), name, []) -> (e, $[Undefined function.])
 		where not(is-builtin-function(|"ClientObject", name)) // TODO added custom functions
+		
+	editor-error: e@ObjectProp(type,name,exp) -> (name, $[Undefined property.])
+		where not(<get-type-property>(type, name))
+		
+	editor-error: e@PluginProp(type,name,exp) -> (name, $[Undefined property.])
+		where not(<get-type-property>(type, name))
+		
+	editor-error: e@ComponentProp(type,name,exp) -> (name, $[Undefined property.])
+		where not(<get-type-property>(type, name))
+	
 		
