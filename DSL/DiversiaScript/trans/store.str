@@ -84,12 +84,13 @@ rules // declarations
 
 	store-declarations2: d@VarDef(name,_,_) -> d
 		where <store-declaration(|Vars())> (name, d)
-	//store-declarations2: d@VarDefNoType(name,_) -> d
-	//	where <store-declaration(|Vars())> (name, d)
 	store-declarations2: d@Param(name,_) -> d
-		where <store-declaration(|Vars())> (name, d)
-	//store-declarations2: d@Param(name) -> d
-	//	where <store-declaration(|Vars())> (name, d)
+		where <store-declaration(|Vars())> (name, d)	
+	store-declarations2: d@ComponentDef(name, _, _) -> d
+		where <store-declaration(|Components())> (name, d)	
+	store-declarations2: d@PluginDef(name, _, _) -> d
+		where <store-declaration(|Plugins())> (name, d)	
+
 			
 rules // references
 	

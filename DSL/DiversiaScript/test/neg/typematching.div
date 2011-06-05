@@ -1,0 +1,29 @@
+
+plugin Sky{}
+plugin Haha{}
+
+def Test {
+	
+	prop lala:Int = 0;
+	
+	component Animation {}
+	component Vector2 {}
+	
+	on Frame(){
+		var test:Test = new Test{}; 
+		var temp:Vector3 = [3,0]; 
+		var sec:Void = "bob";
+		var m:Mesh = Mesh(); // <-- this is a component, is this allowed?
+		
+		temp = Sky.FogColour;
+		temp = Animation.HasEnded();	
+		temp = test.lala;
+		temp = m.ShapeUV;
+		temp = Position.IsZeroLength; 
+		Destroy(); 
+		Kill();
+		sec = Position.Normalize(); 
+		lala = temp.Zero.Zero.Normalize(); 
+	}
+	
+}

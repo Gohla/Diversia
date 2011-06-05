@@ -14,11 +14,12 @@ rules
 	
 	is-builtin-type(|type) = <get-builtin-type> type
 	is-builtin-property(|type,property) = <get-builtin-property> (type,property) 
-	is-builtin-function(|type,function) = <get-builtin-property> (type,function)
-	is-builtin-plugin(|name) = <elem(?name)><plugins>
-	is-builtin-component(|name) = <elem(?name)><conc>(<components>,<multiple-components>)
+	is-builtin-function(|type,function) = <get-builtin-function> (type,function)
+	is-builtin-plugin(|name) = <fetch(?name)><plugins>
+	is-builtin-component(|name) = <fetch(?name)><components>
 
 	get-builtin-type: type -> <fetch-elem(has-name(|type))><builtin-types> 
+	get-builtin-type: CustomType(type) -> <get-builtin-type> type
 		
 	get-builtin-property: (type, property) -> 
 		<fetch-elem(has-name(|property))><get-properties><get-builtin-type> type
@@ -34,7 +35,7 @@ rules
 		<conc>(properties,<mapconcat(get-builtin-type; get-properties)>parents)
 	
 	get-functions: BuiltinType(_,parents,_,_,functions) -> 
-		<conc>(functions,<mapconcat(get-builtin-type; get-properties)>parents)
+		<conc>(functions,<mapconcat(get-builtin-type; get-functions)>parents)
 		
 	builtin-types = ![
 	BuiltinType("ClientComponent",

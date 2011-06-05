@@ -52,42 +52,52 @@ rules  // expr
 	type-of: Vector3Const(_,_,_) -> CustomType("Vector3")
 	type-of: Vector4Const(_,_,_,_) -> CustomType("Vector4")
 	
-	type-of: Property(_,type) -> type  
-	type-of: Function(_,type,_) -> type
-
 	type-of: VarRef(name) -> <type-of><get-var2> name
-	type-of: PropRef(name, object) -> <type-of><get-builtin-property>(object, name)
 	
-	
-	
-	get-object-property: (object, property) -> property
-		where 
-		<get-prop> (object, property) <+ <get-builtin-property>("ClientObject", property) => property
-	is-object-property(|object, property) = <get-object-property> (object, property)
-	
-	type-of: PropRef(name, object) -> type
-		where
-			<type-of><get-object-property> (object, name) => type	
+	type-of: PropRef(property, This(object)) -> <type-of><get-object-property>(object, property)
 			
-	type-of: This() -> "TODO: CustomType(object)"
+	type-of: This(object) -> CustomType(object)
 	type-of: New(object,_) -> CustomType(object)
 	
-	type-of: Access(object, prop) -> "TODO: can be anything execpt VoidType"
-	type-of: Call(object, function, params) -> "TODO: can be anything"
+	type-of: Access(exp, prop) -> type
+		where 
+			<get-name><type-of>exp => object;
+			is-object-type(|object);
+			<type-of><get-object-property> (object,prop) => type
+			
+	type-of: Access(exp, prop) -> type
+		where 
+			<type-of>exp => builtin;
+			is-builtin-type(|builtin);
+			<type-of><get-builtin-property>(builtin,prop) => type
+
+	type-of: Call(exp, function, _) -> type
+		where 
+			<get-name><type-of>exp => object;
+			is-object-type(|object);
+			<type-of><get-object-function> (object,function) => type
+			
+	type-of: Call(exp, function, _) -> type
+		where 
+			<type-of> exp => builtin;
+			is-builtin-type(|builtin);
+			<type-of><get-builtin-function> (builtin,function) => type
 	
-	// type-of: ObjectRef(name) -> CustomType(name)
-	// type-of: StateRef(name) -> CustomType(name)
-	//type-of: ObjectProp(name,_) -> "TODO: can be anything execpt VoidType"
+	type-of: ObjectRef(name) -> CustomType(name)
+	type-of: ComponentRef(name) -> <type-of><get-component> name
+	type-of: PluginRef(name) -> <type-of><get-plugin> name
 
 rules // defs
 	type-of: ObjectDef(name, _, _, _, _, _, _, _, _) -> CustomType(name)
 	type-of: ExternalObjectDef(name) -> CustomType(name)
-   
-	//type-of: ComponentDef(name, _) -> CustomType(name)
-	//type-of: StateDef(name, _, _, _, _) -> CustomType(name)
-	//type-of: DefaultStateDef(name, _, _, _, _) -> CustomType(name)
-	//type-of: EventDef(name, _, _) -> CustomType(name)
-   
+	   
 	type-of: Param(_, type) -> type
     type-of: VarDef(_, type, _) -> type	
+    type-of: PropDef(_,_,type,_) -> type
+    type-of: ComponentDef(_, type, _) -> type
+	type-of: PluginDef(_, type, _) -> type
+    type-of: Property(_,type) -> type  
+	type-of: Function(_,type,_) -> type
+		where not(<?type> "") // TODO: temp stuff
+	type-of: Function(_,"",_) -> VoidType() //  TODO: temp stuff
 	

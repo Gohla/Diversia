@@ -26,22 +26,20 @@ rules
 			<type-of> expr => type2;
 			not(match-type(|type1,type2))
 	
-	editor-error: e@PropRef(name, object) -> (e, $[Undefined variable or property.])
-		where
-			is-object-type(|object);
-			not(is-builtin-property(|"ClientObject", name) <+ <get-prop> (object, name))
+	editor-error: e@PropRef(name, This(object)) -> (e, $[Undefined variable or property.])
+		where not(is-builtin-property(|"ClientObject", name) <+ <get-prop> (object, name))
 	
+	editor-error: e@Call(This(object), name, []) -> (e, $[Undefined function.])
+		where not(is-builtin-function(|"ClientObject", name)) // TODO added costum functions
+		
 	editor-error: e@PropDef(object, name, type, exp) -> (e, $[Overwriting built-in properties not allowed.])
-		where
-			is-builtin-property(|"ClientObject", name) 
+		where is-builtin-property(|"ClientObject", name) 
 
 	editor-error: e@PluginDef(name,CustomType(type),props) -> (e, $[Unknown Plugin.])
-		where
-			not(is-builtin-type(|type))
+		where not(is-builtin-plugin(|type))
 			
 	editor-error: e@ComponentDef(name,CustomType(type),props) -> (e, $[Unknown Component.])
-		where
-			not(is-builtin-type(|type))
+		where not(is-builtin-component(|type))
 			
 			
 			
