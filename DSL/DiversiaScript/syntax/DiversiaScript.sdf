@@ -50,9 +50,9 @@ exports
     Id -> Param {cons("Param")} %% type inferance
     
     %% Variable
-    "var" Id ":" Type "=" Exp ";" -> VarDef {cons("VarDef")}
-    "var" Id ":" Type ";" ->  VarDef {cons("VarDefNoInit")} %% desugared
-    "var" Id "=" Exp ";" -> VarDef {cons("VarDefNoType")} %% type inferance
+    "var" Id ":" Type "=" Exp -> VarDef {cons("VarDef")}
+    "var" Id ":" Type ->  VarDef {cons("VarDefNoInit")} %% desugared
+    "var" Id "=" Exp  -> VarDef {cons("VarDefNoType")} %% type inferance
     VarDef -> InsideDef
     
     %% Property Def
@@ -116,7 +116,7 @@ exports
     "in" Exp TimeUnit "{" Statement* "}"    										-> Statement {cons("Delay")}
     "interpolate" Exp InterpolationType? "from" Exp "to" Exp "over" Exp TimeUnit ";"-> Statement {cons("Interpolation")}
     Exp ";"																			-> Statement {cons("Expression")}    
-    VarDef 																			-> Statement
+    VarDef ";"																		-> Statement {bracket}
    	
     %% Types
     "Int" -> Type {cons("IntType")}

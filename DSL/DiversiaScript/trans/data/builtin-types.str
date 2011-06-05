@@ -30,6 +30,7 @@ rules
 	has-name(|name) =  ?BuiltinType(name,_,_,_,_)
 	has-name(|name) =  ?Property(name,_,_)
 	has-name(|name) =  ?Function(name,_,_)
+	is-read-only = ?Property(_,_,False())
 
 	get-builtin-properties: type -> <get-builtin-properties><get-builtin-type> type	
 	get-builtin-properties: BuiltinType(_,parents,_,properties,_) -> 

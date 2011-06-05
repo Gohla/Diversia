@@ -1,5 +1,5 @@
 
-//plugin Sky{}
+plugin Sky{}
 //plugin Haha{}
 def Test2{
 	
@@ -11,16 +11,26 @@ def Test {
 	
 	//component Animation {}
 	//component Vector2 {}
+	var test:Test2 = new Test2{
+		ParentName = "dfd"
+		Name = "did"
+	}
+
 	
 	on Frame(){
-		var test:Tet2 = new Tet2{}; 
-		var test:Node = Object();
+		var test:Test2 = new Test2{}; 
+		/*
+		//var test:Node = Object();
 		var temp:Vector3 = [3,0]; 
 		var sec:Void = "bob";
 		var m:Mesh = Mesh(); // <-- this is a component, is this allowed?
 		var number1:Int = 34+4;
 		var number2:Real = 4+test;
-
+		*/
+		//Name = "dude";
+		//ParentName = "dude"; 
+	
+/* 
 		number1 = number2;
 		number2 = number1;
 		test = ClientObject();
@@ -41,7 +51,7 @@ def Test {
 		Destroy() = null;
 		Kill();
 		sec = Position.Normalize(); 
-		lala = temp.Zero.Zero.Normalize();
+		lala = temp.Zero.Zero.Normalize();*/
 	}
 	
 }

@@ -33,22 +33,33 @@ rules // defs
 	
 rules // read-only/writeable
 	
-	editor-error: e@Assign(exp, _) -> (exp, $[Not a reference or Read-only.]) 
-		where <read-only> exp
+	editor-error: e@Assign(exp, _) -> (exp, $[Left side must be a variable.]) 
+		where <read-only> exp;
+		not(<?Access(_,_)> exp);
+		not(<?PropRef(_,_)> exp)		
+		
+	editor-error: Assign(e@Access(exp,name),_) -> (e, $[Property is read-only.]) 
+		where <is-read-only><get-type-property> (<type-of>exp,name)
 
+	editor-error: Assign(e@PropRef(name,object),_) -> (e, $[Property is read-only.]) 
+		where <is-read-only><get-type-property> (<type-of>object,name)	
+		
+	editor-error: e@ObjectProp(type,name,exp) -> (name, $[Property is read-only.])
+		where <is-read-only><get-type-property> (type,name)
+
+	editor-error: e@ComponentProp(type,name,exp) -> (name, $[Property is read-only.])
+		where <is-read-only><get-type-property> (type,name)
+
+	editor-error: e@PluginProp(type,name,exp) -> (name, $[Property is read-only.])
+		where <is-read-only><get-type-property> (type,name)
+		
 rules // types
 	
 	editor-error: e@Assign(exp1, exp2) -> (e, $[Expected [<printable>type1] but found [<printable>type2].]) 
 		where
-			not(<read-only> exp1);
+			//not(<read-only> exp1);
 			<type-of> exp1 => type1;
 			<type-of> exp2 => type2;
-			not(<match-type>(type1,type2))
-				
-	editor-error: e@ObjectProp(prop, expr) -> (e, $[Expected [<printable>type1] but found [<printable>type2].])
-		where
-			<type-of> prop  => type1;
-			<type-of> expr => type2;
 			not(<match-type>(type1,type2))
 			
 	editor-error: e@AOp(_, _, exp) -> (exp, $[Expected Int or Real but found [<printable>type]])
@@ -81,6 +92,9 @@ rules // types
 
 rules // broken references
 	
+	editor-error: e@ObjectRef(name) -> (e, $[Undefined object.])
+		where not(<get-object> name)
+	
 	editor-error: e@PropRef(name, expr) -> (e, $[Undefined variable or property.])
 		where not(<get-type-property>(<type-of>expr, name))
 		
@@ -98,5 +112,13 @@ rules // broken references
 		
 	editor-error: e@ComponentProp(type,name,exp) -> (name, $[Undefined property.])
 		where not(<get-type-property>(type, name))
+	
+rules // debug errors
+	
+	editor-error: e@ComponentProp(name,exp) -> (e, $[Decorate failed.])
+	editor-error: e@PluginProp(name,exp) -> (e, $[Decorate failed.])
+	editor-error: e@ObjectProp(name,exp) -> (e, $[Decorate failed.])
+	editor-error: e@This() -> (e, $[Decorate failed.])
+	
 	
 		

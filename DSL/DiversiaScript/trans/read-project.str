@@ -4,6 +4,7 @@ imports
 	include/DiversiaScript
 	signatures
 	data/builtin-types
+	type-project
 
 
 rules  // is read-only expresions need a better pleace for this.
@@ -26,5 +27,5 @@ rules  // is read-only expresions need a better pleace for this.
 	read-only: e@ObjectRef(_) -> e
 	read-only: e@ComponentRef(_) -> e
 	read-only: e@PluginRef(_) -> e
-	//read-only: e@Access(_,_) -> e TODO: need read-only info here
-	//read-only: e@PropRef(_,_) -> e TODO: need read-only info here
+		
+		

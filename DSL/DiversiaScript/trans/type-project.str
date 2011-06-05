@@ -44,19 +44,20 @@ rules  // expr
 	type-of: Vector2Const(_,_) -> CustomType("Vector2")
 	type-of: Vector3Const(_,_,_) -> CustomType("Vector3")
 	type-of: Vector4Const(_,_,_,_) -> CustomType("Vector4")
+	
 	type-of: VarRef(name) -> <type-of><get-var2> name
 	type-of: PropRef(property, exp) -> <type-of><get-type-property>(<type-of>exp, property)		
-	type-of: This(object) -> CustomType(object)
-	type-of: New(object,_) -> CustomType(object)
+	type-of: This(name) -> <type-of><get-object> name
+	type-of: New(object,_) -> <type-of>object
 	type-of: Access(exp, prop) -> <type-of><get-type-property> (<type-of>exp,prop)
 	type-of: Call(exp, function, _) -> <type-of><get-type-function>(<type-of>exp,function)
 	type-of: ObjectNew(objectRef, _) -> <type-of> objectRef
-	type-of: ObjectRef(name) -> CustomType(name)
+	type-of: ObjectRef(name) -> <type-of><get-object> name
 	type-of: ComponentRef(name) -> <type-of><get-component> name
 	type-of: PluginRef(name) -> <type-of><get-plugin> name
 
 rules // defs
-	type-of: ObjectDef(name, _, _, _, _, _, _, _, _) -> CustomType(name)
+	type-of: ObjectDef(name, _, _, _, _, _, _, _) -> CustomType(name)
 	type-of: ExternalObjectDef(name) -> CustomType(name)
 	type-of: Param(_, type) -> type
     type-of: VarDef(_, type, _) -> type	

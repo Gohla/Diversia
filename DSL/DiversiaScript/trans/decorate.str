@@ -37,13 +37,14 @@ rules
 	
 	
 	decorate-prop: ObjectDef(name, props, propDefs, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) ->
-			  ObjectDef(name, props', propDefs, componentDefs', varDefs, defaultStateDef', stateDefs', eventDefs')
+			  ObjectDef(name, props', propDefs, componentDefs', varDefs', defaultStateDef', stateDefs', eventDefs')
 			where 
 				<map(decorate-prop(|CustomType(name)))> props => props';
 				<alltd(decorate-prop)> componentDefs => componentDefs';
 				<alltd(decorate-prop)> defaultStateDef => defaultStateDef'; 
 				<alltd(decorate-prop)> stateDefs => stateDefs';
-				<alltd(decorate-prop)> eventDefs => eventDefs'
+				<alltd(decorate-prop)> eventDefs => eventDefs';
+				<alltd(decorate-prop)> varDefs => varDefs'
 	
 	decorate-prop: ComponentDef(name, type, props) -> ComponentDef(name, type, props')
 			where <map(decorate-prop(|type))> props => props'

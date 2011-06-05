@@ -13,8 +13,8 @@ def CameraYaw {
     }
 
     // Variable definitions
-    var mRMB : Bool = false;
-    var mMouseState : MouseState = null;
+    var mRMB : Bool = false
+    var mMouseState : MouseState = null
     
     // States
     default state Alive {
@@ -91,9 +91,9 @@ def Ball {
     //external def CameraYaw // Add the CameraYaw object definition as a child object.
 
     default state Alive {
-        var mMove : Int = 0;
-        var mStrafe : Int = 0;
-        var mSpeedMultiplier : Int = 1;
+        var mMove : Int = 0
+        var mStrafe : Int = 0
+        var mSpeedMultiplier : Int = 1
         
         on KeyPressed(Key) {
             switch(key) {
