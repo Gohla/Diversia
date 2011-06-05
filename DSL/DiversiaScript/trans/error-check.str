@@ -5,35 +5,61 @@ imports
 	signatures
 	type-project
 	name-project
+	read-project
 	data/builtin-types
 
-rules  
+rules // defs
 	
-	editor-error: e@VarDef(name, type, expr)-> (e, $[Expected [<printable>type] but found [<printable>type2].])
+	editor-error: e@VarDef(name,CustomType(type),props) -> (CustomType(type), $[Unknown type.])
+		where 
+			not(is-builtin-type(|type));
+			not(is-object(|type))
+			
+	editor-error: e@VarDef(name, type, expr)-> (expr, $[Expected [<printable>type] but found [<printable>type2].])
 		where 
 			<type-of> expr => type2;
 			not(<match-type>(type,type2))
 	
+	editor-error: e@PropDef(object, name, type, exp) -> (e, $[Overwriting built-in properties not allowed.])
+		where is-builtin-property(|"ClientObject", name) 
+
+	editor-error: e@PluginDef(name,CustomType(type),props) -> (CustomType(type), $[Unknown plugin.])
+		where not(is-builtin-plugin(|type))
+			
+	editor-error: e@ComponentDef(name,CustomType(type),props) -> (CustomType(type), $[Unknown component.])
+		where not(is-builtin-component(|type))
+
+	
+	
+rules // 
+	
+	editor-error: e@Assign(exp, _) -> (exp, $[Not a reference or Read-only.]) 
+		where <read-only> exp
+	
 	editor-error: e@Assign(exp1, exp2) -> (e, $[Expected [<printable>type1] but found [<printable>type2].]) 
 		where
+			not(<read-only> exp1);
 			<type-of> exp1 => type1;
 			<type-of> exp2 => type2;
 			not(<match-type>(type1,type2))
-			
+				
 	editor-error: e@ObjectProp(prop, expr) -> (e, $[Expected [<printable>type1] but found [<printable>type2].])
 		where
 			<type-of> prop  => type1;
 			<type-of> expr => type2;
 			not(<match-type>(type1,type2))
-	editor-error: e@AOp(_, _, exp) -> (e, $[Expected Int or Real but found [<printable>type2]])
+			
+	editor-error: e@AOp(_, _, exp) -> (exp, $[Expected Int or Real but found [<printable>type2]])
 		where 
 			<type-of> exp => type2;
 			not(<match-type>(<type-of> e,type2))
 			
-	editor-error: e@AOp(_, exp, _) -> (e, $[Expected Int or Real but found [<printable>type2]])
+	editor-error: e@AOp(_, exp, _) -> (exp, $[Expected Int or Real but found [<printable>type2]])
 		where 
 			<type-of> exp => type2;
 			not(<match-type>(<type-of> e,type2))
+
+rules // broken references
 	
 	editor-error: e@PropRef(name, expr) -> (e, $[Undefined variable or property.])
 		where not(<get-type-property>(<type-of>expr, name))
@@ -42,21 +68,5 @@ rules
 		where not(<get-type-property>(<type-of>expr, name))
 	
 	editor-error: e@Call(This(object), name, []) -> (e, $[Undefined function.])
-		where not(is-builtin-function(|"ClientObject", name)) // TODO added costum functions
+		where not(is-builtin-function(|"ClientObject", name)) // TODO added custom functions
 		
-	editor-error: e@PropDef(object, name, type, exp) -> (e, $[Overwriting built-in properties not allowed.])
-		where is-builtin-property(|"ClientObject", name) 
-
-	editor-error: e@PluginDef(name,CustomType(type),props) -> (e, $[Unknown Plugin.])
-		where not(is-builtin-plugin(|type))
-			
-	editor-error: e@ComponentDef(name,CustomType(type),props) -> (e, $[Unknown Component.])
-		where not(is-builtin-component(|type))
-			
-			
-			
-			
-			
-			
-	
-	
