@@ -17,9 +17,13 @@ rules // Name-based projections  //TODO need to check these
 	get-name: StateDef(n, _) -> n
 	get-name: CustomType(n) -> n
 	
+	has-name(|name) = ?ObjectDef(name, _, _, _, _, _, _, _, _)
+	has-name(|name) = ?PropDef(_, name, _, _)
+		
 rules // Name-based look-up transformations
 	
-	is-object-type(|object) = <get-object> object
+	is-object(|object) = <get-object> object
+	is-object-type(|object) = <get-object><get-name>object
 	is-object-property(|object, property) = <get-object-property> (object, property)
 	is-object-function(|object, function) = <get-object-function> (object, function)
 	

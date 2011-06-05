@@ -22,20 +22,26 @@ rules
 	get-builtin-type: CustomType(type) -> <get-builtin-type> type
 		
 	get-builtin-property: (type, property) -> 
-		<fetch-elem(has-name(|property))><get-properties><get-builtin-type> type
+		<fetch-elem(has-name(|property))><get-builtin-properties> type
 	
 	get-builtin-function: (type, function) -> 
-		<fetch-elem(has-name(|function))><get-functions><get-builtin-type> type
+		<fetch-elem(has-name(|function))><get-builtin-functions> type
 
 	has-name(|name) =  ?BuiltinType(name,_,_,_,_)
 	has-name(|name) =  ?Property(name,_)
 	has-name(|name) =  ?Function(name,_,_)
 
-	get-properties: BuiltinType(_,parents,_,properties,_) -> 
-		<conc>(properties,<mapconcat(get-builtin-type; get-properties)>parents)
-	
-	get-functions: BuiltinType(_,parents,_,_,functions) -> 
-		<conc>(functions,<mapconcat(get-builtin-type; get-functions)>parents)
+	get-builtin-properties: type -> <get-builtin-properties><get-builtin-type> type	
+	get-builtin-properties: BuiltinType(_,parents,_,properties,_) -> 
+		<conc>(properties,<mapconcat(get-builtin-type; get-builtin-properties)>parents)
+		
+	get-builtin-functions: type -> <get-builtin-functions><get-builtin-type> type
+	get-builtin-functions: BuiltinType(_,parents,_,_,functions) -> 
+		<conc>(functions,<mapconcat(get-builtin-type; get-builtin-functions)>parents)
+		
+	get-builtin-parents: type -> <get-builtin-parents><get-builtin-type> type
+	get-builtin-parents: s@BuiltinType(_,parents,_,_,_) -> 
+		<conc>(<map(get-builtin-type)> parents, <mapconcat(get-builtin-type; get-builtin-parents)>parents)
 		
 	builtin-types = ![
 	BuiltinType("ClientComponent",
