@@ -1,8 +1,13 @@
 plugin Sky{
-	bob = 2
+	//bob = 2
 	Timescale = 2.3
-	SunAmbientMultiplier = false	
+	//SunAmbientMultiplier = false
+	
+	default state we {
+		on wtf {}
+	}
 }
+
 def Bob{
 	
 	var tempPos:Vector2 = [0,0,0]

@@ -20,9 +20,9 @@ def Test {
         AngularDampening = 0.7
     }
     
-    var Bla : Int = 0;
-    var Test : Degree = Degree(0);
-    prop Zomg : Int = 1;
+    var Bla : Int = 0
+    var Test : Degree = Degree(0)
+    prop Zomg : Int = 1
     
     on Create() {
     	Bla = 1;
@@ -39,7 +39,7 @@ def Test {
     default state TestState1 {
     	Position = [0, 10, 0]
     	
-    	var Bla : Int = 0;
+    	var Bla : Int = 0
     	
 	    on Update() {
 	    	Zomg = 42;
@@ -53,7 +53,7 @@ def Test {
                 case 42: this.Destroy();
            }
 	    }
-	    on Frame(TimeElapsed) {
+	    on Frame(TimeElapsed : Real) {
 	    	Bla = Bla / 3;
 	    	Scale = [2, 2, 2];
 	    	
@@ -73,10 +73,10 @@ def Test {
 	    	} else if(false) {
 	    		this.Destroy();
 	    	} else {
-	    		this.OMG();
+	    		this.Destroy();
 	    	}
 	    }
-	    on Frame(TimeElapsed) {
+	    on Frame(TimeElapsed : Real) {
 	    	Bla = Bla + 4;
 	    	Scale = [3, 3, 3];
 	    	

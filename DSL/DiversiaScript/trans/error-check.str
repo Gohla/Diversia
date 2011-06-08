@@ -118,7 +118,8 @@ rules // states
 	editor-error: e@StateRef(name) -> (name, $[Undefined state.])
 		where not(<get-state>name)
 	
-	editor-error: e@ObjectDef(name,_,_,_,_,[],_,_)-> (name, $[Object is missing a default state.])
+	editor-error: e@ObjectDef(name,_,_,_,_,[],states,_)-> (name, $[Object is missing a default state.])
+		where <gt>(<length> states, 0)
 
 
 rules // debug errors

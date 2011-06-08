@@ -7,7 +7,7 @@ imports
 	name-project
 
 strategies
-	desugar-all = innermost(desugar); try(desugar-object) //topdown(repeat(desugar))
+	desugar-all = innermost(desugar); desugar-object //topdown(repeat(desugar))
 	post-desugar-all = desugar-object
 	
 rules  // simple desugars

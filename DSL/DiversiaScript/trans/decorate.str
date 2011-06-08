@@ -8,7 +8,7 @@ imports
 	data/builtin-types
 
 strategies
-	decorate-all = try(alltd(decorate)); try(alltd(decorate-prop))
+	decorate-all = alltd(decorate); alltd(decorate-prop)
 rules 
 
 	decorate: EventDef(name, params, statements) -> 
