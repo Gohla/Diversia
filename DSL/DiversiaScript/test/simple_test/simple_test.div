@@ -50,7 +50,7 @@ def Test {
             switch(Bla) {
                 case 1: ++Bla;
                 case 2: { --Bla; ++Zomg; ++Test; }
-                case 42: this.Destroy();
+                case 42: { lol(); this.lol(); }
            }
 	    }
 	    on Frame(TimeElapsed : Real) {

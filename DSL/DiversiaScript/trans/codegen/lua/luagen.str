@@ -139,8 +139,9 @@ rules
 		where createFunc := <lua-prepend-statements(|<map(propassign-to-lua)> properties)> <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions
 	propassigns-to-lua: (properties, functions) -> functions'
 		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
-		where functions' := <concat> [[<lua-funcdef> ("Create", <map(propassign-to-lua)> properties)], functions]	
-	propassign-to-lua: ObjectProp(type, name, exp) -> Assignment([Access("Object", VarRef(name))], <to-lua> exp)
+		where functions' := <concat> [[<lua-funcdef> ("Create", <map(propassign-to-lua)> properties)], functions]
+	propassign-to-lua: ObjectProp(_, name, exp) -> Assignment([Access("Object", VarRef(name))], <to-lua> exp)	
+	propassign-to-lua: ObjectProp(name, exp) -> Assignment([Access("Object", VarRef(name))], <to-lua> exp)
 
 	// States
 	states-to-lua: (states, functions) -> <concat> [functions, <map(state-to-lua)> states]
@@ -214,8 +215,14 @@ rules // Expressions
 	to-lua: Null() -> LuaNil()
 	to-lua: New(type, args) -> Call(VarRef(type), "new", Args(<map(to-lua)> args))
 	to-lua: Call(obj, name, args) -> Call(<to-lua> obj, name, Args(<map(to-lua)> args))
+		where not (<?This(_)> obj)
+	to-lua: Call(This(_), name, args) -> Call(VarRef("Object"), name, Args(<map(to-lua)> args))
+		where is-builtin-function(|"ClientObject", name)
+	to-lua: Call(This(_), name, args) -> Call(name, Args(<map(to-lua)> args))
+		where not (is-builtin-function(|"ClientObject", name)) 
+	//is-object-function
 	to-lua: Access(exp, name) -> Access(<to-lua> exp, name)
-	to-lua: This() -> VarRef("Object")
+	to-lua: This(_) -> VarRef("Object")
 	
 	to-lua: AOp(ADD(), l, r) -> Add(<to-lua> l, <to-lua> r)
 	to-lua: AOp(SUB(), l, r) -> Sub(<to-lua> l, <to-lua> r)
