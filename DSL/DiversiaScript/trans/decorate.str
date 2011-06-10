@@ -31,6 +31,7 @@ rules
 			 	
 	decorate-object(|object): VarRef(name) -> PropRef(name, This())
 	decorate-object(|object): PropDef(name,type,expr) -> PropDef(object,name,type,expr)
+	decorate-object(|object): VarDef(name,type,expr) -> VarDef(object, name,type,expr)
 	decorate-object(|object): New(name, params) -> Call(This(), name, params)
 		where not(is-builtin-type(|name)) //TODO match with constructor too.
 	decorate-object(|object): This() -> This(object)

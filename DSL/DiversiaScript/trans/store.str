@@ -39,7 +39,7 @@ rules // declarations
 		where <store-declaration(|Components(object))> (name, d)
 		
 	// Variable definitions in object.
-	store-declarations(|object): d@VarDef(name, _, _) -> d
+	store-declarations(|object): d@VarDef(_, name, _, _) -> d
 		where <store-declaration(|Vars(object))> (name, d)
 	
 	// Proptery definitions in object.
@@ -72,7 +72,7 @@ rules // declarations
 		where <store-declaration(|Components(object, state))> (name, d)
 		
 	// Variable definitions in object and state
-	store-declarations(|object, state): d@VarDef(name, _, _) -> d
+	store-declarations(|object, state): d@VarDef(_, name, _, _) -> d
 		where <store-declaration(|Vars(object))> (name, d)
 	
 	// Event definitions in object and state
@@ -82,7 +82,7 @@ rules // declarations
 		// TODO: store vars in event? not sure if these need to be stored since they
 		// are just statements that can be directly converted to lua/c++?
 
-	store-declarations2: d@VarDef(name,_,_) -> d
+	store-declarations2: d@VarDef(_,name,_,_) -> d
 		where <store-declaration(|Vars())> (name, d)
 	store-declarations2: d@Param(name,_) -> d
 		where <store-declaration(|Vars())> (name, d)	

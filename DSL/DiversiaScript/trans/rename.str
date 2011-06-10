@@ -97,7 +97,7 @@ rules //defs
 			<rename-declaration(|Plugins())> name => name'
 
 	rename-def: 
-		VarDef(name, type, exp) -> VarDef(name', type, exp)
+		VarDef(object, name, type, exp) -> VarDef(object, name', type, exp)
 		where
 			<rename-declaration(|Vars())> name => name'
 						

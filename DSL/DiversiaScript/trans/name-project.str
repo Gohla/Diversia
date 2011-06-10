@@ -12,7 +12,7 @@ rules // Name-based projections  //TODO need to check these
 	
 	get-name: ObjectDef(n, _, _, _, _, _, _, _, _) -> n
 	get-name: ComponentDef(n, _, _) -> n
-	get-name: VarDef(n, _, _) -> n
+	get-name: VarDef(_, n, _, _) -> n
 	get-name: EventDef(n, _, _) -> n
 	get-name: StateDef(n, _) -> n
 	get-name: CustomType(n) -> n
