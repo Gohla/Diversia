@@ -104,6 +104,11 @@ void ResourceManager::setResourceLocation( const String& rResourceLocation )
     }
 }
 
+void ResourceManager::setGroup( const String& rGroup )
+{
+    if( mGroup.empty() ) mGroup = rGroup;
+}
+
 Ogre::ResourcePtr ResourceManager::getResource( const ResourceInfo& rResource, 
     bool create /*= false*/ ) const
 {
@@ -258,8 +263,17 @@ void ResourceManager::create()
         {
             case RESOURCELOCATIONTYPE_FILESYSTEM:
             {
-                Path resourcePath = GlobalsBase::mGraphics->getRootResourceLocation() / 
-                    mResourceLocation;
+                Path resourcePath = mResourceLocation;
+#if DIVERSIA_PLATFORM == DIVERSIA_PLATFORM_WIN32
+                if( !resourcePath.has_root_name() && !resourcePath.has_root_directory() )
+#else
+                if( !resourcePath.has_root_directory() )
+#endif 
+                {
+                    resourcePath = GlobalsBase::mGraphics->getRootResourceLocation() / 
+                    resourcePath;
+                }
+
                 mRGM.addResourceLocation( resourcePath.string(), "FileSystem", mGroup, true );
                 break;
             }

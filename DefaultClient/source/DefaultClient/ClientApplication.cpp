@@ -144,7 +144,9 @@ void ClientApplication::init( int argc, char* argv[] )
         desc.add_options()
             ( "help", "Shows help" )
             ( "offline,o", bool_switch( &GlobalsBase::mOffline ), "Start client in offline mode." )
-            ( "offline-file,f", value( &mOfflineFile ), "Offline file to load" )
+            ( "media,m", value( &mAddMedia ), "Adds given path as a resource location." )
+            ( "offline-file,f", value( &mOfflineFile ), "Offline plugin manager xml file to load." )
+            ( "offline-script,s", value( &mOfflineScript ), "Offline lua script to load." )
         ;
 
         variables_map vm;        
@@ -255,7 +257,7 @@ void ClientApplication::init( int argc, char* argv[] )
         {
             mStateMachine->pushState( new MenuState() );
         }
-        else if( vm.count( "offline-file" ) )
+        else 
         {
             mGridManager->createOfflineServer();
             mStateMachine->pushState( new LoadingState() );
@@ -264,17 +266,37 @@ void ClientApplication::init( int argc, char* argv[] )
             pluginManager.createPlugin<ClientObjectTemplateManager>();
             pluginManager.createPlugin<ClientObjectManager>();
 
-            SerializationFile* file = new XMLSerializationFile( 
-                mGraphicsManager->getRootResourceLocation() / mOfflineFile, "NoSerialization", 
-                false );
-            file->load();
-            file->deserialize( pluginManager, false );
-            delete file;
-        }
-        else
-        {
-            LOGC << "Running in offline mode but no file was given to load.";
-            ClientApplication::exit();
+            if( vm.count( "media" ) )
+            {
+                ResourceManager& resourceManager = pluginManager.createPlugin<ResourceManager>();
+                resourceManager.setGroup( mAddMedia.leaf() );
+                resourceManager.setResourceLocation( mAddMedia.string() );
+            }
+
+            if( vm.count( "offline-file" ) ) 
+            {
+                SerializationFile* file = new XMLSerializationFile( 
+                    mGraphicsManager->getRootResourceLocation() / mOfflineFile, "NoSerialization", 
+                    false );
+                file->load();
+                file->deserialize( pluginManager, false );
+                delete file;
+            }
+            if( vm.count( "offline-script" ) )
+            {
+                const camp::Class& metaclass = camp::classByType<GameModePlugin>();
+                camp::UserObject gameMode = pluginManager.createPlugin<GameModePlugin>();
+                metaclass.property( "ClientSecurityLevel" ).set( gameMode, LUASEC_LOW );
+                const camp::ArrayProperty& scriptsProp = static_cast<const camp::ArrayProperty&>( 
+                     metaclass.property( "ClientScriptFiles" ) );
+                scriptsProp.insert( gameMode, scriptsProp.size( gameMode ), mOfflineScript );
+            }
+            else
+            {
+                LOGC << "Running in offline mode but no file or script was given.";
+                ClientApplication::exit();
+                return;
+            }
         }
     }
     catch( const Exception& e )

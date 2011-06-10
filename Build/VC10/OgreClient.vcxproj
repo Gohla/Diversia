@@ -100,7 +100,7 @@
       <PrecompiledHeaderFile>DefaultClient\Platform\StableHeaders.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
+      <SubSystem>Console</SubSystem>
       <AdditionalDependencies>LibUtil_rd.lib;LibObject_rd.lib;LibShared_rd.lib;LibClient_rd.lib;LibOgreClient_rd.lib;BulletCollision.lib;BulletDynamics.lib;BulletFileLoader.lib;BulletWorldImporter.lib;caelum.lib;cAudio.lib;dbghelp.lib;freetype2311.lib;libcurl.lib;LinearMath.lib;lua.lib;MyGUI.OgrePlatform.lib;MyGUIEngine.lib;OgreMain.lib;OgreProcedural.lib;OgreRTShaderSystem.lib;OgreTerrain.lib;OpenAL32.lib;OIS.lib;RakNetDLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference />
