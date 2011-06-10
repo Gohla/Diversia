@@ -123,7 +123,7 @@ void ClientApplication::init( int argc, char* argv[] )
         mConfigManager->registerObject( this );
 
         // Initialize logging
-#ifdef DIVERSIA_DEBUG
+#ifdef DIVERSIA_DEBUGINFO
         mLogger.reset( new Logger( mLogLevel ) );
 #else
         mLogger.reset( new Logger( mLogLevel, false, true ) );

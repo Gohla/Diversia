@@ -83,7 +83,6 @@ ResourceManager::ResourceManager( Mode mode, PluginState state, ServerPluginMana
     mRGM( Ogre::ResourceGroupManager::getSingleton() ),
     mRBQ( Ogre::ResourceBackgroundQueue::getSingleton() ),
     mType( RESOURCELOCATIONTYPE_FILESYSTEM ),
-    mGroup( mServer.getServerInfo().getAddressMergedSafe() ),
     mCreated( false ),
     mInitializing( false )
 {
@@ -245,11 +244,18 @@ void ResourceManager::create()
 {
     if( !mResourceLocation.empty() )
     {
-        // Generate group name
         if( mGroup.empty() )
-        {
-            PropertySynchronization::set( "Group", Path( mResourceLocation ).string() );
-        }
+            switch( mType )
+            {
+                case RESOURCELOCATIONTYPE_FILESYSTEM:
+                    // What was this for? 
+                    // PropertySynchronization::set( "Group", Path( mResourceLocation ).string() );
+                    mGroup = Path( mResourceLocation ).leaf();
+                    break;
+                case RESOURCELOCATIONTYPE_URL:
+                    mGroup = mServer.getServerInfo().getAddressMergedSafe();
+                    break;
+            }
 
         // Destroy old resource group.
         ResourceManager::destroy();
