@@ -60,7 +60,7 @@ rules // defs
 	type-of: ObjectDef(name, _, _, _, _, _, _, _) -> CustomType(name)
 	type-of: ExternalObjectDef(name) -> CustomType(name)
 	type-of: Param(_, type) -> type
-    type-of: VarDef(_, type, _) -> type	
+    type-of: VarDef(_, _, type, _) -> type	
     type-of: PropDef(_,_,type,_) -> type
     type-of: ComponentDef(_, type, _) -> type
 	type-of: PluginDef(_, type, _) -> type

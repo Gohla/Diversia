@@ -19,21 +19,21 @@ signature constructors // Operators
 
 signature constructors // Object & state
 
+	Start: List(PluginDef) * List(ObjectDef) * List(EventDef) -> Start
+	
 	ObjectDef: Id * List(ObjectProp) * List(PropDefs) * List(ComponentDef)                   * List(VarDef) * StateDef * List(StateDef) * List(EventDef) -> ObjectDef
 	ObjectDef: Id * List(ObjectProp) * List(PropDefs) * List(ComponentDef) * List(ObjectDef) * List(VarDef) * StateDef * List(StateDef) * List(EventDef) -> ObjectDef
 	
 	StateDef: Id * List(ObjectProp) * List(ComponentDef) * List(VarDef) * List(EventDef) -> StateDef
 	DefaultStateDef: Id * List(ObjectProp) * List(ComponentDef) * List(VarDef) * List(EventDef) -> StateDef
 	
-	PropDef: Id * Id * Id * Exp -> PropDef
-	
-	Start: List(PluginDef) * List(ObjectDef) * List(EventDef) -> Start
+	PropDef: Id * Id * Type * Exp -> PropDef
+	VarDef: Id * Id * Type * Exp -> VarDef
 	
 	PropRef: Id * Id -> PropRef
 	ObjectRef: Id -> ObjectRef
 	ComponentRef: Id -> ComponentRef
 	PluginRef: Id -> PluginRef
-	
 	This: Id -> This
 	
 	ObjectProp: Id * Id * Exp -> ObjectProp

@@ -10,12 +10,16 @@ imports
 
 rules // defs
 	
-	editor-error: e@VarDef(name,CustomType(type),props) -> (CustomType(type), $[Unknown type.])
+	editor-error: e@VarDef(object, name,CustomType(type),expr) -> (CustomType(type), $[Unknown type.])
 		where 
 			not(is-builtin-type(|type));
 			not(is-object(|type))
-			
-	editor-error: e@VarDef(name, type, expr)-> (expr, $[Expected [<printable>type] but found [<printable>type2].])
+	
+	editor-error: e@VarDef(object, name,type ,expr) -> (e, $[Overwriting object properties not allowed.])
+		//where <debug> (object, name, name2)
+		where <get-type-property> (CustomType(object), <strip-annos>name)		
+	
+	editor-error: e@VarDef(object, name, type, expr)-> (expr, $[Expected [<printable>type] but found [<printable>type2].])
 		where 
 			<type-of> expr => type2;
 			not(<match-type>(type,type2))

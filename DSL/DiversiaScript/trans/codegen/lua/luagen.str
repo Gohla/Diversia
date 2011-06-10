@@ -80,7 +80,7 @@ rules
 		where functions' := <plugins-to-lua> (<map(to-lua)> pluginDefs, functions)
 	
 	// Variables
-	to-lua: VarDef(_{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
+	to-lua: VarDef(_, _{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
 	to-lua: PropDef(_, name, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
 	
 	// Events
