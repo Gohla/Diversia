@@ -36,7 +36,17 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 			<collect-all(editor-error, conc)> ast' => errors ;
 			<collect-all(editor-warning, conc)> ast' => warnings ;
 			<collect-all(editor-note, conc)> ast' => notes
-	  
+			
+	// Runs the DefaultClient with lua scripts generated from current AST
+	run: (selected, position, ast, path, project-path) -> ()
+		where dir := <abspath> <dirname> path
+		where clientDir := "F:/MultiverseVS/Git/DefaultClient/bin/ReleaseWin32/"
+		where
+			editor-init;
+	    	<lua-tofiles(|path)> <to-lua> <analyse-all> selected;
+	    	<chdir> clientDir;
+	    	<call> ($[[clientDir]Diversia-DefaultClient-DbgInfo.exe], ["-o", "-m", $["[dir]"], "-s", "gen/GameMode.lua"])
+	    		  
 	// Transforms a selection to Lua
 	generate-lua-files: (selected, position, ast, path, project-path) -> ()
 		where

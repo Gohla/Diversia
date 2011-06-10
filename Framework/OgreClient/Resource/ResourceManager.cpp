@@ -83,7 +83,6 @@ ResourceManager::ResourceManager( Mode mode, PluginState state, ServerPluginMana
     mRGM( Ogre::ResourceGroupManager::getSingleton() ),
     mRBQ( Ogre::ResourceBackgroundQueue::getSingleton() ),
     mType( RESOURCELOCATIONTYPE_FILESYSTEM ),
-    mGroup( mServer.getServerInfo().getAddressMergedSafe() ),
     mCreated( false ),
     mInitializing( false )
 {
@@ -102,6 +101,11 @@ void ResourceManager::setResourceLocation( const String& rResourceLocation )
         mResourceLocation = rResourceLocation;
         if( mCreated ) ResourceManager::create();
     }
+}
+
+void ResourceManager::setGroup( const String& rGroup )
+{
+    if( mGroup.empty() ) mGroup = rGroup;
 }
 
 Ogre::ResourcePtr ResourceManager::getResource( const ResourceInfo& rResource, 
@@ -240,11 +244,18 @@ void ResourceManager::create()
 {
     if( !mResourceLocation.empty() )
     {
-        // Generate group name
         if( mGroup.empty() )
-        {
-            PropertySynchronization::set( "Group", Path( mResourceLocation ).string() );
-        }
+            switch( mType )
+            {
+                case RESOURCELOCATIONTYPE_FILESYSTEM:
+                    // What was this for? 
+                    // PropertySynchronization::set( "Group", Path( mResourceLocation ).string() );
+                    mGroup = Path( mResourceLocation ).leaf();
+                    break;
+                case RESOURCELOCATIONTYPE_URL:
+                    mGroup = mServer.getServerInfo().getAddressMergedSafe();
+                    break;
+            }
 
         // Destroy old resource group.
         ResourceManager::destroy();
@@ -258,8 +269,17 @@ void ResourceManager::create()
         {
             case RESOURCELOCATIONTYPE_FILESYSTEM:
             {
-                Path resourcePath = GlobalsBase::mGraphics->getRootResourceLocation() / 
-                    mResourceLocation;
+                Path resourcePath = mResourceLocation;
+#if DIVERSIA_PLATFORM == DIVERSIA_PLATFORM_WIN32
+                if( !resourcePath.has_root_name() && !resourcePath.has_root_directory() )
+#else
+                if( !resourcePath.has_root_directory() )
+#endif 
+                {
+                    resourcePath = GlobalsBase::mGraphics->getRootResourceLocation() / 
+                    resourcePath;
+                }
+
                 mRGM.addResourceLocation( resourcePath.string(), "FileSystem", mGroup, true );
                 break;
             }

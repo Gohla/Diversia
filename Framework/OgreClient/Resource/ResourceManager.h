@@ -112,6 +112,12 @@ public:
     **/
     void setResourceLocation( const String& rResourceLocation );
     /**
+    Sets the group name. Cannot be changed one set. 
+    
+    @param  rGroup  The group name
+    **/
+    void setGroup( const String& rGroup );
+    /**
     Loads a resource. 
     
     @param  rResource       The resource information.

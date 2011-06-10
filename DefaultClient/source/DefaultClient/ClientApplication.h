@@ -73,6 +73,8 @@ private:
 
     // Options
     Path mOfflineFile;
+    Path mOfflineScript;
+    Path mAddMedia;
 
     // Settings
     LogLevel mLogLevel;
