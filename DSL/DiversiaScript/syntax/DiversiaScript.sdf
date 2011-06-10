@@ -32,7 +32,7 @@ exports
     %% State
     "state" Id "{" InsideDef* "}" -> StateDef {cons("StateDef")}
     "default" "state" Id "{" InsideDef* "}" -> StateDef {cons("DefaultStateDef")}
-    StateDef -> InsideDef
+    StateDef -> InsideObjectDef
     Id -> StateRef {cons("StateRef")}
     
     %% Event reaction
@@ -58,7 +58,7 @@ exports
     %% Property Def
     "prop" Id ":" Type "=" Exp -> PropDef {cons("PropDef")}
     "prop" Id ":" Type ->  PropDef {cons("PropDefNoInit")} %% desugared
-    "prop" Id "=" Exp -> VarDef {cons("PropDefNoType")} %% type inferance
+    "prop" Id "=" Exp -> PropDef {cons("PropDefNoType")} %% type inferance
     PropDef -> InsideObjectDef
     
     %% Expressions
