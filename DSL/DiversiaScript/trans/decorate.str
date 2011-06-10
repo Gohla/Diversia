@@ -8,7 +8,7 @@ imports
 	data/builtin-types
 
 strategies
-	decorate-all = alltd(decorate); alltd(decorate-props)
+	decorate-all = alltd(decorate); topdown(try(decorate-props))
 rules 
 
 	decorate: EventDef(name, params, statements) -> 
@@ -17,6 +17,7 @@ rules
 			 	<innermost(decorate-event)> statements => statements'
 	
 	decorate-event: VarRef(name) -> PropRef(name, "ShouldNotHereAfterRename")
+	decorate-event: VarDef(name,type,expr) -> VarDef("Global", name,type,expr)
 
 	decorate: ObjectDef(name, propAssigns, propDefs, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) ->
 			  ObjectDef(name, propAssigns', propDefs', componentDefs', varDefs', defaultStateDef', stateDefs', eventDefs')
@@ -57,8 +58,8 @@ rules
 	decorate-props: PluginDef(name, type, props) -> PluginDef(name, type, props')
 			where <map(decorate-prop(|type))> props => props'		
 	
-	decorate-props: ObjectNew(type, props) -> ObjectNew(type, props')
-			where <map(decorate-prop(|type))> props => props'		
+	decorate-props: ObjectNew(ObjectRef(object), props) -> ObjectNew(ObjectRef(object), props')
+			where <map(decorate-prop(|CustomType(object)))> props => props'		
 	
 	decorate-prop(|type): ComponentProp(name, expr) -> ComponentProp(type, name, expr)
 	decorate-prop(|type): PluginProp(name, expr) -> PluginProp(type, name, expr)

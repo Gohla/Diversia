@@ -79,6 +79,7 @@ rules //defs
 		where 
 			new-scope (
 				<rename-all-defs> params => params';
+				//<topdown(rename-def ; rename-ref)> statements => statements''
 				<rename-all-defs> statements => statements';
 				<rename-all-refs> statements' => statements''
 			)
