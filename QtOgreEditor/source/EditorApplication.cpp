@@ -87,7 +87,7 @@ EditorApplication::~EditorApplication()
     delete mUpdateTimer;
 }
 
-void EditorApplication::init()
+void EditorApplication::init( int argc, char* argv[] )
 {
     // Init curl
     curl_global_init( CURL_GLOBAL_DEFAULT );

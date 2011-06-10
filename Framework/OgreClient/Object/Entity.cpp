@@ -56,8 +56,7 @@ Entity::Entity( const String& rName, Mode mode, NetworkingType networkingType,
 Entity::~Entity()
 {
     if( mEntity ) GlobalsBase::mScene->destroyEntity( mEntity );
-
-    GlobalsBase::mSelection->removeObject( mUserObject );
+    if( GlobalsBase::mSelection ) GlobalsBase::mSelection->removeObject( mUserObject );
 }
 
 void Entity::setMaterial( const String& rMaterial )

@@ -25,10 +25,12 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "Client/ClientServerPlugin/ServerPluginManager.h"
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/Server.h"
+#include "Client/Communication/ServerAbstract.h"
 #include "Client/Communication/ServerConnection.h"
 #include "Client/Communication/ServerNeighborsPlugin.h"
 #include "Client/Lua/LuaPlugin.h"
 #include "Client/Object/ClientObjectManager.h"
+#include "Client/Object/ClientObjectTemplateManager.h"
 #include "Client/Permission/PermissionManager.h"
 #include "DefaultClient/ClientApplication.h"
 #include "DefaultClient/GUI/GUIManager.h"
@@ -41,6 +43,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Graphics/CameraManager.h"
 #include "OgreClient/Graphics/Fader.h"
 #include "OgreClient/Graphics/GraphicsManager.h"
+#include "OgreClient/Graphics/SceneManagerPlugin.h"
 #include "OgreClient/Graphics/SkyPlugin.h"
 #include "OgreClient/Graphics/Terrain.h"
 #include "OgreClient/Object/Animation.h"
@@ -66,8 +69,10 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "Shared/Communication/ServerInfo.h"
 #include "Shared/Crash/CrashReporter.h"
 #include "Shared/Object/TemplateComponentFactory.h"
+#include "State/LoadingState.h"
 #include "Util/Serialization/XMLSerializationFile.h"
 #include "Util/State/StateMachine.h"
+#include <boost/program_options.hpp>
 
 namespace Diversia
 {
@@ -103,7 +108,7 @@ ClientApplication::~ClientApplication()
     ClientGlobals::mApp = 0;
 }
 
-void ClientApplication::init()
+void ClientApplication::init( int argc, char* argv[] )
 {
     // Init curl
     curl_global_init( CURL_GLOBAL_DEFAULT );
@@ -133,31 +138,76 @@ void ClientApplication::init()
         mCrashReporter->setAppVersion( "trunk" ); // TODO: Get revision number
         mConfigManager->registerObject( reporter );
 
-        // Add component factories
+        // Init program options
+        using namespace boost::program_options;
+        options_description desc( "Options" );
+        desc.add_options()
+            ( "help", "Shows help" )
+            ( "offline,o", bool_switch( &GlobalsBase::mOffline ), "Start client in offline mode." )
+            ( "offline-file,f", value( &mOfflineFile ), "Offline file to load" )
+        ;
+
+        variables_map vm;        
+        store( command_line_parser( argc, argv ).options( desc ).run(), vm );
+        notify( vm );    
+
+        if( vm.count( "help" ) ) {
+            LOGI << "Usage: " << Path( argv[0] ).filename() << " [options]";
+            LOGI << desc;
+            ClientApplication::exit();
+            return;
+        }
+
+        // Add component factories, get camp class to ensure that the class is registered.
         TemplateComponentFactory<SceneNode, ClientObject, false, false, true>::registerFactory();
         Object::addAutoCreateComponent<SceneNode>( "Node" );
+        camp::classByType<SceneNode>();
         TemplateComponentFactory<Mesh, ClientObject, false>::registerFactory();
+        camp::classByType<Mesh>();
         TemplateComponentFactory<Entity, ClientObject, false>::registerFactory();
+        camp::classByType<Entity>();
         TemplateComponentFactory<Light, ClientObject, false>::registerFactory();
+        camp::classByType<Light>();
         TemplateComponentFactory<Camera, ClientObject, false, true, true>::registerFactory();
+        camp::classByType<Camera>();
         TemplateComponentFactory<Animation, ClientObject, true>::registerFactory();
+        camp::classByType<Animation>();
         TemplateComponentFactory<Text, ClientObject, true>::registerFactory();
+        camp::classByType<Text>();
         TemplateComponentFactory<CollisionShape, ClientObject, false>::registerFactory();
+        camp::classByType<CollisionShape>();
         TemplateComponentFactory<RigidBody, ClientObject, false>::registerFactory();
+        camp::classByType<RigidBody>();
         TemplateComponentFactory<AreaTrigger, ClientObject, false>::registerFactory();
+        camp::classByType<AreaTrigger>();
         TemplateComponentFactory<ForceField, ClientObject, false>::registerFactory();
+        camp::classByType<ForceField>();
         TemplateComponentFactory<Audio, ClientObject, true>::registerFactory();
+        camp::classByType<Audio>();
         TemplateComponentFactory<LuaObjectScript, ClientObject, true>::registerFactory();
+        camp::classByType<LuaObjectScript>();
         TemplateComponentFactory<Particle, ClientObject, true>::registerFactory();
+        camp::classByType<Particle>();
 
-        // Add plugin factories
+        // Add plugin factories, get camp class to ensure that the class is registered.
         TemplatePluginFactory<PermissionManager, ServerPluginManager>::registerFactory();
+        camp::classByType<PermissionManager>();
         TemplatePluginFactory<ResourceManager, ServerPluginManager>::registerFactory();
+        camp::classByType<ResourceManager>();
+        TemplatePluginFactory<ClientObjectTemplateManager, ServerPluginManager>::registerFactory();
+        camp::classByType<ClientObjectTemplateManager>();
         ObjectManagerFactory<ClientObjectManager, ServerPluginManager>::registerFactory( mUpdateSignal, mLateUpdateSignal );
+        camp::classByType<ClientObjectManager>();
         TemplatePluginFactory<ServerNeighborsPlugin, ServerPluginManager>::registerFactory();
+        camp::classByType<ServerNeighborsPlugin>();
         TemplatePluginFactory<SkyPlugin, ServerPluginManager>::registerFactory();
+        camp::classByType<SkyPlugin>();
         TemplatePluginFactory<Terrain, ServerPluginManager>::registerFactory();
+        camp::classByType<Terrain>();
+        TemplatePluginFactory<SceneManagerPlugin, ServerPluginManager>::registerFactory();
+        camp::classByType<SceneManagerPlugin>();
         TemplatePluginFactory<LuaPlugin, ServerPluginManager>::registerFactory();
+        camp::classByType<LuaPlugin>();
         ClientServerPluginManager::addAutoCreatePlugin<LuaPlugin>();
 
         // Override the default game mode.
@@ -200,29 +250,50 @@ void ClientApplication::init()
         // Push menu state to the state machine.
         mStateMachine.reset( new StateMachine() );
         ClientGlobals::mState = mStateMachine.get();
-        mStateMachine->pushState( new MenuState() );
+
+        if( !GlobalsBase::mOffline )
+        {
+            mStateMachine->pushState( new MenuState() );
+        }
+        else if( vm.count( "offline-file" ) )
+        {
+            mGridManager->createOfflineServer();
+            mStateMachine->pushState( new LoadingState() );
+            ServerPluginManager& pluginManager = mGridManager->getActiveServer().getPluginManager();
+            pluginManager.createPlugin<PermissionManager>();
+            pluginManager.createPlugin<ClientObjectTemplateManager>();
+            pluginManager.createPlugin<ClientObjectManager>();
+
+            SerializationFile* file = new XMLSerializationFile( 
+                mGraphicsManager->getRootResourceLocation() / mOfflineFile, "NoSerialization", 
+                false );
+            file->load();
+            file->deserialize( pluginManager, false );
+            delete file;
+        }
+        else
+        {
+            LOGC << "Running in offline mode but no file was given to load.";
+            ClientApplication::exit();
+        }
     }
-    catch( Exception e )
+    catch( const Exception& e )
     {
-        // Save configuration
-        mConfigManager->save();
-
-        // Cleanup curl
-        curl_global_cleanup();
-
         LOGC << e.what();
-
+        ClientApplication::exit();
+        throw e;
+    }
+    catch( const Ogre::Exception& e )
+    {
+        LOGC << e.what();
+        ClientApplication::exit();
         throw e;
     }
 
     // Run the game loop
     run();
 
-    // Save configuration
-    mConfigManager->save();
-
-    // Cleanup curl
-    curl_global_cleanup();
+    ClientApplication::exit();
 }
 
 void ClientApplication::run()
@@ -286,6 +357,15 @@ void ClientApplication::quitSoon()
 {
     ClientGlobals::mGraphics->getFader()->startFadeOut();
     DelayedCall::create( sigc::mem_fun( this, &ClientApplication::quit ), 1.1 );
+}
+
+void ClientApplication::exit()
+{
+    // Save configuration
+    mConfigManager->save();
+
+    // Cleanup curl
+    curl_global_cleanup();
 }
 
 //------------------------------------------------------------------------------

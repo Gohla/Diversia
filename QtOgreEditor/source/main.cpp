@@ -5,7 +5,7 @@
 int main( int argc, char* argv[] )
 {
     Diversia::QtOgreEditor::EditorApplication app( argc, argv );
-    app.init();
+    app.init( argc, argv );
     app.run();
     return 0;
 }

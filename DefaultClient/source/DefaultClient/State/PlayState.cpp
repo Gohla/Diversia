@@ -22,7 +22,9 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "DefaultClient/Platform/StableHeaders.h"
 
+#include "Client/ClientServerPlugin/ServerPluginManager.h"
 #include "Client/Communication/GridManager.h"
+#include "Client/Communication/ServerAbstract.h"
 #include "DefaultClient/GUI/MenuGUI.h"
 #include "DefaultClient/State/PlayState.h"
 #include "OgreClient/Graphics/Fader.h"
@@ -49,6 +51,7 @@ PlayState::~PlayState()
 void PlayState::start()
 {
     LOGI << "Entering play state.";
+    GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PLAY );
 
     // Fade the scene in for 3.0 seconds, after 1.0 seconds have passed.
     DelayedCall::create( sigc::bind( sigc::mem_fun( ClientGlobals::mGraphics->getFader(), 
