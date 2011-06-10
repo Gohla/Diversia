@@ -282,7 +282,7 @@ void ClientApplication::init( int argc, char* argv[] )
                 file->deserialize( pluginManager, false );
                 delete file;
             }
-            if( vm.count( "offline-script" ) )
+            else if( vm.count( "offline-script" ) )
             {
                 const camp::Class& metaclass = camp::classByType<GameModePlugin>();
                 camp::UserObject gameMode = pluginManager.createPlugin<GameModePlugin>();
