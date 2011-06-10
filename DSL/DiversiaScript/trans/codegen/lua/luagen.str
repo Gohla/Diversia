@@ -133,7 +133,7 @@ rules
 		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), type), String(name), False()]))]),
 		<map(componentprop-to-lua(|name))> properties
 	]
-	componentprop-to-lua(|componentName): ComponentProp(name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
+	componentprop-to-lua(|componentName): ComponentProp(type, name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
 	destroy-component-to-lua: name -> Call(VarRef(name), "Destroy", Args([]))
 	
 	// Object properties
