@@ -12,6 +12,6 @@ int main( int argc, char* argv[] )
 #if DIVERSIA_PLATFORM == DIVERSIA_PLATFORM_WIN32
 int APIENTRY _tWinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPTSTR lpCmdLine, int nCmdShow)
 {
-    main( 0, 0 );
+    main( __argc, __targv );
 }
 #endif
