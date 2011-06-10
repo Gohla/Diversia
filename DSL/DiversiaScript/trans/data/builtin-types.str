@@ -225,6 +225,7 @@ rules
 		Property("DisplayName", StringType(), True()), 
 		Property("NetworkingType", CustomType("Enum"), True()), 
 		Property("ParentName", StringType(), True()), 
+		Property("Parent", CustomType("Object"), True()),
 		Property("TemplateName", StringType(), True()), 
 		Property("Components", VoidType(), True())
 	], 
