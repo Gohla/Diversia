@@ -27,6 +27,7 @@ THE SOFTWARE.
 #include "Client/Platform/StableHeaders.h"
 
 #include "Client/Lua/LuaPlugin.h"
+#include "Client/ClientServerPlugin/ServerPluginManager.h"
 
 namespace Diversia
 {
@@ -40,6 +41,15 @@ LuaPlugin::LuaPlugin( Mode mode, PluginState state, ServerPluginManager& rPlugin
     ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
 {
     PropertySynchronization::storeUserObject();
+
+    try
+    {
+        mLuaScriptingManager.object( "PluginManager" ) = rPluginManager;
+    }
+    catch( Exception e )
+    {
+        LCLOGE << "Could not add PluginManager object to lua: " << e.what();
+    }
 }
 
 LuaPlugin::~LuaPlugin()
