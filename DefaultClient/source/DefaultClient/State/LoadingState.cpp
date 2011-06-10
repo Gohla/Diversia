@@ -34,7 +34,8 @@ namespace DefaultClient
 
 LoadingState::LoadingState()
 {
-    ClientGlobals::mGrid->connectLoadingCompleted( sigc::mem_fun( this, &LoadingState::loadingComplete ) );
+    ClientGlobals::mGrid->connectLoadingCompleted( sigc::mem_fun( this, 
+        &LoadingState::loadingComplete ) );
     ClientGlobals::mGrid->connectActiveServerDisconnect( sigc::mem_fun( this, 
         &LoadingState::activeServerDisconnected ) );
 }

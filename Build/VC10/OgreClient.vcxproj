@@ -71,7 +71,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zm310 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>DefaultClient\Platform\StableHeaders.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -83,7 +83,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zm310 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>DefaultClient\Platform\StableHeaders.h</PrecompiledHeaderFile>
     </ClCompile>
@@ -95,7 +95,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">
     <ClCompile>
-      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zm310 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>DefaultClient\Platform\StableHeaders.h</PrecompiledHeaderFile>
     </ClCompile>

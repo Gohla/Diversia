@@ -9,6 +9,7 @@ xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\boost_log-vc100-mt-1_45.dll
 xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\boost_date_time-vc100-mt-1_45.dll ReleaseWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\boost_thread-vc100-mt-1_45.dll ReleaseWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\boost_regex-vc100-mt-1_45.dll ReleaseWin32\ /d /y
+xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\boost_program_options-vc100-mt-1_45.dll ReleaseWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\RakNet.dll ReleaseWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\caelum.dll ReleaseWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\ReleaseWin32\cAudio.dll ReleaseWin32\ /d /y
@@ -29,6 +30,7 @@ xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\boost_log-vc100-mt-gd-1_45.dl
 xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\boost_date_time-vc100-mt-gd-1_45.dll DebugWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\boost_thread-vc100-mt-gd-1_45.dll DebugWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\boost_regex-vc100-mt-gd-1_45.dll DebugWin32\ /d /y
+xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\boost_program_options-vc100-mt-gd-1_45.dll DebugWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\RakNetDebug.dll DebugWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\caelum_d.dll DebugWin32\ /d /y
 xcopy ..\..\Build\VC10\dependencies\lib\DebugWin32\cAudio_d.dll DebugWin32\ /d /y

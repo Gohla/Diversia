@@ -39,13 +39,16 @@ public:
     ClientApplication();
     virtual ~ClientApplication();
 
-    void init();
+    void init( int argc, char* argv[] );
     void run();
     void quitSoon();
     inline void quit() { mShutdownRequested = true; }
+    inline void stopUpdates( bool stop = true ) { }
     
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
+
+    void exit();
 
     boost::scoped_ptr<Logger>           mLogger;
     boost::scoped_ptr<ConfigManager>    mConfigManager;
@@ -67,6 +70,9 @@ private:
     sigc::signal<void, Real>    mLateFrameSignal;
     bool                        mShutdown;
     bool                        mShutdownRequested;
+
+    // Options
+    Path mOfflineFile;
 
     // Settings
     LogLevel mLogLevel;

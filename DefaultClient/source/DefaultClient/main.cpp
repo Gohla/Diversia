@@ -5,7 +5,7 @@
 int main( int argc, char* argv[] )
 {
     Diversia::DefaultClient::ClientApplication application;
-    application.init();
+    application.init( argc, argv );
     return 0;
 }
 

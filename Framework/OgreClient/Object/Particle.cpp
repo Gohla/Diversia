@@ -56,8 +56,7 @@ Particle::Particle( const String& rName, Mode mode, NetworkingType networkingTyp
 Particle::~Particle()
 {
     if( mParticleSystem ) GlobalsBase::mScene->destroyParticleSystem( mParticleSystem );
-
-    GlobalsBase::mSelection->removeObject( mUserObject );
+    if( GlobalsBase::mSelection ) GlobalsBase::mSelection->removeObject( mUserObject );
 }
 
 void Particle::setParticleSystemName( const String& rParticleSystemName )

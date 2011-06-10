@@ -27,7 +27,7 @@ public:
     EditorApplication( int argc, char* argv[] );
     ~EditorApplication();
     
-    void init();
+    void init( int argc, char* argv[] );
     void run();
     inline void quitSoon() { QApplication::quit(); }
     inline void quit() { QApplication::quit(); }
