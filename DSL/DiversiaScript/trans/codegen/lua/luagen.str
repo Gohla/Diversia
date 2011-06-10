@@ -24,6 +24,8 @@ signature constructors
 strategies
 	
 	lua-flatten-all = topdown(try(lua-flatten-chunk))
+	lua-tostrings: LuaScripts(scripts) -> <concat-strings> <map(lua-script-tostring)> scripts
+	lua-tofiles(|path): LuaScripts(scripts) -> <map(lua-tofile(|path))> scripts
 	
 rules
 	
@@ -39,14 +41,14 @@ rules
 		[<lua-tostring> statements]
 		--------------------------------- End gamemode script ---------------------------------
 		]
-	lua-tostrings: LuaScripts(scripts) -> <concat-strings> <map(lua-script-tostring)> scripts
 	
 	lua-tofile(|path, name): ast -> ast
-		where <debug> $[Writing lua script [name] to [path][name].lua.]
-		where <fclose> <fputs>( <lua-tostring> ast, <fopen>( $[[path][name].lua], "w" ) )
+		where dir := <abspath> $[[<dirname> path]/gen/]
+		where <debug> $[Writing lua script [name] to [dir][name].lua.]
+		where try (<mkdir> dir)
+		where <fclose> <fputs>( <lua-tostring> ast, <fopen>( $[[dir][name].lua], "w" ) )
 	lua-tofile(|path): LuaObjectScript(name, statements) -> <lua-tofile(|path, name)> statements
 	lua-tofile(|path): LuaGameModeScript(statements) -> <lua-tofile(|path, "GameMode")> statements
-	lua-tofiles(|path): LuaScripts(scripts) -> <map(lua-tofile(|path))> scripts
 	
 	lua-funcdef(|name) = !FuncDef(FunctionName(name), ParList(), Chunk([]))
 	lua-funcdef: (name, content) -> FuncDef(FunctionName(name), ParList(), Chunk(content))
@@ -131,7 +133,7 @@ rules
 		Assignment([VarRef(name)], [Call(VarRef("Object"), "CreateComponent", Args([Access(VarRef("ComponentType"), type), String(name), False()]))]),
 		<map(componentprop-to-lua(|name))> properties
 	]
-	componentprop-to-lua(|componentName): ComponentProp(type, name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
+	componentprop-to-lua(|componentName): ComponentProp(name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
 	destroy-component-to-lua: name -> Call(VarRef(name), "Destroy", Args([]))
 	
 	// Object properties
