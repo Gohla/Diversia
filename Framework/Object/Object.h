@@ -744,6 +744,11 @@ private:
     void objectChange( Object& rObject, bool created );
 
     /**
+    Gets the parent object by reference.
+    **/
+    inline Object& getParentObjectRef() const { return *static_cast<Object*>( Node::getParent() ); }
+
+    /**
     Implemented by Object.
     **/
     void WriteAllocationID( RakNet::Connection_RM3* pConnection,
