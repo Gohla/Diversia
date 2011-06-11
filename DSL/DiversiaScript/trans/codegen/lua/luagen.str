@@ -80,7 +80,9 @@ rules // Utility
 		where createFunc := <strat> (statements, <fetch-elem(?FuncDef(FunctionName(funcName), _, _))> functions)
 	lua-manip-statements(strat|funcName): (statements, functions) -> functions'
 		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
-		where functions' := <concat> [[<lua-funcdef> ("Create", statements)], functions] 
+		where functions' := <concat> [[<lua-funcdef> ("Create", statements)], functions]
+	lua-createFunc-append: (s, f) -> <lua-manip-statements(lua-append-statements|"Create")> (s, f)
+	lua-createFunc-prepend: (s, f) -> <lua-manip-statements(lua-prepend-statements|"Create")> (s, f)  
 	
 	// Flattens the statements inside a lua statement block
 	lua-flatten-chunk: Chunk(statements) -> Chunk(<flatten-list> statements)
@@ -96,18 +98,18 @@ rules // Syntax transformation
 		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions''']))
 		where vars := <map(to-lua)> <object-vars> obj 
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions' := <lua-manip-statements(lua-prepend-statements|"Create")> (<map(component-to-lua(|"Object"))> componenDefs, functions)
-		where functions'' := <lua-manip-statements(lua-prepend-statements|"Create")> (<map(propassign-to-lua(|"Object"))> propAssigns, functions')
+		where functions' := <lua-createFunc-prepend> (<map(component-to-lua(|"Object"))> componenDefs, functions)
+		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua(|"Object"))> propAssigns, functions')
 		where functions''' := <states-to-lua> (<concat> [[defState], stateDefs], functions'')
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [], _, eventDefs) -> 
 		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [vars, functions'']))
 		where vars := <map(to-lua)> <object-vars> obj 
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions' := <lua-manip-statements(lua-prepend-statements|"Create")> (<map(component-to-lua(|"Object"))> componenDefs, functions)
-		where functions'' := <lua-manip-statements(lua-prepend-statements|"Create")> (<map(propassign-to-lua(|"Object"))> propAssigns, functions')
+		where functions' := <lua-createFunc-prepend> (<map(component-to-lua(|"Object"))> componenDefs, functions)
+		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua(|"Object"))> propAssigns, functions')
 	gamemode-to-lua: (pluginDefs, eventDefs) -> LuaGameModeScript(<lua-flatten-all> Chunk(<concat> [functions']))
 		where functions := <map(global-event-to-lua)> eventDefs
-		where functions' := <lua-manip-statements(lua-prepend-statements|"Create")> (<map(to-lua)> pluginDefs, functions)
+		where functions' := <lua-createFunc-prepend> (<map(to-lua)> pluginDefs, functions)
 	
 	// Variables
 	to-lua: VarDef(_, _{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
