@@ -36,6 +36,6 @@ signature constructors // Object & state
 	PluginRef: Id -> PluginRef
 	This: Id -> This
 	
-	ObjectProp: Id * Id * Exp -> ObjectProp
-	PluginProp: Id * Id * Exp -> PluginProp
-	ComponentProp: Id * Id * Exp -> ComponentProp
+	ObjectProp: Type * Id * Exp -> ObjectProp
+	PluginProp: Type * Id * Exp -> PluginProp
+	ComponentProp: Type * Id * Exp -> ComponentProp

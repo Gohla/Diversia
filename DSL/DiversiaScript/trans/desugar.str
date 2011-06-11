@@ -43,6 +43,7 @@ rules  // simple desugars
 	isDefaultStateDef = ?DefaultStateDef(_,_,_,_,_)
 	isObjectDef = ?ObjectDef(_,_)
 	isObjectDef = ?ObjectDef(_,_,_,_,_,_,_,_,_)
+	isObjectDef = ?ExternalObjectDef(_)
 	isComponentDef = ?ComponentDef(_,_)
 	isComponentDef = ?ComponentDef(_,_,_)	
 	isPluginDef = ?PluginDef(_,_) 
@@ -85,7 +86,7 @@ rules   // post desugar stuff
 
 	desugar-object: Start(pluginDefs, objectDefs, eventDefs) -> Start(pluginDefs, objectDefs', eventDefs)
 		where 
-			<map(desugar-object)><collect-all(isObjectDef)> objectDefs => objectDefs'
+			<map(desugar-object)><collect-all(?ObjectDef(_,_,_,_,_,_,_,_,_))> objectDefs => objectDefs'
 			
 	desugar-object: ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs,  eventDefs) -> 
 					ObjectDef(name, propAssigns, propDefs, componentDefs,             varDefs', defaultStateDef, stateDefs, eventDefs)
@@ -95,6 +96,8 @@ rules   // post desugar stuff
 	object-to-var: ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs , varDefs, defaultStateDef, stateDefs, eventDefs) ->
 					 VarDef(name, CustomType(name), ObjectNew(ObjectRef(name), [ObjectProp("Parent", This())]))
 	
+	object-to-var: ExternalObjectDef(name) ->  
+					VarDef(name, CustomType(name), ObjectNew(ObjectRef(name), [ObjectProp("Parent", This())]))                                                                     
 	/*
 	create-new-object: object -> ObjectNew(ObjectRef(object),[])
 	create-parent-prop: object -> ObjectProp("Parent", ObjectRef(object))

@@ -20,6 +20,8 @@ rules
 
 	get-builtin-type: type -> <fetch-elem(has-name(|type))><builtin-types> 
 	get-builtin-type: CustomType(type) -> <get-builtin-type> type
+	
+	get-all-builtin-types = builtin-types
 		
 	get-builtin-property: (type, property) -> 
 		<fetch-elem(has-name(|property))><get-builtin-properties> type
@@ -31,6 +33,14 @@ rules
 	has-name(|name) =  ?Property(name,_,_)
 	has-name(|name) =  ?Function(name,_,_)
 	is-read-only = ?Property(_,_,False())
+	
+	get-name: BuiltinType(name,_,_,_,_) -> name
+	get-name: Property(name,_,_) -> name
+	get-name: Function(name,_,_) -> name
+	
+	get-proposal: BuiltinType(name,_,_,_,_) -> (name, $[Builtin: [name]])
+	get-proposal: Property(name,_,_) -> (name, $[[name]: type info!])
+	get-proposal: Function(name,_,_) -> name
 
 	get-builtin-properties: type -> <get-builtin-properties><get-builtin-type> type	
 	get-builtin-properties: BuiltinType(_,parents,_,properties,_) -> 

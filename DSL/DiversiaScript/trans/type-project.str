@@ -70,7 +70,10 @@ rules // defs
 	type-of: Function(_,"",_) -> VoidType() //  TODO: temp stuff
 	
 rules // getting type data
-
+	
+	
+	get-all-types = <conc>(<get-all-objects>,<get-all-builtin-types>)
+	
 	get-type-properties: CustomType(type) -> properties
 		where not(is-object(|type));
 			<get-builtin-properties> type => properties

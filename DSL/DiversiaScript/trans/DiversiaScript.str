@@ -6,6 +6,7 @@ imports
   libstratego-aterm
   include/DiversiaScript
   lib/editor-common.generated
+  complete
   rename
   store
   desugar

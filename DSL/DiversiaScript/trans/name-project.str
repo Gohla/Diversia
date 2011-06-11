@@ -10,12 +10,17 @@ imports
 	
 rules // Name-based projections  //TODO need to check these
 	
-	get-name: ObjectDef(n, _, _, _, _, _, _, _, _) -> n
+	get-name: ObjectDef(n, _, _, _, _, _, _, _, _) -> n //pre desugar
+	get-name: ObjectDef(n, _, _, _, _, _, _, _) -> n  //post desugar
+	get-name: PropDef(_,n,_,_) -> n
 	get-name: ComponentDef(n, _, _) -> n
 	get-name: VarDef(_, n, _, _) -> n
 	get-name: EventDef(n, _, _) -> n
 	get-name: StateDef(n, _) -> n
 	get-name: CustomType(n) -> n
+	
+	get-proposal: ObjectDef(name, _, _, _, _, _, _, _) -> (name, $[[name] : ClientObject])
+	get-proposal: PropDef(_,name,_,_)  -> (name, $[[name] : Type  info ])
 	
 	has-name(|name) = ?ObjectDef(name, _, _, _, _, _, _, _, _)
 	has-name(|name) = ?PropDef(_, name, _, _)

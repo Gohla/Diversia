@@ -8,3 +8,5 @@ completions
   //                                                               
   // See the imported file for a brief introduction and examples.
   
+  completion proposer : editor-complete
+  
