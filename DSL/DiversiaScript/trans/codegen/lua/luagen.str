@@ -1,6 +1,7 @@
 module codegen/lua/luagen
 
 imports
+	
 	libstratego-lib
 	libstratego-gpp
 	
@@ -23,12 +24,22 @@ signature constructors
 	
 strategies
 	
+	/**
+	 * Flattens all statement lists in all lua chunks.
+	 */
 	lua-flatten-all = topdown(try(lua-flatten-chunk))
+	/**
+	 * Converts all lua scripts to one big file.
+	 */
 	lua-tostrings: LuaScripts(scripts) -> <concat-strings> <map(lua-script-tostring)> scripts
+	/**
+	 * Writes all lua scripts to separate files in given path.
+	 */
 	lua-tofiles(|path): LuaScripts(scripts) -> <map(lua-tofile(|path))> scripts
 	
-rules
+rules // String and file manipulation.
 	
+	// Lua AST to string.
 	lua-tostring: ast ->
 		<box2text-string( |100 )> <ast2box(|[<import-term( ../Lua/include/Lua.pp.af )>])>
 	lua-script-tostring: LuaObjectScript(name, statements) -> 
@@ -42,6 +53,7 @@ rules
 		--------------------------------- End gamemode script ---------------------------------
 		]
 	
+	// Lua AST to lua files.
 	lua-tofile(|path, name): ast -> ast
 		where dir := <abspath> $[[<dirname> path]/gen/]
 		where <debug> $[Writing lua script [name] to [dir][name].lua.]
@@ -50,19 +62,30 @@ rules
 	lua-tofile(|path): LuaObjectScript(name, statements) -> <lua-tofile(|path, name)> statements
 	lua-tofile(|path): LuaGameModeScript(statements) -> <lua-tofile(|path, "GameMode")> statements
 	
+rules // Utility
+	
+	// Strategies for making lua functions
 	lua-funcdef(|name) = !FuncDef(FunctionName(name), ParList(), Chunk([]))
 	lua-funcdef: (name, content) -> FuncDef(FunctionName(name), ParList(), Chunk(content))
 	lua-funcdef: (name, paramNames, content) -> FuncDef(FunctionName(name), ParList(paramNames), Chunk(content))
 		where(<gt> (<length> paramNames, 0))
 	lua-funcdef: (name, paramNames, content) -> <lua-funcdef> (name, content)
 		where(<eq> (<length> paramNames, 0))
+		
+	// Strategies for manipulating lua functions
 	lua-append-statements(|statements): FuncDef(name, params, Chunk(content)) -> FuncDef(name, params, Chunk(<concat> [content, statements]))
 	lua-prepend-statements(|statements): FuncDef(name, params, Chunk(content)) -> FuncDef(name, params, Chunk(<concat> [statements, content]))
 	lua-replace-function(|name, function): functions -> <map(\ FuncDef(FunctionName(n), _, _) -> function where <eq>(n, name) \ <+ id)> functions
-	lua-stateref = !VarRef("State")
+	
+	// Flattens the statements inside a lua statement block
 	lua-flatten-chunk: Chunk(statements) -> Chunk(<flatten-list> statements)
+	
+	// Defines what the state vardef is
+	lua-stateref = !VarRef("State")
 		
-	// Global definitions to lua files.
+rules // Syntax transformation
+		
+	// Definitions to lua syntax.
 	to-lua: Start(pluginDefs, objectDefs, eventDefs) -> LuaScripts(<concat> [[<gamemode-to-lua> (pluginDefs, eventDefs)], <map(objects-to-lua)> objectDefs])
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
 		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions''']))
@@ -223,9 +246,10 @@ rules // Expressions
 		where is-builtin-function(|"ClientObject", name)
 	to-lua: Call(This(_), name, args) -> Call(name, Args(<map(to-lua)> args))
 		where not (is-builtin-function(|"ClientObject", name)) 
-	//is-object-function
 	to-lua: Access(exp, name) -> Access(<to-lua> exp, name)
 	to-lua: This(_) -> VarRef("Object")
+	
+rules // Operators
 	
 	to-lua: AOp(ADD(), l, r) -> Add(<to-lua> l, <to-lua> r)
 	to-lua: AOp(SUB(), l, r) -> Sub(<to-lua> l, <to-lua> r)
@@ -296,5 +320,4 @@ rules // Other
 	
 	to-lua: Param(name) -> name
 	to-lua: Param(name, _) -> name
-	
 	
