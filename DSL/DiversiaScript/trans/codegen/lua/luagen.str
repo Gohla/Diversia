@@ -1,6 +1,7 @@
 module codegen/lua/luagen
 
 imports
+	
 	libstratego-lib
 	libstratego-gpp
 	
@@ -23,12 +24,22 @@ signature constructors
 	
 strategies
 	
+	/**
+	 * Flattens all statement lists in all lua chunks.
+	 */
 	lua-flatten-all = topdown(try(lua-flatten-chunk))
+	/**
+	 * Converts all lua scripts to one big file.
+	 */
 	lua-tostrings: LuaScripts(scripts) -> <concat-strings> <map(lua-script-tostring)> scripts
+	/**
+	 * Writes all lua scripts to separate files in given path.
+	 */
 	lua-tofiles(|path): LuaScripts(scripts) -> <map(lua-tofile(|path))> scripts
 	
-rules
+rules // String and file manipulation.
 	
+	// Lua AST to string.
 	lua-tostring: ast ->
 		<box2text-string( |100 )> <ast2box(|[<import-term( ../Lua/include/Lua.pp.af )>])>
 	lua-script-tostring: LuaObjectScript(name, statements) -> 
@@ -42,6 +53,7 @@ rules
 		--------------------------------- End gamemode script ---------------------------------
 		]
 	
+	// Lua AST to lua files.
 	lua-tofile(|path, name): ast -> ast
 		where dir := <abspath> $[[<dirname> path]/gen/]
 		where <debug> $[Writing lua script [name] to [dir][name].lua.]
@@ -50,36 +62,54 @@ rules
 	lua-tofile(|path): LuaObjectScript(name, statements) -> <lua-tofile(|path, name)> statements
 	lua-tofile(|path): LuaGameModeScript(statements) -> <lua-tofile(|path, "GameMode")> statements
 	
+rules // Utility
+	
+	// Strategies for making lua functions
 	lua-funcdef(|name) = !FuncDef(FunctionName(name), ParList(), Chunk([]))
 	lua-funcdef: (name, content) -> FuncDef(FunctionName(name), ParList(), Chunk(content))
 	lua-funcdef: (name, paramNames, content) -> FuncDef(FunctionName(name), ParList(paramNames), Chunk(content))
 		where(<gt> (<length> paramNames, 0))
 	lua-funcdef: (name, paramNames, content) -> <lua-funcdef> (name, content)
 		where(<eq> (<length> paramNames, 0))
-	lua-append-statements(|statements): FuncDef(name, params, Chunk(content)) -> FuncDef(name, params, Chunk(<concat> [content, statements]))
-	lua-prepend-statements(|statements): FuncDef(name, params, Chunk(content)) -> FuncDef(name, params, Chunk(<concat> [statements, content]))
-	lua-replace-function(|name, function): functions -> <map(\ FuncDef(FunctionName(n), _, _) -> function where <eq>(n, name) \ <+ id)> functions
-	lua-stateref = !VarRef("State")
-	lua-flatten-chunk: Chunk(statements) -> Chunk(<flatten-list> statements)
 		
-	// Global definitions to lua files.
+	// Strategies for manipulating lua functions
+	lua-append-statements: (statements, FuncDef(name, params, Chunk(content))) -> FuncDef(name, params, Chunk(<concat> [content, statements]))
+	lua-prepend-statements: (statements, FuncDef(name, params, Chunk(content))) -> FuncDef(name, params, Chunk(<concat> [statements, content]))
+	lua-replace-function(|name, function): functions -> <map(\ FuncDef(FunctionName(n), _, _) -> function where <eq>(n, name) \ <+ id)> functions
+	lua-manip-statements(strat|funcName): (statements, functions) -> <lua-replace-function(|funcName, createFunc)> functions
+		where createFunc := <strat> (statements, <fetch-elem(?FuncDef(FunctionName(funcName), _, _))> functions)
+	lua-manip-statements(strat|funcName): (statements, functions) -> functions'
+		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
+		where functions' := <concat> [[<lua-funcdef> ("Create", statements)], functions]
+	lua-createFunc-append: (s, f) -> <lua-manip-statements(lua-append-statements|"Create")> (s, f)
+	lua-createFunc-prepend: (s, f) -> <lua-manip-statements(lua-prepend-statements|"Create")> (s, f)  
+	
+	// Flattens the statements inside a lua statement block
+	lua-flatten-chunk: Chunk(statements) -> Chunk(<flatten-list> statements)
+	
+	// Defines what the state vardef is
+	lua-stateref = !VarRef("State")
+		
+rules // Syntax transformation
+		
+	// Definitions to lua syntax.
 	to-lua: Start(pluginDefs, objectDefs, eventDefs) -> LuaScripts(<concat> [[<gamemode-to-lua> (pluginDefs, eventDefs)], <map(objects-to-lua)> objectDefs])
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
-		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], vars, functions''']))
-		where vars := <map(to-lua)> <object-vars> obj 
+		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], functions'''']))
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions' := <components-to-lua> (<map(component-to-lua(|"Object"))> componenDefs, functions)
-		where functions'' := <propassigns-to-lua> (propAssigns, functions')
-		where functions''' := <states-to-lua> (<concat> [[defState], stateDefs], functions'')
+		where functions' := <lua-createFunc-prepend> (<map(component-to-lua(|"Object"))> componenDefs, functions)
+		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua(|"Object"))> propAssigns, functions')
+		where functions''' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions'') 
+		where functions'''' := <states-to-lua> (<concat> [[defState], stateDefs], functions''')
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [], _, eventDefs) -> 
-		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [vars, functions'']))
-		where vars := <map(to-lua)> <object-vars> obj 
+		LuaObjectScript(name, <lua-flatten-all> Chunk(functions''')) 
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions' := <components-to-lua> (<map(component-to-lua(|"Object"))> componenDefs, functions)
-		where functions'' := <propassigns-to-lua> (propAssigns, functions')
+		where functions' := <lua-createFunc-prepend> (<map(component-to-lua(|"Object"))> componenDefs, functions)
+		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua(|"Object"))> propAssigns, functions')
+		where functions''' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions'')
 	gamemode-to-lua: (pluginDefs, eventDefs) -> LuaGameModeScript(<lua-flatten-all> Chunk(<concat> [functions']))
 		where functions := <map(global-event-to-lua)> eventDefs
-		where functions' := <plugins-to-lua> (<map(to-lua)> pluginDefs, functions)
+		where functions' := <lua-createFunc-prepend> (<map(to-lua)> pluginDefs, functions)
 	
 	// Variables
 	to-lua: VarDef(_, _{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
@@ -125,11 +155,6 @@ rules
 		where ((stateName, EventDef(name, params, statements)), otherEvents) := <take-1> events
 		
 	// Components
-	components-to-lua: (statements, functions) -> <lua-replace-function(|"Create", createFunc)> functions
-		where createFunc := <lua-prepend-statements(|statements)> <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions
-	components-to-lua: (statements, functions) -> functions'
-		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
-		where functions' := <concat> [[<lua-funcdef> ("Create", statements)], functions] 
 	component-to-lua(|varName): ComponentDef(name, CustomType(type), properties) -> [
 		Assignment([VarRef(name)], [Call(VarRef(varName), "CreateComponent", Args([Access(VarRef("ComponentType"), type), String(name), False()]))]),
 		<map(componentprop-to-lua(|name))> properties
@@ -138,11 +163,6 @@ rules
 	destroy-component-to-lua: name -> Call(VarRef(name), "Destroy", Args([]))
 	
 	// Object properties
-	propassigns-to-lua: (properties, functions) -> <lua-replace-function(|"Create", createFunc)> functions
-		where createFunc := <lua-prepend-statements(|<map(propassign-to-lua(|"Object"))> properties)> <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions
-	propassigns-to-lua: (properties, functions) -> functions'
-		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
-		where functions' := <concat> [[<lua-funcdef> ("Create", <map(propassign-to-lua(|"Object"))> properties)], functions]
 	propassign-to-lua(|varName): ObjectProp(_, name, exp) -> Assignment([Access(varName, VarRef(name))], <to-lua> exp)	
 	propassign-to-lua(|varName): ObjectProp(name, exp) -> Assignment([Access(varName, VarRef(name))], <to-lua> exp)
 
@@ -180,11 +200,6 @@ rules
 		where not (<fetch-elem(?EventDef("StateExit", _, _))> eventDefs)
 		
 	// Plugins
-	plugins-to-lua: (statements, functions) -> <lua-replace-function(|"Create", createFunc)> functions
-		where createFunc := <lua-prepend-statements(|statements)> <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions
-	plugins-to-lua: (statements, functions) -> functions'
-		where not( <fetch-elem(?FuncDef(FunctionName("Create"), _, _))> functions )
-		where functions' := <concat> [[<lua-funcdef> ("Create", statements)], functions] 
 	to-lua: PluginDef(name, CustomType(type), properties) -> [
 		Assignment([VarRef(name)], [Call(VarRef("PluginManager"), "CreatePlugin", Args([Access(VarRef("PluginType"), type), String(name)]))]),
 		<map(pluginprop-to-lua(|name))> properties
@@ -223,9 +238,10 @@ rules // Expressions
 		where is-builtin-function(|"ClientObject", name)
 	to-lua: Call(This(_), name, args) -> Call(name, Args(<map(to-lua)> args))
 		where not (is-builtin-function(|"ClientObject", name)) 
-	//is-object-function
 	to-lua: Access(exp, name) -> Access(<to-lua> exp, name)
 	to-lua: This(_) -> VarRef("Object")
+	
+rules // Operators
 	
 	to-lua: AOp(ADD(), l, r) -> Add(<to-lua> l, <to-lua> r)
 	to-lua: AOp(SUB(), l, r) -> Sub(<to-lua> l, <to-lua> r)
@@ -296,5 +312,4 @@ rules // Other
 	
 	to-lua: Param(name) -> name
 	to-lua: Param(name, _) -> name
-	
 	
