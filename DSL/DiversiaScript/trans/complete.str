@@ -1,0 +1,28 @@
+module complete
+
+imports 
+	include/DiversiaScript
+	lib/editor-common.generated
+	signatures
+	DiversiaScript
+	type-project
+	name-project
+	data/builtin-types
+	
+
+
+rules	
+	
+	editor-complete: (node, position, ast, path, project-path) -> proposals
+		where
+			editor-init;
+			<analyse-all> ast => ast';
+			<collect-one(propose-analysed)> ast'  => proposals <+ 
+											  ![] => proposals
+	
+	propose-analysed = propose-props <+ propose-types
+        
+	propose-props: ComponentProp(type, COMPLETION(_), expr) -> <map(get-proposal)><get-type-properties> type
+	propose-props: PluginProp(type, COMPLETION(_), expr) -> <map(get-proposal)><get-type-properties> type
+	propose-props: ObjectProp(type, COMPLETION(_), expr) -> <map(get-proposal)><get-type-properties> type	
+	propose-types: CustomType(COMPLETION(_)) -> <map(get-proposal)><get-all-types>
