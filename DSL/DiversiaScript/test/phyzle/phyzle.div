@@ -1,3 +1,11 @@
+plugin SceneManager {
+	SkyMaterial = "SpaceSkyBox"
+	SkyType = "Box"
+	SkyEnabled = true
+	SkyDrawFirst = true
+	AmbientLight = Colour(0.23, 0.2, 0.3, 1)
+}
+
 // Camera object definition
 def CameraYaw {
     Position = [0, 0.5, 0] // Standard position offset
@@ -19,13 +27,13 @@ def CameraYaw {
     // States
     default state Alive {
         // Events
-        on MousePressed(Button) {
+        on MousePressed(Button : String) {
             if(Button == "Right") mRMB = true;
         }
-        on MouseReleased(Button) {
+        on MouseReleased(Button : String) {
             if(Button == "Right") mRMB = false;
         }
-        on MouseMoved(State) {
+        on MouseMoved(State : MouseState) {
             mMouseState = MouseState(State);
         }
         on Update() {
@@ -95,7 +103,7 @@ def Ball {
         var mStrafe : Int = 0
         var mSpeedMultiplier : Int = 1
         
-        on KeyPressed(Key) {
+        on KeyPressed(Key : String) {
             switch(Key) {
                 case "W": ++mMove;
                 case "S": --mMove;
@@ -104,7 +112,7 @@ def Ball {
                 case "Shift": mSpeedMultiplier = 2;
             }
         }
-        on KeyReleased(Key) {
+        on KeyReleased(Key : String) {
             switch(Key) {
                 case "W": --mMove;
                 case "S": ++mMove;
