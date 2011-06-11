@@ -88,7 +88,7 @@ def Ball {
     }
     
     // Child objects
-    //external def CameraYaw // Add the CameraYaw object definition as a child object.
+    external def CameraYaw // Add the CameraYaw object definition as a child object.
 
     default state Alive {
         var mMove : Int = 0
@@ -96,24 +96,24 @@ def Ball {
         var mSpeedMultiplier : Int = 1
         
         on KeyPressed(Key) {
-            switch(key) {
+            switch(Key) {
                 case "W": ++mMove;
                 case "S": --mMove;
-                case "A": ++Strafe;
-                case "D": --Strafe;
+                case "A": ++mStrafe;
+                case "D": --mStrafe;
                 case "Shift": mSpeedMultiplier = 2;
             }
         }
         on KeyReleased(Key) {
-            switch(key) {
+            switch(Key) {
                 case "W": --mMove;
                 case "S": ++mMove;
-                case "A": --Strafe;
-                case "D": ++Strafe;
+                case "A": --mStrafe;
+                case "D": ++mStrafe;
                 case "Shift": mSpeedMultiplier = 1;
             }
         }
-        on Frame(TimeSinceLastFrame) {
+        on Frame(TimeSinceLastFrame : Real) {
             // Cap values
             if(mMove < -1)          mMove = -1;
             else if(mMove > 1)      mMove = 1;
@@ -126,7 +126,7 @@ def Ball {
             }
             
             // Move the ball sideways
-            if(State.Strafe != 0) {
+            if(mStrafe != 0) {
                 RigidBody.ApplyCentralForce(CameraYaw.DerivedOrientation * [-mStrafe * mSpeedMultiplier, 0, 0]);
             }
         }
@@ -134,59 +134,13 @@ def Ball {
             // Move camera to the ball
             CameraYaw.Position = this.Position;
         }
-        on Collision(OtherObject) {
+        on Collision(OtherObject : Object) {
             // Transition to Dead state if a mine is hit.
             if(OtherObject.DisplayName == "Mine") setstate Dead;
         }
     }
     state Dead {
         // Do nothing
-    }
-}
-
-// Landmine object definition
-def Mine {
-    component Mesh {
-        ShapeType = "Mesh"
-        ShapeFile = "Landmine.mesh"
-    }
-    component Entity {
-        Material = "Landmine"
-    }
-    component CollisionShape {
-        ShapeType = "Mesh"
-        ShapeFile = "Landmine.bullet"
-    }
-    component RigidBody {
-        PhysicsType = "Dynamic"
-        Restitution = 0.3
-        LinearDampening = 0.7
-        AngularDampening = 0.7
-    }
-    
-    default state Armed {
-        on Collision(OtherObject: Object) {
-            // Explode mine if another object hits this.
-            setstate Exploding;
-        }
-    }
-    state Exploding {
-        component Particles {
-            Template = "Explosion.particle"
-            Active = true
-        }
-        component Sound {
-            SoundFile = "Explosion.ogg"
-            AutoPlay = true
-        }
-        
-        on StateEnter { // Event is fired after state is entered.
-            // Destroy this object after 2 seconds of explosion.
-            in 2 seconds {
-                this.Destroy();
-            }
-            interpolate Particles.Speed linearly from 5.0 to 1.0 over 2 seconds; 
-        }
     }
 }
 
@@ -202,11 +156,11 @@ def Floor {
         Material = "Floor"
     }
     component CollisionShape {
-        ShapeType = "Plane"
+        ShapeType = "Box"
         ShapeParameters = [1000, 1000, 1]
     }
     component RigidBody {
-        PhysicsType = "Static"
+        PhysicsType = "Kinematic"
         Restitution = 0.3
     }
 }
@@ -214,13 +168,10 @@ def Floor {
 // Global event, the 'main' function
 on Create() {
     // Create an object of type Floor at position 0, 0, 0.
-    /*new Floor {
-        Position = [0, 0, 0]
-    }
+    new Floor {
+        Position = [0, -5, 0]
+    };
     new Ball {
-        Position = [0, 10, 0]
-    }
-    new Mine {
-        Position = [0, 10, 10]
-    }*/
+        Position = [0, 10, -50]
+    };
 }

@@ -1,0 +1,151 @@
+material Barrel1
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588 0.588 0.588 
+			diffuse 0.588 0.588 0.588 
+			specular 0 0 0 10
+			emissive 0 0 0 
+
+			texture_unit 
+			{
+				texture Objects/Barrel/Barrel1.jpg
+			}
+		}
+	}
+}
+
+material Barrel2
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588 0.588 0.588 
+			diffuse 0.588 0.588 0.588 
+			specular 0 0 0 10
+			emissive 0 0 0 
+
+			texture_unit 
+			{
+				texture Objects/Barrel/Barrel2.jpg
+			}
+		}
+	}
+}
+
+material Barrel3
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588 0.588 0.588 
+			diffuse 0.588 0.588 0.588 
+			specular 0 0 0 10
+			emissive 0 0 0 
+
+			texture_unit 
+			{
+				texture Objects/Barrel/Barrel3.jpg
+			}
+		}
+	}
+}
+
+material Barrel4
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588 0.588 0.588 
+			diffuse 0.588 0.588 0.588 
+			specular 0 0 0 10
+			emissive 0 0 0 
+
+			texture_unit 
+			{
+				texture Objects/Barrel/Barrel4.jpg
+			}
+		}
+	}
+}
+
+material Barrel5
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588 0.588 0.588 
+			diffuse 0.588 0.588 0.588 
+			specular 0 0 0 10
+			emissive 0 0 0 
+
+			texture_unit 
+			{
+				texture Objects/Barrel/Barrel5.jpg
+			}
+		}
+	}
+}
+
+material Barrel6
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588 0.588 0.588 
+			diffuse 0.588 0.588 0.588 
+			specular 0 0 0 10
+			emissive 0 0 0 
+
+			texture_unit 
+			{
+				texture Objects/Barrel/Barrel6.jpg
+			}
+		}
+	}
+}
+
+material Barrel7
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588 0.588 0.588 
+			diffuse 0.588 0.588 0.588 
+			specular 0 0 0 10
+			emissive 0 0 0 
+
+			texture_unit 
+			{
+				texture Objects/Barrel/Barrel7.jpg
+			}
+		}
+	}
+}
+
+material Barrel8
+{
+	technique
+	{
+		pass
+		{
+			ambient 0.588 0.588 0.588 
+			diffuse 0.588 0.588 0.588 
+			specular 0 0 0 10
+			emissive 0 0 0 
+
+			texture_unit 
+			{
+				texture Objects/Barrel/Barrel8.jpg
+			}
+		}
+	}
+}
