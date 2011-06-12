@@ -60,7 +60,7 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_OGRECLIENT_API PhysicsManager
+class DIVERSIA_OGRECLIENT_API PhysicsManager : public sigc::trackable
 {
 public:
     /**

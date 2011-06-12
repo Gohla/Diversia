@@ -217,8 +217,8 @@ void ObjectManager::lateUpdate()
 {
     Node::processQueuedUpdates();
 
-    for( Objects::iterator i = mObjects.begin(); i != mObjects.end(); ++i )
-        i->second->_update(true, false);
+    /*for( Objects::iterator i = mObjects.begin(); i != mObjects.end(); ++i )
+        i->second->_update(true, false);*/
 }
 
 //------------------------------------------------------------------------------
