@@ -310,6 +310,6 @@ rules // Statements
 	
 rules // Other
 	
-	to-lua: Param(name) -> name
-	to-lua: Param(name, _) -> name
+	to-lua: Param(_{name}) -> name
+	to-lua: Param(_{name}, _) -> name
 	
