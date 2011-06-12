@@ -12,6 +12,7 @@ rules // util
 	printable: RealType() -> "Real"
 	printable: StringType() -> "String"
 	printable: VoidType() -> "Void"
+	printable: NullType() -> "Void*"
 	printable: CustomType(name) -> name
 	printable: [type|[]] -> <printable>type
 	printable: [type|types] -> $[[<printable>type],[<printable>types]]
@@ -24,6 +25,7 @@ rules // type matching
 		
 	match-type:(RealType(),IntType()) -> (RealType(),IntType())
 	match-type:(CustomType("Enum"),StringType()) -> (CustomType("Enum"),StringType()) // TODO: temp solution
+	match-type:(type, NullType()) -> (type, NullType())
 	
 	match-type:(CustomType(var-type),exp-type) -> (var-type,exp-type)
 		where <get-type-parent> (exp-type, var-type)
@@ -52,7 +54,7 @@ rules  // expr
 	type-of: IntConst(_) -> IntType()
 	type-of: FloatConst(_) -> RealType()
 	type-of: StrConst(_) -> StringType()
-	type-of: Null() -> VoidType()
+	type-of: Null() -> NullType()
 	type-of: Vector2Const(_,_) -> CustomType("Vector2")
 	type-of: Vector3Const(_,_,_) -> CustomType("Vector3")
 	type-of: Vector4Const(_,_,_,_) -> CustomType("Vector4")
