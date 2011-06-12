@@ -52,6 +52,10 @@ LuaObjectScript::LuaObjectScript( const String& rName, Mode mode, NetworkingType
     mServerSecurityLevel( LUASEC_HIGH ),
     mLoaded( false ),
     mCreated( false ),
+    mMousePriority( 0 ),
+    mKeyboardPriority( 0 ),
+    mMouseSubscribed( false ),
+    mKeyboardSubscribed( false ),
     mResourceManager( ClientComponent::getClientObject().getClientObjectManager().
         getPluginManager().getPlugin<ResourceManager>() ),
     mLuaManager( ClientComponent::getClientObject().getClientObjectManager().
@@ -147,6 +151,8 @@ void LuaObjectScript::destroy()
     if( mCreated && mLoaded )
     {
         LuaObjectScript::disconnectAll();
+        LuaObjectScript::unsubscribeKeyboard();
+        LuaObjectScript::unsubscribeMouse();
         mConnections.clear();
 
         // Call Destroy function if the lua script has one.
@@ -202,6 +208,76 @@ void LuaObjectScript::pluginStateChanged( PluginState state, PluginState prevSta
     {
         case STOP: LuaObjectScript::destroy(); break;
         case PLAY: if( prevState == STOP ) LuaObjectScript::create(); break;
+    }
+}
+
+bool LuaObjectScript::mousePressed( const MouseButton button )
+{
+    mMousePressedSignal( button );
+
+    // TODO: Get return value from lua
+    return true;
+}
+
+void LuaObjectScript::mouseReleased( const MouseButton button )
+{
+    mMouseReleasedSignal( button );
+}
+
+bool LuaObjectScript::mouseMoved( const MouseState& rState )
+{
+    mMouseMovedSignal( rState );
+
+    // TODO: Get return value from lua
+    return true;
+}
+
+void LuaObjectScript::subscribeMouse()
+{
+    if( !mMouseSubscribed )
+    {
+        GlobalsBase::mInput->subscribeMouse( *this );
+        mMouseSubscribed = true;
+    }
+}
+
+void LuaObjectScript::unsubscribeMouse()
+{
+    if( mMouseSubscribed )
+    {
+        GlobalsBase::mInput->unsubscribeMouse( *this );
+        mMouseSubscribed = false;
+    }
+}
+
+bool LuaObjectScript::keyPressed( const KeyboardButton button, unsigned int text )
+{
+    mKeyPressedSignal( button, text );
+
+    // TODO: Get return value from lua
+    return true;
+}
+
+void LuaObjectScript::keyReleased( const KeyboardButton button, unsigned int text )
+{
+    mKeyReleasedSignal( button, text);
+}
+
+void LuaObjectScript::subscribeKeyboard()
+{
+    if( !mKeyboardSubscribed )
+    {
+        GlobalsBase::mInput->subscribeKeyboard( *this );
+        mKeyboardSubscribed = true;
+    }
+}
+
+void LuaObjectScript::unsubscribeKeyboard()
+{
+    if( mKeyboardSubscribed )
+    {
+        GlobalsBase::mInput->unsubscribeKeyboard( *this );
+        mKeyboardSubscribed = false;
     }
 }
 
@@ -291,6 +367,43 @@ template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPT
         sigc::ref( mClientEnvironmentName ), "Global", sigc::_1 ) );
 }
 
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_MOUSEPRESSED>()
+{
+    LuaObjectScript::subscribeMouse();
+    return mMousePressedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call<const MouseButton> ), "MousePressed", "", "Global", sigc::_1 ) );
+}
+
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_MOUSERELEASED>()
+{
+    LuaObjectScript::subscribeMouse();
+    return mMouseReleasedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call<const MouseButton> ), "MouseReleased", "", "Global", sigc::_1 ) );
+}
+
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_MOUSEMOVED>()
+{
+    LuaObjectScript::subscribeMouse();
+    return mMouseMovedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call<const MouseState&> ), "MouseMoved", "", "Global", sigc::_1 ) );
+}
+
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_KEYPRESSED>()
+{
+    LuaObjectScript::subscribeKeyboard();
+    return mKeyPressedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call<KeyboardButton, unsigned int> ), "KeyPressed", "", "Global", sigc::_1,
+        sigc::_2 ) );
+}
+
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_KEYRELEASED>()
+{
+    LuaObjectScript::subscribeKeyboard();
+    return mKeyReleasedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call<KeyboardButton, unsigned int> ), "KeyReleased", "", "Global", sigc::_1,
+        sigc::_2 ) );
+}
+
 void LuaObjectScript::connect( LuaObjectScriptEvent event )
 {
     switch( event )
@@ -307,6 +420,16 @@ void LuaObjectScript::connect( LuaObjectScriptEvent event )
             LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_AREACHANGE>(); return;
         case LUAOBJECTSCRIPTEVENT_COLLISIONWITH: 
             LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_COLLISIONWITH>(); return;
+        case LUAOBJECTSCRIPTEVENT_MOUSEPRESSED: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_MOUSEPRESSED>(); return;
+        case LUAOBJECTSCRIPTEVENT_MOUSERELEASED: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_MOUSERELEASED>(); return;
+        case LUAOBJECTSCRIPTEVENT_MOUSEMOVED: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_MOUSEMOVED>(); return;
+        case LUAOBJECTSCRIPTEVENT_KEYPRESSED: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_KEYPRESSED>(); return;
+        case LUAOBJECTSCRIPTEVENT_KEYRELEASED: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_KEYRELEASED>(); return;
     }
 }
 
@@ -348,6 +471,11 @@ void LuaObjectScript::connectAll()
     LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_TRANSFORMCHANGE>();
     LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_AREACHANGE>();
     LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_COLLISIONWITH>();
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_MOUSEPRESSED>();
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_MOUSERELEASED>();
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_MOUSEMOVED>();
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_KEYPRESSED>();
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_KEYRELEASED>();
 }
 
 void LuaObjectScript::blockAll( bool blocked )

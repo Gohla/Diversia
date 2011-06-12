@@ -26,6 +26,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Platform/Prerequisites.h"
 
 #include "Client/Object/ClientComponent.h"
+#include "OgreClient/Input/InputManager.h"
 #include "Shared/Lua/LuaManager.h"
 
 namespace Diversia
@@ -44,13 +45,19 @@ enum LuaObjectScriptEvent
     LUAOBJECTSCRIPTEVENT_COMPONENTCHANGE,
     LUAOBJECTSCRIPTEVENT_TRANSFORMCHANGE,
     LUAOBJECTSCRIPTEVENT_AREACHANGE,
-    LUAOBJECTSCRIPTEVENT_COLLISIONWITH
+    LUAOBJECTSCRIPTEVENT_COLLISIONWITH,
+    LUAOBJECTSCRIPTEVENT_MOUSEPRESSED,
+    LUAOBJECTSCRIPTEVENT_MOUSERELEASED,
+    LUAOBJECTSCRIPTEVENT_MOUSEMOVED,
+    LUAOBJECTSCRIPTEVENT_KEYPRESSED,
+    LUAOBJECTSCRIPTEVENT_KEYRELEASED
 };
 
 /**
 Lua scripting component for objects in the world.
 **/
-class DIVERSIA_OGRECLIENT_API LuaObjectScript : public ClientComponent, public sigc::trackable
+class DIVERSIA_OGRECLIENT_API LuaObjectScript : public ClientComponent, public KeyboardListener, 
+    public MouseListener, public sigc::trackable
 {
 public:
     LuaObjectScript( const String& rName, Mode mode, NetworkingType networkingType, 
@@ -87,6 +94,18 @@ private:
     void resourceLoaded( Ogre::ResourcePtr pResource );
     void pluginStateChanged( PluginState state, PluginState prevState );
 
+    bool mousePressed( const MouseButton button );
+    void mouseReleased( const MouseButton button );
+    bool mouseMoved( const MouseState& rState );
+    inline int getMousePriority() const { return mMousePriority; }
+    void subscribeMouse();
+    void unsubscribeMouse();
+    bool keyPressed( const KeyboardButton button, unsigned int text );
+    void keyReleased( const KeyboardButton button, unsigned int text );
+    inline int getKeyboardPriority() const { return mKeyboardPriority; }
+    void subscribeKeyboard();
+    void unsubscribeKeyboard();
+
     String getEventName( LuaObjectScriptEvent event );
     void disconnect( LuaObjectScriptEvent event );
     bool isDisconnected( LuaObjectScriptEvent event ) const;
@@ -108,10 +127,19 @@ private:
     String              mServerEnvironmentName;
     LuaSecurityLevel    mServerSecurityLevel;
     bool                mLoaded;
-
     bool                mCreated;
-    ConnectionMap       mConnections;
 
+    int                 mMousePriority;
+    int                 mKeyboardPriority;
+    bool                mMouseSubscribed;
+    bool                mKeyboardSubscribed;
+    sigc::signal<void, const MouseButton>   mMousePressedSignal;    ///< Signals needed to fit in with connect/disconnect system...
+    sigc::signal<void, const MouseButton>   mMouseReleasedSignal;
+    sigc::signal<void, const MouseState&>   mMouseMovedSignal;
+    sigc::signal<void, KeyboardButton, unsigned int> mKeyPressedSignal;
+    sigc::signal<void, KeyboardButton, unsigned int> mKeyReleasedSignal;
+
+    ConnectionMap       mConnections;
     LuaManager&         mLuaManager;
     ResourceManager&    mResourceManager;
 
