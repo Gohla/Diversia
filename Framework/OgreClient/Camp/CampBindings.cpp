@@ -776,12 +776,21 @@ void CampBindings::bindLuaObjectScript()
 void CampBindings::bindLuaObjectScriptEvent()
 {
     camp::Enum::declare<LuaObjectScriptEvent>( "ObjectScriptEvent" )
-    	.value( "Update", LUAOBJECTSCRIPTEVENT_UPDATE )
+        .value( "EarlyUpdate", LUAOBJECTSCRIPTEVENT_EARLYUPDATE )
+        .value( "Update", LUAOBJECTSCRIPTEVENT_UPDATE )
+        .value( "LateUpdate", LUAOBJECTSCRIPTEVENT_LATEUPDATE )
+        .value( "EarlyFrame", LUAOBJECTSCRIPTEVENT_EARLYFRAME )
         .value( "Frame", LUAOBJECTSCRIPTEVENT_FRAME )
+        .value( "LateFrame", LUAOBJECTSCRIPTEVENT_LATEFRAME )
         .value( "ComponentChange", LUAOBJECTSCRIPTEVENT_COMPONENTCHANGE )
         .value( "TransformChange", LUAOBJECTSCRIPTEVENT_TRANSFORMCHANGE )
         .value( "AreaChange", LUAOBJECTSCRIPTEVENT_AREACHANGE )
-        .value( "CollisionWith", LUAOBJECTSCRIPTEVENT_COLLISIONWITH );
+        .value( "CollisionWith", LUAOBJECTSCRIPTEVENT_COLLISIONWITH )
+        .value( "KeyPressed", LUAOBJECTSCRIPTEVENT_KEYPRESSED )
+        .value( "KeyReleased", LUAOBJECTSCRIPTEVENT_KEYRELEASED )
+        .value( "MousePressed", LUAOBJECTSCRIPTEVENT_MOUSEPRESSED )
+        .value( "MouseReleased", LUAOBJECTSCRIPTEVENT_MOUSERELEASED )
+        .value( "MouseMoved", LUAOBJECTSCRIPTEVENT_MOUSEMOVED );
 }
 
 void CampBindings::bindParticle()

@@ -322,17 +322,40 @@ template <LuaObjectScriptEvent T> void LuaObjectScript::connectTemplate()
     }
 }
 
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_EARLYUPDATE>()
+{
+    return GlobalsBase::mEarlyUpdateSignal->connect( sigc::bind( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call ), "EarlyUpdate", "", "Global" ) );
+}
+
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_UPDATE>()
 {
     return GlobalsBase::mUpdateSignal->connect( sigc::bind( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call ), "Update", sigc::ref( mClientEnvironmentName ), "Global" ) );
+        &LuaManager::call ), "Update", "", "Global" ) );
+}
+
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_LATEUPDATE>()
+{
+    return GlobalsBase::mLateUpdateSignal->connect( sigc::bind( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call ), "LateUpdate", "", "Global" ) );
+}
+
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_EARLYFRAME>()
+{
+    return GlobalsBase::mEarlyFrameSignal->connect( sigc::group( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call<Real> ), "EarlyFrame", "", "Global", sigc::_1 ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_FRAME>()
 {
     return GlobalsBase::mFrameSignal->connect( sigc::group( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call<Real> ), "Frame", sigc::ref( mClientEnvironmentName ), "Global", 
-        sigc::_1 ) );
+        &LuaManager::call<Real> ), "Frame", "", "Global", sigc::_1 ) );
+}
+
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_LATEFRAME>()
+{
+    return GlobalsBase::mLateFrameSignal->connect( sigc::group( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call<Real> ), "LateFrame", "", "Global", sigc::_1 ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_COMPONENTCHANGE>()
@@ -408,10 +431,18 @@ void LuaObjectScript::connect( LuaObjectScriptEvent event )
 {
     switch( event )
     {
+        case LUAOBJECTSCRIPTEVENT_EARLYUPDATE: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_EARLYUPDATE>(); return;
         case LUAOBJECTSCRIPTEVENT_UPDATE: 
             LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_UPDATE>(); return;
+        case LUAOBJECTSCRIPTEVENT_LATEUPDATE: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_LATEUPDATE>(); return;
+        case LUAOBJECTSCRIPTEVENT_EARLYFRAME: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_EARLYFRAME>(); return;
         case LUAOBJECTSCRIPTEVENT_FRAME: 
             LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_FRAME>(); return;
+        case LUAOBJECTSCRIPTEVENT_LATEFRAME: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_LATEFRAME>(); return;
         case LUAOBJECTSCRIPTEVENT_COMPONENTCHANGE:
             LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_COMPONENTCHANGE>(); return;
         case LUAOBJECTSCRIPTEVENT_TRANSFORMCHANGE: 
@@ -465,8 +496,12 @@ void LuaObjectScript::disconnectAll()
 
 void LuaObjectScript::connectAll()
 {
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_EARLYUPDATE>();
     LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_UPDATE>();
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_LATEUPDATE>();
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_EARLYFRAME>();
     LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_FRAME>();
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_LATEFRAME>();
     LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_COMPONENTCHANGE>();
     LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_TRANSFORMCHANGE>();
     LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_AREACHANGE>();
