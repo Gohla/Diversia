@@ -10,6 +10,22 @@ signature constructors
 
 rules
 	
+	is-object-event(|event) = <get-object-event-data> event
+	is-global-event(|event) = <get-global-event-data> event
+
+	get-object-event-data: event -> <fetch-elem(has-name(|event))><object-events> 
+	get-global-event-data: event -> <fetch-elem(has-name(|event))><global-events>
+	get-event-data: event -> <fetch-elem(has-name(|event))><all-events>
+	
+	has-name(|name) =  ?Event(name,_)
+	get-name: Event(name,_) -> name
+	get-proposal: Event(name,_) -> (name, $[TODO: added event info!])
+
+	get-event-types: Event(_,types) -> types
+	get-event-types: event -> <get-event-types><get-event-data> event
+
+	all-events = <conc>(<global-events>,<object-events>)
+	
 	shared-events = ![ 
 		Event("Create", []), Event("Destroy", []), 
 		Event("EarlyUpdate", []), Event("Update", []), Event("LateUpdate", []), 

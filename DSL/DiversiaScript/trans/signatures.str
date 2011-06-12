@@ -39,3 +39,5 @@ signature constructors // Object & state
 	ObjectProp: Type * Id * Exp -> ObjectProp
 	PluginProp: Type * Id * Exp -> PluginProp
 	ComponentProp: Type * Id * Exp -> ComponentProp
+	
+	NullType: Type
