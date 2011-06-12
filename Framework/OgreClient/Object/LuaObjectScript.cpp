@@ -52,8 +52,8 @@ LuaObjectScript::LuaObjectScript( const String& rName, Mode mode, NetworkingType
     mServerSecurityLevel( LUASEC_HIGH ),
     mLoaded( false ),
     mCreated( false ),
-    mMousePriority( 0 ),
-    mKeyboardPriority( 0 ),
+    mMousePriority( 100 ),
+    mKeyboardPriority( 100 ),
     mMouseSubscribed( false ),
     mKeyboardSubscribed( false ),
     mResourceManager( ClientComponent::getClientObject().getClientObjectManager().
@@ -61,6 +61,10 @@ LuaObjectScript::LuaObjectScript( const String& rName, Mode mode, NetworkingType
     mLuaManager( ClientComponent::getClientObject().getClientObjectManager().
         getPluginManager().getPlugin<LuaPlugin>().get() )
 {
+    static unsigned int prioCounter = 0;
+    mMousePriority += prioCounter; 
+    mKeyboardPriority += prioCounter++;
+
     PropertySynchronization::storeUserObject();
     ClientComponent::connectPluginStateChange( sigc::mem_fun( this, 
         &LuaObjectScript::pluginStateChanged ) );
@@ -150,16 +154,16 @@ void LuaObjectScript::destroy()
 {
     if( mCreated && mLoaded )
     {
-        LuaObjectScript::disconnectAll();
-        LuaObjectScript::unsubscribeKeyboard();
-        LuaObjectScript::unsubscribeMouse();
-        mConnections.clear();
-
         // Call Destroy function if the lua script has one.
         if( mLuaManager.functionExists( "Destroy", mClientEnvironmentName, "Global" ) )
         {
             mLuaManager.call( "Destroy", mClientEnvironmentName, "Global" );
         }
+
+        LuaObjectScript::disconnectAll();
+        LuaObjectScript::unsubscribeKeyboard();
+        LuaObjectScript::unsubscribeMouse();
+        mConnections.clear();
 
         // Unload script resource
         GenericResourceManager::getSingletonPtr()->unload( mClientScriptFile.string() );
@@ -325,37 +329,40 @@ template <LuaObjectScriptEvent T> void LuaObjectScript::connectTemplate()
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_EARLYUPDATE>()
 {
     return GlobalsBase::mEarlyUpdateSignal->connect( sigc::bind( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call ), "EarlyUpdate", "", "Global" ) );
+        &LuaManager::call ), "EarlyUpdate", sigc::ref( mClientEnvironmentName ), "Global" ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_UPDATE>()
 {
     return GlobalsBase::mUpdateSignal->connect( sigc::bind( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call ), "Update", "", "Global" ) );
+        &LuaManager::call ), "Update", sigc::ref( mClientEnvironmentName ), "Global" ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_LATEUPDATE>()
 {
     return GlobalsBase::mLateUpdateSignal->connect( sigc::bind( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call ), "LateUpdate", "", "Global" ) );
+        &LuaManager::call ), "LateUpdate", sigc::ref( mClientEnvironmentName ), "Global" ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_EARLYFRAME>()
 {
     return GlobalsBase::mEarlyFrameSignal->connect( sigc::group( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call<Real> ), "EarlyFrame", "", "Global", sigc::_1 ) );
+        &LuaManager::call<Real> ), "EarlyFrame", sigc::ref( mClientEnvironmentName ), "Global", 
+        sigc::_1 ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_FRAME>()
 {
     return GlobalsBase::mFrameSignal->connect( sigc::group( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call<Real> ), "Frame", "", "Global", sigc::_1 ) );
+        &LuaManager::call<Real> ), "Frame", sigc::ref( mClientEnvironmentName ), "Global", 
+        sigc::_1 ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_LATEFRAME>()
 {
     return GlobalsBase::mLateFrameSignal->connect( sigc::group( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call<Real> ), "LateFrame", "", "Global", sigc::_1 ) );
+        &LuaManager::call<Real> ), "LateFrame", sigc::ref( mClientEnvironmentName ), "Global", 
+        sigc::_1 ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_COMPONENTCHANGE>()
@@ -394,37 +401,40 @@ template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPT
 {
     LuaObjectScript::subscribeMouse();
     return mMousePressedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call<const MouseButton> ), "MousePressed", "", "Global", sigc::_1 ) );
+        &LuaManager::call<const MouseButton> ), "MousePressed", sigc::ref( mClientEnvironmentName ), 
+        "Global", sigc::_1 ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_MOUSERELEASED>()
 {
     LuaObjectScript::subscribeMouse();
     return mMouseReleasedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call<const MouseButton> ), "MouseReleased", "", "Global", sigc::_1 ) );
+        &LuaManager::call<const MouseButton> ), "MouseReleased", 
+        sigc::ref( mClientEnvironmentName ), "Global", sigc::_1 ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_MOUSEMOVED>()
 {
     LuaObjectScript::subscribeMouse();
     return mMouseMovedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call<const MouseState&> ), "MouseMoved", "", "Global", sigc::_1 ) );
+        &LuaManager::call<const MouseState&> ), "MouseMoved", sigc::ref( mClientEnvironmentName ), 
+        "Global", sigc::_1 ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_KEYPRESSED>()
 {
     LuaObjectScript::subscribeKeyboard();
     return mKeyPressedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call<KeyboardButton, unsigned int> ), "KeyPressed", "", "Global", sigc::_1,
-        sigc::_2 ) );
+        &LuaManager::call<KeyboardButton, unsigned int> ), "KeyPressed", 
+        sigc::ref( mClientEnvironmentName ), "Global", sigc::_1, sigc::_2 ) );
 }
 
 template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_KEYRELEASED>()
 {
     LuaObjectScript::subscribeKeyboard();
     return mKeyReleasedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
-        &LuaManager::call<KeyboardButton, unsigned int> ), "KeyReleased", "", "Global", sigc::_1,
-        sigc::_2 ) );
+        &LuaManager::call<KeyboardButton, unsigned int> ), "KeyReleased", 
+        sigc::ref( mClientEnvironmentName ), "Global", sigc::_1, sigc::_2 ) );
 }
 
 void LuaObjectScript::connect( LuaObjectScriptEvent event )

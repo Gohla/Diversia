@@ -58,7 +58,7 @@ enum LuaGameModeScriptEvent
 Lua game mode scripting for the entire world.
 **/
 class DIVERSIA_OGRECLIENT_API GameModePlugin : public ServerPlugin, public KeyboardListener, 
-    public MouseListener
+    public MouseListener, public sigc::trackable
 {
 public:
     GameModePlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 

@@ -36,7 +36,8 @@ namespace DefaultClient
 /**
 InputManager implementation using OIS. 
 **/
-class OISInputManager : public OIS::MouseListener, public OIS::KeyListener, public InputManager
+class OISInputManager : public OIS::MouseListener, public OIS::KeyListener, public InputManager,
+    public sigc::trackable
 {
 public:
     /**
