@@ -155,7 +155,7 @@ rules // Syntax transformation
 		where ((stateName, EventDef(name, params, statements)), otherEvents) := <take-1> events
 		
 	// Components
-	component-to-lua(|varName): ComponentDef(name, CustomType(type), properties) -> [
+	component-to-lua(|varName): ComponentDef(_{name}, CustomType(type), properties) -> [
 		Assignment([VarRef(name)], [Call(VarRef(varName), "CreateComponent", Args([Access(VarRef("ComponentType"), type), String(name), False()]))]),
 		<map(componentprop-to-lua(|name))> properties
 	]
@@ -283,7 +283,7 @@ rules // Statements
 	new-object-to-lua(|objectName): ObjectNew(ObjectRef(name), props) -> <concat> [
 			[
 				Assignment([VarRef(objectName)], [Call(VarRef("ObjectManager"), "CreateLocalObject", Args([String(objectName)]))]),
-				<component-to-lua(|objectName)> ComponentDef($[[objectName]__LuaObjectScript], CustomType("LuaObjectScript"), [
+				<component-to-lua(|objectName)> ComponentDef(""{$[[objectName]__LuaObjectScript]}, CustomType("LuaObjectScript"), [
 					ComponentProp(CustomType("LuaObjectScript"), "ClientScriptFile", StrConst($[gen/[name].lua])),
 					ComponentProp(CustomType("LuaObjectScript"), "ClientSecurityLevel", StrConst("Low"))
 				])
