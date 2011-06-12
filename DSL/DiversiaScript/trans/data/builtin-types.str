@@ -37,10 +37,10 @@ rules
 	get-name: BuiltinType(name,_,_,_,_) -> name
 	get-name: Property(name,_,_) -> name
 	get-name: Function(name,_,_) -> name
-	
-	get-proposal: BuiltinType(name,_,_,_,_) -> (name, $[Builtin: [name]])
-	get-proposal: Property(name,_,_) -> (name, $[[name]: type info!])
-	get-proposal: Function(name,_,_) -> name
+
+	get-proposal: BuiltinType(name,_,_,_,_) -> (name, $[TODO: type info here!])
+	get-proposal: Property(name,_,_) -> (name, $[TODO: property info here!])
+	get-proposal: Function(name,_,_) -> (name, $[TODO: function info here!])
 
 	get-builtin-properties: type -> <get-builtin-properties><get-builtin-type> type	
 	get-builtin-properties: BuiltinType(_,parents,_,properties,_) -> 

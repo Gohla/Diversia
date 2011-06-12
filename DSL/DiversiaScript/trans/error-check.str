@@ -7,6 +7,7 @@ imports
 	name-project
 	read-project
 	data/builtin-types
+	data/events
 
 rules // defs
 	
@@ -125,6 +126,16 @@ rules // states
 	editor-error: e@ObjectDef(name,_,_,_,_,[],states,_)-> (name, $[Object is missing a default state.])
 		where <gt>(<length> states, 0)
 
+rules // events
+	
+	editor-error: e@EventDef(name,_,_) -> (name, $[Undefined event.])
+		where not(<get-event-data> name)
+	editor-error: e@EventDef(name,params,_) -> (params, $[Does not match exptected parameters: [<printable>types1]])
+		where 
+			<get-event-types> name => types1;
+			<types-of> params => types2;
+			not(<match-types>(types2, types1))
+		
 
 rules // debug errors
 	
