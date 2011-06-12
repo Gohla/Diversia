@@ -115,7 +115,8 @@ rules // Syntax transformation
 	to-lua: VarDef(_, _{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
 		where not (<?ObjectNew(_, _)> value)
 	to-lua: PropDef(_, name, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
-	
+		where not (<?ObjectNew(_, _)> value)
+		
 	// Events
 	events-to-lua-filter: events -> events where not( <eq> (<length> events, 0) ) 
 	events-to-lua: events -> <lua-funcdef> (name, <map(to-lua)> params, [
@@ -292,6 +293,7 @@ rules // Statements
 		]
 	to-lua: Expression(n@ObjectNew(ObjectRef(name), _)) -> <new-object-to-lua(|$[__[<newname> name]])> n
 	to-lua: VarDef(_, _{varName}, _, n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n
+	to-lua: PropDef(_, varName, _, n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n
 	to-lua: Assign(VarRef(_{varName}), n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n  
 	to-lua: StateChange(StateRef(name)) -> [exitCall, change, enterCall]
 		where exitCall := Call(TableVarRef(VarRef("_G"), Concat(String("StateExit_"), <lua-stateref>)), Args([]))

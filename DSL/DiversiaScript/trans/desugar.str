@@ -94,35 +94,10 @@ rules   // post desugar stuff
 			<conc>(<map(object-to-var)> objectDefs, varDefs) => varDefs'
 	
 	object-to-var: ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs , varDefs, defaultStateDef, stateDefs, eventDefs) ->
-					 VarDef(name, CustomType(name), ObjectNew(ObjectRef(name), [ObjectProp("Parent", This())]))
+		PropDef(name, CustomType(name), ObjectNew(ObjectRef(name), [ObjectProp("Parent", This())]))
 	
 	object-to-var: ExternalObjectDef(name) ->  
-					VarDef(name, CustomType(name), ObjectNew(ObjectRef(name), [ObjectProp("Parent", This())]))                                                                     
-	/*
-	create-new-object: object -> ObjectNew(ObjectRef(object),[])
-	create-parent-prop: object -> ObjectProp("Parent", ObjectRef(object))
-	
-	add-parent(|parent): ObjectDef(name, props, propDefs, components, objects, vars, defaultState, states, events) -> 
-		ObjectDef(name, props', propDefs, components, objects, vars, defaultState, states, events)
-		where 
-			<create-parent-prop> parent => parentProp;
-	 		![parentProp|props] => props'
-
-	add-children(|children): events -> events'
-		where
-			<update-event(|children)> <filter(?EventDef("Create",_,_))> events => createEvent;
-	 		<filter(not(?EventDef("Create",_,_)))> events => otherEvents;
-	 		<concat>[createEvent,otherEvents] => events' 
-	
-	update-event(|objects): [] -> [EventDef("Create",[], news)]
-		where 
-			 <map(create-new-object)> objects => news
-
-	update-event(|objects): [EventDef("Create",params, statements)] -> 
-		[EventDef("Create",params, <concat>[news,statements])]
-		where
-			<map(create-new-object)> objects => news
-	*/
+		PropDef(name, CustomType(name), ObjectNew(ObjectRef(name), [ObjectProp("Parent", This())]))                                                                     
 	
 	/*
 	// TODO need to following type rules to do type inf.
@@ -137,9 +112,3 @@ rules   // post desugar stuff
 	desugar-params: (Param(name),type) -> Param(name, type)
     desugar-type: VarDefNoType(name, value) -> VarDef(name, <typeof> value, value) // might need te be changed
     */
-    
-
-    
-
-	
-	

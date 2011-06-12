@@ -42,7 +42,7 @@ def CameraYaw {
                 this.Yaw(Radian(Degree(-mMouseState.X.Relative)));
 
                 // Pitch the camera
-                var Pitch : Real = CameraPitch.Orientation.Pitch;
+                var Pitch : Radian = CameraPitch.Orientation.Pitch;
                 var DegreeChange : Degree = Degree(-mMouseState.Y.Relative);
                 var NewPitch : Degree = DegreeChange + Pitch;
                 if(NewPitch < Degree(85) && NewPitch > Degree(-85)) {
@@ -51,7 +51,8 @@ def CameraYaw {
             }
             if(mMouseState != null) {
                 // Camera distance
-                var Distance : Real = CameraPitch.Camera.Position.Z;
+                // TODO: Not possible yet because CameraPitch is of type Object, not CameraPitch in lua.. :(
+                var Distance : Real = 20;//CameraPitch.Camera.Position.Z;
                 if(mMouseState.Z.Relative > 0) {
                      Distance = Distance - Distance / 12;
                      if(Distance < 5) Distance = 5;
@@ -60,7 +61,8 @@ def CameraYaw {
                      Distance = Distance + Distance / 12;
                      if(Distance > 50) Distance = 50;
                 }
-                CameraPitch.Camera.Position = [0, 0, Distance];
+                // TODO: Not possible yet because CameraPitch is of type Object, not CameraPitch in lua.. :(
+                //CameraPitch.Camera.Position = [0, 0, Distance];
                 
                 // Clear mouse state
                 mMouseState.Clear();
@@ -121,7 +123,7 @@ def Ball {
                 case "Shift": mSpeedMultiplier = 1;
             }
         }
-        on Frame(TimeSinceLastFrame : Real) {
+        on Update() {
             // Cap values
             if(mMove < -1)          mMove = -1;
             else if(mMove > 1)      mMove = 1;
@@ -142,10 +144,6 @@ def Ball {
             // Move camera to the ball
             CameraYaw.Position = this.Position;
         }
-        on Collision(OtherObject : Object) {
-            // Transition to Dead state if a mine is hit.
-            if(OtherObject.DisplayName == "Mine") setstate Dead;
-        }
     }
     state Dead {
         // Do nothing
@@ -165,7 +163,7 @@ def Floor {
     }
     component CollisionShape {
         ShapeType = "Box"
-        ShapeParameters = [1000, 1000, 1]
+        ShapeParameters = [1000, 1000, 5]
     }
     component RigidBody {
         PhysicsType = "Kinematic"
