@@ -15,6 +15,7 @@ imports
 	data/events
 	data/builtin-types
 	util
+	type-project
 	
 signature constructors
 	
@@ -238,8 +239,14 @@ rules // Expressions
 	to-lua: Call(This(_), name, args) -> Call(VarRef("Object"), name, Args(<map(to-lua)> args))
 		where is-builtin-function(|"ClientObject", name)
 	to-lua: Call(This(_), name, args) -> Call(name, Args(<map(to-lua)> args))
-		where not (is-builtin-function(|"ClientObject", name)) 
-	to-lua: Access(exp, name) -> Access(<to-lua> exp, name)
+		where not (is-builtin-function(|"ClientObject", name))
+	is-object-access: a@Access(exp, name) -> a
+		where <get-type-parent> (<type-of> exp, "Object")
+		where is-builtin-property(|"Object", name) 
+	to-lua: a@Access(exp, name) -> Access(<to-lua> exp, name)
+		where not (<is-object-access> a) 
+	to-lua: a@Access(exp, name) -> Access(Access(<to-lua> exp, "Object"), name)
+		where <is-object-access> a
 	to-lua: This(_) -> VarRef("Object")
 	
 rules // Operators
