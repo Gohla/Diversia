@@ -88,7 +88,7 @@ rules // Utility
 	lua-flatten-chunk: Chunk(statements) -> Chunk(<flatten-list> statements)
 	
 	// Defines what the state vardef is
-	lua-stateref = !VarRef("State")
+	lua-stateref = !VarRef("__State")
 		
 rules // Syntax transformation
 		
