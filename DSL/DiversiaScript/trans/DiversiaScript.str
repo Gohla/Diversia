@@ -44,9 +44,10 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 		where clientDir := "F:/MultiverseVS/Git/DefaultClient/bin/ReleaseWin32/"
 		where
 			editor-init;
-	    	<lua-tofiles(|path)> <to-lua> <analyse-all> selected;
-	    	<chdir> clientDir;
-	    	<call> ($[[clientDir]Diversia-DefaultClient-DbgInfo.exe], ["-o", "-m", $["[dir]"], "-s", "gen/GameMode.lua"])
+	    	(<lua-tofiles(|path)> <to-lua> <analyse-all> selected <+ fatal-err(|$[Lua code generation failed.]));
+	    	(<chdir> clientDir <+ fatal-err(|$[Could not cd into [clientDir].]));
+	    	(<call> ($[[clientDir]Diversia-DefaultClient-DbgInfo.exe], ["-o", "-m", $["[dir]"], "-s", "gen/GameMode.lua"]) <+ 
+	    		fatal-err(|$[Could not start the client or the cliented terminated abnormally.]))
 	    		  
 	// Transforms a selection to Lua
 	generate-lua-files: (selected, position, ast, path, project-path) -> ()
