@@ -87,6 +87,8 @@ public:
     @param  rClientScriptFile   Name of the client script file.
     **/
     void setClientScriptFile( const Path& rClientScriptFile );
+
+    void replaceVarWithThisEnv( const String& rEnvName, const String& rVarName );
     
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.

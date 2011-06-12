@@ -109,8 +109,12 @@ rules // Syntax transformation
 		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua(|"Object"))> propAssigns, functions')
 		where functions''' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions'')
 	gamemode-to-lua: (pluginDefs, eventDefs) -> LuaGameModeScript(<lua-flatten-all> Chunk(<concat> [functions']))
-		where functions := <map(global-event-to-lua)> eventDefs
-		where functions' := <lua-createFunc-prepend> (<map(to-lua)> pluginDefs, functions)
+		where
+		{| LuaScriptReplace:
+			rules (LuaScriptReplace: _ -> True());
+			functions := <map(global-event-to-lua)> eventDefs;
+			functions' := <lua-createFunc-prepend> (<map(to-lua)> pluginDefs, functions)
+		|}
 	
 	// Variables
 	to-lua: VarDef(_, _{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
@@ -291,13 +295,20 @@ rules // Statements
 	new-object-to-lua(|objectName): ObjectNew(ObjectRef(name), props) -> <concat> [
 			[
 				Assignment([VarRef(objectName)], [Call(VarRef("ObjectManager"), "CreateLocalObject", Args([String(objectName)]))]),
-				<component-to-lua(|objectName)> ComponentDef(""{$[[objectName]__LuaObjectScript]}, CustomType("LuaObjectScript"), [
+				<component-to-lua(|objectName)> ComponentDef(""{luaScriptName}, CustomType("LuaObjectScript"), [
 					ComponentProp(CustomType("LuaObjectScript"), "ClientScriptFile", StrConst($[gen/[name].lua])),
 					ComponentProp(CustomType("LuaObjectScript"), "ClientSecurityLevel", StrConst("Low"))
 				])
 			],
-			<map(propassign-to-lua(|objectName))> props
+			<map(propassign-to-lua(|objectName))> props,
+			<new-object-to-lua-replace(|luaScriptName, objectName)>
 		]
+		where luaScriptName := $[[objectName]__LuaObjectScript]
+	new-object-to-lua-replace(|luaScriptName, objectName): _ -> []
+		where <?True()> <LuaScriptReplace>
+	new-object-to-lua-replace(|luaScriptName, objectName): _ -> 
+		[Call(VarRef(luaScriptName), "ReplaceVarWithThisEnv", Args([Access(VarRef("Script"), "ClientEnvironmentName"), String(objectName)]))]
+		where not (<?True()> <LuaScriptReplace>)
 	to-lua: Expression(n@ObjectNew(ObjectRef(name), _)) -> <new-object-to-lua(|$[__[<newname> name]])> n
 	to-lua: VarDef(_, _{varName}, _, n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n
 	to-lua: PropDef(_, varName, _, n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n

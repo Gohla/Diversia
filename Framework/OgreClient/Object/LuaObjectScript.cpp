@@ -101,6 +101,11 @@ void LuaObjectScript::setClientScriptFile( const Path& rClientScriptFile )
     }
 }
 
+void LuaObjectScript::replaceVarWithThisEnv( const String& rEnvName, const String& rVarName )
+{
+    mLuaManager.setEnv( mClientEnvironmentName, rVarName, rEnvName, "Global" );
+}
+
 void LuaObjectScript::create()
 { 
     if( !mCreated )
