@@ -23,6 +23,7 @@ exports
     "static" -> Id {reject}
     "void" -> Id {reject}
     "while" -> Id {reject}
+    "print" -> Id {reject}
     
     %% Boolean
     "true"					-> BoolConst
@@ -100,6 +101,7 @@ exports
 	"static"    -/- [a-zA-Z0-9\_]
 	"void"      -/- [a-zA-Z0-9\_]
 	"while"     -/- [a-zA-Z0-9\_]
+	"print"     -/- [a-zA-Z0-9\_]
     
 	Asterisk -/- [\/]
 	Slash    -/- [\*]

@@ -33,8 +33,6 @@ rules // defs
 			
 	editor-error: e@ComponentDef(name,CustomType(type),props) -> (CustomType(type), $[Unknown component.])
 		where not(is-builtin-component(|type))
-
-	
 	
 rules // read-only/writeable
 	
@@ -76,6 +74,16 @@ rules // types
 		where 
 			<type-of> exp => type;
 			not(<match-type>(<type-of> e,type))
+			
+	editor-error: Concat(exp, _) -> (exp, $[Expected String but found [<printable>type]])
+		where 
+			<type-of> exp => type;
+			not(<match-type>(StringType(), type))
+				
+	editor-error: Concat(_, exp) -> (exp, $[Expected String but found [<printable>type]])
+		where 
+			<type-of> exp => type;
+			not(<match-type>(StringType(), type))
 			
 	editor-error: e@ObjectProp(type,name,exp) -> (exp, $[Expected [<printable>type2] but found [<printable>type3].])
 		where
@@ -136,7 +144,13 @@ rules // events
 			<types-of> params => types2;
 			not(<match-types>(types2, types1))
 		
-
+rules // statements
+	
+	editor-error: Print(exp) -> (exp, $[Expected String but found [<printable>type]])
+		where 
+			<type-of> exp => type;
+			not(<match-type>(StringType(), type))
+			
 rules // debug errors
 	
 	editor-error: e@ComponentProp(name,exp) -> (e, $[Decorate failed.])

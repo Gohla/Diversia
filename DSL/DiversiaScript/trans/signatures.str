@@ -2,20 +2,20 @@ module signatures
 
 signature constructors // Operators
 	
-	ADD	: ArithmeticOp
-	SUB	: ArithmeticOp
-	MUL	: ArithmeticOp
-	DIV : ArithmeticOp
-	EQ	: BooleanOp
-	NEQ	: BooleanOp
-	LT	: BooleanOp
-	LTE	: BooleanOp
-	GT	: BooleanOp
-	GTE	: BooleanOp
-	AND	: BooleanOp
-	OR	: BooleanOp
-	AOp	: ArithmeticOp * Exp * Exp -> Exp
-	BOp	: BooleanOp * Exp * Exp -> Exp
+	ADD		: ArithmeticOp
+	SUB		: ArithmeticOp
+	MUL		: ArithmeticOp
+	DIV 	: ArithmeticOp
+	EQ		: BooleanOp
+	NEQ		: BooleanOp
+	LT		: BooleanOp
+	LTE		: BooleanOp
+	GT		: BooleanOp
+	GTE		: BooleanOp
+	AND		: BooleanOp
+	OR		: BooleanOp
+	AOp		: ArithmeticOp * Exp * Exp -> Exp
+	BOp		: BooleanOp * Exp * Exp -> Exp
 
 signature constructors // Object & state
 

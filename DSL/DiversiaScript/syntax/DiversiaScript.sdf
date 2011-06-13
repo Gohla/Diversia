@@ -99,6 +99,7 @@ exports
     Exp ">=" Exp    -> Exp {cons("Gte"), left}
     Exp "&&" Exp    -> Exp {cons("And"), left}
     Exp "||" Exp    -> Exp {cons("Or"), left}
+    Exp ".." Exp    -> Exp {cons("Concat"), right}
     "++" Exp		-> Exp {cons("PreInc"), right}
     Exp "++"		-> Exp {cons("PostInc"), right}
 	"--" Exp		-> Exp {cons("PreDec"), right}
@@ -115,6 +116,7 @@ exports
     "case" Exp ":" Statement                       									-> Case {cons("Case")}
     "in" Exp TimeUnit "{" Statement* "}"    										-> Statement {cons("Delay")}
     "interpolate" Exp InterpolationType? "from" Exp "to" Exp "over" Exp TimeUnit ";"-> Statement {cons("Interpolation")}
+    "print" Exp	";"																	-> Statement {cons("Print")}
     Exp ";"																			-> Statement {cons("Expression")}    
     VarDef ";"																		-> Statement {bracket}
    	
@@ -157,6 +159,11 @@ exports
             Exp "-" Exp -> Exp
         }
         >
+	    {
+	    	right:
+	    	Exp ".." Exp -> Exp
+		}
+	    >
         {
             left:
             Exp "==" Exp -> Exp

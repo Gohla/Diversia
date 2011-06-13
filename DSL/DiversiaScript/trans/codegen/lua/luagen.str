@@ -268,6 +268,7 @@ rules // Operators
 	to-lua: BOp(GTE(), l, r) -> Gte(<to-lua> l, <to-lua> r)
 	to-lua: BOp(AND(), l, r) -> And(<to-lua> l, <to-lua> r)
 	to-lua: BOp(OR(), l, r) -> Or(<to-lua> l, <to-lua> r)
+	to-lua: Concat(l, r) -> Concat(<to-lua> l, <to-lua> r)
 	to-lua: Not(exp) -> Not(<to-lua> exp)
 	to-lua: Umin(exp) -> Umin(<to-lua> exp)
 	to-lua: PreDec(exp) -> Sub(<to-lua> exp, Number(1))
@@ -331,6 +332,7 @@ rules // Statements
 	to-lua: Delay(time, timeUnit, statements) -> <map(to-lua)> statements
 	// TODO: interpolation
 	to-lua: Interpolation(exp, interpType, fromValue, toValue, time, timeUnit) -> Assignment([<to-lua> exp], [<to-lua> toValue])
+	to-lua: Print(exp) -> Call(VarRef("print"), Args([<to-lua> exp]))
 	
 rules // Other
 	

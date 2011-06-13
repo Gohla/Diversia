@@ -49,6 +49,7 @@ rules  // expr
 		where 
 			<?IntType()><type-of> exp1;
 			<?IntType()><type-of> exp2
+	type-of: Concat(_, _) -> StringType()
 	type-of: True() -> BoolType()
 	type-of: False() -> BoolType()
 	type-of: IntConst(_) -> IntType()
