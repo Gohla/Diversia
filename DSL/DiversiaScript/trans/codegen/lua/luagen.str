@@ -259,6 +259,7 @@ rules // Expressions
 		where not (<is-object-access> a) 
 	to-lua: a@Access(exp, name) -> Access(Access(<to-lua> exp, "Object"), name)
 		where <is-object-access> a
+	to-lua: EnumValueRef(name, valueName) -> Access(VarRef(name), valueName)
 	to-lua: This(_) -> VarRef("Object")
 	
 rules // Operators

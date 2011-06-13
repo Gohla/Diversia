@@ -34,10 +34,13 @@ signature constructors // Object & state
 	ObjectRef: Id -> ObjectRef
 	ComponentRef: Id -> ComponentRef
 	PluginRef: Id -> PluginRef
+	EnumRef: Id -> EnumRef
+	EnumValueRef: Id * Id -> EnumValueRef
 	This: Id -> This
 	
 	ObjectProp: Type * Id * Exp -> ObjectProp
 	PluginProp: Type * Id * Exp -> PluginProp
 	ComponentProp: Type * Id * Exp -> ComponentProp
 	
+	EnumType: Id -> Type
 	NullType: Type

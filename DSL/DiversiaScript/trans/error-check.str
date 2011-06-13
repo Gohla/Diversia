@@ -8,6 +8,7 @@ imports
 	read-project
 	data/builtin-types
 	data/events
+	data/enums
 
 rules // defs
 	
@@ -110,6 +111,9 @@ rules // broken references
 	
 	editor-error: e@PropRef(name, expr) -> (e, $[Undefined variable or property.])
 		where not(<get-type-property>(<type-of>expr, name))
+		
+	editor-error: EnumValueRef(name, valueName) -> (valueName, $[Undefined enum value.]) 
+		where not(<get-enum-value>(name, valueName))
 		
 	editor-error: e@Access(expr, name) -> (e, $[Undefined property.])
 		where not(<get-type-property>(<type-of>expr, name))

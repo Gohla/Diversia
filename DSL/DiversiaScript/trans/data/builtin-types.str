@@ -1,8 +1,9 @@
 module data/builtin-types
 
 imports
+	
 	include/DiversiaScript
-
+	signatures
 
 signature constructors
 	
@@ -149,9 +150,9 @@ rules
 	[],
 	[], 
 	[
-		Property("Type", CustomType("Enum"), False()), 
+		Property("Type", EnumType("ClientServerPluginType"), False()), 
 		Property("TypeName", StringType(), False()), 
-		Property("Mode", CustomType("Enum"), False()), 
+		Property("Mode", EnumType("Mode"), False()), 
 		Property("PluginManager", CustomType("ClientServerPluginManager"), True())
 	], 
 	[
@@ -161,7 +162,7 @@ rules
 	[],
 	[], 
 	[
-		Property("Mode", CustomType("Enum"), False()), 
+		Property("Mode", EnumType("Mode"), False()), 
 		Property("Plugins", VoidType(), True())
 	], 
 	[
@@ -177,9 +178,9 @@ rules
 		Property("Type", IntType(), False()), 
 		Property("TypeName", StringType(), False()), 
 		Property("Object", CustomType("Object"), True()), 
-		Property("Mode", CustomType("Enum"), False()), 
-		Property("NetworkingType", CustomType("Enum"), False()), 
-		Property("Source", CustomType("Enum"), False()), 
+		Property("Mode", EnumType("Mode"), False()), 
+		Property("NetworkingType", EnumType("NetworkingType"), False()), 
+		Property("Source", EnumType("Mode"), False()), 
 		Property("SourceGUID", CustomType("RakNetGUID"), False()), 
 		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
 		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
@@ -201,9 +202,9 @@ rules
 		Property("Type", IntType(), False()), 
 		Property("TypeName", StringType(), False()), 
 		Property("ObjectTemplate", CustomType("ObjectTemplate"), True()), 
-		Property("Mode", CustomType("Enum"), False()), 
-		Property("NetworkingType", CustomType("Enum"), False()), 
-		Property("Source", CustomType("Enum"), False()), 
+		Property("Mode", EnumType("Mode"), False()), 
+		Property("NetworkingType", EnumType("NetworkingType"), False()), 
+		Property("Source", EnumType("Mode"), False()), 
 		Property("SourceGUID", CustomType("RakNetGUID"), False()), 
 		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
 		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
@@ -225,17 +226,17 @@ rules
 		Property("Name", StringType(), False()), 
 		Property("ObjectManager", CustomType("ObjectManager"), True()), 
 		Property("IsDelayedDestroying", BoolType(), False()), 
-		Property("Mode", CustomType("Enum"), False()), 
-		Property("Source", CustomType("Enum"), False()), 
+		Property("Mode", EnumType("Mode"), False()), 
+		Property("Source", EnumType("Mode"), False()), 
 		Property("SourceGUID", CustomType("RakNetGUID"), False()), 
 		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
 		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
 		Property("IsCreatedByOwnGUID", BoolType(), False()), 
 		Property("IsCreatedByServer", BoolType(), False()), 
 		Property("DisplayName", StringType(), True()), 
-		Property("NetworkingType", CustomType("Enum"), True()), 
+		Property("NetworkingType", EnumType("NetworkingType"), True()), 
+		Property("Parent", CustomType("Object"), True()), 
 		Property("ParentName", StringType(), True()), 
-		Property("Parent", CustomType("Object"), True()),
 		Property("TemplateName", StringType(), True()), 
 		Property("Components", VoidType(), True())
 	], 
@@ -254,7 +255,7 @@ rules
 	[],
 	[], 
 	[
-		Property("Mode", CustomType("Enum"), False()), 
+		Property("Mode", EnumType("Mode"), False()), 
 		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
 		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
 		Property("Objects", VoidType(), True())
@@ -276,15 +277,15 @@ rules
 	[
 		Property("Name", StringType(), False()), 
 		Property("ObjectTemplateManager", CustomType("ObjectTemplateManager"), True()), 
-		Property("Mode", CustomType("Enum"), False()), 
-		Property("Source", CustomType("Enum"), False()), 
+		Property("Mode", EnumType("Mode"), False()), 
+		Property("Source", EnumType("Mode"), False()), 
 		Property("SourceGUID", CustomType("RakNetGUID"), False()), 
 		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
 		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
 		Property("IsCreatedByOwnGUID", BoolType(), False()), 
 		Property("IsCreatedByServer", BoolType(), False()), 
 		Property("DisplayName", StringType(), True()), 
-		Property("NetworkingType", CustomType("Enum"), True()), 
+		Property("NetworkingType", EnumType("NetworkingType"), True()), 
 		Property("ParentName", StringType(), True()), 
 		Property("ComponentTemplates", VoidType(), True())
 	], 
@@ -303,7 +304,7 @@ rules
 	[],
 	[], 
 	[
-		Property("Mode", CustomType("Enum"), False()), 
+		Property("Mode", EnumType("Mode"), False()), 
 		Property("OwnGUID", CustomType("RakNetGUID"), False()), 
 		Property("ServerGUID", CustomType("RakNetGUID"), False()), 
 		Property("ObjectTemplates", VoidType(), True())
@@ -393,7 +394,7 @@ rules
 	[
 		Property("IsReceivingCollisionCallbacks", BoolType(), False()), 
 		Property("CollisionFile", StringType(), True()), 
-		Property("ShapeType", CustomType("Enum"), True()), 
+		Property("ShapeType", EnumType("PhysicsShape"), True()), 
 		Property("ShapeParameters", CustomType("Vector3"), True()), 
 		Property("CollisionPriority", IntType(), True())
 	], 
@@ -427,9 +428,9 @@ rules
 	[
 		Property("ClientLoadDefaultGamemode", BoolType(), True()), 
 		Property("ClientScriptFiles", VoidType(), True()), 
-		Property("ClientSecurityLevel", CustomType("Enum"), True()), 
+		Property("ClientSecurityLevel", EnumType("LuaSecurityLevel"), True()), 
 		Property("ServerScriptFiles", VoidType(), True()), 
-		Property("ServerSecurityLevel", CustomType("Enum"), True()), 
+		Property("ServerSecurityLevel", EnumType("LuaSecurityLevel"), True()), 
 		Property("MousePriority", IntType(), True()), 
 		Property("KeyboardPriority", IntType(), True())
 	], 
@@ -473,7 +474,7 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("LightType", CustomType("Enum"), True()), 
+		Property("LightType", EnumType("LightType"), True()), 
 		Property("CastShadows", BoolType(), True()), 
 		Property("DiffuseColour", CustomType("Colour"), True()), 
 		Property("SpecularColour", CustomType("Colour"), True()), 
@@ -490,7 +491,7 @@ rules
 	[], 
 	[
 		Property("MeshFile", StringType(), True()), 
-		Property("ShapeType", CustomType("Enum"), True()), 
+		Property("ShapeType", EnumType("GraphicsShape"), True()), 
 		Property("ShapeParameters", CustomType("Vector3"), True()), 
 		Property("ShapeUV", CustomType("Vector2"), True()), 
 		Property("ShapeXSegments", IntType(), True()), 
@@ -530,7 +531,7 @@ rules
 	["ServerPlugin"],
 	[], 
 	[
-		Property("Type", CustomType("Enum"), True()), 
+		Property("Type", EnumType("ResourceLocationType"), True()), 
 		Property("ResourceLocation", StringType(), True()), 
 		Property("Group", StringType(), True())
 	], 
@@ -541,7 +542,7 @@ rules
 	["ClientComponent"],
 	[], 
 	[
-		Property("PhysicsType", CustomType("Enum"), True()), 
+		Property("PhysicsType", EnumType("PhysicsType"), True()), 
 		Property("Mass", RealType(), True()), 
 		Property("Friction", RealType(), True()), 
 		Property("Restitution", RealType(), True()), 
@@ -562,7 +563,7 @@ rules
 	["ServerPlugin"],
 	[], 
 	[
-		Property("SkyType", CustomType("Enum"), True()), 
+		Property("SkyType", EnumType("SkyType"), True()), 
 		Property("SkyEnabled", BoolType(), True()), 
 		Property("SkyMaterial", StringType(), True()), 
 		Property("SkyDistance", RealType(), True()), 
@@ -600,7 +601,7 @@ rules
 		Property("CloudBlendTime", RealType(), True()), 
 		Property("CloudCoverage", RealType(), True()), 
 		Property("CloudHeight", RealType(), True()), 
-		Property("PrecipitationType", CustomType("Enum"), True()), 
+		Property("PrecipitationType", EnumType("PrecipitationType"), True()), 
 		Property("PrecipitationIntensity", RealType(), True()), 
 		Property("PrecipitationSpeed", RealType(), True()), 
 		Property("PrecipitationCameraSpeedScale", RealType(), True()), 
@@ -615,8 +616,8 @@ rules
 	["ServerPlugin"],
 	[], 
 	[
-		Property("TerrainType", CustomType("Enum"), True()), 
-		Property("HeightmapType", CustomType("Enum"), True()), 
+		Property("TerrainType", EnumType("TerrainType"), True()), 
+		Property("HeightmapType", EnumType("HeightmapType"), True()), 
 		Property("ClientHeightmapFile", StringType(), True()), 
 		Property("InputScale", RealType(), True()), 
 		Property("HeightOffset", RealType(), True()), 

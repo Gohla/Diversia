@@ -3,6 +3,7 @@ module data/events
 imports
 	include/DiversiaScript
 	data/builtin-types
+	signatures
 
 signature constructors
 	
@@ -30,8 +31,8 @@ rules
 		Event("Create", []), Event("Destroy", []), 
 		Event("EarlyUpdate", []), Event("Update", []), Event("LateUpdate", []), 
 		Event("EarlyFrame", [RealType()]), Event("Frame", [RealType()]), Event("LateFrame", [RealType()]),
-		Event("MouseMoved", [CustomType("MouseState")]), Event("MousePressed", [StringType()]), Event("MouseReleased", [StringType()]),
-		Event("KeyPressed", [StringType(), IntType()]), Event("KeyReleased", [StringType(), IntType()])
+		Event("MouseMoved", [CustomType("MouseState")]), Event("MousePressed", [EnumType("MouseButton")]), Event("MouseReleased", [EnumType("MouseButton")]),
+		Event("KeyPressed", [EnumType("KeyboardButton"), IntType()]), Event("KeyReleased", [EnumType("KeyboardButton"), IntType()])
 	]
 	object-events = <concat> [ 
 		<shared-events>, [ 

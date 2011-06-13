@@ -134,6 +134,7 @@ void LuaManager::registerDefaultEnums()
     LuaManager::registerEnum<GraphicsShape>( "GraphicsShape" );
     LuaManager::registerEnum<LightType>( "LightType" );
     LuaManager::registerEnum<Node::TransformSpace>( "TransformSpace" );
+    LuaManager::registerEnum<SkyType>( "SkyType" );
 }
 
 void LuaManager::execute( const String& rLua, const String& rEnvironment /*= ""*/, 

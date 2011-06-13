@@ -53,7 +53,11 @@ Diversia::Util::String typeName( const camp::Property& rProp )
         case camp::intType: return "IntType()";
         case camp::realType: return "RealType()";
         case camp::stringType: return "StringType()";
-        case camp::enumType: return "CustomType(\"Enum\")";
+        case camp::enumType: 
+        {
+            const camp::EnumProperty& prop = static_cast<const camp::EnumProperty&>( rProp );
+            return "EnumType(\"" + prop.getEnum().name() + "\")";
+        }
         case camp::arrayType: return "VoidType()";
         case camp::dictionaryType: return "VoidType()";
         case camp::valueType: return "VoidType()";

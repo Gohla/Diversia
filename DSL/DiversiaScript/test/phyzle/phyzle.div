@@ -1,6 +1,6 @@
 plugin SceneManager {
 	SkyMaterial = "SpaceSkyBox"
-	SkyType = "Box"
+	SkyType = SkyType.Box
 	SkyEnabled = true
 	SkyDrawFirst = true
 	AmbientLight = Colour(0.23, 0.2, 0.3, 1)
@@ -23,15 +23,16 @@ def CameraYaw {
     // Variable definitions
     var mRMB : Bool = false
     var mMouseState : MouseState = null
+    prop MouseRotation : Real = 0.25
     
     // States
     default state Alive {
         // Events
-        on MousePressed(Button : String) {
-            if(Button == "Right") mRMB = true;
+        on MousePressed(Button : MouseButton) {
+            if(Button == MouseButton.Right) mRMB = true;
         }
-        on MouseReleased(Button : String) {
-            if(Button == "Right") mRMB = false;
+        on MouseReleased(Button : MouseButton) {
+            if(Button == MouseButton.Right) mRMB = false;
         }
         on MouseMoved(State : MouseState) {
             mMouseState = MouseState(State);
@@ -39,14 +40,14 @@ def CameraYaw {
         on Update() {
             if(mRMB) { // If right mouse button is pressed
                 // Yaw the camera
-                this.Yaw(Radian(Degree(-mMouseState.X.Relative)));
+                this.Yaw(Radian(Degree(-mMouseState.X.Relative * MouseRotation)), TransformSpace.Local);
 
                 // Pitch the camera
                 var Pitch : Radian = CameraPitch.Orientation.Pitch;
-                var DegreeChange : Degree = Degree(-mMouseState.Y.Relative);
+                var DegreeChange : Degree = Degree(-mMouseState.Y.Relative * MouseRotation);
                 var NewPitch : Degree = DegreeChange + Pitch;
                 if(NewPitch < Degree(85) && NewPitch > Degree(-85)) {
-                    CameraPitch.Pitch(Radian(DegreeChange));
+                    CameraPitch.Pitch(Radian(DegreeChange), TransformSpace.Local);
                 }
             }
             if(mMouseState != null) {
@@ -75,50 +76,50 @@ def CameraYaw {
 // Ball object definition
 def Ball {
     // Ball components
-    component Mesh { // Visual representation of the ball.
-        ShapeType = "Sphere"      // Sphere is a predefined shape type.
-        ShapeUV = [1, 2]        // Vector with 2 elements.
+    component Mesh { 							// Visual representation of the ball.
+        ShapeType = GraphicsShape.Sphere      	// Sphere is a predefined shape type.
+        ShapeUV = [1, 2]        				// Vector with 2 elements.
         ShapeXSegments = 40
         ShapeRadius = 0.3
     }
-    component Entity { // Entity that makes the mesh visible.
+    component Entity { 							// Entity that makes the mesh visible.
         Material = "Ball"
     }
-    component CollisionShape { // Sphere collision shape
-        ShapeType = "Sphere"
+    component CollisionShape { 					// Sphere collision shape
+        ShapeType = PhysicsShape.Sphere
         ShapeParameters = [0.3, 1, 1]
     }
-    component RigidBody { // Rigid body physics
-        PhysicsType = "Dynamic"
+    component RigidBody { 						// Rigid body physics
+        PhysicsType = PhysicsType.Dynamic
         Restitution = 0.3
         LinearDampening = 0.7
         AngularDampening = 0.7
     }
     
-    // Child objects
-    external def CameraYaw // Add the CameraYaw object definition as a child object.
+	var CameraYaw : CameraYaw = new CameraYaw {}
+	prop Speed : Int = 10
 
     default state Alive {
         var mMove : Int = 0
         var mStrafe : Int = 0
         var mSpeedMultiplier : Int = 1
         
-        on KeyPressed(Key : String, KeyCode : Int) {
+        on KeyPressed(Key : KeyboardButton, KeyCode : Int) {
             switch(Key) {
-                case "W": ++mMove;
-                case "S": --mMove;
-                case "A": ++mStrafe;
-                case "D": --mStrafe;
-                case "Shift": mSpeedMultiplier = 2;
+                case KeyboardButton.W: ++mMove;
+                case KeyboardButton.S: --mMove;
+                case KeyboardButton.A: ++mStrafe;
+                case KeyboardButton.D: --mStrafe;
+                case KeyboardButton.LSHIFT: mSpeedMultiplier = 2;
             }
         }
-        on KeyReleased(Key : String, KeyCode : Int) {
+        on KeyReleased(Key : KeyboardButton, KeyCode : Int) {
             switch(Key) {
-                case "W": --mMove;
-                case "S": ++mMove;
-                case "A": --mStrafe;
-                case "D": ++mStrafe;
-                case "Shift": mSpeedMultiplier = 1;
+                case KeyboardButton.W: --mMove;
+                case KeyboardButton.S: ++mMove;
+                case KeyboardButton.A: --mStrafe;
+                case KeyboardButton.D: ++mStrafe;
+                case KeyboardButton.LSHIFT: mSpeedMultiplier = 1;
             }
         }
         on Update() {
@@ -130,12 +131,12 @@ def Ball {
             
             // Move the ball forwards or backwards
             if(mMove != 0) {
-                RigidBody.ApplyCentralForce(CameraYaw.DerivedOrientation * [0, 0, -mMove * mSpeedMultiplier]);
+                RigidBody.ApplyCentralForce(CameraYaw.DerivedOrientation * [0, 0, Speed * -mMove * mSpeedMultiplier]);
             }
             
             // Move the ball sideways
             if(mStrafe != 0) {
-                RigidBody.ApplyCentralForce(CameraYaw.DerivedOrientation * [-mStrafe * mSpeedMultiplier, 0, 0]);
+                RigidBody.ApplyCentralForce(CameraYaw.DerivedOrientation * [Speed * -mStrafe * mSpeedMultiplier, 0, 0]);
             }
         }
         on LateUpdate() {
@@ -149,23 +150,29 @@ def Ball {
 }
 
 def Floor {
-    component Mesh {
-        ShapeType = "Plane"
-        ShapeParameters = [1000, 1000, 1]
-        ShapeUV = [1000, 1000]
-        ShapeXSegments = 50
-        ShapeYSegments = 50
-    }
-    component Entity {
-        Material = "Floor"
+	def FloorOffset {
+		Position = [0, 10, 0]
+		
+	    component Mesh {
+	        ShapeType = GraphicsShape.Plane
+	        ShapeParameters = [2000, 2000, 1]
+	        ShapeUV = [1000, 1000]
+	        ShapeXSegments = 50
+	        ShapeYSegments = 50
+	    }
+	    component Entity {
+	        Material = "Floor"
+	    }
     }
     component CollisionShape {
-        ShapeType = "Box"
-        ShapeParameters = [1000, 1000, 5]
+        ShapeType = PhysicsShape.Box
+        ShapeParameters = [1000, 10, 1000]
     }
     component RigidBody {
-        PhysicsType = "Kinematic"
+        PhysicsType = PhysicsType.Kinematic
+        Friction = 0.5
         Restitution = 0.3
+        Mass = 0
     }
 }
 
@@ -173,7 +180,7 @@ def Floor {
 on Create() {
     // Create an object of type Floor at position 0, 0, 0.
     new Floor {
-        Position = [0, -5, 0]
+        Position = [0, 0, 0]
     };
     new Ball {
         Position = [0, 10, -50]

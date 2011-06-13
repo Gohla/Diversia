@@ -5,6 +5,7 @@ imports
 	signatures
 	type-project
 	name-project
+	data/enums
 
 strategies
 	desugar-all = innermost(desugar); desugar-object //topdown(repeat(desugar))
@@ -17,6 +18,12 @@ rules  // simple desugars
 	desugar: PropDefNoInit(name,type) -> PropDef(name,type,Null())
 	desugar: ComponentDef(CustomType(type),props) -> ComponentDef(type,CustomType(type),props)
 	desugar: PluginDef(CustomType(type),props) -> PluginDef(type,CustomType(type),props)
+	
+	desugar: CustomType(name) -> EnumType(name)
+		where is-enum(|name)
+	desugar: VarRef(name) -> EnumRef(name)
+		where is-enum(|name)
+	desugar: Access(EnumRef(name), value) -> EnumValueRef(name, value)
 	
 	//desugar: VarDefNoType(name, exp) -> VarDef(name, <type-of> exp, exp) // only gets the easy exp
 	desugar: Add(e1, e2) 	-> AOp(ADD(), e1, e2)

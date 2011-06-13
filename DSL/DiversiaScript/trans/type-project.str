@@ -14,6 +14,7 @@ rules // util
 	printable: VoidType() -> "Void"
 	printable: NullType() -> "Void*"
 	printable: CustomType(name) -> name
+	printable: EnumType(name) -> $[[name] enum]
 	printable: [type|[]] -> <printable>type
 	printable: [type|types] -> $[[<printable>type],[<printable>types]]
 		where not(<?[]> types)
@@ -24,7 +25,7 @@ rules // type matching
 		where <?var-type> exp-type
 		
 	match-type:(RealType(),IntType()) -> (RealType(),IntType())
-	match-type:(CustomType("Enum"),StringType()) -> (CustomType("Enum"),StringType()) // TODO: temp solution
+	match-type:(EnumType(n),IntType()) -> (EnumType(n),IntType())
 	match-type:(type, NullType()) -> (type, NullType())
 	
 	match-type:(CustomType(var-type),exp-type) -> (var-type,exp-type)
@@ -70,6 +71,8 @@ rules  // expr
 	type-of: ObjectRef(name) -> <type-of><get-object> name
 	type-of: ComponentRef(name) -> <type-of><get-component> name
 	type-of: PluginRef(name) -> <type-of><get-plugin> name
+	type-of: EnumRef(name) -> EnumType(name)
+	type-of: EnumValueRef(name, _) -> EnumType(name)
 
 rules // defs
 	type-of: ObjectDef(name, _, _, _, _, _, _, _) -> CustomType(name)

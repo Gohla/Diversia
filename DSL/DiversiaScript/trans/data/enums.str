@@ -11,15 +11,17 @@ signature constructors
 	
 rules
 	
-	is-enum(|name) = <fetch(?name)> <enums>
+	is-enum(|name) = <fetch(has-name(|name))> <enums>
 
 	get-enum: name -> <fetch-elem(has-name(|name))> <enums>
+	get-enum-values: name -> values
+		where Enum(_, values) := <get-enum> name
 	
 	get-enum-value: (name, valueName) -> 
-		<fetch-elem(has-name(|valueName))> <get-enum> name
+		<fetch-elem(has-name(|valueName))> <get-enum-values> name
 	get-enum-value-name: (name, value) -> 
-		<fetch-elem(has-value(|value))> <get-enum> name
-		
+		<fetch-elem(has-value(|value))> <get-enum-values> name	
+	
 	has-name(|name) = ?Enum(name, _)
 	has-name(|name) = ?EnumValue(name, _)
 	has-value(|value) = ?EnumValue(_, value)
