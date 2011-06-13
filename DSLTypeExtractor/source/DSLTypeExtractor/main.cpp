@@ -160,6 +160,31 @@ int main( int argc, char* argv[] )
     camp::classByType<ClientObjectTemplateManager>();
     camp::classByType<ClientObjectTemplate>();
 
+    // Use all enums
+    //camp::enumByType<BindingType>();
+    //camp::enumByType<LogLevel>();
+    camp::enumByType<Node::TransformSpace>();
+    //camp::enumByType<Direction>();
+    camp::enumByType<ClientServerPluginTypeEnum>();
+    camp::enumByType<ComponentTypeEnum>();
+    camp::enumByType<TerrainTypeEnum>();
+    camp::enumByType<HeightmapTypeEnum>();
+    camp::enumByType<PhysicsType>();
+    camp::enumByType<PhysicsShape>();
+    //camp::enumByType<LuaSecurityLevel>();
+    camp::enumByType<GraphicsShape>();
+    //camp::enumByType<ResourceLocationType>();
+    camp::enumByType<SkyType>();
+    camp::enumByType<LightType>();
+    //camp::enumByType<Ogre::TextureFilterOptions>();
+    camp::enumByType<Caelum::PrecipitationType>();
+    camp::enumByType<LuaGameModeScriptEvent>();
+    camp::enumByType<LuaObjectScriptEvent>();
+    camp::enumByType<MouseButton>();
+    camp::enumByType<KeyboardButton>();
+    //camp::enumByType<Mode>();
+    //camp::enumByType<NetworkingType>();
+
     // Add component factories, get camp class to ensure that the class is registered.
     TemplateComponentFactory<SceneNode, ClientObject, false, false, true>::registerFactory();
     Object::addAutoCreateComponent<SceneNode>( "Node" );
@@ -276,6 +301,35 @@ int main( int argc, char* argv[] )
         classFirst = false;
     }
     file << "]\n\n";
+
+    // Enums
+    file << "enums = ![\n\t";
+    std::size_t enumCount = camp::enumCount();
+    bool enumFirst = true;
+    for( std::size_t i = 0; i < enumCount; ++i )
+    {
+        const camp::Enum& metaenum = camp::enumByIndex( i );
+        LOGI << metaenum.name();
+
+        if( !enumFirst ) file << ", ";
+        file << "Enum(\"" << metaenum.name() << "\", [\n\t\t";
+
+        // Enum values
+        std::size_t enumValueCount = metaenum.size();
+        bool first = true;
+        for( std::size_t j = 0; j < enumValueCount; ++j )
+        {
+            const camp::Enum::Pair& pair = metaenum.pair(j);
+
+            if( !first ) file << ", \n\t\t";
+            file << "EnumValue(\"" << pair.name << "\", " << pair.value << ")";
+            first = false;
+        }
+
+        file << "\n\t])";
+        enumFirst = false;
+    }
+    file << "\n]\n\n";
 
     // Components
     file << "components = ![\n\t";
