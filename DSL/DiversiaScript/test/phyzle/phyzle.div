@@ -51,8 +51,7 @@ def CameraYaw {
             }
             if(mMouseState != null) {
                 // Camera distance
-                // TODO: Not possible yet because CameraPitch is of type Object, not CameraPitch in lua.. :(
-                var Distance : Real = 20;//CameraPitch.Camera.Position.Z;
+                var Distance : Real = CameraPitch.Camera.Position.Z;
                 if(mMouseState.Z.Relative > 0) {
                      Distance = Distance - Distance / 12;
                      if(Distance < 5) Distance = 5;
@@ -61,8 +60,7 @@ def CameraYaw {
                      Distance = Distance + Distance / 12;
                      if(Distance > 50) Distance = 50;
                 }
-                // TODO: Not possible yet because CameraPitch is of type Object, not CameraPitch in lua.. :(
-                //CameraPitch.Camera.Position = [0, 0, Distance];
+                CameraPitch.Camera.Position = [0, 0, Distance];
                 
                 // Clear mouse state
                 mMouseState.Clear();
@@ -105,7 +103,7 @@ def Ball {
         var mStrafe : Int = 0
         var mSpeedMultiplier : Int = 1
         
-        on KeyPressed(Key : String) {
+        on KeyPressed(Key : String, KeyCode : Int) {
             switch(Key) {
                 case "W": ++mMove;
                 case "S": --mMove;
@@ -114,7 +112,7 @@ def Ball {
                 case "Shift": mSpeedMultiplier = 2;
             }
         }
-        on KeyReleased(Key : String) {
+        on KeyReleased(Key : String, KeyCode : Int) {
             switch(Key) {
                 case "W": --mMove;
                 case "S": ++mMove;

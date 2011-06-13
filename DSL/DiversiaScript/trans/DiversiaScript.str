@@ -39,7 +39,7 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 			<collect-all(editor-note, conc)> ast' => notes
 			
 	// Runs the DefaultClient with lua scripts generated from current AST
-	run: (selected, position, ast, path, project-path) -> ()
+	run: (selected, position, ast, path, project-path) -> (ast)
 		where dir := <abspath> <dirname> path
 		where clientDir := "F:/MultiverseVS/Git/DefaultClient/bin/ReleaseWin32/"
 		where
@@ -50,20 +50,20 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 	    		fatal-err(|$[Could not start the client or the cliented terminated abnormally.]))
 	    		  
 	// Transforms a selection to Lua
-	generate-lua-files: (selected, position, ast, path, project-path) -> ()
+	generate-lua-files: (selected, position, ast, path, project-path) -> (ast)
 		where
 			editor-init;
-	    	<lua-tofiles(|path)> <to-lua> <analyse-all> selected
+	    	<lua-tofiles(|path)> <to-lua> <analyse-all> ast
 	generate-lua-strings: (selected, position, ast, path, project-path) -> (filename, result)
 		where
 			editor-init;
 	    	filename := <guarantee-extension(|"lua")> path;
-	    	result   := <lua-tostrings> <to-lua> <analyse-all> selected
+	    	result   := <lua-tostrings> <to-lua> <analyse-all> ast
 	generate-lua-aterm: (selected, position, ast, path, project-path) -> (filename, result)
 		where 
 	    	editor-init;
 	    	filename := <guarantee-extension(|"aterm")> path;
-	      	result   := <to-lua> <analyse-all> selected
+	      	result   := <to-lua> <analyse-all> ast
 		
 	// Transforms a selection to C++
 	generate-cpp: (selected, position, ast, path, project-path) -> (filename, result)

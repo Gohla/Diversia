@@ -93,6 +93,8 @@ public:
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
     typedef std::map<LuaObjectScriptEvent, sigc::connection> ConnectionMap;
+
+    void createEnv();
     void create();
     void destroy();
     void reload();
@@ -133,6 +135,7 @@ private:
     String              mServerEnvironmentName;
     LuaSecurityLevel    mServerSecurityLevel;
     bool                mLoaded;
+    bool                mEnvCreated;
     bool                mCreated;
 
     int                 mMousePriority;

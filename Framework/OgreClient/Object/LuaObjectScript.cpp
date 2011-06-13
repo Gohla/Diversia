@@ -51,6 +51,7 @@ LuaObjectScript::LuaObjectScript( const String& rName, Mode mode, NetworkingType
     mClientSecurityLevel( LUASEC_HIGH ),
     mServerSecurityLevel( LUASEC_HIGH ),
     mLoaded( false ),
+    mEnvCreated( false ),
     mCreated( false ),
     mMousePriority( 100 ),
     mKeyboardPriority( 100 ),
@@ -103,28 +104,46 @@ void LuaObjectScript::setClientScriptFile( const Path& rClientScriptFile )
 
 void LuaObjectScript::replaceVarWithThisEnv( const String& rEnvName, const String& rVarName )
 {
-    mLuaManager.setEnv( mClientEnvironmentName, rVarName, rEnvName, "Global" );
+    String lua = "Global[\"" + rEnvName + "\"][\"" + rVarName + "\"] = Global[\"" + 
+        mClientEnvironmentName + "\"]";
+    mLuaManager.execute( lua );
+}
+
+void LuaObjectScript::createEnv()
+{
+    if( mEnvCreated ) return;
+
+    if( mClientEnvironmentName.empty() )
+    {
+        mClientEnvironmentName = "LuaObjectScript";
+    }
+
+    // Get a unique environment name.
+    if( !mDefaultEnvironmentCounter.count( mClientEnvironmentName ) )
+    {
+        mDefaultEnvironmentCounter[ mClientEnvironmentName ] = 0;
+    }
+    else
+    {
+        mClientEnvironmentName = mClientEnvironmentName + boost::lexical_cast<String>( 
+            mDefaultEnvironmentCounter[ mClientEnvironmentName ]++ );
+    }
+
+    // Create environment before executing file so this component's object can be set in the
+    // environment before executing.
+    mLuaManager.createEnvironment( mClientEnvironmentName, "Global", mClientSecurityLevel );
+    mLuaManager.set( ClientComponent::getClientObject(), "Object", mClientEnvironmentName, 
+        "Global" );
+    mLuaManager.set( this, "Script", mClientEnvironmentName, "Global" );
+
+    mEnvCreated = true;
 }
 
 void LuaObjectScript::create()
 { 
     if( !mCreated )
     {
-        if( mClientEnvironmentName.empty() )
-        {
-            mClientEnvironmentName = "LuaObjectScript";
-        }
-
-        // Get a unique environment name.
-        if( !mDefaultEnvironmentCounter.count( mClientEnvironmentName ) )
-        {
-            mDefaultEnvironmentCounter[ mClientEnvironmentName ] = 0;
-        }
-        else
-        {
-            mClientEnvironmentName = mClientEnvironmentName + boost::lexical_cast<String>( 
-                mDefaultEnvironmentCounter[ mClientEnvironmentName ]++ );
-        }
+        LuaObjectScript::createEnv();
 
         mCreated = true;
         if( mClientScriptFile.empty() ) return;
@@ -189,13 +208,6 @@ void LuaObjectScript::resourceLoaded( Ogre::ResourcePtr pResource )
 {
     GenericResourcePtr resource = pResource;
     String lua = resource->getCache()->getAsString();
-
-    // Create environment before executing file so this component's object can be set in the
-    // environment before executing.
-    mLuaManager.createEnvironment( mClientEnvironmentName, "Global", mClientSecurityLevel );
-    mLuaManager.set( ClientComponent::getClientObject(), "Object", mClientEnvironmentName, 
-        "Global" );
-    mLuaManager.set( this, "Script", mClientEnvironmentName, "Global" );
 
     // Load script
     mLuaManager.execute( lua, mClientEnvironmentName, "Global", mClientSecurityLevel );

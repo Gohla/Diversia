@@ -245,6 +245,7 @@ rules // Expressions
 	to-lua: Call(This(_), name, args) -> Call(name, Args(<map(to-lua)> args))
 		where not (is-builtin-function(|"ClientObject", name))
 	is-object-access: a@Access(exp, name) -> a
+		where not (<?This(_)> exp)
 		where <get-type-parent> (<type-of> exp, "Object")
 		where is-builtin-property(|"Object", name) 
 	to-lua: a@Access(exp, name) -> Access(<to-lua> exp, name)
@@ -307,7 +308,10 @@ rules // Statements
 	new-object-to-lua-replace(|luaScriptName, objectName): _ -> []
 		where <?True()> <LuaScriptReplace>
 	new-object-to-lua-replace(|luaScriptName, objectName): _ -> 
-		[Call(VarRef(luaScriptName), "ReplaceVarWithThisEnv", Args([Access(VarRef("Script"), "ClientEnvironmentName"), String(objectName)]))]
+		[
+			Call(VarRef(luaScriptName), "CreateEnv", Args([])),
+			Call(VarRef(luaScriptName), "ReplaceVarWithThisEnv", Args([Access(VarRef("Script"), "ClientEnvironmentName"), String(objectName)]))
+		]
 		where not (<?True()> <LuaScriptReplace>)
 	to-lua: Expression(n@ObjectNew(ObjectRef(name), _)) -> <new-object-to-lua(|$[__[<newname> name]])> n
 	to-lua: VarDef(_, _{varName}, _, n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n

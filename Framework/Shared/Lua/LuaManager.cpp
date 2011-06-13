@@ -46,7 +46,7 @@ LuaManager::LuaManager():
         "Vector2", "Vector3", "Vector4", "Quaternion", "Matrix3", "Matrix4", "Colour", "Radian",
         "Degree", "Angle",
 
-        "pairs"
+        "pairs", "ipairs", "type", "tostring"
     );
     mAllowedGlobals[LUASEC_MEDIUM] = initializer<LuaSecurityContainer>
     (
@@ -55,7 +55,7 @@ LuaManager::LuaManager():
 
         "Sky", "ObjectManager",
 
-        "pairs", "print"
+        "pairs", "ipairs", "print", "type", "tostring"
     );
     mAllowedGlobals[LUASEC_LOW] = initializer<LuaSecurityContainer>
     (
@@ -64,7 +64,7 @@ LuaManager::LuaManager():
 
         "Sky", "ObjectManager", "Application",
 
-        "pairs", "print"
+        "pairs", "ipairs", "print", "type", "tostring"
     );
 
     LuaManager::registerDefaultClasses();
@@ -272,31 +272,6 @@ void LuaManager::set( const camp::Value& rValue, const String& rValueName,
     else
     {
         camp::lua::valueToLua( mLuaState, rValue );
-        lua_setglobal( mLuaState, rValueName.c_str() );
-    }
-}
-
-void LuaManager::setEnv( const camp::Value& rSourceEnvironment, const String& rValueName, 
-    const String& rEnvironment /*= ""*/, const String& rParentEnvironment /*= "" */ )
-{
-    if( !rEnvironment.empty() && rParentEnvironment.empty() )
-    {
-        lua_getglobal( mLuaState, rEnvironment.c_str() );
-        LuaManager::pushStack( rSourceEnvironment, "", "Global" );
-        lua_setfield( mLuaState, -2, rValueName.c_str() );
-        lua_pop( mLuaState, 1 );
-    }
-    else if( !rEnvironment.empty() )
-    {
-        lua_getglobal( mLuaState, rParentEnvironment.c_str() );
-        lua_getfield( mLuaState, -1, rEnvironment.c_str() );
-        LuaManager::pushStack( rSourceEnvironment, "", "Global" );
-        lua_setfield( mLuaState, -2, rValueName.c_str() );
-        lua_pop( mLuaState, 2 );
-    }
-    else
-    {
-        LuaManager::pushStack( rSourceEnvironment, "", "Global" );
         lua_setglobal( mLuaState, rValueName.c_str() );
     }
 }

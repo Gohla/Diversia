@@ -193,16 +193,6 @@ public:
     void set( const camp::Value& rValue, const String& rValueName, 
         const String& rEnvironment = "", const String& rParentEnvironment = "" );
     /**
-    Sets a user object to a value in lua.
-    
-    @param  rSourceEnvironment  The source environment (inside global env) to set. 
-    @param  rValueName          The name the value should get inside the environment.
-    @param  rEnvironment        The lua environment to set the value to, defaults to empty.
-    @param  rParentEnvironment  The parent environment for rEnvironment, defaults to empty.
-    **/
-    void setEnv( const camp::Value& rSourceEnvironment, const String& rValueName, 
-        const String& rEnvironment = "", const String& rParentEnvironment = "" );
-    /**
     Creates a lua environment. 
     
     @param  rEnvironment        The new environment name. 
