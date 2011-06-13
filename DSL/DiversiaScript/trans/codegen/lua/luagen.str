@@ -238,8 +238,15 @@ rules // Expressions
 		where not (is-builtin-property(|objectName, name))
 	to-lua: Null() -> LuaNil()
 	to-lua: New(type, args) -> Call(Access(VarRef(type), "new"), Args(<map(to-lua)> args))
-	to-lua: Call(obj, name, args) -> Call(<to-lua> obj, name, Args(<map(to-lua)> args))
+	is-object-call: c@Call(obj, name, args) -> c
+		where <get-type-parent> (<type-of> obj, "Object")
+		where is-builtin-function(|"Object", name) 
+	to-lua: c@Call(obj, name, args) -> Call(<to-lua> obj, name, Args(<map(to-lua)> args))
 		where not (<?This(_)> obj)
+		where not (<is-object-call> c)
+	to-lua: c@Call(obj, name, args) -> Call(Access(<to-lua> obj, "Object"), name, Args(<map(to-lua)> args))
+		where not (<?This(_)> obj)
+		where <is-object-call> c  
 	to-lua: Call(This(_), name, args) -> Call(VarRef("Object"), name, Args(<map(to-lua)> args))
 		where is-builtin-function(|"ClientObject", name)
 	to-lua: Call(This(_), name, args) -> Call(name, Args(<map(to-lua)> args))
