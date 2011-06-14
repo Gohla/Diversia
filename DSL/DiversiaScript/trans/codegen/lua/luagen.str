@@ -99,19 +99,19 @@ rules // Syntax transformation
 		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], functions'''']))
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
 		where functions' := <lua-createFunc-prepend> (<map(component-to-lua(|"Object"))> componenDefs, functions)
-		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua(|"Object"))> propAssigns, functions')
+		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua)> propAssigns, functions')
 		where functions''' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions'') 
 		where functions'''' := <states-to-lua> (<concat> [[defState], stateDefs], functions''')
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [], _, eventDefs) -> 
 		LuaObjectScript(name, <lua-flatten-all> Chunk(functions''')) 
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
 		where functions' := <lua-createFunc-prepend> (<map(component-to-lua(|"Object"))> componenDefs, functions)
-		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua(|"Object"))> propAssigns, functions')
+		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua)> propAssigns, functions')
 		where functions''' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions'')
 	gamemode-to-lua: (pluginDefs, eventDefs) -> LuaGameModeScript(<lua-flatten-all> Chunk(<concat> [functions']))
 		where
-		{| LuaScriptReplace:
-			rules (LuaScriptReplace: _ -> True());
+		{| GamemodeScript:
+			rules (GamemodeScript: _ -> True());
 			functions := <map(global-event-to-lua)> eventDefs;
 			functions' := <lua-createFunc-prepend> (<map(to-lua)> pluginDefs, functions)
 		|}
@@ -119,7 +119,7 @@ rules // Syntax transformation
 	// Variables
 	to-lua: VarDef(_, _{name}, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
 		where not (<?ObjectNew(_, _)> value)
-	to-lua: PropDef(_, name, _, value) -> Assignment([VarRef(name)], [<to-lua> value])
+	to-lua: PropDef(_, name, _, value) -> If(Eq(VarRef(name), LuaNil()), Chunk([Assignment([VarRef(name)], <to-lua> value)]))
 		where not (<?ObjectNew(_, _)> value)
 		
 	// Events
@@ -169,8 +169,14 @@ rules // Syntax transformation
 	destroy-component-to-lua: name -> Call(VarRef(name), "Destroy", Args([]))
 	
 	// Object properties
-	propassign-to-lua(|varName): ObjectProp(_, name, exp) -> Assignment([Access(varName, VarRef(name))], <to-lua> exp)	
-	propassign-to-lua(|varName): ObjectProp(name, exp) -> Assignment([Access(varName, VarRef(name))], <to-lua> exp)
+	propassign-to-lua: ObjectProp(_, name, exp) -> If(Eq(VarRef(name), LuaNil()), Chunk([Assignment([VarRef(name)], <to-lua> exp)]))	
+		where not (is-builtin-property(|"Object", name))
+	propassign-to-lua: ObjectProp(_, name, exp) -> Assignment([Access(VarRef("Object"), name)], <to-lua> exp)	
+		where is-builtin-property(|"Object", name)
+	propassign-to-lua(|varName): ObjectProp(_, name, exp) -> Assignment([Access(VarRef(varName), name)], <to-lua> exp)
+		where not (is-builtin-property(|"Object", name))
+	propassign-to-lua(|varName): ObjectProp(_, name, exp) -> Assignment([Access(VarRef(varName), Access(VarRef("Object"), name))], <to-lua> exp)
+		where is-builtin-property(|"Object", name)
 
 	// States
 	states-to-lua: (states, functions) -> <concat> [functions, <map(state-to-lua)> states]
@@ -310,18 +316,18 @@ rules // Statements
 					ComponentProp(CustomType("LuaObjectScript"), "ClientSecurityLevel", StrConst("Low"))
 				])
 			],
-			<map(propassign-to-lua(|objectName))> props,
-			<new-object-to-lua-replace(|luaScriptName, objectName)>
+			[Call(VarRef(luaScriptName), "CreateEnv", Args([]))],
+			<new-object-to-lua-replace(|luaScriptName, objectName)>,
+			<map(propassign-to-lua(|objectName))> props
 		]
 		where luaScriptName := $[[objectName]__LuaObjectScript]
-	new-object-to-lua-replace(|luaScriptName, objectName): _ -> []
-		where <?True()> <LuaScriptReplace>
+	new-object-to-lua-replace(|luaScriptName, objectName): _ ->
+		//[Assignment([VarRef(objectName)], [TableVarRef(VarRef("_G"), Access(VarRef(luaScriptName), "ClientEnvironmentName"))])]
+		[Call(VarRef(luaScriptName), "ReplaceVarWithThisEnv", Args([String(""), String(objectName)]))]
+		where <?True()> <GamemodeScript>
 	new-object-to-lua-replace(|luaScriptName, objectName): _ -> 
-		[
-			Call(VarRef(luaScriptName), "CreateEnv", Args([])),
-			Call(VarRef(luaScriptName), "ReplaceVarWithThisEnv", Args([Access(VarRef("Script"), "ClientEnvironmentName"), String(objectName)]))
-		]
-		where not (<?True()> <LuaScriptReplace>)
+		[Call(VarRef(luaScriptName), "ReplaceVarWithThisEnv", Args([Access(VarRef("Script"), "ClientEnvironmentName"), String(objectName)]))]
+		where not (<?True()> <GamemodeScript>)
 	to-lua: Expression(n@ObjectNew(ObjectRef(name), _)) -> <new-object-to-lua(|$[__[<newname> name]])> n
 	to-lua: VarDef(_, _{varName}, _, n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n
 	to-lua: PropDef(_, varName, _, n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n

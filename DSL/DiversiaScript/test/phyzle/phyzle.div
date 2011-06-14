@@ -1,5 +1,5 @@
 plugin SceneManager {
-	SkyMaterial = "SpaceSkyBox"
+	//SkyMaterial = "SpaceSkyBox"
 	SkyType = SkyType.Box
 	SkyEnabled = true
 	SkyDrawFirst = true
@@ -96,7 +96,10 @@ def Ball {
         AngularDampening = 0.7
     }
     
-	var CameraYaw : CameraYaw = new CameraYaw {}
+	var CameraYaw : CameraYaw = new CameraYaw { 
+		MouseRotation = 0.25 
+		Position = [0, 0.5, 0] 
+	}
 	prop Speed : Int = 10
 
     default state Alive {
@@ -183,6 +186,7 @@ on Create() {
         Position = [0, 0, 0]
     };
     new Ball {
-        Position = [0, 10, -50]
+        Position = [0, 50, -50]
+        Speed = 10
     };
 }

@@ -104,8 +104,16 @@ void LuaObjectScript::setClientScriptFile( const Path& rClientScriptFile )
 
 void LuaObjectScript::replaceVarWithThisEnv( const String& rEnvName, const String& rVarName )
 {
-    String lua = "Global[\"" + rEnvName + "\"][\"" + rVarName + "\"] = Global[\"" + 
-        mClientEnvironmentName + "\"]";
+    String lua;
+    if( rEnvName.empty() )
+    {
+        lua = rVarName + " = Global[\"" + mClientEnvironmentName + "\"]";
+    }
+    else
+    {
+        lua = "Global[\"" + rEnvName + "\"][\"" + rVarName + "\"] = Global[\"" + 
+            mClientEnvironmentName + "\"]";
+    }
     mLuaManager.execute( lua );
 }
 
