@@ -17,5 +17,6 @@
     <ClCompile Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\Platform\StableHeaders.cpp">
       <Filter>Platform</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\main.cpp" />
   </ItemGroup>
 </Project>

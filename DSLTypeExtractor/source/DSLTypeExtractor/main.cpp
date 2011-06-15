@@ -43,42 +43,54 @@
 #include "Util/Camp/CampUtils.h"
 #include "Util/Log/Logger.h"
 #include "Util/Math/Node.h"
+#include <camp/typeinfo.hpp>
 
-Diversia::Util::String typeName( const camp::Property& rProp )
+using namespace Diversia::Util;
+using namespace Diversia::ObjectSystem;
+using namespace Diversia;
+using namespace Diversia::Client;
+using namespace Diversia::OgreClient;
+
+struct TypeVisitor : public camp::TypeVisitor<String>
 {
-    switch( rProp.type() )
+    String operator()( camp::Type type )
     {
-        case camp::noType: return "VoidType()";
-        case camp::boolType: return "BoolType()";
-        case camp::intType: return "IntType()";
-        case camp::realType: return "RealType()";
-        case camp::stringType: return "StringType()";
-        case camp::enumType: 
+        switch( type )
         {
-            const camp::EnumProperty& prop = static_cast<const camp::EnumProperty&>( rProp );
-            return "EnumType(\"" + prop.getEnum().name() + "\")";
+            case camp::noType: return "VoidType()";
+            case camp::boolType: return "BoolType()";
+            case camp::intType: return "IntType()";
+            case camp::realType: return "RealType()";
+            case camp::stringType: return "StringType()";
+            case camp::valueType: return "VoidType()";
         }
-        case camp::arrayType: return "VoidType()";
-        case camp::dictionaryType: return "VoidType()";
-        case camp::valueType: return "VoidType()";
-        case camp::userType: 
-        {
-            const camp::UserProperty& prop = static_cast<const camp::UserProperty&>( rProp );
-            return "CustomType(\"" + prop.getClass().name() + "\")";
-        }
-    }
 
-    return "None";
-}
+        return "VoidType()";
+    }
+    String operator()( const camp::Class* pClass )
+    {
+        return "CustomType(\"" + pClass->name() + "\")";
+    }
+    String operator()( const camp::Enum* pEnum )
+    {
+        return "EnumType(\"" + pEnum->name() + "\")";
+    }
+    String operator()( camp::ArrayType type )
+    {
+        // TODO: Implement array types in DSL.
+        return "VoidType()";
+    }
+    String operator()( camp::DictionaryType type )
+    {
+        // TODO: Implement dictionary types in DSL.
+        return "VoidType()";
+    }
+};
+
+TypeVisitor typeVisitor;
 
 int main( int argc, char* argv[] )
 {
-    using namespace Diversia::Util;
-    using namespace Diversia::ObjectSystem;
-    using namespace Diversia;
-    using namespace Diversia::Client;
-    using namespace Diversia::OgreClient;
-
     // Initialize logging
     Logger* logger = new Logger( LOG_DEBUG, true, false );
 
@@ -271,10 +283,31 @@ int main( int argc, char* argv[] )
             file << "\"" << metaclass.base( j ).name() << "\"";
             first = false;
         }
-        file << "],\n";
+        file << "], \n[\n\t";
 
-        // TODO: Constructors
-        file << "[], \n[\n\t";
+        // Constructors
+        std::size_t consCount = metaclass.constructorCount();
+        first = true;
+        for( std::size_t j = 0; j < consCount; ++j )
+        {
+            const camp::Constructor& cons = metaclass.constructor( j );
+
+            if( !first ) file << ", \n\t";
+            file << "Constructor([";
+
+            std::size_t argCount = cons.argCount();
+            bool consFirst = true;
+            for( std::size_t k = 0; k < argCount; ++k )
+            {
+                if( !consFirst ) file << ", ";
+                file << cons.argTypeInfo(k).apply_visitor(typeVisitor);
+                consFirst = false;
+            }
+
+            file << "])";
+            first = false;
+        }
+        file << "\n], \n[\n\t";
 
         // Properties
         std::size_t propCount = metaclass.propertyCount( true );
@@ -284,7 +317,7 @@ int main( int argc, char* argv[] )
             const camp::Property& prop = metaclass.property( j, true );
 
             if( !first ) file << ", \n\t";
-            file << "Property(\"" << prop.name() << "\", " << typeName( prop ) << ", " << 
+            file << "Property(\"" << prop.name() << "\", " << prop.typeInfo().apply_visitor(typeVisitor) << ", " << 
                 (prop.writable() ? "True()" : "False()") << ")";
             first = false;
         }
@@ -298,7 +331,19 @@ int main( int argc, char* argv[] )
             const camp::Function& func = metaclass.function( j, true );
 
             if( !first ) file << ", \n\t";
-            file << "Function(\"" << func.name() << "\", \"\", [])";
+            file << "Function(\"" << func.name() << "\", " 
+                << func.returnTypeInfo().apply_visitor(typeVisitor) << ", [";
+            
+            std::size_t argCount = func.argCount();
+            bool funcFirst = true;
+            for( std::size_t k = 0; k < argCount; ++k )
+            {
+                if( !funcFirst ) file << ", ";
+                file << func.argTypeInfo(k).apply_visitor(typeVisitor);
+                funcFirst = false;
+            }
+
+            file << "])";
             first = false;
         }
         file << "\n])\n";
