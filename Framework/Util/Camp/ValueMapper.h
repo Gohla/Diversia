@@ -49,6 +49,8 @@ namespace camp_ext
         {
             return Diversia::Util::Path( ValueMapper<std::string>::from( rSource ) );
         }
+
+        static camp::TypeInfo typeInfo() { return camp::stringType; }
     };
 }
 
