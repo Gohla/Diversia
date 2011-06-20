@@ -149,23 +149,28 @@ void CampBindings::bindVector2()
         .function( "Perpendicular", &Vector2::perpendicular )
         .function( "Cross", &Vector2::crossProduct )
         .function( "RandomDeviant", &Vector2::randomDeviant )
-        .function( "Reflect", &Vector2::reflect );
-        // Static functions
+        .function( "Reflect", &Vector2::reflect )
         // Operators
+        .addOperator<camp::add, Vector2, const Vector2&>()
+        .addOperator<camp::sub, Vector2, const Vector2&>()
+        .addOperator<camp::mul, Vector2, const Vector2&>()
+        .addOperator<camp::mul, Vector2, Real>()
+        .addOperator<camp::div, Vector2, const Vector2&>()
+        .addOperator<camp::div, Vector2, Real>()
+        .addOperator<camp::umin, Vector2>()
+        .addOperator<camp::eq, const Vector2&>()
+        .addOperator<camp::neq, const Vector2&>()
+        .addOperator<camp::lt, const Vector2&>()
+        .addOperator<camp::lte, const Vector2&>()
+        .addOperator<camp::gt, const Vector2&>()
+        .addOperator<camp::gte, const Vector2&>();
+        // Static functions
 }
 
 void CampBindings::bindVector3()
 {
     camp::Class::declare<Vector3>( "Vector3" )
         .tag( "BindingType", BindingType_Vector3 )
-        .tag( "EnableAddOperator" )
-        .tag( "EnableSubtractOperator" )
-        .tag( "EnableMultiplyOperator" )
-        .tag( "EnableDivideOperator" )
-        .tag( "EnableUnaryMinusOperator" )
-        .tag( "EnableEqualsOperator" )
-        .tag( "EnableLessOperator" )
-        .tag( "EnableLessEqualsOperator" )
         // Constructors
         .constructor0()
         .constructor3<Real, Real, Real>()
@@ -223,18 +228,20 @@ void CampBindings::bindVector3()
         .function( "PositionCloses", &Vector3::positionCloses )
         .function( "DirectionEquals", &Vector3::directionEquals )
         // Operators
-        .function( "AddVector3", (Vector3(Vector3::*)(const Vector3&)const)&Vector3::operator+ )
-        .function( "SubtractVector3", (Vector3(Vector3::*)(const Vector3&)const)&Vector3::operator- )
-        .function( "MultiplyVector3", (Vector3(Vector3::*)(const Vector3&)const)&Vector3::operator* )
-        .function( "MultiplyReal", (Vector3(Vector3::*)(Real)const)&Vector3::operator* )
-        .function( "DivideVector3", (Vector3(Vector3::*)(const Vector3&)const)&Vector3::operator/ )
-        .function( "DivideReal", (Vector3(Vector3::*)(Real)const)&Vector3::operator/ )
-        .function( "UnaryMinus", (Vector3(Vector3::*)()const)&Vector3::operator-)
-        .function( "EqualsVector3", (bool(Vector3::*)(const Vector3&)const)&Vector3::operator== )
-        .function( "LessVector3", (bool(Vector3::*)(const Vector3&)const)&Vector3::operator< )
-        .function( "LessEqualsVector3", (bool(Vector3::*)(const Vector3&)const)&Vector3::operator<= );
+        .addOperator<camp::add, Vector3, const Vector3&>()
+        .addOperator<camp::sub, Vector3, const Vector3&>()
+        .addOperator<camp::mul, Vector3, const Vector3&>()
+        .addOperator<camp::mul, Vector3, Real>()
+        .addOperator<camp::div, Vector3, const Vector3&>()
+        .addOperator<camp::div, Vector3, Real>()
+        .addOperator<camp::umin, Vector3>()
+        .addOperator<camp::eq, const Vector3&>()
+        .addOperator<camp::neq, const Vector3&>()
+        .addOperator<camp::lt, const Vector3&>()
+        .addOperator<camp::lte, const Vector3&>()
+        .addOperator<camp::gt, const Vector3&>()
+        .addOperator<camp::gte, const Vector3&>();
         // Static functions
-        // Operators
 }
 
 void CampBindings::bindVector4()
@@ -262,9 +269,22 @@ void CampBindings::bindVector4()
         // Properties (read-only)
         // Properties (read/write)
         // Functions
-        .function( "Dot", &Vector4::dotProduct );
-        // Static functions
+        .function( "Dot", &Vector4::dotProduct )
         // Operators
+        .addOperator<camp::add, Vector4, const Vector4&>()
+        .addOperator<camp::sub, Vector4, const Vector4&>()
+        .addOperator<camp::mul, Vector4, const Vector4&>()
+        .addOperator<camp::mul, Vector4, Real>()
+        .addOperator<camp::div, Vector4, const Vector4&>()
+        .addOperator<camp::div, Vector4, Real>()
+        .addOperator<camp::umin, Vector4>()
+        .addOperator<camp::eq, const Vector4&>()
+        .addOperator<camp::neq, const Vector4&>()
+        .addOperator<camp::lt, const Vector4&>()
+        .addOperator<camp::lte, const Vector4&>()
+        .addOperator<camp::gt, const Vector4&>()
+        .addOperator<camp::gte, const Vector4&>();
+        // Static functions
 }
 
 void CampBindings::bindColour()
@@ -287,24 +307,31 @@ void CampBindings::bindColour()
             .tag( "QtDoublePrecicion", 4 )
         .property( "A", &Colour::a )
             .tag( "Configurable" )
-            .tag( "QtDoublePrecicion", 4 );
+            .tag( "QtDoublePrecicion", 4 )
         // Static member variables
         // Properties (read-only)
         // Properties (read/write)
         // Functions
-        // Static functions
         // Operators
+        .addOperator<camp::add, Colour, const Colour&>()
+        .addOperator<camp::sub, Colour, const Colour&>()
+        .addOperator<camp::mul, Colour, const Colour&>()
+        .addOperator<camp::mul, Colour, Real>()
+        .addOperator<camp::div, Colour, const Colour&>()
+        .addOperator<camp::div, Colour, Real>()
+        .addOperator<camp::eq, const Colour&>()
+        .addOperator<camp::neq, const Colour&>()
+        .addOperator<camp::lt, const Colour&>()
+        .addOperator<camp::lte, const Colour&>()
+        .addOperator<camp::gt, const Colour&>()
+        .addOperator<camp::gte, const Colour&>();
+        // Static functions
 }
 
 void CampBindings::bindQuaternion()
 {
     camp::Class::declare<Quaternion>( "Quaternion" )
         .tag( "BindingType", BindingType_Quaternion )
-        .tag( "EnableAddOperator" )
-        .tag( "EnableSubtractOperator" )
-        .tag( "EnableMultiplyOperator" )
-        .tag( "EnableUnaryMinusOperator" )
-        .tag( "EnableEqualsOperator" )
         // Constructors
         .constructor0()
         .constructor4<Real, Real, Real, Real>()
@@ -390,15 +417,15 @@ void CampBindings::bindQuaternion()
         .function( "Dot", &Quaternion::Dot )
         .function( "Normalize", &Quaternion::normalise )
         // Operators
-        .function( "AddQuaternion", (Quaternion(Quaternion::*)(const Quaternion&)const)&Quaternion::operator+ )
-        .function( "SubtractQuaternion", (Quaternion(Quaternion::*)(const Quaternion&)const)&Quaternion::operator- )
-        .function( "MultiplyQuaternion", (Quaternion(Quaternion::*)(const Quaternion&)const)&Quaternion::operator* )
-        .function( "MultiplyVector3", (Vector3(Quaternion::*)(const Vector3&)const)&Quaternion::operator* )
-        .function( "MultiplyReal", (Quaternion(Quaternion::*)(Real)const)&Quaternion::operator* )
-        .function( "UnaryMinus", (Quaternion(Quaternion::*)()const)&Quaternion::operator-)
-        .function( "EqualsQuaternion", (bool(Quaternion::*)(const Quaternion&)const)&Quaternion::operator== );
+        .addOperator<camp::add, Quaternion, const Quaternion&>()
+        .addOperator<camp::sub, Quaternion, const Quaternion&>()
+        .addOperator<camp::mul, Quaternion, const Quaternion&>()
+        .addOperator<camp::mul, Vector3, const Vector3&>()
+        .addOperator<camp::mul, Quaternion, Real>()
+        .addOperator<camp::umin, Quaternion>()
+        .addOperator<camp::eq, const Quaternion&>()
+        .addOperator<camp::neq, const Quaternion&>();
         // Static functions
-        // Operators
 }
 
 void CampBindings::bindMatrix3()
@@ -435,14 +462,6 @@ void CampBindings::bindRadian()
 {
     camp::Class::declare<Radian>( "Radian" )
         .tag( "BindingType", BindingType_Radian )
-        .tag( "EnableAddOperator" )
-        .tag( "EnableSubtractOperator" )
-        .tag( "EnableMultiplyOperator" )
-        .tag( "EnableDivideOperator" )
-        .tag( "EnableUnaryMinusOperator" )
-        .tag( "EnableEqualsOperator" )
-        .tag( "EnableLessOperator" )
-        .tag( "EnableLessEqualsOperator" )
     	// Constructors
         .constructor1<Real>()
         .constructor1<const Degree&>()
@@ -461,33 +480,27 @@ void CampBindings::bindRadian()
             .tag( "Configurable" )
     	// Functions
         // Operators
-        .function( "AddRadian", (Radian(Radian::*)(const Radian&)const)&Radian::operator+ )
-        .function( "AddDegree", (Radian(Radian::*)(const Degree&)const)&Radian::operator+ )
-        .function( "SubtractRadian", (Radian(Radian::*)(const Radian&)const)&Radian::operator- )
-        .function( "SubtractDegree", (Radian(Radian::*)(const Degree&)const)&Radian::operator- )
-        .function( "MultiplyRadian", (Radian(Radian::*)(const Radian&)const)&Radian::operator* )
-        .function( "MultiplyReal", (Radian(Radian::*)(Real)const)&Radian::operator* )
-        .function( "DivideReal", (Radian(Radian::*)(Real)const)&Radian::operator/ )
-        .function( "UnaryMinus", (Radian(Radian::*)()const)&Radian::operator-)
-        .function( "EqualsRadian", (bool(Radian::*)(const Radian&)const)&Radian::operator== )
-        .function( "LessRadian", (bool(Radian::*)(const Radian&)const)&Radian::operator< )
-        .function( "LessEqualsRadian", (bool(Radian::*)(const Radian&)const)&Radian::operator<= );
+        .addOperator<camp::add, Radian, const Radian&>()
+        .addOperator<camp::add, Radian, const Degree&>()
+        .addOperator<camp::sub, Radian, const Radian&>()
+        .addOperator<camp::sub, Radian, const Degree&>()
+        .addOperator<camp::mul, Radian, const Radian&>()
+        .addOperator<camp::mul, Radian, Real>()
+        .addOperator<camp::div, Radian, Real>()
+        .addOperator<camp::umin, Radian>()
+        .addOperator<camp::eq, const Radian&>()
+        .addOperator<camp::neq, const Radian&>()
+        .addOperator<camp::lt, const Radian&>()
+        .addOperator<camp::lte, const Radian&>()
+        .addOperator<camp::gt, const Radian&>()
+        .addOperator<camp::gte, const Radian&>();
     	// Static functions
-    	// Operators
 }
 
 void CampBindings::bindDegree()
 {
     camp::Class::declare<Degree>( "Degree" )
         .tag( "BindingType", BindingType_Degree )
-        .tag( "EnableAddOperator" )
-        .tag( "EnableSubtractOperator" )
-        .tag( "EnableMultiplyOperator" )
-        .tag( "EnableDivideOperator" )
-        .tag( "EnableUnaryMinusOperator" )
-        .tag( "EnableEqualsOperator" )
-        .tag( "EnableLessOperator" )
-        .tag( "EnableLessEqualsOperator" )
     	// Constructors
         .constructor1<Real>()
         .constructor1<const Radian&>()
@@ -505,19 +518,21 @@ void CampBindings::bindDegree()
             .tag( "Configurable" )
     	// Functions
         // Operators
-        .function( "AddDegree", (Degree(Degree::*)(const Degree&)const)&Degree::operator+ )
-        .function( "AddRadian", (Degree(Degree::*)(const Radian&)const)&Degree::operator+ )
-        .function( "SubtractDegree", (Degree(Degree::*)(const Degree&)const)&Degree::operator- )
-        .function( "SubtractRadian", (Degree(Degree::*)(const Radian&)const)&Degree::operator- )
-        .function( "MultiplyDegree", (Degree(Degree::*)(const Degree&)const)&Degree::operator* )
-        .function( "MultiplyReal", (Degree(Degree::*)(Real)const)&Degree::operator* )
-        .function( "DivideReal", (Degree(Degree::*)(Real)const)&Degree::operator/ )
-        .function( "UnaryMinus", (Degree(Degree::*)()const)&Degree::operator-)
-        .function( "EqualsDegree", (bool(Degree::*)(const Degree&)const)&Degree::operator== )
-        .function( "LessDegree", (bool(Degree::*)(const Degree&)const)&Degree::operator< )
-        .function( "LessEqualsDegree", (bool(Degree::*)(const Degree&)const)&Degree::operator<= );
+        .addOperator<camp::add, Degree, const Degree&>()
+        .addOperator<camp::add, Degree, const Radian&>()
+        .addOperator<camp::sub, Degree, const Degree&>()
+        .addOperator<camp::sub, Degree, const Radian&>()
+        .addOperator<camp::mul, Degree, const Degree&>()
+        .addOperator<camp::mul, Degree, Real>()
+        .addOperator<camp::div, Degree, Real>()
+        .addOperator<camp::umin, Degree>()
+        .addOperator<camp::eq, const Degree&>()
+        .addOperator<camp::neq, const Degree&>()
+        .addOperator<camp::lt, const Degree&>()
+        .addOperator<camp::lte, const Degree&>()
+        .addOperator<camp::gt, const Degree&>()
+        .addOperator<camp::gte, const Degree&>();
     	// Static functions
-    	// Operators
 }
 
 void CampBindings::bindAngle()

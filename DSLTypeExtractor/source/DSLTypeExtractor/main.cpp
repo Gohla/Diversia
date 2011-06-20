@@ -44,6 +44,7 @@
 #include "Util/Log/Logger.h"
 #include "Util/Math/Node.h"
 #include <camp/typeinfo.hpp>
+#include <camp/operator.hpp>
 
 using namespace Diversia::Util;
 using namespace Diversia::ObjectSystem;
@@ -86,6 +87,35 @@ struct TypeVisitor : public camp::TypeVisitor<String>
         return "VoidType()";
     }
 };
+
+String operatorString( camp::OperatorType type )
+{
+    switch( type )
+    {
+        case camp::noop: return "NOOP()";
+        case camp::add: return "ADD()";
+        case camp::sub: return "SUB()";
+        case camp::mul: return "MUL()";
+        case camp::div: return "DIV()";
+        case camp::uplus: return "UPLUS()";
+        case camp::umin: return "UMIN()";
+        case camp::mod: return "MOD()";
+        case camp::preinc: return "PREINC()";
+        case camp::postinc: return "POSTINC()";
+        case camp::predec: return "PREDEC()";
+        case camp::postdec: return "POSTDEC()";
+        case camp::eq: return "EQ()";
+        case camp::neq: return "NEQ()";
+        case camp::lt: return "LT()";
+        case camp::lte: return "LTE()";
+        case camp::gt: return "GT()";
+        case camp::gte: return "GTE()";
+        case camp::not: return "NOT()";
+        case camp::and: return "AND()";
+        case camp::or: return "OR()";
+        default: return "NOOP()";
+    }
+}
 
 TypeVisitor typeVisitor;
 
@@ -346,6 +376,22 @@ int main( int argc, char* argv[] )
             file << "])";
             first = false;
         }
+        file << "\n], \n[\n\t";
+
+        // Operators
+        std::size_t opCount = metaclass.operatorCount();
+        first = true;
+        for( std::size_t j = 0; j < opCount; ++j )
+        {
+            const camp::Function& func = metaclass.getOperator( j );
+
+            if( !first ) file << ", \n\t";
+            file << "Operator(" << operatorString( func.operatorType() ) << ", " 
+                << func.returnTypeInfo().apply_visitor(typeVisitor) << ", "
+                << func.argTypeInfoSafe<0>().apply_visitor(typeVisitor) << ")";
+            first = false;
+        }
+
         file << "\n])\n";
         classFirst = false;
     }

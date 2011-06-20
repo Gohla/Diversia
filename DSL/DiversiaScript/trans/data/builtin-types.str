@@ -7,10 +7,11 @@ imports
 
 signature constructors
 	
-	BuiltinType: Name * List(BuiltinType) * List(Constructor) * List(Property) * List(Function) -> BuiltinType
+	BuiltinType: Name * List(BuiltinType) * List(Constructor) * List(Property) * List(Function) * List(Operator) -> BuiltinType
 	Constructor: List(ParamType) -> Constructor
 	Property: Name * Type * Writable -> Property
 	Function: Name * ReturnType * List(ParamType) -> Function
+	Operator: Op * ReturnType * ParamType -> Operator
 
 rules
 	
@@ -31,29 +32,30 @@ rules
 	get-builtin-function: (type, function) -> 
 		<fetch-elem(has-name(|function))><get-builtin-functions> type
 
-	has-name(|name) =  ?BuiltinType(name,_,_,_,_)
+	has-name(|name) =  ?BuiltinType(name,_,_,_,_,_)
 	has-name(|name) =  ?Property(name,_,_)
 	has-name(|name) =  ?Function(name,_,_)
 	is-read-only = ?Property(_,_,False())
 	
-	get-name: BuiltinType(name,_,_,_,_) -> name
+	get-name: BuiltinType(name,_,_,_,_,_) -> name
 	get-name: Property(name,_,_) -> name
 	get-name: Function(name,_,_) -> name
 
-	get-proposal: BuiltinType(name,_,_,_,_) -> (name, $[TODO: type info here!])
+	get-proposal: BuiltinType(name,_,_,_,_,_) -> (name, $[TODO: type info here!])
 	get-proposal: Property(name,_,_) -> (name, $[TODO: property info here!])
 	get-proposal: Function(name,_,_) -> (name, $[TODO: function info here!])
+	get-proposal: Operator(type,_,_) -> (type, $[TODO: function info here!])
 
 	get-builtin-properties: type -> <get-builtin-properties><get-builtin-type> type	
-	get-builtin-properties: BuiltinType(_,parents,_,properties,_) -> 
+	get-builtin-properties: BuiltinType(_,parents,_,properties,_,_) -> 
 		<conc>(properties,<mapconcat(get-builtin-type; get-builtin-properties)>parents)
 		
 	get-builtin-functions: type -> <get-builtin-functions><get-builtin-type> type
-	get-builtin-functions: BuiltinType(_,parents,_,_,functions) -> 
+	get-builtin-functions: BuiltinType(_,parents,_,_,functions,_) -> 
 		<conc>(functions,<mapconcat(get-builtin-type; get-builtin-functions)>parents)
 		
 	get-builtin-parents: type -> <get-builtin-parents><get-builtin-type> type
-	get-builtin-parents: s@BuiltinType(_,parents,_,_,_) -> 
+	get-builtin-parents: s@BuiltinType(_,parents,_,_,_,_) -> 
 		<conc>(<map(get-builtin-type)> parents, <mapconcat(get-builtin-type; get-builtin-parents)>parents)
 		
 	builtin-types = ![
@@ -67,9 +69,15 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("ClientComponentTemplate",
 	["ComponentTemplate", "PropertySynchronization"], 
+	[
+		
+	], 
 	[
 		
 	], 
@@ -89,9 +97,15 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("ClientObjectManager",
 	["ObjectManager", "ServerPlugin"], 
+	[
+		
+	], 
 	[
 		
 	], 
@@ -111,9 +125,15 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("ClientObjectTemplateManager",
 	["ObjectTemplateManager", "ServerPlugin"], 
+	[
+		
+	], 
 	[
 		
 	], 
@@ -133,9 +153,15 @@ rules
 	], 
 	[
 		Function("Run garbage collection", VoidType(), [])
+	], 
+	[
+		
 	])
 	, BuiltinType("PermissionManager",
 	["ServerPlugin"], 
+	[
+		
+	], 
 	[
 		
 	], 
@@ -155,6 +181,9 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("ServerPlugin",
 	["ClientServerPlugin", "PropertySynchronization"], 
@@ -166,6 +195,9 @@ rules
 	], 
 	[
 		Function("ForceSerialize", VoidType(), [])
+	], 
+	[
+		
 	])
 	, BuiltinType("ClientServerPlugin",
 	[], 
@@ -177,6 +209,9 @@ rules
 		Property("TypeName", StringType(), False()), 
 		Property("Mode", EnumType("Mode"), False()), 
 		Property("PluginManager", CustomType("ClientServerPluginManager"), True())
+	], 
+	[
+		
 	], 
 	[
 		
@@ -195,6 +230,9 @@ rules
 		Function("GetPlugin", CustomType("ClientServerPlugin"), [EnumType("ClientServerPluginType")]), 
 		Function("HasPlugin", BoolType(), [EnumType("ClientServerPluginType")]), 
 		Function("DestroyPlugin", VoidType(), [EnumType("ClientServerPluginType")])
+	], 
+	[
+		
 	])
 	, BuiltinType("LayerInstance",
 	[], 
@@ -205,6 +243,9 @@ rules
 	[
 		Property("WorldSize", RealType(), True()), 
 		Property("TextureNames", VoidType(), True())
+	], 
+	[
+		
 	], 
 	[
 		
@@ -234,6 +275,9 @@ rules
 		Function("IsCreatedBy", BoolType(), [CustomType("RakNetGUID")]), 
 		Function("IsCreatedBySource", BoolType(), [CustomType("RakNetGUID")]), 
 		Function("Destroy", VoidType(), [])
+	], 
+	[
+		
 	])
 	, BuiltinType("ComponentHandle",
 	[], 
@@ -244,6 +288,9 @@ rules
 	[
 		Property("Type", IntType(), True()), 
 		Property("Name", StringType(), True())
+	], 
+	[
+		
 	], 
 	[
 		
@@ -273,6 +320,9 @@ rules
 		Function("IsCreatedBySource", BoolType(), [CustomType("RakNetGUID")]), 
 		Function("Destroy", VoidType(), []), 
 		Function("SetProperty", VoidType(), [StringType(), VoidType()])
+	], 
+	[
+		
 	])
 	, BuiltinType("Object",
 	["Node"], 
@@ -307,6 +357,9 @@ rules
 		Function("HasComponent", BoolType(), [StringType()]), 
 		Function("DestroyComponent", VoidType(), [StringType()]), 
 		Function("Destroy", VoidType(), [])
+	], 
+	[
+		
 	])
 	, BuiltinType("ObjectManager",
 	[], 
@@ -329,6 +382,9 @@ rules
 		Function("DestroyObject", VoidType(), [StringType()]), 
 		Function("DestroyObjectTree", VoidType(), [StringType()]), 
 		Function("DestroyWholeObjectTree", VoidType(), [StringType()])
+	], 
+	[
+		
 	])
 	, BuiltinType("ObjectTemplate",
 	["Node"], 
@@ -360,6 +416,9 @@ rules
 		Function("HasComponentTemplate", BoolType(), [StringType()]), 
 		Function("DestroyComponentTemplate", VoidType(), [StringType()]), 
 		Function("Destroy", VoidType(), [])
+	], 
+	[
+		
 	])
 	, BuiltinType("ObjectTemplateManager",
 	[], 
@@ -381,6 +440,9 @@ rules
 		Function("DestroyObjectTemplate", VoidType(), [StringType()]), 
 		Function("DestroyObjectTemplateTree", VoidType(), [StringType()]), 
 		Function("DestroyWholeObjectTemplateTree", VoidType(), [StringType()])
+	], 
+	[
+		
 	])
 	, BuiltinType("Animation",
 	["ClientComponent"], 
@@ -400,9 +462,15 @@ rules
 	[
 		Function("HasEnded", BoolType(), []), 
 		Function("AddTime", VoidType(), [RealType()])
+	], 
+	[
+		
 	])
 	, BuiltinType("AreaTrigger",
 	["ClientComponent"], 
+	[
+		
+	], 
 	[
 		
 	], 
@@ -437,6 +505,9 @@ rules
 		Function("Play", BoolType(), []), 
 		Function("Stop", VoidType(), []), 
 		Function("Pause", VoidType(), [])
+	], 
+	[
+		
 	])
 	, BuiltinType("Axis",
 	[], 
@@ -449,6 +520,9 @@ rules
 	], 
 	[
 		Function("Clear", VoidType(), [])
+	], 
+	[
+		
 	])
 	, BuiltinType("Camera",
 	["ClientComponent"], 
@@ -457,6 +531,9 @@ rules
 	], 
 	[
 		Property("Active", BoolType(), True())
+	], 
+	[
+		
 	], 
 	[
 		
@@ -475,6 +552,9 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("Entity",
 	["ClientComponent"], 
@@ -488,6 +568,9 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("ForceField",
 	["ClientComponent"], 
@@ -497,6 +580,9 @@ rules
 	[
 		Property("Enabled", BoolType(), True()), 
 		Property("Force", CustomType("Vector3"), True())
+	], 
+	[
+		
 	], 
 	[
 		
@@ -528,6 +614,9 @@ rules
 		Function("DisconnectAll", VoidType(), []), 
 		Function("ConnectAll", VoidType(), []), 
 		Function("BlockAll", VoidType(), [BoolType()])
+	], 
+	[
+		
 	])
 	, BuiltinType("InputManager",
 	[], 
@@ -539,6 +628,9 @@ rules
 		Property("KeyboardState", CustomType("KeyboardState"), False()), 
 		Property("WindowWidth", IntType(), False()), 
 		Property("WindowHeight", IntType(), False())
+	], 
+	[
+		
 	], 
 	[
 		
@@ -554,6 +646,9 @@ rules
 	[
 		Function("IsButtonDown", BoolType(), [EnumType("KeyboardButton")]), 
 		Function("Clear", VoidType(), [])
+	], 
+	[
+		
 	])
 	, BuiltinType("Light",
 	["ClientComponent"], 
@@ -569,6 +664,9 @@ rules
 		Property("SpotlightFalloff", RealType(), True()), 
 		Property("SpotlightInnerAngle", CustomType("Radian"), True()), 
 		Property("SpotlightOuterAngle", CustomType("Radian"), True())
+	], 
+	[
+		
 	], 
 	[
 		
@@ -591,6 +689,9 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("MouseState",
 	[], 
@@ -606,6 +707,9 @@ rules
 	[
 		Function("IsButtonDown", BoolType(), [EnumType("MouseButton")]), 
 		Function("Clear", VoidType(), [])
+	], 
+	[
+		
 	])
 	, BuiltinType("Particle",
 	["ClientComponent"], 
@@ -620,6 +724,9 @@ rules
 	], 
 	[
 		Function("Clear", VoidType(), [])
+	], 
+	[
+		
 	])
 	, BuiltinType("ResourceManager",
 	["ServerPlugin"], 
@@ -630,6 +737,9 @@ rules
 		Property("Type", EnumType("ResourceLocationType"), True()), 
 		Property("ResourceLocation", StringType(), True()), 
 		Property("Group", StringType(), True())
+	], 
+	[
+		
 	], 
 	[
 		
@@ -656,6 +766,9 @@ rules
 		Function("ApplyImpulse", VoidType(), [CustomType("Vector3"), CustomType("Vector3")]), 
 		Function("ApplyCentralImpulse", VoidType(), [CustomType("Vector3")]), 
 		Function("ApplyTorque", VoidType(), [CustomType("Vector3")])
+	], 
+	[
+		
 	])
 	, BuiltinType("SceneManager",
 	["ServerPlugin"], 
@@ -678,9 +791,15 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("SceneNode",
 	["ClientComponent"], 
+	[
+		
+	], 
 	[
 		
 	], 
@@ -715,6 +834,9 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("Terrain",
 	["ServerPlugin"], 
@@ -735,6 +857,9 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("Text",
 	["ClientComponent"], 
@@ -747,9 +872,15 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("PropertySynchronization",
 	[], 
+	[
+		
+	], 
 	[
 		
 	], 
@@ -773,6 +904,9 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("ServerInfo",
 	[], 
@@ -784,6 +918,9 @@ rules
 		Property("Address", StringType(), True()), 
 		Property("Port", IntType(), True()), 
 		Property("Name", StringType(), True())
+	], 
+	[
+		
 	], 
 	[
 		
@@ -802,6 +939,9 @@ rules
 		Function("HasServer", BoolType(), [EnumType("Direction")]), 
 		Function("RemoveServer", VoidType(), [EnumType("Direction")]), 
 		Function("Clear", VoidType(), [])
+	], 
+	[
+		
 	])
 	, BuiltinType("Angle",
 	[], 
@@ -812,6 +952,9 @@ rules
 		Property("Radian", CustomType("Radian"), False()), 
 		Property("Degree", CustomType("Degree"), False()), 
 		Property("Angle", RealType(), True())
+	], 
+	[
+		
 	], 
 	[
 		
@@ -831,6 +974,20 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		Operator(ADD(), CustomType("Colour"), CustomType("Colour")), 
+		Operator(SUB(), CustomType("Colour"), CustomType("Colour")), 
+		Operator(MUL(), CustomType("Colour"), CustomType("Colour")), 
+		Operator(MUL(), CustomType("Colour"), RealType()), 
+		Operator(DIV(), CustomType("Colour"), CustomType("Colour")), 
+		Operator(DIV(), CustomType("Colour"), RealType()), 
+		Operator(EQ(), BoolType(), CustomType("Colour")), 
+		Operator(NEQ(), BoolType(), CustomType("Colour")), 
+		Operator(LT(), BoolType(), CustomType("Colour")), 
+		Operator(LTE(), BoolType(), CustomType("Colour")), 
+		Operator(GT(), BoolType(), CustomType("Colour")), 
+		Operator(GTE(), BoolType(), CustomType("Colour"))
 	])
 	, BuiltinType("Degree",
 	[], 
@@ -844,17 +1001,23 @@ rules
 		Property("Degrees", RealType(), True())
 	], 
 	[
-		Function("AddDegree", CustomType("Degree"), [CustomType("Degree")]), 
-		Function("AddRadian", CustomType("Degree"), [CustomType("Radian")]), 
-		Function("SubtractDegree", CustomType("Degree"), [CustomType("Degree")]), 
-		Function("SubtractRadian", CustomType("Degree"), [CustomType("Radian")]), 
-		Function("MultiplyDegree", CustomType("Degree"), [CustomType("Degree")]), 
-		Function("MultiplyReal", CustomType("Degree"), [RealType()]), 
-		Function("DivideReal", CustomType("Degree"), [RealType()]), 
-		Function("UnaryMinus", CustomType("Degree"), []), 
-		Function("EqualsDegree", BoolType(), [CustomType("Degree")]), 
-		Function("LessDegree", BoolType(), [CustomType("Degree")]), 
-		Function("LessEqualsDegree", BoolType(), [CustomType("Degree")])
+		
+	], 
+	[
+		Operator(ADD(), CustomType("Degree"), CustomType("Degree")), 
+		Operator(ADD(), CustomType("Degree"), CustomType("Radian")), 
+		Operator(SUB(), CustomType("Degree"), CustomType("Degree")), 
+		Operator(SUB(), CustomType("Degree"), CustomType("Radian")), 
+		Operator(MUL(), CustomType("Degree"), CustomType("Degree")), 
+		Operator(MUL(), CustomType("Degree"), RealType()), 
+		Operator(DIV(), CustomType("Degree"), RealType()), 
+		Operator(UMIN(), CustomType("Degree"), VoidType()), 
+		Operator(EQ(), BoolType(), CustomType("Degree")), 
+		Operator(NEQ(), BoolType(), CustomType("Degree")), 
+		Operator(LT(), BoolType(), CustomType("Degree")), 
+		Operator(LTE(), BoolType(), CustomType("Degree")), 
+		Operator(GT(), BoolType(), CustomType("Degree")), 
+		Operator(GTE(), BoolType(), CustomType("Degree"))
 	])
 	, BuiltinType("Matrix3",
 	[], 
@@ -866,11 +1029,17 @@ rules
 	], 
 	[
 		
+	], 
+	[
+		
 	])
 	, BuiltinType("Matrix4",
 	[], 
 	[
 		Constructor([])
+	], 
+	[
+		
 	], 
 	[
 		
@@ -910,6 +1079,9 @@ rules
 		Function("ConvertLocalToWorldPosition", CustomType("Vector3"), [CustomType("Vector3")]), 
 		Function("ConvertWorldToLocalOrientation", CustomType("Quaternion"), [CustomType("Quaternion")]), 
 		Function("ConvertLocalToWorldOrientation", CustomType("Quaternion"), [CustomType("Quaternion")])
+	], 
+	[
+		
 	])
 	, BuiltinType("Quaternion",
 	[], 
@@ -942,14 +1114,17 @@ rules
 	], 
 	[
 		Function("Dot", RealType(), [CustomType("Quaternion")]), 
-		Function("Normalize", RealType(), []), 
-		Function("AddQuaternion", CustomType("Quaternion"), [CustomType("Quaternion")]), 
-		Function("SubtractQuaternion", CustomType("Quaternion"), [CustomType("Quaternion")]), 
-		Function("MultiplyQuaternion", CustomType("Quaternion"), [CustomType("Quaternion")]), 
-		Function("MultiplyVector3", CustomType("Vector3"), [CustomType("Vector3")]), 
-		Function("MultiplyReal", CustomType("Quaternion"), [RealType()]), 
-		Function("UnaryMinus", CustomType("Quaternion"), []), 
-		Function("EqualsQuaternion", BoolType(), [CustomType("Quaternion")])
+		Function("Normalize", RealType(), [])
+	], 
+	[
+		Operator(ADD(), CustomType("Quaternion"), CustomType("Quaternion")), 
+		Operator(SUB(), CustomType("Quaternion"), CustomType("Quaternion")), 
+		Operator(MUL(), CustomType("Quaternion"), CustomType("Quaternion")), 
+		Operator(MUL(), CustomType("Vector3"), CustomType("Vector3")), 
+		Operator(MUL(), CustomType("Quaternion"), RealType()), 
+		Operator(UMIN(), CustomType("Quaternion"), VoidType()), 
+		Operator(EQ(), BoolType(), CustomType("Quaternion")), 
+		Operator(NEQ(), BoolType(), CustomType("Quaternion"))
 	])
 	, BuiltinType("Radian",
 	[], 
@@ -964,17 +1139,23 @@ rules
 		Property("Radians", RealType(), True())
 	], 
 	[
-		Function("AddRadian", CustomType("Radian"), [CustomType("Radian")]), 
-		Function("AddDegree", CustomType("Radian"), [CustomType("Degree")]), 
-		Function("SubtractRadian", CustomType("Radian"), [CustomType("Radian")]), 
-		Function("SubtractDegree", CustomType("Radian"), [CustomType("Degree")]), 
-		Function("MultiplyRadian", CustomType("Radian"), [CustomType("Radian")]), 
-		Function("MultiplyReal", CustomType("Radian"), [RealType()]), 
-		Function("DivideReal", CustomType("Radian"), [RealType()]), 
-		Function("UnaryMinus", CustomType("Radian"), []), 
-		Function("EqualsRadian", BoolType(), [CustomType("Radian")]), 
-		Function("LessRadian", BoolType(), [CustomType("Radian")]), 
-		Function("LessEqualsRadian", BoolType(), [CustomType("Radian")])
+		
+	], 
+	[
+		Operator(ADD(), CustomType("Radian"), CustomType("Radian")), 
+		Operator(ADD(), CustomType("Radian"), CustomType("Degree")), 
+		Operator(SUB(), CustomType("Radian"), CustomType("Radian")), 
+		Operator(SUB(), CustomType("Radian"), CustomType("Degree")), 
+		Operator(MUL(), CustomType("Radian"), CustomType("Radian")), 
+		Operator(MUL(), CustomType("Radian"), RealType()), 
+		Operator(DIV(), CustomType("Radian"), RealType()), 
+		Operator(UMIN(), CustomType("Radian"), VoidType()), 
+		Operator(EQ(), BoolType(), CustomType("Radian")), 
+		Operator(NEQ(), BoolType(), CustomType("Radian")), 
+		Operator(LT(), BoolType(), CustomType("Radian")), 
+		Operator(LTE(), BoolType(), CustomType("Radian")), 
+		Operator(GT(), BoolType(), CustomType("Radian")), 
+		Operator(GTE(), BoolType(), CustomType("Radian"))
 	])
 	, BuiltinType("Vector2",
 	[], 
@@ -1001,6 +1182,21 @@ rules
 		Function("Cross", RealType(), [CustomType("Vector2")]), 
 		Function("RandomDeviant", CustomType("Vector2"), [RealType()]), 
 		Function("Reflect", CustomType("Vector2"), [CustomType("Vector2")])
+	], 
+	[
+		Operator(ADD(), CustomType("Vector2"), CustomType("Vector2")), 
+		Operator(SUB(), CustomType("Vector2"), CustomType("Vector2")), 
+		Operator(MUL(), CustomType("Vector2"), CustomType("Vector2")), 
+		Operator(MUL(), CustomType("Vector2"), RealType()), 
+		Operator(DIV(), CustomType("Vector2"), CustomType("Vector2")), 
+		Operator(DIV(), CustomType("Vector2"), RealType()), 
+		Operator(UMIN(), CustomType("Vector2"), VoidType()), 
+		Operator(EQ(), BoolType(), CustomType("Vector2")), 
+		Operator(NEQ(), BoolType(), CustomType("Vector2")), 
+		Operator(LT(), BoolType(), CustomType("Vector2")), 
+		Operator(LTE(), BoolType(), CustomType("Vector2")), 
+		Operator(GT(), BoolType(), CustomType("Vector2")), 
+		Operator(GTE(), BoolType(), CustomType("Vector2"))
 	])
 	, BuiltinType("Vector3",
 	[], 
@@ -1036,17 +1232,22 @@ rules
 		Function("Reflect", CustomType("Vector3"), [CustomType("Vector3")]), 
 		Function("PositionEquals", BoolType(), [CustomType("Vector3"), RealType()]), 
 		Function("PositionCloses", BoolType(), [CustomType("Vector3"), RealType()]), 
-		Function("DirectionEquals", BoolType(), [CustomType("Vector3"), CustomType("Radian")]), 
-		Function("AddVector3", CustomType("Vector3"), [CustomType("Vector3")]), 
-		Function("SubtractVector3", CustomType("Vector3"), [CustomType("Vector3")]), 
-		Function("MultiplyVector3", CustomType("Vector3"), [CustomType("Vector3")]), 
-		Function("MultiplyReal", CustomType("Vector3"), [RealType()]), 
-		Function("DivideVector3", CustomType("Vector3"), [CustomType("Vector3")]), 
-		Function("DivideReal", CustomType("Vector3"), [RealType()]), 
-		Function("UnaryMinus", CustomType("Vector3"), []), 
-		Function("EqualsVector3", BoolType(), [CustomType("Vector3")]), 
-		Function("LessVector3", BoolType(), [CustomType("Vector3")]), 
-		Function("LessEqualsVector3", BoolType(), [CustomType("Vector3")])
+		Function("DirectionEquals", BoolType(), [CustomType("Vector3"), CustomType("Radian")])
+	], 
+	[
+		Operator(ADD(), CustomType("Vector3"), CustomType("Vector3")), 
+		Operator(SUB(), CustomType("Vector3"), CustomType("Vector3")), 
+		Operator(MUL(), CustomType("Vector3"), CustomType("Vector3")), 
+		Operator(MUL(), CustomType("Vector3"), RealType()), 
+		Operator(DIV(), CustomType("Vector3"), CustomType("Vector3")), 
+		Operator(DIV(), CustomType("Vector3"), RealType()), 
+		Operator(UMIN(), CustomType("Vector3"), VoidType()), 
+		Operator(EQ(), BoolType(), CustomType("Vector3")), 
+		Operator(NEQ(), BoolType(), CustomType("Vector3")), 
+		Operator(LT(), BoolType(), CustomType("Vector3")), 
+		Operator(LTE(), BoolType(), CustomType("Vector3")), 
+		Operator(GT(), BoolType(), CustomType("Vector3")), 
+		Operator(GTE(), BoolType(), CustomType("Vector3"))
 	])
 	, BuiltinType("Vector4",
 	[], 
@@ -1063,6 +1264,21 @@ rules
 	], 
 	[
 		Function("Dot", RealType(), [CustomType("Vector4")])
+	], 
+	[
+		Operator(ADD(), CustomType("Vector4"), CustomType("Vector4")), 
+		Operator(SUB(), CustomType("Vector4"), CustomType("Vector4")), 
+		Operator(MUL(), CustomType("Vector4"), CustomType("Vector4")), 
+		Operator(MUL(), CustomType("Vector4"), RealType()), 
+		Operator(DIV(), CustomType("Vector4"), CustomType("Vector4")), 
+		Operator(DIV(), CustomType("Vector4"), RealType()), 
+		Operator(UMIN(), CustomType("Vector4"), VoidType()), 
+		Operator(EQ(), BoolType(), CustomType("Vector4")), 
+		Operator(NEQ(), BoolType(), CustomType("Vector4")), 
+		Operator(LT(), BoolType(), CustomType("Vector4")), 
+		Operator(LTE(), BoolType(), CustomType("Vector4")), 
+		Operator(GT(), BoolType(), CustomType("Vector4")), 
+		Operator(GTE(), BoolType(), CustomType("Vector4"))
 	])
 	, BuiltinType("RakNetGUID",
 	[], 
@@ -1071,6 +1287,9 @@ rules
 	], 
 	[
 		Property("ID", IntType(), True())
+	], 
+	[
+		
 	], 
 	[
 		

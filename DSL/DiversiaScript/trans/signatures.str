@@ -14,8 +14,17 @@ signature constructors // Operators
 	GTE		: BooleanOp
 	AND		: BooleanOp
 	OR		: BooleanOp
+	NOT		: UnaryOp
+	UMIN	: UnaryOp
+	UPLUS	: UnaryOp
+	PREINC	: UnaryOp
+	POSTINC	: UnaryOp
+	PREDEC	: UnaryOp
+	POSTDEC	: UnaryOp
 	AOp		: ArithmeticOp * Exp * Exp -> Exp
 	BOp		: BooleanOp * Exp * Exp -> Exp
+	UOp		: UnaryOp * Exp -> Exp
+	NoOp	: NoOp
 
 signature constructors // Object & state
 
