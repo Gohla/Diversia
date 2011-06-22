@@ -12,11 +12,15 @@
     <ClInclude Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\Platform\StableHeaders.h">
       <Filter>Platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\filetools.hpp" />
+    <ClInclude Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\register.hpp" />
+    <ClInclude Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\camptools.hpp" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\Platform\StableHeaders.cpp">
       <Filter>Platform</Filter>
     </ClCompile>
     <ClCompile Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\main.cpp" />
+    <ClCompile Include="..\..\DSLTypeExtractor\source\DSLTypeExtractor\register.cpp" />
   </ItemGroup>
 </Project>

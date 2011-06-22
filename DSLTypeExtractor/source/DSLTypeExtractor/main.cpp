@@ -1,474 +1,265 @@
+/*
+-----------------------------------------------------------------------------
+Copyright (c) 2008-2010 Diversia
+
+This file is part of Diversia.
+-----------------------------------------------------------------------------
+*/
+
 #include "DSLTypeExtractor/Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
-#include "Client/Communication/ServerNeighborsPlugin.h"
-#include "Client/Lua/LuaPlugin.h"
-#include "Client/Object/ClientComponent.h"
-#include "Client/Object/ClientComponentTemplate.h"
-#include "Client/Object/ClientObject.h"
-#include "Client/Object/ClientObjectManager.h"
-#include "Client/Object/ClientObjectTemplate.h"
-#include "Client/Object/ClientObjectTemplateManager.h"
-#include "Client/Permission/PermissionManager.h"
-#include "Object/Component.h"
-#include "Object/ComponentTemplate.h"
+#include "DSLTypeExtractor/camptools.hpp"
+#include "DSLTypeExtractor/filetools.hpp"
+#include "DSLTypeExtractor/register.hpp"
+#include "Object/ComponentFactory.h"
+#include "Object/ComponentFactoryManager.h"
 #include "Object/Object.h"
-#include "Object/ObjectManager.h"
-#include "Object/ObjectTemplate.h"
-#include "Object/ObjectTemplateManager.h"
-#include "OgreClient/GameMode/GameModePlugin.h"
-#include "OgreClient/Graphics/SceneManagerPlugin.h"
-#include "OgreClient/Graphics/SkyPlugin.h"
-#include "OgreClient/Graphics/Terrain.h"
-#include "OgreClient/Input/InputManager.h"
-#include "OgreClient/Object/Animation.h"
-#include "OgreClient/Object/AreaTrigger.h"
-#include "OgreClient/Object/Audio.h"
-#include "OgreClient/Object/Camera.h"
-#include "OgreClient/Object/CollisionShape.h"
-#include "OgreClient/Object/Entity.h"
-#include "OgreClient/Object/ForceField.h"
-#include "OgreClient/Object/Light.h"
-#include "OgreClient/Object/LuaObjectScript.h"
-#include "OgreClient/Object/Mesh.h"
-#include "OgreClient/Object/Particle.h"
-#include "OgreClient/Object/RigidBody.h"
-#include "OgreClient/Object/SceneNode.h"
-#include "OgreClient/Object/Text.h"
-#include "OgreClient/Resource/ResourceManager.h"
+#include "Shared/ClientServerPlugin/ClientServerPluginFactoryManager.h"
 #include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
-#include "Shared/ClientServerPlugin/Factories/ObjectManagerFactory.h"
-#include "Shared/ClientServerPlugin/Factories/TemplatePluginFactory.h"
-#include "Shared/Object/TemplateComponentFactory.h"
-#include "Util/Camp/CampUtils.h"
-#include "Util/Log/Logger.h"
-#include "Util/Math/Node.h"
-#include <camp/typeinfo.hpp>
-#include <camp/operator.hpp>
+#include <boost/algorithm/string/join.hpp>
+#include <boost/algorithm/string/replace.hpp>
+#include <boost/assign.hpp>
 
 using namespace Diversia::Util;
 using namespace Diversia::ObjectSystem;
 using namespace Diversia;
 using namespace Diversia::Client;
 using namespace Diversia::OgreClient;
-
-struct TypeVisitor : public camp::TypeVisitor<String>
-{
-    String operator()( camp::Type type )
-    {
-        switch( type )
-        {
-            case camp::noType: return "VoidType()";
-            case camp::boolType: return "BoolType()";
-            case camp::intType: return "IntType()";
-            case camp::realType: return "RealType()";
-            case camp::stringType: return "StringType()";
-            case camp::valueType: return "VoidType()";
-        }
-
-        return "VoidType()";
-    }
-    String operator()( const camp::Class* pClass )
-    {
-        return "CustomType(\"" + pClass->name() + "\")";
-    }
-    String operator()( const camp::Enum* pEnum )
-    {
-        return "EnumType(\"" + pEnum->name() + "\")";
-    }
-    String operator()( camp::ArrayType type )
-    {
-        // TODO: Implement array types in DSL.
-        return "VoidType()";
-    }
-    String operator()( camp::DictionaryType type )
-    {
-        // TODO: Implement dictionary types in DSL.
-        return "VoidType()";
-    }
-};
-
-String operatorString( camp::OperatorType type )
-{
-    switch( type )
-    {
-        case camp::noop: return "NOOP()";
-        case camp::add: return "ADD()";
-        case camp::sub: return "SUB()";
-        case camp::mul: return "MUL()";
-        case camp::div: return "DIV()";
-        case camp::uplus: return "UPLUS()";
-        case camp::umin: return "UMIN()";
-        case camp::mod: return "MOD()";
-        case camp::preinc: return "PREINC()";
-        case camp::postinc: return "POSTINC()";
-        case camp::predec: return "PREDEC()";
-        case camp::postdec: return "POSTDEC()";
-        case camp::eq: return "EQ()";
-        case camp::neq: return "NEQ()";
-        case camp::lt: return "LT()";
-        case camp::lte: return "LTE()";
-        case camp::gt: return "GT()";
-        case camp::gte: return "GTE()";
-        case camp::not: return "NOT()";
-        case camp::and: return "AND()";
-        case camp::or: return "OR()";
-        default: return "NOOP()";
-    }
-}
+using namespace Diversia::DSLTypeExtractor;
+using namespace std;
+using namespace boost;
+using namespace boost::assign;
 
 TypeVisitor typeVisitor;
+
+static String S(const String& s) { return "\"" + s + "\""; };
 
 int main( int argc, char* argv[] )
 {
     // Initialize logging
     Logger* logger = new Logger( LOG_DEBUG, true, false );
 
-    // Use all classes
-    camp::classByType<Vector2>();
-    camp::classByType<Vector3>();
-    camp::classByType<Vector4>();
-    camp::classByType<Colour>();
-    camp::classByType<Quaternion>();
-    camp::classByType<Matrix3>();
-    camp::classByType<Matrix4>();
-    camp::classByType<Radian>();
-    camp::classByType<Degree>();
-    camp::classByType<Angle>();
-    camp::classByType<Node>();
-    //camp::classByType<ClientServerPluginManager>();
-    //camp::classByType<ClientServerPlugin>();
-    //camp::classByType<ServerInfo>();
-    //camp::classByType<ServerNeighbors>();
-    //camp::classByType<ResourceInfo>();
-    //camp::classByType<LayerInstance>();
-    //camp::classByType<UserInfo>();
-    //camp::classByType<LuaManager>();
-    //camp::classByType<CrashReporter>();
-    //camp::classByType<WindowsCrashReporter>();
-    //camp::classByType<Permission>();
-    //camp::classByType<PropertySynchronization>();
-    //camp::classByType<OgreResourceParams>();
-    //camp::classByType<GraphicsManager>();
-    camp::classByType<ResourceManager>();
-    //camp::classByType<URLArchiveParams>();
-    //camp::classByType<URLArchiveParamsHolder>();
-    camp::classByType<SkyPlugin>();
-    camp::classByType<SceneNode>();
-    camp::classByType<Entity>();
-    camp::classByType<Camera>();
-    camp::classByType<GameModePlugin>();
-    camp::classByType<Terrain>();
-    camp::classByType<Animation>();
-    //camp::classByType<TextCanvas>();
-    camp::classByType<Text>();
-    //camp::classByType<PhysicsManager>();
-    camp::classByType<RigidBody>();
-    camp::classByType<Audio>();
-    //camp::classByType<AudioManager>();
-    //camp::classByType<LuaObjectScript>();
-    camp::classByType<Particle>();
-    camp::classByType<Axis>();
-    camp::classByType<MouseState>();
-    camp::classByType<KeyboardState>();
-    //camp::classByType<MouseListener>();
-    //camp::classByType<KeyboardListener>();
-    camp::classByType<InputManager>();
-    camp::classByType<Mesh>();
-    camp::classByType<CollisionShape>();
-    camp::classByType<SceneManagerPlugin>();
-    camp::classByType<AreaTrigger>();
-    camp::classByType<ForceField>();
-    camp::classByType<Light>();
-    //camp::classByType<Gizmo>();
-    //camp::classByType<RotationGizmo>();
-    //camp::classByType<ScaleGizmo>();
-    //camp::classByType<TranslationGizmo>();
-    //camp::classByType<RakNet::RakNetGUID>();
-    camp::classByType<ObjectManager>();
-    camp::classByType<Object>();
-    camp::classByType<Component>();
-    //camp::classByType<ComponentHandle>();
-    camp::classByType<ObjectTemplate>();
-    camp::classByType<ObjectTemplateManager>();
-    camp::classByType<ComponentTemplate>();
-    //camp::classByType<ServerPluginManager>();
-    camp::classByType<ClientObjectManager>();
-    camp::classByType<ClientObject>();
-    camp::classByType<ClientComponent>();
-    camp::classByType<ServerPlugin>();
-    camp::classByType<PermissionManager>();
-    //camp::classByType<GridManager>();
-    //camp::classByType<ServerConnection::Settings>();
-    camp::classByType<ServerNeighborsPlugin>();
-    camp::classByType<LuaPlugin>();
-    camp::classByType<ClientComponentTemplate>();
-    camp::classByType<ClientObjectTemplateManager>();
-    camp::classByType<ClientObjectTemplate>();
+    registerCamp();
 
-    // Use all enums
-    //camp::enumByType<BindingType>();
-    //camp::enumByType<LogLevel>();
-    camp::enumByType<Node::TransformSpace>();
-    //camp::enumByType<Direction>();
-    camp::enumByType<ClientServerPluginTypeEnum>();
-    camp::enumByType<ComponentTypeEnum>();
-    camp::enumByType<TerrainTypeEnum>();
-    camp::enumByType<HeightmapTypeEnum>();
-    camp::enumByType<PhysicsType>();
-    camp::enumByType<PhysicsShape>();
-    //camp::enumByType<LuaSecurityLevel>();
-    camp::enumByType<GraphicsShape>();
-    //camp::enumByType<ResourceLocationType>();
-    camp::enumByType<SkyType>();
-    camp::enumByType<LightType>();
-    //camp::enumByType<Ogre::TextureFilterOptions>();
-    camp::enumByType<Caelum::PrecipitationType>();
-    camp::enumByType<LuaGameModeScriptEvent>();
-    camp::enumByType<LuaObjectScriptEvent>();
-    camp::enumByType<MouseButton>();
-    camp::enumByType<KeyboardButton>();
-    //camp::enumByType<Mode>();
-    //camp::enumByType<NetworkingType>();
+    // Create output files
+    scoped_ptr<SDFFile> sdfType( new SDFFile( "builtin-type.sdf", "builtin-type" ) );
+    sdfType->contextfree();
+    sdfType->writeLn();
+    scoped_ptr<STRFile> strType( new STRFile( "builtin-type.str", "data/builtin-type", list_of("include/DiversiaScript") ) ); 
+    strType->rules();
 
-    // Add component factories, get camp class to ensure that the class is registered.
-    TemplateComponentFactory<SceneNode, ClientObject, false, false, true>::registerFactory();
-    Object::addAutoCreateComponent<SceneNode>( "Node" );
-    camp::classByType<SceneNode>();
-    TemplateComponentFactory<Mesh, ClientObject, false>::registerFactory();
-    camp::classByType<Mesh>();
-    TemplateComponentFactory<Entity, ClientObject, false>::registerFactory();
-    camp::classByType<Entity>();
-    TemplateComponentFactory<Light, ClientObject, false>::registerFactory();
-    camp::classByType<Light>();
-    TemplateComponentFactory<Camera, ClientObject, false, true, true>::registerFactory();
-    camp::classByType<Camera>();
-    TemplateComponentFactory<Animation, ClientObject, true>::registerFactory();
-    camp::classByType<Animation>();
-    TemplateComponentFactory<Text, ClientObject, true>::registerFactory();
-    camp::classByType<Text>();
-    TemplateComponentFactory<CollisionShape, ClientObject, false>::registerFactory();
-    camp::classByType<CollisionShape>();
-    TemplateComponentFactory<RigidBody, ClientObject, false>::registerFactory();
-    camp::classByType<RigidBody>();
-    TemplateComponentFactory<AreaTrigger, ClientObject, false>::registerFactory();
-    camp::classByType<AreaTrigger>();
-    TemplateComponentFactory<ForceField, ClientObject, false>::registerFactory();
-    camp::classByType<ForceField>();
-    TemplateComponentFactory<Audio, ClientObject, true>::registerFactory();
-    camp::classByType<Audio>();
-    //TemplateComponentFactory<LuaObjectScript, ClientObject, true>::registerFactory();
-    //camp::classByType<LuaObjectScript>();
-    TemplateComponentFactory<Particle, ClientObject, true>::registerFactory();
-    camp::classByType<Particle>();
+    scoped_ptr<STRFile> strTypeBases( new STRFile( "builtin-type-base.str", "data/builtin-type-base", list_of("include/DiversiaScript") ) );
+    strTypeBases->rules();
 
-    // Add plugin factories, get camp class to ensure that the class is registered.
-    TemplatePluginFactory<PermissionManager, ServerPluginManager>::registerFactory();
-    camp::classByType<PermissionManager>();
-    ClientServerPluginManager::addAutoCreatePlugin<PermissionManager>();
-    TemplatePluginFactory<ResourceManager, ServerPluginManager>::registerFactory();
-    camp::classByType<ResourceManager>();
-    ClientServerPluginManager::addAutoCreatePlugin<ResourceManager>();
-    TemplatePluginFactory<ClientObjectTemplateManager, ServerPluginManager>::registerFactory();
-    camp::classByType<ClientObjectTemplateManager>();
-    ClientServerPluginManager::addAutoCreatePlugin<ClientObjectTemplateManager>();
-    sigc::signal<void> dummySignal;
-    ObjectManagerFactory<ClientObjectManager, ServerPluginManager>::registerFactory( dummySignal, dummySignal );
-    camp::classByType<ClientObjectManager>();
-    ClientServerPluginManager::addAutoCreatePlugin<ClientObjectManager>();
-    TemplatePluginFactory<ServerNeighborsPlugin, ServerPluginManager>::registerFactory();
-    camp::classByType<ServerNeighborsPlugin>();
-    TemplatePluginFactory<SkyPlugin, ServerPluginManager>::registerFactory();
-    camp::classByType<SkyPlugin>();
-    TemplatePluginFactory<Terrain, ServerPluginManager>::registerFactory();
-    camp::classByType<Terrain>();
-    TemplatePluginFactory<SceneManagerPlugin, ServerPluginManager>::registerFactory();
-    camp::classByType<SceneManagerPlugin>();
-    TemplatePluginFactory<LuaPlugin, ServerPluginManager>::registerFactory();
-    camp::classByType<LuaPlugin>();
-    ClientServerPluginManager::addAutoCreatePlugin<LuaPlugin>();
+    scoped_ptr<STRFile> strTypeCons( new STRFile( "builtin-type-cons.str", "data/builtin-type-cons", list_of("include/DiversiaScript") ) );
+    strTypeCons->rules();
 
-    // Create output file
-    std::ofstream file;
-    file.open( "builtin-types.str", std::ios::out | std::ios::trunc );
+    scoped_ptr<SDFFile> sdfTypeProp( new SDFFile( "builtin-type-prop.sdf", "builtin-type-prop") );
+    sdfTypeProp->contextfree();
+    scoped_ptr<STRFile> strTypeProp( new STRFile( "builtin-type-prop.str", "data/builtin-type-prop", list_of("include/DiversiaScript") ) ); 
+    strTypeProp->signatures();
+    strTypeProp->signature( "Property", list_of("BuiltinProperty")("Type")("Writable"), "Property" );
+    strTypeProp->removeIdent();
+    strTypeProp->rules();
 
-    file << "builtin-types = ![\n";
+    scoped_ptr<SDFFile> sdfTypeFunc( new SDFFile( "builtin-type-func.sdf", "builtin-type-func") );
+    sdfTypeFunc->contextfree();
+    scoped_ptr<STRFile> strTypeFunc( new STRFile( "builtin-type-func.str", "data/builtin-type-func", list_of("include/DiversiaScript") ) ); 
+    strTypeFunc->signatures();
+    strTypeFunc->signature( "Function", list_of("FunctionName")("ReturnType")("List(ParamType)"), "Function" );
+    strTypeFunc->removeIdent();
+    strTypeFunc->rules();
 
-    std::size_t classCount = camp::classCount();
-    bool classFirst = true;
-    for( std::size_t i = 0; i < classCount; ++i )
+    scoped_ptr<STRFile> strTypeOp( new STRFile( "builtin-type-op.str", "data/builtin-type-op", list_of("include/DiversiaScript")("signatures") ) ); 
+    strTypeOp->signatures();
+    strTypeOp->signature( "Operator", list_of("Op")("ReturnType")("ParamType"), "Operator" );
+    strTypeOp->removeIdent();
+    strTypeOp->rules();
+
+    size_t classCount = camp::classCount();
+    for( size_t i = 0; i < classCount; ++i )
     {
         const camp::Class& metaclass = camp::classByIndex( i );
-        LOGI << metaclass.name();
-
-        if( !classFirst ) file << ", ";
-        file << "BuiltinType(\"" << metaclass.name() << "\",\n[";
+        String className = metaclass.name();
+        String classCons = className + "()";
+        LOGI << className;
+        sdfType->contextfree( S(className), "BuiltinType", className );
+        strType->rule( "is-builtin-type", "?" + classCons );
 
         // Bases
-        std::size_t baseCount = metaclass.baseCount();
-        bool first = true;
-        for( std::size_t j = 0; j < baseCount; ++j )
         {
-            if( !first ) file << ", ";
-            file << "\"" << metaclass.base( j ).name() << "\"";
-            first = false;
+            String bases = "![";
+            size_t baseCount = metaclass.baseCount();
+            bool first = true;
+            for( size_t j = 0; j < baseCount; ++j )
+            {
+                String baseCons = metaclass.base( j ).name() + "()";
+
+                strTypeBases->rule( "is-builtin-type-base", list_of(classCons), "?" + baseCons );
+                if( !first ) bases += ", ";
+                bases += baseCons;
+                first = false;
+            }
+            strTypeBases->matchRule( "builtin-type-bases", classCons, bases + "]" );
+            strTypeBases->writeLn();
         }
-        file << "], \n[\n\t";
 
         // Constructors
-        std::size_t consCount = metaclass.constructorCount();
-        first = true;
-        for( std::size_t j = 0; j < consCount; ++j )
         {
-            const camp::Constructor& cons = metaclass.constructor( j );
-
-            if( !first ) file << ", \n\t";
-            file << "Constructor([";
-
-            std::size_t argCount = cons.argCount();
-            bool consFirst = true;
-            for( std::size_t k = 0; k < argCount; ++k )
+            size_t consCount = metaclass.constructorCount();
+            for( size_t j = 0; j < consCount; ++j )
             {
-                if( !consFirst ) file << ", ";
-                file << cons.argTypeInfo(k).apply_visitor(typeVisitor);
-                consFirst = false;
-            }
+                const camp::Constructor& cons = metaclass.constructor( j );
 
-            file << "])";
-            first = false;
+                String types = "[";
+                size_t argCount = cons.argCount();
+                bool first = true;
+                for( size_t k = 0; k < argCount; ++k )
+                {
+                    if( !first ) types += ", ";
+                    types += cons.argTypeInfo(k).apply_visitor( typeVisitor );
+                    first = false;
+                }
+                strTypeCons->rule( "has-builtin-type-cons", list_of(classCons), "?" + types + "]" );
+            }
+            if( consCount ) strTypeCons->writeLn();
         }
-        file << "\n], \n[\n\t";
 
         // Properties
-        std::size_t propCount = metaclass.propertyCount( true );
-        first = true;
-        for( std::size_t j = 0; j < propCount; ++j )
         {
-            const camp::Property& prop = metaclass.property( j, true );
+            String props = "![";
+            size_t propCount = metaclass.propertyCount( true );
+            bool first = true;
+            for( size_t j = 0; j < propCount; ++j )
+            {
+                const camp::Property& prop = metaclass.property( j, true );
+                String propName = algorithm::replace_all_copy( prop.name(), " ", "_" ); // TODO: Get rid of spaces in property names.
+                String propNameS = S(propName);
+                String propCons = propName + "()";
+                String propType = prop.typeInfo().apply_visitor( typeVisitor );
+                bool propWritable = prop.writable();
 
-            if( !first ) file << ", \n\t";
-            file << "Property(\"" << prop.name() << "\", " << prop.typeInfo().apply_visitor(typeVisitor) << ", " << 
-                (prop.writable() ? "True()" : "False()") << ")";
-            first = false;
+                if( !first ) props += ", ";
+                props += "Property(" + propCons + ", " + propType + ", " + (propWritable ? "True()" : "False()") + ")";
+                first = false; 
+
+                sdfTypeProp->contextfree( propNameS, "BuiltinProperty", propName );
+                strTypeProp->rule( "has-builtin-type-prop", list_of(classCons), "?" + propCons );
+                if( propWritable ) strTypeProp->rule( "is-builtin-type-prop-writable", list_of(classCons), "?" + propCons );
+                strTypeProp->matchRule( "builtin-type-prop-type", list_of(classCons), propCons, propType );
+            }
+            if( propCount ) sdfTypeProp->writeLn();
+            strTypeProp->matchRule( "builtin-type-props", classCons, props + "]");
+            strTypeProp->writeLn();
         }
-        file << "\n], \n[\n\t";
 
         // Functions
-        std::size_t funcCount = metaclass.functionCount( true );
-        first = true;
-        for( std::size_t j = 0; j < funcCount; ++j )
         {
-            const camp::Function& func = metaclass.function( j, true );
-
-            if( !first ) file << ", \n\t";
-            file << "Function(\"" << func.name() << "\", " 
-                << func.returnTypeInfo().apply_visitor(typeVisitor) << ", [";
-            
-            std::size_t argCount = func.argCount();
-            bool funcFirst = true;
-            for( std::size_t k = 0; k < argCount; ++k )
+            String funcs = "![";
+            size_t funcCount = metaclass.functionCount( true );
+            bool first = true;
+            for( size_t j = 0; j < funcCount; ++j )
             {
-                if( !funcFirst ) file << ", ";
-                file << func.argTypeInfo(k).apply_visitor(typeVisitor);
-                funcFirst = false;
-            }
+                const camp::Function& func = metaclass.function( j, true );
+                String funcName = algorithm::replace_all_copy( func.name(), " ", "_" ); // TODO: Get rid of spaces in function names.
+                String funcNameS = S(funcName);
+                String funcCons = funcName + "()";
+                String funcReturn = func.returnTypeInfo().apply_visitor( typeVisitor );
+                String funcParams = "[";
 
-            file << "])";
-            first = false;
+                bool paramFirst = true;
+                size_t argCount = func.argCount();
+                for( size_t k = 0; k < argCount; ++k )
+                {
+                    if( !paramFirst ) funcParams += ", ";
+                    funcParams += func.argTypeInfo( k ).apply_visitor( typeVisitor );
+                    paramFirst = false;
+                }
+                funcParams += "]";
+
+                if( !first ) funcs += ", ";
+                funcs += "Function(" + funcCons + ", " + funcReturn + ", " + funcParams + ")";
+                first = false; 
+
+                sdfTypeFunc->contextfree( funcNameS, "FunctionName", funcName );
+                strTypeFunc->rule( "has-builtin-type-func", list_of(classCons), "?" + funcCons );
+                strTypeFunc->matchRule( "builtin-type-func-return", list_of(classCons), funcCons, funcReturn );
+                strTypeFunc->matchRule( "builtin-type-func-params", list_of(classCons), funcCons, funcParams );
+            }
+            if( funcCount ) sdfTypeFunc->writeLn();
+            strTypeFunc->matchRule( "builtin-type-funcs", classCons, funcs + "]" );
+            strTypeFunc->writeLn();
         }
-        file << "\n], \n[\n\t";
 
         // Operators
-        std::size_t opCount = metaclass.operatorCount();
-        first = true;
-        for( std::size_t j = 0; j < opCount; ++j )
         {
-            const camp::Function& func = metaclass.getOperator( j );
+            String ops = "![";
+            size_t opCount = metaclass.operatorCount();
+            bool first = true;
+            for( size_t j = 0; j < opCount; ++j )
+            {
+                const camp::Function& func = metaclass.getOperator( j );
+                String opCons = operatorString( func.operatorType() );
+                String opReturn = func.returnTypeInfo().apply_visitor( typeVisitor );
+                String opParam = func.argTypeInfoSafe<0>().apply_visitor( typeVisitor );
 
-            if( !first ) file << ", \n\t";
-            file << "Operator(" << operatorString( func.operatorType() ) << ", " 
-                << func.returnTypeInfo().apply_visitor(typeVisitor) << ", "
-                << func.argTypeInfoSafe<0>().apply_visitor(typeVisitor) << ")";
-            first = false;
+                if( !first ) ops += ", ";
+                ops += "Operator(" + opCons + ", " + opReturn + ", " + opParam + ")";
+                first = false;
+
+                strTypeOp->rule( "has-builtin-type-op", list_of(classCons), "?" + opCons );
+                strTypeOp->rule( "has-builtin-type-op", list_of(classCons), "?(" + opCons + ", " + opParam + ")" );
+                strTypeOp->matchRule( "builtin-type-op-return", list_of(classCons), "(" + opCons + ", " + opParam + ")", opReturn );
+            }
+            strTypeOp->matchRule( "builtin-type-ops", classCons, ops + "]" );
+            strTypeOp->writeLn();
         }
-
-        file << "\n])\n";
-        classFirst = false;
     }
-    file << "]\n\n";
 
     // Enums
-    file << "enums = ![\n\t";
-    std::size_t enumCount = camp::enumCount();
-    bool enumFirst = true;
-    for( std::size_t i = 0; i < enumCount; ++i )
+    size_t enumCount = camp::enumCount();
+    for( size_t i = 0; i < enumCount; ++i )
     {
         const camp::Enum& metaenum = camp::enumByIndex( i );
         LOGI << metaenum.name();
 
-        if( !enumFirst ) file << ", ";
-        file << "Enum(\"" << metaenum.name() << "\", [\n\t\t";
-
         // Enum values
-        std::size_t enumValueCount = metaenum.size();
-        bool first = true;
-        for( std::size_t j = 0; j < enumValueCount; ++j )
+        size_t enumValueCount = metaenum.size();
+        for( size_t j = 0; j < enumValueCount; ++j )
         {
             const camp::Enum::Pair& pair = metaenum.pair(j);
 
-            if( !first ) file << ", \n\t\t";
-            file << "EnumValue(\"" << pair.name << "\", " << pair.value << ")";
-            first = false;
+            //"EnumValue(\"" << pair.name << "\", " << pair.value << ")";
         }
-
-        file << "\n\t])";
-        enumFirst = false;
     }
-    file << "\n]\n\n";
 
     // Components
-    file << "components = ![\n\t";
-    bool componentFirst = true;
     const ComponentFactories& components = ComponentFactoryManager::getComponentFactories();
     for( ComponentFactories::const_iterator i = components.begin(); i != components.end(); ++i )
     {
         if( Object::hasAutoCreateComponent( i->first ) ) continue;
-        if( !componentFirst ) file << ", ";
-        file << "\"" << i->second->getTypeName() << "\"";
-        componentFirst = false;
+
+        //"\"" << i->second->getTypeName() << "\"";
     }
-    file << "\n]\n\n";
 
     // Components that can have multiple instances
-    file << "multiple-components = ![\n\t";
-    bool multipleComponentFirst = true;
     for( ComponentFactories::const_iterator i = components.begin(); i != components.end(); ++i )
     {
         if( Object::hasAutoCreateComponent( i->first ) ) continue;
         if( !i->second->multiple() ) continue;
-        if( !multipleComponentFirst ) file << ", ";
-        file << "\"" << i->second->getTypeName() << "\"";
-        multipleComponentFirst = false;
+
+        //"\"" << i->second->getTypeName() << "\"";
     }
-    file << "\n]\n\n";
 
     // ClientServerPlugins
-    file << "plugins = ![\n\t";
-    bool pluginFirst = true;
     const ClientServerPluginFactories& plugins = ClientServerPluginFactoryManager::getPluginFactories();
     for( ClientServerPluginFactories::const_iterator i = plugins.begin(); i != plugins.end(); ++i )
     {
         if( ClientServerPluginManager::hasAutoCreatePlugin( i->first ) ) continue;
-        if( !pluginFirst ) file << ", ";
-        file << "\"" << i->second->getTypeName() << "\"";
-        pluginFirst = false;
+        
+        //"\"" << i->second->getTypeName() << "\"";
     }
-    file << "\n]";
-
-    file.close();
-
-    //system("pause");
-
+    
     delete logger;
     return 0;
 }
