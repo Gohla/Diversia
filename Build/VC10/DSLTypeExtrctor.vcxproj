@@ -77,7 +77,6 @@
     </ClCompile>
     <ProjectReference />
     <Link>
-      <SubSystem>Console</SubSystem>
       <AdditionalDependencies>LibUtil_d.lib;LibObject_d.lib;LibShared_d.lib;LibClient_d.lib;LibOgreClient_d.lib;BulletCollision.lib;BulletDynamics.lib;BulletFileLoader.lib;BulletWorldImporter.lib;caelum_d.lib;cAudio_d.lib;camp-luad.lib;dbghelp.lib;freetype2311_d.lib;libcurl.lib;LinearMath.lib;lua.lib;MyGUI.OgrePlatform_d.lib;MyGUIEngine_d.lib;OgreMain_d.lib;OgreProcedural_d.lib;OgreRTShaderSystem_d.lib;OgreTerrain_d.lib;OpenAL32.lib;OIS_d.lib;RakNetDLLDebug.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
@@ -88,7 +87,6 @@
       <PrecompiledHeaderFile>DSLTypeExtractor\Platform\StableHeaders.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>LibUtil.lib;LibObject.lib;LibShared.lib;LibClient.lib;LibOgreClient.lib;BulletCollision.lib;BulletDynamics.lib;BulletFileLoader.lib;BulletWorldImporter.lib;caelum.lib;cAudio.lib;camp-lua.lib;dbghelp.lib;freetype2311.lib;libcurl.lib;LinearMath.lib;lua.lib;MyGUI.OgrePlatform.lib;MyGUIEngine.lib;OgreMain.lib;OgreProcedural.lib;OgreRTShaderSystem.lib;OgreTerrain.lib;OpenAL32.lib;OIS.lib;RakNetDLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference />
@@ -100,7 +98,6 @@
       <PrecompiledHeaderFile>DSLTypeExtractor\Platform\StableHeaders.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
-      <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>LibUtil_rd.lib;LibObject_rd.lib;LibShared_rd.lib;LibClient_rd.lib;LibOgreClient_rd.lib;BulletCollision.lib;BulletDynamics.lib;BulletFileLoader.lib;BulletWorldImporter.lib;caelum.lib;cAudio.lib;camp-lua.lib;dbghelp.lib;freetype2311.lib;libcurl.lib;LinearMath.lib;lua.lib;MyGUI.OgrePlatform.lib;MyGUIEngine.lib;OgreMain.lib;OgreProcedural.lib;OgreRTShaderSystem.lib;OgreTerrain.lib;OpenAL32.lib;OIS.lib;RakNetDLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <ProjectReference />

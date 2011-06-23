@@ -43,8 +43,6 @@ signature constructors // Object & state
 	ObjectRef: Id -> ObjectRef
 	ComponentRef: Id -> ComponentRef
 	PluginRef: Id -> PluginRef
-	EnumRef: Id -> EnumRef
-	EnumValueRef: Id * Id -> EnumValueRef
 	This: Id -> This
 	
 	ObjectProp: Type * Id * Exp -> ObjectProp

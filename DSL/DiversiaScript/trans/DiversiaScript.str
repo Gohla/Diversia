@@ -16,8 +16,7 @@ imports
   lib/namespaces
   namespace
   type-project
-  data/builtin-types
-  
+
   note-check
   error-check
   warning-check
@@ -38,7 +37,7 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 			<collect-all(editor-warning, conc)> ast' => warnings ;
 			<collect-all(editor-note, conc)> ast' => notes
 			
-	// Runs the DefaultClient with lua scripts generated from current AST
+	// Runs the DefaultClient with lua scripts generated from current AST.
 	run: (selected, position, ast, path, project-path) -> (ast)
 		where dir := <abspath> <dirname> path
 		where clientDir := "F:/MultiverseVS/Git/DefaultClient/bin/ReleaseWin32/"
@@ -49,7 +48,7 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 	    	(<call> ($[[clientDir]Diversia-DefaultClient-DbgInfo.exe], ["-o", "-m", $["[dir]"], "-s", "gen/GameMode.lua"]) <+ 
 	    		fatal-err(|$[Could not start the client or the cliented terminated abnormally.]))
 	    		  
-	// Transforms a selection to Lua
+	// Transforms analysed AST to Lua.
 	generate-lua-files: (selected, position, ast, path, project-path) -> (ast)
 		where
 			editor-init;
@@ -65,21 +64,28 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 	    	filename := <guarantee-extension(|"aterm")> path;
 	      	result   := <to-lua> <analyse-all> ast
 		
-	// Transforms a selection to C++
+	// Transforms analysed AST to C++.
 	generate-cpp: (selected, position, ast, path, project-path) -> (filename, result)
 		where
 	    	editor-init;
 	    	filename := <guarantee-extension(|"cpp")> path;
-	    	result   := ""
+	    	result   := "NYI"
+
+	// Prints the analysed AST.
+	generate-analysed-aterm: (selected, position, ast, path, project-path) -> (filename, result)
+		where
+			editor-init;
+			filename := <guarantee-extension(|"aterm")> path;
+			result   := <desugar-all; decorate-all; rename-all> ast
 	  	
-	// Prints the abstract syntax ATerm of a selection.
+	// Prints the AST of a selection.
 	generate-aterm: (selected, position, ast, path, project-path) -> (filename, result)
 		where
 			editor-init;
 			filename := <guarantee-extension(|"aterm")> path;
-			result   := <analyse-all> selected
+			result   := selected
 	
-	// Hover tooltip.
+	// Hover tooltip
 	editor-hover: (node, position, ast, path, project-path) ->  $[Type: [<printable> type]]
 		where 
 			<desugar-all> ast => ast';

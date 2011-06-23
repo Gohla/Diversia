@@ -13,7 +13,6 @@ imports
 	signatures
 	name-project
 	data/events
-	data/builtin-types
 	util
 	type-project
 	
@@ -170,13 +169,9 @@ rules // Syntax transformation
 	
 	// Object properties
 	propassign-to-lua: ObjectProp(_, name, exp) -> If(Eq(VarRef(name), LuaNil()), Chunk([Assignment([VarRef(name)], <to-lua> exp)]))	
-		where not (is-builtin-property(|"Object", name))
-	propassign-to-lua: ObjectProp(_, name, exp) -> Assignment([Access(VarRef("Object"), name)], <to-lua> exp)	
-		where is-builtin-property(|"Object", name)
+	propassign-to-lua: BuiltinObjectProp(name, exp) -> Assignment([Access(VarRef("Object"), name)], <to-lua> exp)	
 	propassign-to-lua(|varName): ObjectProp(_, name, exp) -> Assignment([Access(VarRef(varName), name)], <to-lua> exp)
-		where not (is-builtin-property(|"Object", name))
-	propassign-to-lua(|varName): ObjectProp(_, name, exp) -> Assignment([Access(VarRef(varName), Access(VarRef("Object"), name))], <to-lua> exp)
-		where is-builtin-property(|"Object", name)
+	propassign-to-lua(|varName): BuiltinObjectProp(name, exp) -> Assignment([Access(VarRef(varName), Access(VarRef("Object"), name))], <to-lua> exp)
 
 	// States
 	states-to-lua: (states, functions) -> <concat> [functions, <map(state-to-lua)> states]
@@ -225,8 +220,8 @@ rules // Expressions
 	
 	to-lua: True() -> True()
 	to-lua: False() -> False()
-	to-lua: IntConst(int) -> Number(int)
-	to-lua: FloatConst(float) -> Number(float)
+	to-lua: IntConst(num) -> Number(num)
+	to-lua: FloatConst(num) -> Number(num)
 	to-lua: StrConst(string) -> String(string')
 		where string' := <un-double-quote> string
 	to-lua: StrConst(string) -> String(string)
@@ -238,33 +233,20 @@ rules // Expressions
 	to-lua: ComponentRef(_{name}) -> VarRef(name)
 	to-lua: PluginRef(_{name}) -> VarRef(name)
 	to-lua: ObjectRef(_) -> VarRef("Object")
-	to-lua: PropRef(name, objectName) -> Access(VarRef("Object"), name)
-		where is-builtin-property(|objectName, name)
-	to-lua: PropRef(name, objectName) -> VarRef(name)
-		where not (is-builtin-property(|objectName, name))
+	to-lua: PropRef(prop, objectName) -> Access(VarRef("Object"), prop)
+		where <type-has-function(|prop)> objectName
+	to-lua: PropRef(prop, objectName) -> VarRef(prop)
+		where not (<type-has-function(|prop)> objectName)
 	to-lua: Null() -> LuaNil()
 	to-lua: New(type, args) -> Call(Access(VarRef(type), "new"), Args(<map(to-lua)> args))
-	is-object-call: c@Call(obj, name, args) -> c
-		where <get-type-parent> (<type-of> obj, "Object")
-		where is-builtin-function(|"Object", name) 
 	to-lua: c@Call(obj, name, args) -> Call(<to-lua> obj, name, Args(<map(to-lua)> args))
 		where not (<?This(_)> obj)
-		where not (<is-object-call> c)
-	to-lua: c@Call(obj, name, args) -> Call(Access(<to-lua> obj, "Object"), name, Args(<map(to-lua)> args))
+	to-lua: c@BuiltinCall(obj, name, args) -> Call(Access(<to-lua> obj, "Object"), name, Args(<map(to-lua)> args))
 		where not (<?This(_)> obj)
-		where <is-object-call> c  
-	to-lua: Call(This(_), name, args) -> Call(VarRef("Object"), name, Args(<map(to-lua)> args))
-		where is-builtin-function(|"ClientObject", name)
 	to-lua: Call(This(_), name, args) -> Call(name, Args(<map(to-lua)> args))
-		where not (is-builtin-function(|"ClientObject", name))
-	is-object-access: a@Access(exp, name) -> a
-		where not (<?This(_)> exp)
-		where <get-type-parent> (<type-of> exp, "Object")
-		where is-builtin-property(|"Object", name) 
+	to-lua: BuiltinCall(This(_), name, args) -> Call(VarRef("Object"), name, Args(<map(to-lua)> args))
 	to-lua: a@Access(exp, name) -> Access(<to-lua> exp, name)
-		where not (<is-object-access> a) 
-	to-lua: a@Access(exp, name) -> Access(Access(<to-lua> exp, "Object"), name)
-		where <is-object-access> a
+	to-lua: a@BuiltinAccess(exp, name) -> Access(Access(<to-lua> exp, "Object"), name)
 	to-lua: EnumValueRef(name, valueName) -> Access(VarRef(name), valueName)
 	to-lua: This(_) -> VarRef("Object")
 	

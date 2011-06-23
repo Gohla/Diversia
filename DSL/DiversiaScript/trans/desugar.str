@@ -5,7 +5,6 @@ imports
 	signatures
 	type-project
 	name-project
-	data/enums
 
 strategies
 	desugar-all = innermost(desugar); desugar-object //topdown(repeat(desugar))
@@ -16,14 +15,10 @@ rules  // simple desugars
 	desugar: EventDef(name,statements) -> EventDef(name,[],statements)
 	desugar: VarDefNoInit(name,type) -> VarDef(name,type,Null())
 	desugar: PropDefNoInit(name,type) -> PropDef(name,type,Null())
-	desugar: ComponentDef(CustomType(type),props) -> ComponentDef(type,CustomType(type),props)
-	desugar: PluginDef(CustomType(type),props) -> PluginDef(type,CustomType(type),props)
-	
-	desugar: CustomType(name) -> EnumType(name)
-		where is-enum(|name)
-	desugar: VarRef(name) -> EnumRef(name)
-		where is-enum(|name)
-	desugar: Access(EnumRef(name), value) -> EnumValueRef(name, value)
+	desugar: ComponentDef(type,props) -> ComponentDef(name,type,props)
+		where <?name#(_)> type
+	desugar: PluginDef(type,props) -> PluginDef(name,type,props)
+		where <?name#(_)> type
 	
 	//desugar: VarDefNoType(name, exp) -> VarDef(name, <type-of> exp, exp) // only gets the easy exp
 	desugar: Add(e1, e2) 	-> AOp(ADD(), e1, e2)
@@ -40,7 +35,6 @@ rules  // simple desugars
 	desugar: Or(e1, e2) 	-> BOp(OR(), e1, e2)
 	
 	isVarDef = ?VarDef(_,_,_)
-	//isVarDef = ?VarDefNoType(_,_)
 	isVarDef = ?VarDefNoInit(_,_)
 	isEventDef = ?EventDef(_,_)
 	isEventDef = ?EventDef(_,_,_)	
@@ -57,6 +51,8 @@ rules  // simple desugars
 	isPluginDef = ?PluginDef(_,_,_)
 	isPropDef = ?PropDef(_,_,_)
 	isPropDef = ?PropDefNoInit(_,_)
+	isObjectProp = ?ObjectProp(_,_)
+	isObjectProp = ?BuiltinObjectProp(_,_)
 	
 	desugar: Start(defs) -> Start(pluginDefs, objectDefs, eventDefs)
 		where
@@ -66,21 +62,21 @@ rules  // simple desugars
 	
 	desugar: StateDef(name, defs) -> StateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
-			<filter(?ObjectProp(_,_))> defs => propAssigns;
+			<filter(isObjectProp)> defs => propAssigns;
 			<filter(isComponentDef)> defs => componentDefs;
 			<filter(isVarDef)> defs => varDefs;
 			<filter(isEventDef)> defs => eventDefs	
 
 	desugar: DefaultStateDef(name, defs) -> DefaultStateDef(name, propAssigns, componentDefs, varDefs, eventDefs)
 		where
-			<filter(?ObjectProp(_,_))> defs => propAssigns;
+			<filter(isObjectProp)> defs => propAssigns;
 			<filter(isComponentDef)> defs => componentDefs;
 			<filter(isVarDef)> defs => varDefs;
 			<filter(isEventDef)> defs => eventDefs
 				
 	desugar: ObjectDef(name, defs) -> ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs)
 		where
-			<filter(?ObjectProp(_,_))> defs => propAssigns;
+			<filter(isObjectProp)> defs => propAssigns;
 			<filter(isObjectDef)> defs => objectDefs;
 			<filter(isComponentDef)> defs => componentDefs;
 			<filter(isVarDef)> defs => varDefs;

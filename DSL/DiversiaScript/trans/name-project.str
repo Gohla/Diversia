@@ -3,7 +3,6 @@ module name-project
 imports
 	include/DiversiaScript
 	lib/namespaces
-	data/builtin-types
 	data/events
 	namespace
 	signatures
@@ -27,16 +26,8 @@ rules // Name-based projections  //TODO need to check these
 		
 rules // Name-based look-up transformations
 	
-	is-object(|object) = <get-object> object
-	is-object-type(|object) = <get-object><get-name>object
 	is-object-property(|object, property) = <get-object-property> (object, property)
-	is-object-function(|object, function) = <get-object-function> (object, function)
-	
-	get-object-function: (object, name) -> <get-builtin-function>("ClientObject", name) // TODO when we have function def. add here too.
-	
 	get-object-property: (object, name) -> <get-prop> (object, name)
-	get-object-property:  (object, name) -> <get-builtin-property>("ClientObject", name)
-		where not(<get-prop> (object, name))
 			
 	get-all-objects = get-all-declarations(|Objects())
 	get-all-components: objectName -> <get-all-declarations(|Components(objectName))>
@@ -51,6 +42,7 @@ rules // Name-based look-up transformations
 	get-all-defaultstates: objectName -> <get-all-declarations(|DefaultStates(objectName))>
 	
 	get-object: objectName -> <get-declaration(|Objects())> objectName
+	get-object: CustomType(objectName) -> <get-declaration(|Objects())> objectName
 	get-component: componentName -> <get-declaration(|Components())> componentName
 	get-component: (objectName, componentName) -> <get-declaration(|Components(objectName))> componentName
 	get-component: (objectName, stateName, componentName) -> <get-declaration(|Components(objectName, stateName))> componentName

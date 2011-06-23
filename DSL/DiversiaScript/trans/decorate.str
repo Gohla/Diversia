@@ -5,7 +5,7 @@ imports
 	signatures
 	type-project
 	name-project
-	data/builtin-types
+	data/builtin-type
 
 strategies
 	decorate-all = alltd(decorate); topdown(try(decorate-props))
@@ -33,8 +33,8 @@ rules
 	decorate-object(|object): VarRef(name) -> PropRef(name, This())
 	decorate-object(|object): PropDef(name,type,expr) -> PropDef(object,name,type,expr)
 	decorate-object(|object): VarDef(name,type,expr) -> VarDef(object, name,type,expr)
-	decorate-object(|object): New(name, params) -> Call(This(), name, params)
-		where not(is-builtin-type(|name)) //TODO match with constructor too.
+	decorate-object(|object): New(type, params) -> Call(This(), type, params)
+		where not(<is-builtin-type> type) //TODO match with constructor too.
 	decorate-object(|object): This() -> This(object)
 	
 	decorate-props: ObjectDef(name, props, propDefs, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) ->
@@ -64,7 +64,4 @@ rules
 	decorate-prop(|type): ComponentProp(name, expr) -> ComponentProp(type, name, expr)
 	decorate-prop(|type): PluginProp(name, expr) -> PluginProp(type, name, expr)
 	decorate-prop(|type): ObjectProp(name, expr) -> ObjectProp(type, name, expr)
-	
-	
-                     
-	
+	decorate-prop(|type): BuiltinObjectProp(name, expr) -> BuiltinObjectProp(name, expr)	

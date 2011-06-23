@@ -4,38 +4,43 @@ imports
 	include/DiversiaScript
 	signatures
 	name-project
-	data/builtin-types
+	data/builtin-type
+	data/builtin-type-base
+	data/builtin-type-prop
+	data/builtin-type-func
+	data/builtin-enum
 	
 rules // util
-	printable: BoolType() -> "Boolean"
-	printable: IntType() -> "Int"
-	printable: RealType() -> "Real"
-	printable: StringType() -> "String"
-	printable: VoidType() -> "Void"
-	printable: NullType() -> "Void*"
-	printable: CustomType(name) -> name
-	printable: EnumType(name) -> $[[name] enum]
-	printable: [type|[]] -> <printable>type
-	printable: [type|types] -> $[[<printable>type],[<printable>types]]
-		where not(<?[]> types)
+	
+	printable = 
+		switch ?type
+		    case BoolType() : !"Boolean"
+		    case IntType() : !"Int"
+			case RealType() : !"Real"
+			case StringType() : !"String"
+			case VoidType() : !"Void"
+			case NullType() : !"Void*"
+			case CustomType(?name) : !$[[name] (object)]
+			case [?type|[]] : <printable> type
+			case [?type|?types]; not(<?[]> types) : !$[[<printable> type], [<printable>types]] 
+		    otherwise : ?name#(_); !$[[name] (built-in)]
+		end		
 
 rules // type matching
 	
-	match-type:(var-type,exp-type) -> (var-type,exp-type)
-		where <?var-type> exp-type
+	// Matches if types are the same or if the second type is a parent type of the first.
+	match-type = ?(type1, type2); (<?type1> type2 <+ <get-type-parent> (type2, type1)) 
 		
-	match-type:(RealType(),IntType()) -> (RealType(),IntType())
-	match-type:(EnumType(n),IntType()) -> (EnumType(n),IntType())
-	match-type:(type, NullType()) -> (type, NullType())
-	
-	match-type:(CustomType(var-type),exp-type) -> (var-type,exp-type)
-		where <get-type-parent> (exp-type, var-type)
+	// Matches reals and integers.
+	match-type = ?(RealType(), IntType())
+	match-type = ?(IntType(), RealType())
 		
-	match-types:([],[]) -> ([],[])
-	match-types:([var-type|rest1],[exp-type|rest2]) -> ([var-type|rest1],[exp-type|rest2])
-		where 
-			<match-type>(var-type,exp-type);
-			<match-types>(rest1,rest2)
+	// Matches everything with null.
+	match-type = ?(_, NullType())
+		
+	// Matches lists of types.
+	match-types = ?([], [])
+	match-types = ?([var-type|rest1],[exp-type|rest2]); <match-type>(var-type,exp-type); <match-types>(rest1,rest2)
 
 rules  // expr
 	
@@ -57,24 +62,26 @@ rules  // expr
 	type-of: FloatConst(_) -> RealType()
 	type-of: StrConst(_) -> StringType()
 	type-of: Null() -> NullType()
-	type-of: Vector2Const(_,_) -> CustomType("Vector2")
-	type-of: Vector3Const(_,_,_) -> CustomType("Vector3")
-	type-of: Vector4Const(_,_,_,_) -> CustomType("Vector4")
+	type-of: Vector2Const(_,_) -> Vector2()
+	type-of: Vector3Const(_,_,_) -> Vector3()
+	type-of: Vector4Const(_,_,_,_) -> Vector4()
 	
 	type-of: VarRef(name) -> <type-of><get-var> name
-	type-of: PropRef(property, exp) -> <type-of><get-type-property>(<type-of>exp, property)		
+	type-of: PropRef(property, exp) -> <type-of><get-object-property>(<type-of>exp, property) // TODO: not sure if this is right		
 	type-of: This(name) -> <type-of><get-object> name
-	type-of: New(object,_) -> <type-of>object
-	type-of: Access(exp, prop) -> <type-of><get-type-property> (<type-of>exp,prop)
-	type-of: Call(exp, function, _) -> <type-of><get-type-function>(<type-of>exp,function)
+	type-of: New(type, _) -> type
+	type-of: Access(exp, prop) -> <type-of><get-object-property> (<type-of>exp,prop)
+	type-of: BuiltinAccess(exp, prop) -> <builtin-type-prop-type(|<type-of> exp)> prop
+	type-of: Call(exp, func, _) -> <type-of><get-object-property>(<type-of>exp,func)
+	type-of: BuiltinCall(exp, func, _) -> <builtin-type-func-return(|<type-of> exp)> func
 	type-of: ObjectNew(objectRef, _) -> <type-of> objectRef
 	type-of: ObjectRef(name) -> <type-of><get-object> name
 	type-of: ComponentRef(name) -> <type-of><get-component> name
 	type-of: PluginRef(name) -> <type-of><get-plugin> name
-	type-of: EnumRef(name) -> EnumType(name)
-	type-of: EnumValueRef(name, _) -> EnumType(name)
+	type-of: EnumValueRef(name, _) -> name
 
 rules // defs
+	
 	type-of: ObjectDef(name, _, _, _, _, _, _, _) -> CustomType(name)
 	type-of: ExternalObjectDef(name) -> CustomType(name)
 	type-of: Param(_, type) -> type
@@ -82,42 +89,37 @@ rules // defs
     type-of: PropDef(_,_,type,_) -> type
     type-of: ComponentDef(_, type, _) -> type
 	type-of: PluginDef(_, type, _) -> type
-    type-of: Property(_,type,_) -> type  
-	type-of: Function(_,type,_) -> type
-		where not(<?type> "") // TODO: temp stuff
-	type-of: Function(_,"",_) -> VoidType() //  TODO: temp stuff
 	
 rules // getting type data
 	
+	is-standard-type = ?VoidType()
+	is-standard-type = ?BoolType()
+	is-standard-type = ?IntType()
+	is-standard-type = ?RealType()
+	is-standard-type = ?StringType()
+	is-standard-type = ?NullType()
 	
-	get-all-types = <conc>(<get-all-objects>,<get-all-builtin-types>)
+	is-object-type = ?CustomType(_)
 	
-	get-type-properties: CustomType(type) -> properties
-		where not(is-object(|type));
-			<get-builtin-properties> type => properties
-	get-type-properties: CustomType(object) -> properties
-		where is-object(|object);
-			<conc>(<get-all-properties> object, <get-builtin-properties> "ClientObject") => properties
-	get-type-property: (type, propName) -> property
-		where <fetch-elem(has-name(|propName))><get-type-properties> type => property
+	is-type = is-standard-type <+ is-object-type <+ is-builtin-type <+ is-builtin-enum
 	
-	get-type-functions: CustomType(type) -> functions
-		where not(is-object(|type));
-			<get-builtin-functions> type => functions
-	get-type-functions: CustomType(object) -> functions
-		where is-object(|object);
-			<get-builtin-functions> "ClientObject" => functions
-	get-type-function: (type, funcName) -> function
-		where <fetch-elem(has-name(|funcName))><get-type-functions> type => function
-	
-	get-type-parents: CustomType(type) -> parents
-		where not(is-object(|type));
-			<get-builtin-parents> type => parents
-	get-type-parents: CustomType(object) -> parents
-		where is-object(|object);
-			![<get-builtin-type> "ClientObject" | <get-builtin-parents> "ClientObject"] => parents
-	get-type-parent: (type, parentName) -> parent
-		where <fetch-elem(has-name(|parentName))><get-type-parents> type => parent
-			
-	
-	
+	type-has-property(|prop) = ?CustomType(type); 
+		(<get-object-property> (type, prop) <+
+		<type-has-property(|prop)> ClientObject()) 
+	type-has-property(|prop) = ?type; 
+		not(<is-object-type> type);
+		(<has-builtin-type-prop(|type)> prop <+
+		<one(type-has-property(|prop))> <get-type-parents> type)
+	type-has-function(|func) = ?CustomType(type); 
+		//<get-object-function> (type, prop) <+ // TODO: Objects do not have custom functions yet. 
+		<type-has-function(|func)> ClientObject() 
+	type-has-function(|func) = ?type; 
+		not(<is-object-type> type);
+		(<has-builtin-type-func(|type)> func <+
+		<one(type-has-function(|func))> <get-type-parents> type)
+
+	get-type-parents: CustomType(type) -> [ClientObject() | <builtin-type-bases> ClientObject()]
+	get-type-parents: type -> <builtin-type-bases> type
+		where not(<is-object-type> type)
+	get-type-parent: (type, parent) -> <?parent> <get-type-parents> type
+		

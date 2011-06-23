@@ -7,10 +7,7 @@ imports
 	DiversiaScript
 	type-project
 	name-project
-	data/builtin-types
 	data/events
-	
-
 
 rules	
 	
@@ -23,10 +20,11 @@ rules
 	
 	propose-analysed = propose-props <+ propose-types <+ propose-events
         
-	propose-props: ComponentProp(type, COMPLETION(_), expr) -> <map(get-proposal)><get-type-properties> type
-	propose-props: PluginProp(type, COMPLETION(_), expr) -> <map(get-proposal)><get-type-properties> type
-	propose-props: ObjectProp(type, COMPLETION(_), expr) -> <map(get-proposal)><get-type-properties> type	
-	propose-types: CustomType(COMPLETION(_)) -> <map(get-proposal)><get-all-types>
+    // TODO: Fix
+	propose-props: ComponentProp(type, COMPLETION(_), expr) -> "" //<map(get-proposal)><get-type-properties> type
+	propose-props: PluginProp(type, COMPLETION(_), expr) -> "" //<map(get-proposal)><get-type-properties> type
+	propose-props: ObjectProp(type, COMPLETION(_), expr) -> "" //<map(get-proposal)><get-type-properties> type	
+	propose-types: CustomType(COMPLETION(_)) -> "" //<map(get-proposal)><get-all-types>
 	
 	propose-events: e@EventDef(COMPLETION(_),params,statements) -> <map(get-proposal)><all-events>
 		where <debug> e

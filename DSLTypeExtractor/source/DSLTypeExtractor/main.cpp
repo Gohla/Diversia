@@ -93,7 +93,7 @@ int main( int argc, char* argv[] )
 
             // Bases
             {
-                String bases = "![";
+                String bases = "[";
                 size_t baseCount = metaclass.baseCount();
                 bool first = true;
                 for( size_t j = 0; j < baseCount; ++j )
@@ -132,7 +132,7 @@ int main( int argc, char* argv[] )
 
             // Properties
             {
-                String props = "![";
+                String props = "[";
                 size_t propCount = metaclass.propertyCount( true );
                 bool first = true;
                 for( size_t j = 0; j < propCount; ++j )
@@ -161,7 +161,7 @@ int main( int argc, char* argv[] )
 
             // Functions
             {
-                String funcs = "![";
+                String funcs = "[";
                 size_t funcCount = metaclass.functionCount( true );
                 bool first = true;
                 for( size_t j = 0; j < funcCount; ++j )
@@ -199,7 +199,7 @@ int main( int argc, char* argv[] )
 
             // Operators
             {
-                String ops = "![";
+                String ops = "[";
                 size_t opCount = metaclass.operatorCount();
                 bool first = true;
                 for( size_t j = 0; j < opCount; ++j )

@@ -138,21 +138,51 @@ struct STRFile : public File
     void rules() { writeLn("rules"); addIdent(); writeLn(); }
     void signatures() { writeLn("signature constructors"); addIdent(); writeLn(); }
 
-    void rule( const String& rName, const String& rSubstitution )
+    void rule( const String& rName, const String& rTerms )
     {
-        writeLn( rName + " = " + rSubstitution );
+        writeLn( rName + " = " + rTerms );
     }
-    void rule( const String& rName, const vector<String>& rParams, const String& rSubstitution )
+    void rule( const String& rName, const vector<String>& rConsParams, const String& rTerms )
     {
-        writeLn( rName + "(|" + algorithm::join( rParams, ", " ) + ") = " + rSubstitution );
+        bool first = true;
+        unsigned int count = 0;
+        String params;
+        String paramMatches;
+        for( vector<String>::const_iterator i = rConsParams.begin(); i != rConsParams.end(); ++i )
+        {
+            if( !first ) params += ", ";
+            String paramName = "param" + lexical_cast<String>( count );
+            params += paramName;
+            if( !first ) paramMatches += "; ";
+            paramMatches += "<?" + *i + "> " + paramName;
+            count++;
+            first = false;
+        }
+
+        writeLn( rName + "(|" + params + ") = " + rTerms + "; " + paramMatches );
     }
     void matchRule( const String& rName, const String& rMatch, const String& rSubstitution )
     {
         writeLn( rName + ": " + rMatch + " -> " + rSubstitution );
     }
-    void matchRule( const String& rName, const vector<String>& rParams, const String& rMatch, const String& rSubstitution )
+    void matchRule( const String& rName, const vector<String>& rConsParams, const String& rMatch, const String& rSubstitution )
     {
-        writeLn( rName + "(|" + algorithm::join( rParams, ", " ) + "): " + rMatch + " -> " + rSubstitution );
+        bool first = true;
+        unsigned int count = 0;
+        String params;
+        String paramMatches;
+        for( vector<String>::const_iterator i = rConsParams.begin(); i != rConsParams.end(); ++i )
+        {
+            if( !first ) params += ", ";
+            String paramName = "param" + lexical_cast<String>( count );
+            params += paramName;
+            if( !first ) paramMatches += "; ";
+            paramMatches += "<?" + *i + "> " + paramName;
+            count++;
+            first = false;
+        }
+
+        writeLn( rName + "(|" + params + ") = " + "?" + rMatch + "" + paramMatches + "; !" + rSubstitution );
     }
 
     void signature( const String& rLeft, const vector<String>& rParams, const String& rRight )

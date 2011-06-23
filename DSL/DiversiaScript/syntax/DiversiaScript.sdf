@@ -1,6 +1,15 @@
 module DiversiaScript
 
-imports Lexical
+imports 
+	
+	Lexical
+	
+	data/builtin-type
+	data/builtin-type-func
+	data/builtin-type-prop
+	data/builtin-enum
+	data/builtin-component
+	data/builtin-plugin
 
 exports
 
@@ -20,14 +29,14 @@ exports
     Id -> ObjectRef {cons("ObjectRef")}
     
     %% Component
-    "component" Id ":" Type "{" ComponentProp* "}" -> InsideDef {cons("ComponentDef")}
-    "component" Type "{" ComponentProp* "}" -> InsideDef {cons("ComponentDef")} %% desugared
-    Id "=" Exp -> ComponentProp {cons("ComponentProp")}
+    "component" Id ":" ComponentType "{" ComponentProp* "}" -> InsideDef {cons("ComponentDef")}
+    "component" ComponentType "{" ComponentProp* "}" -> InsideDef {cons("ComponentDef")} %% desugared
+    BuiltinProperty "=" Exp -> ComponentProp {cons("ComponentProp")}
     
     %% Plugin
-    "plugin" Id ":" Type "{" PluginProp* "}" -> GlobalDef {cons("PluginDef")}
-    "plugin" Type "{" PluginProp* "}" -> GlobalDef {cons("PluginDef")} %% desugared
-    Id "=" Exp -> PluginProp {cons("PluginProp")}
+    "plugin" Id ":" PluginType "{" PluginProp* "}" -> GlobalDef {cons("PluginDef")}
+    "plugin" PluginType "{" PluginProp* "}" -> GlobalDef {cons("PluginDef")} %% desugared
+    BuiltinProperty "=" Exp -> PluginProp {cons("PluginProp")}
     
     %% State
     "state" Id "{" InsideDef* "}" -> StateDef {cons("StateDef")}
@@ -42,7 +51,8 @@ exports
     EventDef -> InsideDef
     
     %% Property
-    Id "=" Exp -> ObjectProp {cons("ObjectProp")}
+    Id "=" Exp -> ObjectProp {cons("ObjectProp"), avoid}
+    BuiltinObjectProperty "=" Exp -> ObjectProp {cons("BuiltinObjectProp")}
     ObjectProp -> InsideDef
     
     %% Parameter
@@ -51,40 +61,44 @@ exports
     
     %% Variable
     "var" Id ":" Type "=" Exp -> VarDef {cons("VarDef")}
-    "var" Id ":" Type ->  VarDef {cons("VarDefNoInit")} %% desugared
-    "var" Id "=" Exp  -> VarDef {cons("VarDefNoType")} %% type inferance
+    "var" Id ":" Type -> VarDef {cons("VarDefNoInit")} %% desugared
+    "var" Id "=" Exp -> VarDef {cons("VarDefNoType")} %% type inferance
     VarDef -> InsideDef
     
     %% Property Def
     "prop" Id ":" Type "=" Exp -> PropDef {cons("PropDef")}
-    "prop" Id ":" Type ->  PropDef {cons("PropDefNoInit")} %% desugared
+    "prop" Id ":" Type -> PropDef {cons("PropDefNoInit")} %% desugared
     "prop" Id "=" Exp -> PropDef {cons("PropDefNoType")} %% type inferance
     PropDef -> InsideObjectDef
     
     %% Expressions
-    "true"                           	-> Exp {cons("True")}
-    "false"                           	-> Exp {cons("False")}
-    IntConst                            -> Exp {cons("IntConst")}
-    FloatConst                          -> Exp {cons("FloatConst")}
-    StrConst                            -> Exp {cons("StrConst")}
-    "[" Exp "," Exp "]"                 -> Exp {cons("Vector2Const")}
-    "[" Exp "," Exp "," Exp "]"         -> Exp {cons("Vector3Const")}
-    "[" Exp "," Exp "," Exp "," Exp "]" -> Exp {cons("Vector4Const")}
-    Id                                  -> Exp {cons("VarRef")}
-    "this"                              -> Exp {cons("This")}
-    "null"                              -> Exp {cons("Null")}
-    Id "(" {Exp ","}* ")"               -> Exp {cons("New")}
-    Exp "." Id                        	-> Exp {cons("Access"), left, avoid}
-    Exp "." Id "(" {Exp ","}* ")"   	-> Exp {cons("Call"), left}
-    "new" ObjectRef "{" ObjectProp* "}" -> Exp {cons("ObjectNew")}
-    "(" Exp ")"                         -> Exp {bracket}
+    "true"                           			-> Exp {cons("True")}
+    "false"                           			-> Exp {cons("False")}
+    IntConst                            		-> Exp {cons("IntConst")}
+    FloatConst                          		-> Exp {cons("FloatConst")}
+    StrConst                            		-> Exp {cons("StrConst")}
+    "[" Exp "," Exp "]"                 		-> Exp {cons("Vector2Const")}
+    "[" Exp "," Exp "," Exp "]"         		-> Exp {cons("Vector3Const")}
+    "[" Exp "," Exp "," Exp "," Exp "]" 		-> Exp {cons("Vector4Const")}
+    Id                                  		-> Exp {cons("VarRef")}
+    "this"                              		-> Exp {cons("This")}
+    "null"                              		-> Exp {cons("Null")}
+    BuiltinType "(" {Exp ","}* ")"      		-> Exp {cons("New")}
+    Exp "." Id                        			-> Exp {cons("Access"), left, avoid}
+	Exp "." BuiltinProperty 					-> Exp {cons("BuiltinAccess"), left}
+    Exp "." Id "(" {Exp ","}* ")"   			-> Exp {cons("Call"), left}
+    Exp "." BuiltinFunction "(" {Exp ","}* ")" 	-> Exp {cons("BuiltinCall"), left, prefer}
+    "new" ObjectRef "{" ObjectProp* "}" 		-> Exp {cons("ObjectNew")}
+    "(" Exp ")"                         		-> Exp {bracket}
     
     %% Operators
     "!" Exp         -> Exp {cons("Not"), right}
     "-" Exp 		-> Exp {cons("Umin"), right}
   
   context-free restrictions
+  	
   	"-" Exp -/- [\-]
+  	
   context-free syntax 
    
     Exp "+" Exp     -> Exp {cons("Add"), left}
@@ -125,16 +139,25 @@ exports
     "Real" -> Type {cons("RealType")}
     "Bool" -> Type {cons("BoolType")}
     "String" -> Type {cons("StringType")}
-    "Void"  -> Type {cons("VoidType")}
+    "Void" -> Type {cons("VoidType")}
+    BuiltinType -> Type
+    EnumType -> Type
+    ComponentType -> Type {prefer}
+    PluginType -> Type {prefer}
     Id -> Type {cons("CustomType"), avoid}
-
-
-    context-free priorities
+    
+    context-free restrictions
+  	
+  	  Type -/- [a-zA-Z0-9\_]
+		
+    context-free priorities %% Operators
         %% Operators, following the operator predecence from: http://www.uni-bonn.de/~manfear/javaoperators.php
         {
             left:
             Exp "." Id -> Exp
+            Exp "." BuiltinProperty -> Exp
             Exp "." Id "(" {Exp ","}* ")" -> Exp
+            Exp "." BuiltinFunction "(" {Exp ","}* ")" -> Exp
         }
         >
         {

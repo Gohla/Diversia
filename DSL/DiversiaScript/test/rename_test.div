@@ -2,15 +2,15 @@ def Obj{
 
 	Position = [0, 0.5, 0]
 	
-	var ObjectVar1:Int = 0;
+	var ObjectVar1:Int = 0
 	
-	var ObjectVar2:Int = ObjectVar1;
+	var ObjectVar2:Int = ObjectVar1
 	
 	def Obj2{
-		var SubObjectVar1:Int = 0;
+		var SubObjectVar1:Int = 0
 		default state TestState1 {
     	
-	    	var SubStateVar1:String = "34";
+	    	var SubStateVar1:String = "34"
 	
 		    on Frame(TimeElapsed:Int) {
 		    	StateVar2 = StateVar1 * ObjectVar1;
@@ -25,7 +25,7 @@ def Obj{
     }   
     default state TestState1 {
     	
-    	var StateVar1:String = "34";
+    	var StateVar1:String = "34"
 
 	    on Frame(TimeElapsed:Int) {
 	    	StateVar2 = StateVar1 * ObjectVar1;
@@ -34,7 +34,7 @@ def Obj{
     }
     state TestState2 {
     	
-    	var StateVar2:Int = 0;
+    	var StateVar2:Int = 0
     	
 		on Update(){
 	    	StateVar2 = StateVar1 * ObjectVar2;

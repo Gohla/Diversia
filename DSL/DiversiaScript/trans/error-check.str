@@ -6,20 +6,18 @@ imports
 	type-project
 	name-project
 	read-project
-	data/builtin-types
+	data/builtin-type
+	data/builtin-type-prop
+	data/builtin-type-func
 	data/events
-	data/enums
 
 rules // defs
 	
-	editor-error: e@VarDef(object, name,CustomType(type),expr) -> (CustomType(type), $[Unknown type.])
-		where 
-			not(is-builtin-type(|type));
-			not(is-object(|type))
+	editor-error: e@VarDef(object, name, type, expr) -> (CustomType(type), $[Unknown type.])
+		where not(<is-type> type)
 	
 	editor-error: e@VarDef(object, name,type ,expr) -> (e, $[Overwriting object properties not allowed.])
-		//where <debug> (object, name, name2)
-		where <get-type-property> (CustomType(object), <strip-annos>name)		
+		where <get-object-property> (CustomType(object), <strip-annos>name)		
 	
 	editor-error: e@VarDef(object, name, type, expr)-> (expr, $[Expected [<printable>type] but found [<printable>type2].])
 		where 
@@ -27,13 +25,9 @@ rules // defs
 			not(<match-type>(type,type2))
 	
 	editor-error: e@PropDef(object, name, type, exp) -> (e, $[Overwriting built-in properties not allowed.])
-		where is-builtin-property(|"ClientObject", name) 
+		where <has-builtin-type-prop(|ClientComponent())> name#([]) 
 
-	editor-error: e@PluginDef(name,CustomType(type),props) -> (CustomType(type), $[Unknown plugin.])
-		where not(is-builtin-plugin(|type))
-			
-	editor-error: e@ComponentDef(name,CustomType(type),props) -> (CustomType(type), $[Unknown component.])
-		where not(is-builtin-component(|type))
+	// TODO: Disallow overwriting of function if functions are added
 	
 rules // read-only/writeable
 	
@@ -42,7 +36,8 @@ rules // read-only/writeable
 		not(<?Access(_,_)> exp);
 		not(<?PropRef(_,_)> exp)		
 		
-	editor-error: Assign(e@Access(exp,name),_) -> (e, $[Property is read-only.]) 
+	// TODO: Fix
+	/*editor-error: Assign(e@Access(exp,name),_) -> (e, $[Property is read-only.]) 
 		where <is-read-only><get-type-property> (<type-of>exp,name)
 
 	editor-error: Assign(e@PropRef(name,object),_) -> (e, $[Property is read-only.]) 
@@ -55,7 +50,7 @@ rules // read-only/writeable
 		where <is-read-only><get-type-property> (type,name)
 
 	editor-error: e@PluginProp(type,name,exp) -> (name, $[Property is read-only.])
-		where <is-read-only><get-type-property> (type,name)
+		where <is-read-only><get-type-property> (type,name)*/
 		
 rules // types
 	
@@ -86,23 +81,29 @@ rules // types
 			<type-of> exp => type;
 			not(<match-type>(StringType(), type))
 			
-	editor-error: e@ObjectProp(type,name,exp) -> (exp, $[Expected [<printable>type2] but found [<printable>type3].])
+	editor-error: e@ObjectProp(CustomType(object),name,exp) -> (exp, $[Expected [<printable> type] but found [<printable> type2].])
 		where
-			<type-of><get-type-property>(type, name) => type2;
-			<type-of> exp => type3;
-			not(<match-type>(type2,type3))
+			<type-of> <get-object-property> (object, name) => type;
+			<type-of> exp => type2;
+			not(<match-type> (type, type2))
+
+	editor-error: e@BuiltinObjectProp(prop,exp) -> (exp, $[Expected [<printable> type] but found [<printable> type2].])
+		where
+			<builtin-type-prop-type(|ClientObject())> prop => type; // TODO: Parent type properties are not found.
+			<type-of> exp => type2;
+			not(<match-type> (type, type2))
 		
-	editor-error: e@PluginProp(type,name,exp) -> (exp, $[Expected [<printable>type2] but found [<printable>type3].])
+	editor-error: e@PluginProp(plugin,prop,exp) -> (exp, $[Expected [<printable> type] but found [<printable> type2].])
 		where 
-			<type-of><get-type-property>(type, name) => type2;
-			<type-of> exp => type3;
-			not(<match-type>(type2,type3))
+			<builtin-type-prop-type(|plugin)> prop => type; // TODO: Parent type properties are not found.
+			<type-of> exp => type2;
+			not(<match-type> (type, type2))
 		
-	editor-error: e@ComponentProp(type,name,exp) -> (exp, $[Expected [<printable>type2] but found [<printable>type3].])
-		where 
-			<type-of><get-type-property>(type, name) => type2;
-			<type-of> exp => type3;
-			not(<match-type>(type2,type3))
+	editor-error: e@ComponentProp(component,prop,exp) -> (exp, $[Expected [<printable> type] but found [<printable> type2].])
+		where
+			<builtin-type-prop-type(|component)> prop => type; // TODO: Parent type properties are not found.
+			<type-of> exp => type2;
+			not(<match-type>(type, type2))
 
 rules // broken references
 	
@@ -110,25 +111,30 @@ rules // broken references
 		where not(<get-object> name)
 	
 	editor-error: e@PropRef(name, expr) -> (e, $[Undefined variable or property.])
-		where not(<get-type-property>(<type-of>expr, name))
-		
-	editor-error: EnumValueRef(name, valueName) -> (valueName, $[Undefined enum value.]) 
-		where not(<get-enum-value>(name, valueName))
-		
+		where not(<get-object-property>(<type-of>expr, name))
+
 	editor-error: e@Access(expr, name) -> (e, $[Undefined property.])
-		where not(<get-type-property>(<type-of>expr, name))
+		where not(<type-has-property(|name)> <type-of> expr)
+				
+	editor-error: e@BuiltinAccess(expr, prop) -> (e, $[Undefined property.])
+		where not(<type-has-property(|prop)> <type-of> expr)
 	
-	editor-error: e@Call(This(object), name, []) -> (e, $[Undefined function.])
-		where not(is-builtin-function(|"ClientObject", name)) // TODO added custom functions
+	editor-error: e@Call(exp, func, _) -> (e, $[Undefined function.])
+		where not(<type-has-function(|func)> <type-of> exp)
+		// TODO: Parameter check
+		
+	editor-error: e@BuiltinCall(expr, func, _) -> (e, $[Undefined function.])
+		where not(<type-has-function(|func)> <type-of> expr)
+		// TODO: Parameter check
 		
 	editor-error: e@ObjectProp(type,name,exp) -> (name, $[Undefined property.])
-		where not(<get-type-property>(type, name))
+		where not(<type-has-property(|name)> type)
 		
-	editor-error: e@PluginProp(type,name,exp) -> (name, $[Undefined property.])
-		where not(<get-type-property>(type, name))
+	editor-error: e@PluginProp(type,prop,exp) -> (prop, $[Undefined property.])
+		where not(<type-has-property(|prop)> type)
 		
-	editor-error: e@ComponentProp(type,name,exp) -> (name, $[Undefined property.])
-		where not(<get-type-property>(type, name))
+	editor-error: e@ComponentProp(type,prop,exp) -> (prop, $[Undefined property.])
+		where not(<type-has-property(|prop)> type)
 
 rules // states
 	
@@ -162,5 +168,3 @@ rules // debug errors
 	editor-error: e@ObjectProp(name,exp) -> (e, $[Decorate failed.])
 	editor-error: e@This() -> (e, $[Decorate failed.])
 	
-	
-		

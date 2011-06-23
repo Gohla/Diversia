@@ -27,6 +27,9 @@ def CameraYaw {
     
     // States
     default state Alive {
+    	Position = 1
+    	MouseRotation = "lola"
+    	
         // Events
         on MousePressed(Button : MouseButton) {
             if(Button == MouseButton.Right) mRMB = true;
@@ -37,7 +40,7 @@ def CameraYaw {
         on MouseMoved(State : MouseState) {
             mMouseState = MouseState(State);
         }
-        on Update() {
+        on Update() {	
             if(mRMB) { // If right mouse button is pressed
                 // Yaw the camera
                 this.Yaw(Radian(Degree(-mMouseState.X.Relative * MouseRotation)), TransformSpace.Local);
