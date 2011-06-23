@@ -31,7 +31,7 @@ struct File
     virtual ~File() { close(); }
 
     void open() { mFile.open( mPath.string(), ios::out | ios::trunc ); }
-    void close() { mFile.close(); }
+    void close() { mFile.flush(); mFile.close(); }
     void write( const String& rString )
     {
         if( mAddIdent ) for( unsigned short i = 0; i < mIdent; ++i ) mFile << mIdentChar;
@@ -95,14 +95,14 @@ struct SDFFile : public File
     
     void contextfree() { writeLn( "context-free syntax" ); addIdent(); writeLn(); }
 
-    void contextfree( const String& rLeft, const String& rRight, const String& rCons = "", const String& rAlign = "", bool avoid = false)
+    void contextfree( const String& rLeft, const String& rRight, String cons = "", vector<String> attributes = vector<String>() )
     {
         write( rLeft + " -> " + rRight );
-        if( !rCons.empty() )
+        if( !cons.empty() ) attributes.push_back( "cons(\"" + cons + "\")" );
+        if( !attributes.empty() )
         {
-            write( " {cons(\"" + rCons + "\")" );
-            if( !rAlign.empty() ) write( ", " + rAlign );
-            if( avoid ) write( ", avoid" );
+            write( " {" );
+            write( algorithm::join( attributes, ", " ) );
             write( "}" );
         }
         writeLn();
