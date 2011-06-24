@@ -182,7 +182,7 @@ struct STRFile : public File
             first = false;
         }
 
-        writeLn( rName + "(|" + params + ") = " + "?" + rMatch + "" + paramMatches + "; !" + rSubstitution );
+        writeLn( rName + "(|" + params + ") = " + "?" + rMatch + "; " + paramMatches + "; !" + rSubstitution );
     }
 
     void signature( const String& rLeft, const vector<String>& rParams, const String& rRight )

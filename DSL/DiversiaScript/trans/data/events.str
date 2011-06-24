@@ -30,20 +30,21 @@ rules
 		Event("Create", []), Event("Destroy", []), 
 		Event("EarlyUpdate", []), Event("Update", []), Event("LateUpdate", []), 
 		Event("EarlyFrame", [RealType()]), Event("Frame", [RealType()]), Event("LateFrame", [RealType()]),
-		Event("MouseMoved", [CustomType("MouseState")]), Event("MousePressed", [EnumType("MouseButton")]), Event("MouseReleased", [EnumType("MouseButton")]),
-		Event("KeyPressed", [EnumType("KeyboardButton"), IntType()]), Event("KeyReleased", [EnumType("KeyboardButton"), IntType()])
+		Event("MouseMoved", [MouseState()]), Event("MousePressed", [MouseButton()]), Event("MouseReleased", [MouseButton()]),
+		Event("KeyPressed", [KeyboardButton(), IntType()]), Event("KeyReleased", [KeyboardButton(), IntType()])
 	]
 	object-events = <concat> [ 
 		<shared-events>, [ 
 			Event("StateEnter", []), Event("StateExit", []),
-			Event("ComponentChange", [CustomType("Component"), BoolType()]),
-			Event("TransformChange", [CustomType("Node")]),
-			Event("AreaChange", [CustomType("Object"), BoolType()]),
-			Event("CollisionWith", [CustomType("Object")])
+			Event("ComponentChange", [Component(), BoolType()]),
+			Event("TransformChange", [Node()]),
+			Event("AreaChange", [ClientObject(), BoolType()]),
+			Event("CollisionWith", [ClientObject()])
 		] 
 	]
 	global-events = <concat> [ 
 		<shared-events>, [  
-			Event("ObjectChange", [CustomType("Object"), BoolType()])		
+			Event("ObjectChange", [ClientObject(), BoolType()])		
 		] 
 	]
+	

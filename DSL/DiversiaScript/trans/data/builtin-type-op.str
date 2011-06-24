@@ -106,86 +106,86 @@ rules
 
 	builtin-type-ops: Angle() -> []
 
-	has-builtin-type-op(|param0) = ?ADD(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(ADD(), Colour()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(ADD(), Colour()); <?Colour()> param0; !Colour()
-	has-builtin-type-op(|param0) = ?SUB(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(SUB(), Colour()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(SUB(), Colour()); <?Colour()> param0; !Colour()
-	has-builtin-type-op(|param0) = ?MUL(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), Colour()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), Colour()); <?Colour()> param0; !Colour()
-	has-builtin-type-op(|param0) = ?MUL(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), RealType()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), RealType()); <?Colour()> param0; !Colour()
-	has-builtin-type-op(|param0) = ?DIV(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(DIV(), Colour()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(DIV(), Colour()); <?Colour()> param0; !Colour()
-	has-builtin-type-op(|param0) = ?DIV(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(DIV(), RealType()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(DIV(), RealType()); <?Colour()> param0; !Colour()
-	has-builtin-type-op(|param0) = ?EQ(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(EQ(), Colour()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(EQ(), Colour()); <?Colour()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?NEQ(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(NEQ(), Colour()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(NEQ(), Colour()); <?Colour()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LT(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(LT(), Colour()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(LT(), Colour()); <?Colour()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LTE(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(LTE(), Colour()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(LTE(), Colour()); <?Colour()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GT(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(GT(), Colour()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(GT(), Colour()); <?Colour()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GTE(); <?Colour()> param0
-	has-builtin-type-op(|param0) = ?(GTE(), Colour()); <?Colour()> param0
-	builtin-type-op-return(|param0) = ?(GTE(), Colour()); <?Colour()> param0; !BoolType()
+	has-builtin-type-op = ?(Colour(), ADD())
+	has-builtin-type-op = ?(Colour(), ADD(), Colour())
+	builtin-type-op-return: (Colour(), ADD(), Colour()) -> Colour()
+	has-builtin-type-op = ?(Colour(), SUB())
+	has-builtin-type-op = ?(Colour(), SUB(), Colour())
+	builtin-type-op-return: (Colour(), SUB(), Colour()) -> Colour()
+	has-builtin-type-op = ?(Colour(), MUL())
+	has-builtin-type-op = ?(Colour(), MUL(), Colour())
+	builtin-type-op-return: (Colour(), MUL(), Colour()) -> Colour()
+	has-builtin-type-op = ?(Colour(), MUL())
+	has-builtin-type-op = ?(Colour(), MUL(), RealType())
+	builtin-type-op-return: (Colour(), MUL(), RealType()) -> Colour()
+	has-builtin-type-op = ?(Colour(), DIV())
+	has-builtin-type-op = ?(Colour(), DIV(), Colour())
+	builtin-type-op-return: (Colour(), DIV(), Colour()) -> Colour()
+	has-builtin-type-op = ?(Colour(), DIV())
+	has-builtin-type-op = ?(Colour(), DIV(), RealType())
+	builtin-type-op-return: (Colour(), DIV(), RealType()) -> Colour()
+	has-builtin-type-op = ?(Colour(), EQ())
+	has-builtin-type-op = ?(Colour(), EQ(), Colour())
+	builtin-type-op-return: (Colour(), EQ(), Colour()) -> BoolType()
+	has-builtin-type-op = ?(Colour(), NEQ())
+	has-builtin-type-op = ?(Colour(), NEQ(), Colour())
+	builtin-type-op-return: (Colour(), NEQ(), Colour()) -> BoolType()
+	has-builtin-type-op = ?(Colour(), LT())
+	has-builtin-type-op = ?(Colour(), LT(), Colour())
+	builtin-type-op-return: (Colour(), LT(), Colour()) -> BoolType()
+	has-builtin-type-op = ?(Colour(), LTE())
+	has-builtin-type-op = ?(Colour(), LTE(), Colour())
+	builtin-type-op-return: (Colour(), LTE(), Colour()) -> BoolType()
+	has-builtin-type-op = ?(Colour(), GT())
+	has-builtin-type-op = ?(Colour(), GT(), Colour())
+	builtin-type-op-return: (Colour(), GT(), Colour()) -> BoolType()
+	has-builtin-type-op = ?(Colour(), GTE())
+	has-builtin-type-op = ?(Colour(), GTE(), Colour())
+	builtin-type-op-return: (Colour(), GTE(), Colour()) -> BoolType()
 	builtin-type-ops: Colour() -> [Operator(ADD(), Colour(), Colour()), Operator(SUB(), Colour(), Colour()), Operator(MUL(), Colour(), Colour()), Operator(MUL(), Colour(), RealType()), Operator(DIV(), Colour(), Colour()), Operator(DIV(), Colour(), RealType()), Operator(EQ(), BoolType(), Colour()), Operator(NEQ(), BoolType(), Colour()), Operator(LT(), BoolType(), Colour()), Operator(LTE(), BoolType(), Colour()), Operator(GT(), BoolType(), Colour()), Operator(GTE(), BoolType(), Colour())]
 
-	has-builtin-type-op(|param0) = ?ADD(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(ADD(), Degree()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(ADD(), Degree()); <?Degree()> param0; !Degree()
-	has-builtin-type-op(|param0) = ?ADD(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(ADD(), Radian()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(ADD(), Radian()); <?Degree()> param0; !Degree()
-	has-builtin-type-op(|param0) = ?SUB(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(SUB(), Degree()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(SUB(), Degree()); <?Degree()> param0; !Degree()
-	has-builtin-type-op(|param0) = ?SUB(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(SUB(), Radian()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(SUB(), Radian()); <?Degree()> param0; !Degree()
-	has-builtin-type-op(|param0) = ?MUL(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), Degree()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), Degree()); <?Degree()> param0; !Degree()
-	has-builtin-type-op(|param0) = ?MUL(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), RealType()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), RealType()); <?Degree()> param0; !Degree()
-	has-builtin-type-op(|param0) = ?DIV(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(DIV(), RealType()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(DIV(), RealType()); <?Degree()> param0; !Degree()
-	has-builtin-type-op(|param0) = ?UMIN(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(UMIN(), VoidType()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(UMIN(), VoidType()); <?Degree()> param0; !Degree()
-	has-builtin-type-op(|param0) = ?EQ(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(EQ(), Degree()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(EQ(), Degree()); <?Degree()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?NEQ(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(NEQ(), Degree()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(NEQ(), Degree()); <?Degree()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LT(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(LT(), Degree()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(LT(), Degree()); <?Degree()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LTE(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(LTE(), Degree()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(LTE(), Degree()); <?Degree()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GT(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(GT(), Degree()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(GT(), Degree()); <?Degree()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GTE(); <?Degree()> param0
-	has-builtin-type-op(|param0) = ?(GTE(), Degree()); <?Degree()> param0
-	builtin-type-op-return(|param0) = ?(GTE(), Degree()); <?Degree()> param0; !BoolType()
+	has-builtin-type-op = ?(Degree(), ADD())
+	has-builtin-type-op = ?(Degree(), ADD(), Degree())
+	builtin-type-op-return: (Degree(), ADD(), Degree()) -> Degree()
+	has-builtin-type-op = ?(Degree(), ADD())
+	has-builtin-type-op = ?(Degree(), ADD(), Radian())
+	builtin-type-op-return: (Degree(), ADD(), Radian()) -> Degree()
+	has-builtin-type-op = ?(Degree(), SUB())
+	has-builtin-type-op = ?(Degree(), SUB(), Degree())
+	builtin-type-op-return: (Degree(), SUB(), Degree()) -> Degree()
+	has-builtin-type-op = ?(Degree(), SUB())
+	has-builtin-type-op = ?(Degree(), SUB(), Radian())
+	builtin-type-op-return: (Degree(), SUB(), Radian()) -> Degree()
+	has-builtin-type-op = ?(Degree(), MUL())
+	has-builtin-type-op = ?(Degree(), MUL(), Degree())
+	builtin-type-op-return: (Degree(), MUL(), Degree()) -> Degree()
+	has-builtin-type-op = ?(Degree(), MUL())
+	has-builtin-type-op = ?(Degree(), MUL(), RealType())
+	builtin-type-op-return: (Degree(), MUL(), RealType()) -> Degree()
+	has-builtin-type-op = ?(Degree(), DIV())
+	has-builtin-type-op = ?(Degree(), DIV(), RealType())
+	builtin-type-op-return: (Degree(), DIV(), RealType()) -> Degree()
+	has-builtin-type-op = ?(Degree(), UMIN())
+	has-builtin-type-op = ?(Degree(), UMIN(), VoidType())
+	builtin-type-op-return: (Degree(), UMIN(), VoidType()) -> Degree()
+	has-builtin-type-op = ?(Degree(), EQ())
+	has-builtin-type-op = ?(Degree(), EQ(), Degree())
+	builtin-type-op-return: (Degree(), EQ(), Degree()) -> BoolType()
+	has-builtin-type-op = ?(Degree(), NEQ())
+	has-builtin-type-op = ?(Degree(), NEQ(), Degree())
+	builtin-type-op-return: (Degree(), NEQ(), Degree()) -> BoolType()
+	has-builtin-type-op = ?(Degree(), LT())
+	has-builtin-type-op = ?(Degree(), LT(), Degree())
+	builtin-type-op-return: (Degree(), LT(), Degree()) -> BoolType()
+	has-builtin-type-op = ?(Degree(), LTE())
+	has-builtin-type-op = ?(Degree(), LTE(), Degree())
+	builtin-type-op-return: (Degree(), LTE(), Degree()) -> BoolType()
+	has-builtin-type-op = ?(Degree(), GT())
+	has-builtin-type-op = ?(Degree(), GT(), Degree())
+	builtin-type-op-return: (Degree(), GT(), Degree()) -> BoolType()
+	has-builtin-type-op = ?(Degree(), GTE())
+	has-builtin-type-op = ?(Degree(), GTE(), Degree())
+	builtin-type-op-return: (Degree(), GTE(), Degree()) -> BoolType()
 	builtin-type-ops: Degree() -> [Operator(ADD(), Degree(), Degree()), Operator(ADD(), Degree(), Radian()), Operator(SUB(), Degree(), Degree()), Operator(SUB(), Degree(), Radian()), Operator(MUL(), Degree(), Degree()), Operator(MUL(), Degree(), RealType()), Operator(DIV(), Degree(), RealType()), Operator(UMIN(), Degree(), VoidType()), Operator(EQ(), BoolType(), Degree()), Operator(NEQ(), BoolType(), Degree()), Operator(LT(), BoolType(), Degree()), Operator(LTE(), BoolType(), Degree()), Operator(GT(), BoolType(), Degree()), Operator(GTE(), BoolType(), Degree())]
 
 	builtin-type-ops: Matrix3() -> []
@@ -194,197 +194,197 @@ rules
 
 	builtin-type-ops: Node() -> []
 
-	has-builtin-type-op(|param0) = ?ADD(); <?Quaternion()> param0
-	has-builtin-type-op(|param0) = ?(ADD(), Quaternion()); <?Quaternion()> param0
-	builtin-type-op-return(|param0) = ?(ADD(), Quaternion()); <?Quaternion()> param0; !Quaternion()
-	has-builtin-type-op(|param0) = ?SUB(); <?Quaternion()> param0
-	has-builtin-type-op(|param0) = ?(SUB(), Quaternion()); <?Quaternion()> param0
-	builtin-type-op-return(|param0) = ?(SUB(), Quaternion()); <?Quaternion()> param0; !Quaternion()
-	has-builtin-type-op(|param0) = ?MUL(); <?Quaternion()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), Quaternion()); <?Quaternion()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), Quaternion()); <?Quaternion()> param0; !Quaternion()
-	has-builtin-type-op(|param0) = ?MUL(); <?Quaternion()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), Vector3()); <?Quaternion()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), Vector3()); <?Quaternion()> param0; !Vector3()
-	has-builtin-type-op(|param0) = ?MUL(); <?Quaternion()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), RealType()); <?Quaternion()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), RealType()); <?Quaternion()> param0; !Quaternion()
-	has-builtin-type-op(|param0) = ?UMIN(); <?Quaternion()> param0
-	has-builtin-type-op(|param0) = ?(UMIN(), VoidType()); <?Quaternion()> param0
-	builtin-type-op-return(|param0) = ?(UMIN(), VoidType()); <?Quaternion()> param0; !Quaternion()
-	has-builtin-type-op(|param0) = ?EQ(); <?Quaternion()> param0
-	has-builtin-type-op(|param0) = ?(EQ(), Quaternion()); <?Quaternion()> param0
-	builtin-type-op-return(|param0) = ?(EQ(), Quaternion()); <?Quaternion()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?NEQ(); <?Quaternion()> param0
-	has-builtin-type-op(|param0) = ?(NEQ(), Quaternion()); <?Quaternion()> param0
-	builtin-type-op-return(|param0) = ?(NEQ(), Quaternion()); <?Quaternion()> param0; !BoolType()
+	has-builtin-type-op = ?(Quaternion(), ADD())
+	has-builtin-type-op = ?(Quaternion(), ADD(), Quaternion())
+	builtin-type-op-return: (Quaternion(), ADD(), Quaternion()) -> Quaternion()
+	has-builtin-type-op = ?(Quaternion(), SUB())
+	has-builtin-type-op = ?(Quaternion(), SUB(), Quaternion())
+	builtin-type-op-return: (Quaternion(), SUB(), Quaternion()) -> Quaternion()
+	has-builtin-type-op = ?(Quaternion(), MUL())
+	has-builtin-type-op = ?(Quaternion(), MUL(), Quaternion())
+	builtin-type-op-return: (Quaternion(), MUL(), Quaternion()) -> Quaternion()
+	has-builtin-type-op = ?(Quaternion(), MUL())
+	has-builtin-type-op = ?(Quaternion(), MUL(), Vector3())
+	builtin-type-op-return: (Quaternion(), MUL(), Vector3()) -> Vector3()
+	has-builtin-type-op = ?(Quaternion(), MUL())
+	has-builtin-type-op = ?(Quaternion(), MUL(), RealType())
+	builtin-type-op-return: (Quaternion(), MUL(), RealType()) -> Quaternion()
+	has-builtin-type-op = ?(Quaternion(), UMIN())
+	has-builtin-type-op = ?(Quaternion(), UMIN(), VoidType())
+	builtin-type-op-return: (Quaternion(), UMIN(), VoidType()) -> Quaternion()
+	has-builtin-type-op = ?(Quaternion(), EQ())
+	has-builtin-type-op = ?(Quaternion(), EQ(), Quaternion())
+	builtin-type-op-return: (Quaternion(), EQ(), Quaternion()) -> BoolType()
+	has-builtin-type-op = ?(Quaternion(), NEQ())
+	has-builtin-type-op = ?(Quaternion(), NEQ(), Quaternion())
+	builtin-type-op-return: (Quaternion(), NEQ(), Quaternion()) -> BoolType()
 	builtin-type-ops: Quaternion() -> [Operator(ADD(), Quaternion(), Quaternion()), Operator(SUB(), Quaternion(), Quaternion()), Operator(MUL(), Quaternion(), Quaternion()), Operator(MUL(), Vector3(), Vector3()), Operator(MUL(), Quaternion(), RealType()), Operator(UMIN(), Quaternion(), VoidType()), Operator(EQ(), BoolType(), Quaternion()), Operator(NEQ(), BoolType(), Quaternion())]
 
-	has-builtin-type-op(|param0) = ?ADD(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(ADD(), Radian()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(ADD(), Radian()); <?Radian()> param0; !Radian()
-	has-builtin-type-op(|param0) = ?ADD(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(ADD(), Degree()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(ADD(), Degree()); <?Radian()> param0; !Radian()
-	has-builtin-type-op(|param0) = ?SUB(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(SUB(), Radian()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(SUB(), Radian()); <?Radian()> param0; !Radian()
-	has-builtin-type-op(|param0) = ?SUB(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(SUB(), Degree()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(SUB(), Degree()); <?Radian()> param0; !Radian()
-	has-builtin-type-op(|param0) = ?MUL(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), Radian()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), Radian()); <?Radian()> param0; !Radian()
-	has-builtin-type-op(|param0) = ?MUL(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), RealType()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), RealType()); <?Radian()> param0; !Radian()
-	has-builtin-type-op(|param0) = ?DIV(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(DIV(), RealType()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(DIV(), RealType()); <?Radian()> param0; !Radian()
-	has-builtin-type-op(|param0) = ?UMIN(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(UMIN(), VoidType()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(UMIN(), VoidType()); <?Radian()> param0; !Radian()
-	has-builtin-type-op(|param0) = ?EQ(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(EQ(), Radian()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(EQ(), Radian()); <?Radian()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?NEQ(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(NEQ(), Radian()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(NEQ(), Radian()); <?Radian()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LT(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(LT(), Radian()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(LT(), Radian()); <?Radian()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LTE(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(LTE(), Radian()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(LTE(), Radian()); <?Radian()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GT(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(GT(), Radian()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(GT(), Radian()); <?Radian()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GTE(); <?Radian()> param0
-	has-builtin-type-op(|param0) = ?(GTE(), Radian()); <?Radian()> param0
-	builtin-type-op-return(|param0) = ?(GTE(), Radian()); <?Radian()> param0; !BoolType()
+	has-builtin-type-op = ?(Radian(), ADD())
+	has-builtin-type-op = ?(Radian(), ADD(), Radian())
+	builtin-type-op-return: (Radian(), ADD(), Radian()) -> Radian()
+	has-builtin-type-op = ?(Radian(), ADD())
+	has-builtin-type-op = ?(Radian(), ADD(), Degree())
+	builtin-type-op-return: (Radian(), ADD(), Degree()) -> Radian()
+	has-builtin-type-op = ?(Radian(), SUB())
+	has-builtin-type-op = ?(Radian(), SUB(), Radian())
+	builtin-type-op-return: (Radian(), SUB(), Radian()) -> Radian()
+	has-builtin-type-op = ?(Radian(), SUB())
+	has-builtin-type-op = ?(Radian(), SUB(), Degree())
+	builtin-type-op-return: (Radian(), SUB(), Degree()) -> Radian()
+	has-builtin-type-op = ?(Radian(), MUL())
+	has-builtin-type-op = ?(Radian(), MUL(), Radian())
+	builtin-type-op-return: (Radian(), MUL(), Radian()) -> Radian()
+	has-builtin-type-op = ?(Radian(), MUL())
+	has-builtin-type-op = ?(Radian(), MUL(), RealType())
+	builtin-type-op-return: (Radian(), MUL(), RealType()) -> Radian()
+	has-builtin-type-op = ?(Radian(), DIV())
+	has-builtin-type-op = ?(Radian(), DIV(), RealType())
+	builtin-type-op-return: (Radian(), DIV(), RealType()) -> Radian()
+	has-builtin-type-op = ?(Radian(), UMIN())
+	has-builtin-type-op = ?(Radian(), UMIN(), VoidType())
+	builtin-type-op-return: (Radian(), UMIN(), VoidType()) -> Radian()
+	has-builtin-type-op = ?(Radian(), EQ())
+	has-builtin-type-op = ?(Radian(), EQ(), Radian())
+	builtin-type-op-return: (Radian(), EQ(), Radian()) -> BoolType()
+	has-builtin-type-op = ?(Radian(), NEQ())
+	has-builtin-type-op = ?(Radian(), NEQ(), Radian())
+	builtin-type-op-return: (Radian(), NEQ(), Radian()) -> BoolType()
+	has-builtin-type-op = ?(Radian(), LT())
+	has-builtin-type-op = ?(Radian(), LT(), Radian())
+	builtin-type-op-return: (Radian(), LT(), Radian()) -> BoolType()
+	has-builtin-type-op = ?(Radian(), LTE())
+	has-builtin-type-op = ?(Radian(), LTE(), Radian())
+	builtin-type-op-return: (Radian(), LTE(), Radian()) -> BoolType()
+	has-builtin-type-op = ?(Radian(), GT())
+	has-builtin-type-op = ?(Radian(), GT(), Radian())
+	builtin-type-op-return: (Radian(), GT(), Radian()) -> BoolType()
+	has-builtin-type-op = ?(Radian(), GTE())
+	has-builtin-type-op = ?(Radian(), GTE(), Radian())
+	builtin-type-op-return: (Radian(), GTE(), Radian()) -> BoolType()
 	builtin-type-ops: Radian() -> [Operator(ADD(), Radian(), Radian()), Operator(ADD(), Radian(), Degree()), Operator(SUB(), Radian(), Radian()), Operator(SUB(), Radian(), Degree()), Operator(MUL(), Radian(), Radian()), Operator(MUL(), Radian(), RealType()), Operator(DIV(), Radian(), RealType()), Operator(UMIN(), Radian(), VoidType()), Operator(EQ(), BoolType(), Radian()), Operator(NEQ(), BoolType(), Radian()), Operator(LT(), BoolType(), Radian()), Operator(LTE(), BoolType(), Radian()), Operator(GT(), BoolType(), Radian()), Operator(GTE(), BoolType(), Radian())]
 
-	has-builtin-type-op(|param0) = ?ADD(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(ADD(), Vector2()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(ADD(), Vector2()); <?Vector2()> param0; !Vector2()
-	has-builtin-type-op(|param0) = ?SUB(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(SUB(), Vector2()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(SUB(), Vector2()); <?Vector2()> param0; !Vector2()
-	has-builtin-type-op(|param0) = ?MUL(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), Vector2()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), Vector2()); <?Vector2()> param0; !Vector2()
-	has-builtin-type-op(|param0) = ?MUL(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), RealType()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), RealType()); <?Vector2()> param0; !Vector2()
-	has-builtin-type-op(|param0) = ?DIV(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(DIV(), Vector2()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(DIV(), Vector2()); <?Vector2()> param0; !Vector2()
-	has-builtin-type-op(|param0) = ?DIV(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(DIV(), RealType()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(DIV(), RealType()); <?Vector2()> param0; !Vector2()
-	has-builtin-type-op(|param0) = ?UMIN(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(UMIN(), VoidType()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(UMIN(), VoidType()); <?Vector2()> param0; !Vector2()
-	has-builtin-type-op(|param0) = ?EQ(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(EQ(), Vector2()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(EQ(), Vector2()); <?Vector2()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?NEQ(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(NEQ(), Vector2()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(NEQ(), Vector2()); <?Vector2()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LT(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(LT(), Vector2()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(LT(), Vector2()); <?Vector2()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LTE(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(LTE(), Vector2()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(LTE(), Vector2()); <?Vector2()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GT(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(GT(), Vector2()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(GT(), Vector2()); <?Vector2()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GTE(); <?Vector2()> param0
-	has-builtin-type-op(|param0) = ?(GTE(), Vector2()); <?Vector2()> param0
-	builtin-type-op-return(|param0) = ?(GTE(), Vector2()); <?Vector2()> param0; !BoolType()
+	has-builtin-type-op = ?(Vector2(), ADD())
+	has-builtin-type-op = ?(Vector2(), ADD(), Vector2())
+	builtin-type-op-return: (Vector2(), ADD(), Vector2()) -> Vector2()
+	has-builtin-type-op = ?(Vector2(), SUB())
+	has-builtin-type-op = ?(Vector2(), SUB(), Vector2())
+	builtin-type-op-return: (Vector2(), SUB(), Vector2()) -> Vector2()
+	has-builtin-type-op = ?(Vector2(), MUL())
+	has-builtin-type-op = ?(Vector2(), MUL(), Vector2())
+	builtin-type-op-return: (Vector2(), MUL(), Vector2()) -> Vector2()
+	has-builtin-type-op = ?(Vector2(), MUL())
+	has-builtin-type-op = ?(Vector2(), MUL(), RealType())
+	builtin-type-op-return: (Vector2(), MUL(), RealType()) -> Vector2()
+	has-builtin-type-op = ?(Vector2(), DIV())
+	has-builtin-type-op = ?(Vector2(), DIV(), Vector2())
+	builtin-type-op-return: (Vector2(), DIV(), Vector2()) -> Vector2()
+	has-builtin-type-op = ?(Vector2(), DIV())
+	has-builtin-type-op = ?(Vector2(), DIV(), RealType())
+	builtin-type-op-return: (Vector2(), DIV(), RealType()) -> Vector2()
+	has-builtin-type-op = ?(Vector2(), UMIN())
+	has-builtin-type-op = ?(Vector2(), UMIN(), VoidType())
+	builtin-type-op-return: (Vector2(), UMIN(), VoidType()) -> Vector2()
+	has-builtin-type-op = ?(Vector2(), EQ())
+	has-builtin-type-op = ?(Vector2(), EQ(), Vector2())
+	builtin-type-op-return: (Vector2(), EQ(), Vector2()) -> BoolType()
+	has-builtin-type-op = ?(Vector2(), NEQ())
+	has-builtin-type-op = ?(Vector2(), NEQ(), Vector2())
+	builtin-type-op-return: (Vector2(), NEQ(), Vector2()) -> BoolType()
+	has-builtin-type-op = ?(Vector2(), LT())
+	has-builtin-type-op = ?(Vector2(), LT(), Vector2())
+	builtin-type-op-return: (Vector2(), LT(), Vector2()) -> BoolType()
+	has-builtin-type-op = ?(Vector2(), LTE())
+	has-builtin-type-op = ?(Vector2(), LTE(), Vector2())
+	builtin-type-op-return: (Vector2(), LTE(), Vector2()) -> BoolType()
+	has-builtin-type-op = ?(Vector2(), GT())
+	has-builtin-type-op = ?(Vector2(), GT(), Vector2())
+	builtin-type-op-return: (Vector2(), GT(), Vector2()) -> BoolType()
+	has-builtin-type-op = ?(Vector2(), GTE())
+	has-builtin-type-op = ?(Vector2(), GTE(), Vector2())
+	builtin-type-op-return: (Vector2(), GTE(), Vector2()) -> BoolType()
 	builtin-type-ops: Vector2() -> [Operator(ADD(), Vector2(), Vector2()), Operator(SUB(), Vector2(), Vector2()), Operator(MUL(), Vector2(), Vector2()), Operator(MUL(), Vector2(), RealType()), Operator(DIV(), Vector2(), Vector2()), Operator(DIV(), Vector2(), RealType()), Operator(UMIN(), Vector2(), VoidType()), Operator(EQ(), BoolType(), Vector2()), Operator(NEQ(), BoolType(), Vector2()), Operator(LT(), BoolType(), Vector2()), Operator(LTE(), BoolType(), Vector2()), Operator(GT(), BoolType(), Vector2()), Operator(GTE(), BoolType(), Vector2())]
 
-	has-builtin-type-op(|param0) = ?ADD(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(ADD(), Vector3()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(ADD(), Vector3()); <?Vector3()> param0; !Vector3()
-	has-builtin-type-op(|param0) = ?SUB(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(SUB(), Vector3()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(SUB(), Vector3()); <?Vector3()> param0; !Vector3()
-	has-builtin-type-op(|param0) = ?MUL(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), Vector3()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), Vector3()); <?Vector3()> param0; !Vector3()
-	has-builtin-type-op(|param0) = ?MUL(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), RealType()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), RealType()); <?Vector3()> param0; !Vector3()
-	has-builtin-type-op(|param0) = ?DIV(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(DIV(), Vector3()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(DIV(), Vector3()); <?Vector3()> param0; !Vector3()
-	has-builtin-type-op(|param0) = ?DIV(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(DIV(), RealType()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(DIV(), RealType()); <?Vector3()> param0; !Vector3()
-	has-builtin-type-op(|param0) = ?UMIN(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(UMIN(), VoidType()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(UMIN(), VoidType()); <?Vector3()> param0; !Vector3()
-	has-builtin-type-op(|param0) = ?EQ(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(EQ(), Vector3()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(EQ(), Vector3()); <?Vector3()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?NEQ(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(NEQ(), Vector3()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(NEQ(), Vector3()); <?Vector3()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LT(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(LT(), Vector3()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(LT(), Vector3()); <?Vector3()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LTE(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(LTE(), Vector3()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(LTE(), Vector3()); <?Vector3()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GT(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(GT(), Vector3()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(GT(), Vector3()); <?Vector3()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GTE(); <?Vector3()> param0
-	has-builtin-type-op(|param0) = ?(GTE(), Vector3()); <?Vector3()> param0
-	builtin-type-op-return(|param0) = ?(GTE(), Vector3()); <?Vector3()> param0; !BoolType()
+	has-builtin-type-op = ?(Vector3(), ADD())
+	has-builtin-type-op = ?(Vector3(), ADD(), Vector3())
+	builtin-type-op-return: (Vector3(), ADD(), Vector3()) -> Vector3()
+	has-builtin-type-op = ?(Vector3(), SUB())
+	has-builtin-type-op = ?(Vector3(), SUB(), Vector3())
+	builtin-type-op-return: (Vector3(), SUB(), Vector3()) -> Vector3()
+	has-builtin-type-op = ?(Vector3(), MUL())
+	has-builtin-type-op = ?(Vector3(), MUL(), Vector3())
+	builtin-type-op-return: (Vector3(), MUL(), Vector3()) -> Vector3()
+	has-builtin-type-op = ?(Vector3(), MUL())
+	has-builtin-type-op = ?(Vector3(), MUL(), RealType())
+	builtin-type-op-return: (Vector3(), MUL(), RealType()) -> Vector3()
+	has-builtin-type-op = ?(Vector3(), DIV())
+	has-builtin-type-op = ?(Vector3(), DIV(), Vector3())
+	builtin-type-op-return: (Vector3(), DIV(), Vector3()) -> Vector3()
+	has-builtin-type-op = ?(Vector3(), DIV())
+	has-builtin-type-op = ?(Vector3(), DIV(), RealType())
+	builtin-type-op-return: (Vector3(), DIV(), RealType()) -> Vector3()
+	has-builtin-type-op = ?(Vector3(), UMIN())
+	has-builtin-type-op = ?(Vector3(), UMIN(), VoidType())
+	builtin-type-op-return: (Vector3(), UMIN(), VoidType()) -> Vector3()
+	has-builtin-type-op = ?(Vector3(), EQ())
+	has-builtin-type-op = ?(Vector3(), EQ(), Vector3())
+	builtin-type-op-return: (Vector3(), EQ(), Vector3()) -> BoolType()
+	has-builtin-type-op = ?(Vector3(), NEQ())
+	has-builtin-type-op = ?(Vector3(), NEQ(), Vector3())
+	builtin-type-op-return: (Vector3(), NEQ(), Vector3()) -> BoolType()
+	has-builtin-type-op = ?(Vector3(), LT())
+	has-builtin-type-op = ?(Vector3(), LT(), Vector3())
+	builtin-type-op-return: (Vector3(), LT(), Vector3()) -> BoolType()
+	has-builtin-type-op = ?(Vector3(), LTE())
+	has-builtin-type-op = ?(Vector3(), LTE(), Vector3())
+	builtin-type-op-return: (Vector3(), LTE(), Vector3()) -> BoolType()
+	has-builtin-type-op = ?(Vector3(), GT())
+	has-builtin-type-op = ?(Vector3(), GT(), Vector3())
+	builtin-type-op-return: (Vector3(), GT(), Vector3()) -> BoolType()
+	has-builtin-type-op = ?(Vector3(), GTE())
+	has-builtin-type-op = ?(Vector3(), GTE(), Vector3())
+	builtin-type-op-return: (Vector3(), GTE(), Vector3()) -> BoolType()
 	builtin-type-ops: Vector3() -> [Operator(ADD(), Vector3(), Vector3()), Operator(SUB(), Vector3(), Vector3()), Operator(MUL(), Vector3(), Vector3()), Operator(MUL(), Vector3(), RealType()), Operator(DIV(), Vector3(), Vector3()), Operator(DIV(), Vector3(), RealType()), Operator(UMIN(), Vector3(), VoidType()), Operator(EQ(), BoolType(), Vector3()), Operator(NEQ(), BoolType(), Vector3()), Operator(LT(), BoolType(), Vector3()), Operator(LTE(), BoolType(), Vector3()), Operator(GT(), BoolType(), Vector3()), Operator(GTE(), BoolType(), Vector3())]
 
-	has-builtin-type-op(|param0) = ?ADD(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(ADD(), Vector4()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(ADD(), Vector4()); <?Vector4()> param0; !Vector4()
-	has-builtin-type-op(|param0) = ?SUB(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(SUB(), Vector4()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(SUB(), Vector4()); <?Vector4()> param0; !Vector4()
-	has-builtin-type-op(|param0) = ?MUL(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), Vector4()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), Vector4()); <?Vector4()> param0; !Vector4()
-	has-builtin-type-op(|param0) = ?MUL(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(MUL(), RealType()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(MUL(), RealType()); <?Vector4()> param0; !Vector4()
-	has-builtin-type-op(|param0) = ?DIV(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(DIV(), Vector4()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(DIV(), Vector4()); <?Vector4()> param0; !Vector4()
-	has-builtin-type-op(|param0) = ?DIV(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(DIV(), RealType()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(DIV(), RealType()); <?Vector4()> param0; !Vector4()
-	has-builtin-type-op(|param0) = ?UMIN(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(UMIN(), VoidType()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(UMIN(), VoidType()); <?Vector4()> param0; !Vector4()
-	has-builtin-type-op(|param0) = ?EQ(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(EQ(), Vector4()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(EQ(), Vector4()); <?Vector4()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?NEQ(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(NEQ(), Vector4()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(NEQ(), Vector4()); <?Vector4()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LT(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(LT(), Vector4()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(LT(), Vector4()); <?Vector4()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?LTE(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(LTE(), Vector4()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(LTE(), Vector4()); <?Vector4()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GT(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(GT(), Vector4()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(GT(), Vector4()); <?Vector4()> param0; !BoolType()
-	has-builtin-type-op(|param0) = ?GTE(); <?Vector4()> param0
-	has-builtin-type-op(|param0) = ?(GTE(), Vector4()); <?Vector4()> param0
-	builtin-type-op-return(|param0) = ?(GTE(), Vector4()); <?Vector4()> param0; !BoolType()
+	has-builtin-type-op = ?(Vector4(), ADD())
+	has-builtin-type-op = ?(Vector4(), ADD(), Vector4())
+	builtin-type-op-return: (Vector4(), ADD(), Vector4()) -> Vector4()
+	has-builtin-type-op = ?(Vector4(), SUB())
+	has-builtin-type-op = ?(Vector4(), SUB(), Vector4())
+	builtin-type-op-return: (Vector4(), SUB(), Vector4()) -> Vector4()
+	has-builtin-type-op = ?(Vector4(), MUL())
+	has-builtin-type-op = ?(Vector4(), MUL(), Vector4())
+	builtin-type-op-return: (Vector4(), MUL(), Vector4()) -> Vector4()
+	has-builtin-type-op = ?(Vector4(), MUL())
+	has-builtin-type-op = ?(Vector4(), MUL(), RealType())
+	builtin-type-op-return: (Vector4(), MUL(), RealType()) -> Vector4()
+	has-builtin-type-op = ?(Vector4(), DIV())
+	has-builtin-type-op = ?(Vector4(), DIV(), Vector4())
+	builtin-type-op-return: (Vector4(), DIV(), Vector4()) -> Vector4()
+	has-builtin-type-op = ?(Vector4(), DIV())
+	has-builtin-type-op = ?(Vector4(), DIV(), RealType())
+	builtin-type-op-return: (Vector4(), DIV(), RealType()) -> Vector4()
+	has-builtin-type-op = ?(Vector4(), UMIN())
+	has-builtin-type-op = ?(Vector4(), UMIN(), VoidType())
+	builtin-type-op-return: (Vector4(), UMIN(), VoidType()) -> Vector4()
+	has-builtin-type-op = ?(Vector4(), EQ())
+	has-builtin-type-op = ?(Vector4(), EQ(), Vector4())
+	builtin-type-op-return: (Vector4(), EQ(), Vector4()) -> BoolType()
+	has-builtin-type-op = ?(Vector4(), NEQ())
+	has-builtin-type-op = ?(Vector4(), NEQ(), Vector4())
+	builtin-type-op-return: (Vector4(), NEQ(), Vector4()) -> BoolType()
+	has-builtin-type-op = ?(Vector4(), LT())
+	has-builtin-type-op = ?(Vector4(), LT(), Vector4())
+	builtin-type-op-return: (Vector4(), LT(), Vector4()) -> BoolType()
+	has-builtin-type-op = ?(Vector4(), LTE())
+	has-builtin-type-op = ?(Vector4(), LTE(), Vector4())
+	builtin-type-op-return: (Vector4(), LTE(), Vector4()) -> BoolType()
+	has-builtin-type-op = ?(Vector4(), GT())
+	has-builtin-type-op = ?(Vector4(), GT(), Vector4())
+	builtin-type-op-return: (Vector4(), GT(), Vector4()) -> BoolType()
+	has-builtin-type-op = ?(Vector4(), GTE())
+	has-builtin-type-op = ?(Vector4(), GTE(), Vector4())
+	builtin-type-op-return: (Vector4(), GTE(), Vector4()) -> BoolType()
 	builtin-type-ops: Vector4() -> [Operator(ADD(), Vector4(), Vector4()), Operator(SUB(), Vector4(), Vector4()), Operator(MUL(), Vector4(), Vector4()), Operator(MUL(), Vector4(), RealType()), Operator(DIV(), Vector4(), Vector4()), Operator(DIV(), Vector4(), RealType()), Operator(UMIN(), Vector4(), VoidType()), Operator(EQ(), BoolType(), Vector4()), Operator(NEQ(), BoolType(), Vector4()), Operator(LT(), BoolType(), Vector4()), Operator(LTE(), BoolType(), Vector4()), Operator(GT(), BoolType(), Vector4()), Operator(GTE(), BoolType(), Vector4())]
 
 	builtin-type-ops: RakNetGUID() -> []

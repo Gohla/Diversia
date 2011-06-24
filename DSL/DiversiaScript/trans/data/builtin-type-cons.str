@@ -8,54 +8,54 @@ imports
 
 rules
 
-	has-builtin-type-cons(|param0) = ?[]; <?LayerInstance()> param0
-	has-builtin-type-cons(|param0) = ?[RealType()]; <?LayerInstance()> param0
+	has-builtin-type-cons = ?(LayerInstance(), [])
+	has-builtin-type-cons = ?(LayerInstance(), [RealType()])
 
-	has-builtin-type-cons(|param0) = ?[]; <?ComponentHandle()> param0
-	has-builtin-type-cons(|param0) = ?[IntType(), StringType()]; <?ComponentHandle()> param0
+	has-builtin-type-cons = ?(ComponentHandle(), [])
+	has-builtin-type-cons = ?(ComponentHandle(), [IntType(), StringType()])
 
-	has-builtin-type-cons(|param0) = ?[IntType(), IntType()]; <?Axis()> param0
+	has-builtin-type-cons = ?(Axis(), [IntType(), IntType()])
 
-	has-builtin-type-cons(|param0) = ?[]; <?KeyboardState()> param0
+	has-builtin-type-cons = ?(KeyboardState(), [])
 
-	has-builtin-type-cons(|param0) = ?[]; <?MouseState()> param0
-	has-builtin-type-cons(|param0) = ?[MouseState()]; <?MouseState()> param0
+	has-builtin-type-cons = ?(MouseState(), [])
+	has-builtin-type-cons = ?(MouseState(), [MouseState()])
 
-	has-builtin-type-cons(|param0) = ?[]; <?ResourceInfo()> param0
-	has-builtin-type-cons(|param0) = ?[StringType()]; <?ResourceInfo()> param0
-	has-builtin-type-cons(|param0) = ?[StringType(), StringType()]; <?ResourceInfo()> param0
+	has-builtin-type-cons = ?(ResourceInfo(), [])
+	has-builtin-type-cons = ?(ResourceInfo(), [StringType()])
+	has-builtin-type-cons = ?(ResourceInfo(), [StringType(), StringType()])
 
-	has-builtin-type-cons(|param0) = ?[RealType()]; <?Angle()> param0
+	has-builtin-type-cons = ?(Angle(), [RealType()])
 
-	has-builtin-type-cons(|param0) = ?[]; <?Colour()> param0
-	has-builtin-type-cons(|param0) = ?[RealType(), RealType(), RealType()]; <?Colour()> param0
-	has-builtin-type-cons(|param0) = ?[RealType(), RealType(), RealType(), RealType()]; <?Colour()> param0
+	has-builtin-type-cons = ?(Colour(), [])
+	has-builtin-type-cons = ?(Colour(), [RealType(), RealType(), RealType()])
+	has-builtin-type-cons = ?(Colour(), [RealType(), RealType(), RealType(), RealType()])
 
-	has-builtin-type-cons(|param0) = ?[RealType()]; <?Degree()> param0
-	has-builtin-type-cons(|param0) = ?[Radian()]; <?Degree()> param0
+	has-builtin-type-cons = ?(Degree(), [RealType()])
+	has-builtin-type-cons = ?(Degree(), [Radian()])
 
-	has-builtin-type-cons(|param0) = ?[]; <?Matrix3()> param0
+	has-builtin-type-cons = ?(Matrix3(), [])
 
-	has-builtin-type-cons(|param0) = ?[]; <?Matrix4()> param0
+	has-builtin-type-cons = ?(Matrix4(), [])
 
-	has-builtin-type-cons(|param0) = ?[]; <?Quaternion()> param0
-	has-builtin-type-cons(|param0) = ?[RealType(), RealType(), RealType(), RealType()]; <?Quaternion()> param0
-	has-builtin-type-cons(|param0) = ?[Radian(), Vector3()]; <?Quaternion()> param0
-	has-builtin-type-cons(|param0) = ?[Vector3(), Vector3(), Vector3()]; <?Quaternion()> param0
+	has-builtin-type-cons = ?(Quaternion(), [])
+	has-builtin-type-cons = ?(Quaternion(), [RealType(), RealType(), RealType(), RealType()])
+	has-builtin-type-cons = ?(Quaternion(), [Radian(), Vector3()])
+	has-builtin-type-cons = ?(Quaternion(), [Vector3(), Vector3(), Vector3()])
 
-	has-builtin-type-cons(|param0) = ?[RealType()]; <?Radian()> param0
-	has-builtin-type-cons(|param0) = ?[Degree()]; <?Radian()> param0
-	has-builtin-type-cons(|param0) = ?[Radian()]; <?Radian()> param0
+	has-builtin-type-cons = ?(Radian(), [RealType()])
+	has-builtin-type-cons = ?(Radian(), [Degree()])
+	has-builtin-type-cons = ?(Radian(), [Radian()])
 
-	has-builtin-type-cons(|param0) = ?[]; <?Vector2()> param0
-	has-builtin-type-cons(|param0) = ?[RealType(), RealType()]; <?Vector2()> param0
-	has-builtin-type-cons(|param0) = ?[RealType()]; <?Vector2()> param0
+	has-builtin-type-cons = ?(Vector2(), [])
+	has-builtin-type-cons = ?(Vector2(), [RealType(), RealType()])
+	has-builtin-type-cons = ?(Vector2(), [RealType()])
 
-	has-builtin-type-cons(|param0) = ?[]; <?Vector3()> param0
-	has-builtin-type-cons(|param0) = ?[RealType(), RealType(), RealType()]; <?Vector3()> param0
-	has-builtin-type-cons(|param0) = ?[RealType()]; <?Vector3()> param0
+	has-builtin-type-cons = ?(Vector3(), [])
+	has-builtin-type-cons = ?(Vector3(), [RealType(), RealType(), RealType()])
+	has-builtin-type-cons = ?(Vector3(), [RealType()])
 
-	has-builtin-type-cons(|param0) = ?[]; <?Vector4()> param0
-	has-builtin-type-cons(|param0) = ?[RealType(), RealType(), RealType(), RealType()]; <?Vector4()> param0
-	has-builtin-type-cons(|param0) = ?[RealType()]; <?Vector4()> param0
+	has-builtin-type-cons = ?(Vector4(), [])
+	has-builtin-type-cons = ?(Vector4(), [RealType(), RealType(), RealType(), RealType()])
+	has-builtin-type-cons = ?(Vector4(), [RealType()])
 

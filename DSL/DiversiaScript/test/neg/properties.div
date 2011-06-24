@@ -1,0 +1,130 @@
+// All plugin properties should report an error.
+plugin SceneManager {
+	// Incorrect value type
+	SkyMaterial = 1
+	SkyType = "test"
+	SkyEnabled = Vector2(1, 2)
+	SkyDrawFirst = 0.0
+	AmbientLight = Vector4(1, 2, 3, 4)
+	
+	// Incorrect value type in parent.
+	ForceSerialize = 1 // TODO: Fix parse failure
+	
+	// Read only
+	TypeName = "test"
+	Mode = Mode.Client
+	
+	// Undefined property
+	ShapeType = "test"
+	MeshFile = "test"
+	//test = 1 (syntax error)
+}
+
+def Test {
+	// All component properties should report an error.
+    component RigidBody {
+    	// Incorrect value type
+        PhysicsType = 1
+        Restitution = "test"
+        LinearDampening = Vector2(1, 2)
+        AngularDampening = Vector4(1, 2, 3, 4)
+        
+    	// Incorrect value type in parent.
+		ForceSerialize = 1 // TODO: Fix parse failure
+		
+		// Read only
+		TypeName = "test"
+		Mode = Mode.Client
+		
+		// Undefined property
+		SkyMaterial = "test"
+		AmbientLight = "test"
+		//test = 1 (syntax error)
+    }
+}
+
+def Test2 {
+	// All variable/property definitions should report an error.
+	// Incorrect value type
+	DisplayName = 1
+	
+	// Incorrect value type in parent.
+	Position = 1
+	Orientation = 1
+	
+	// Read only
+	Mode = Mode.Client
+	Name = "test"
+	
+	// Incorrect value type
+	var mTest : Int = "test"
+	var mTest2 : String = 1
+	prop mTest3 : Int = [1, 2]
+	prop mTest4 : Vector4 = [1, 2, 3]
+	prop mTest5 : Real = "test"
+	
+	// Undefined
+	test = 1
+	DisplayName = testtest
+	var mTest6 : Int = testtesttest
+	prop mTest7 : Vector3 = testtesttesttest
+}
+
+def Test3 {
+	// No errors
+	var mTest : Int = 1
+	var mTest2 : String = "test"
+	prop mTest3 : Int = 1
+	prop mTest4 : Vector3 = [1, 2, 3]
+	prop mTest5 : String = "test"
+}
+
+on Create {
+	// All properties should report an error.
+	var test : Test3 = new Test3 {
+		// Incorect value type
+		mTest3 = "test"
+		mTest4 = 1
+		mTest5 = Vector2(1, 2)
+		
+		// Incorrect value type in parent.
+		DisplayName = [1, 2]
+		Position = 1
+		Orientation = "test"
+		
+		// Read only
+		Mode = Mode.Client
+		Name = "test"
+		
+		// Cannot change vars, they are private.
+		mTest = 2
+		mTest2 = "test2"
+		
+		// Undefined
+		testest = "testtest"
+		test = "test"
+	};
+	
+	// Incorect value type
+	test.mTest3 = "test";
+	test.mTest4 = 1;
+	test.mTest5 = Vector2(1, 2);
+	
+	// Incorrect value type in parent.
+	test.DisplayName = [1, 2];
+	test.Position = 1;
+	test.Position.X = "test";
+	test.Orientation = "test";
+	
+	// Read only
+	test.Mode = Mode.Client;
+	test.Name = "test";
+	
+	// Cannot change vars, they are private.
+	test.mTest = 2;
+	test.mTest2 = "test2";
+	
+	// Undefined
+	testest = "testtest";
+	testtesttest = "test";
+}

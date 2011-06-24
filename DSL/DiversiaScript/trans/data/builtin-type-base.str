@@ -8,40 +8,40 @@ imports
 
 rules
 
-	is-builtin-type-base(|param0) = ?Component(); <?ClientComponent()> param0
-	is-builtin-type-base(|param0) = ?PropertySynchronization(); <?ClientComponent()> param0
+	is-builtin-type-base = ?(ClientComponent(), Component())
+	is-builtin-type-base = ?(ClientComponent(), PropertySynchronization())
 	builtin-type-bases: ClientComponent() -> [Component(), PropertySynchronization()]
 
-	is-builtin-type-base(|param0) = ?ComponentTemplate(); <?ClientComponentTemplate()> param0
-	is-builtin-type-base(|param0) = ?PropertySynchronization(); <?ClientComponentTemplate()> param0
+	is-builtin-type-base = ?(ClientComponentTemplate(), ComponentTemplate())
+	is-builtin-type-base = ?(ClientComponentTemplate(), PropertySynchronization())
 	builtin-type-bases: ClientComponentTemplate() -> [ComponentTemplate(), PropertySynchronization()]
 
-	is-builtin-type-base(|param0) = ?Object(); <?ClientObject()> param0
+	is-builtin-type-base = ?(ClientObject(), Object())
 	builtin-type-bases: ClientObject() -> [Object()]
 
-	is-builtin-type-base(|param0) = ?ObjectManager(); <?ClientObjectManager()> param0
-	is-builtin-type-base(|param0) = ?ServerPlugin(); <?ClientObjectManager()> param0
+	is-builtin-type-base = ?(ClientObjectManager(), ObjectManager())
+	is-builtin-type-base = ?(ClientObjectManager(), ServerPlugin())
 	builtin-type-bases: ClientObjectManager() -> [ObjectManager(), ServerPlugin()]
 
-	is-builtin-type-base(|param0) = ?ObjectTemplate(); <?ClientObjectTemplate()> param0
-	is-builtin-type-base(|param0) = ?PropertySynchronization(); <?ClientObjectTemplate()> param0
+	is-builtin-type-base = ?(ClientObjectTemplate(), ObjectTemplate())
+	is-builtin-type-base = ?(ClientObjectTemplate(), PropertySynchronization())
 	builtin-type-bases: ClientObjectTemplate() -> [ObjectTemplate(), PropertySynchronization()]
 
-	is-builtin-type-base(|param0) = ?ObjectTemplateManager(); <?ClientObjectTemplateManager()> param0
-	is-builtin-type-base(|param0) = ?ServerPlugin(); <?ClientObjectTemplateManager()> param0
+	is-builtin-type-base = ?(ClientObjectTemplateManager(), ObjectTemplateManager())
+	is-builtin-type-base = ?(ClientObjectTemplateManager(), ServerPlugin())
 	builtin-type-bases: ClientObjectTemplateManager() -> [ObjectTemplateManager(), ServerPlugin()]
 
-	is-builtin-type-base(|param0) = ?ServerPlugin(); <?Lua()> param0
+	is-builtin-type-base = ?(Lua(), ServerPlugin())
 	builtin-type-bases: Lua() -> [ServerPlugin()]
 
-	is-builtin-type-base(|param0) = ?ServerPlugin(); <?PermissionManager()> param0
+	is-builtin-type-base = ?(PermissionManager(), ServerPlugin())
 	builtin-type-bases: PermissionManager() -> [ServerPlugin()]
 
-	is-builtin-type-base(|param0) = ?ServerPlugin(); <?ServerNeighborsPlugin()> param0
+	is-builtin-type-base = ?(ServerNeighborsPlugin(), ServerPlugin())
 	builtin-type-bases: ServerNeighborsPlugin() -> [ServerPlugin()]
 
-	is-builtin-type-base(|param0) = ?ClientServerPlugin(); <?ServerPlugin()> param0
-	is-builtin-type-base(|param0) = ?PropertySynchronization(); <?ServerPlugin()> param0
+	is-builtin-type-base = ?(ServerPlugin(), ClientServerPlugin())
+	is-builtin-type-base = ?(ServerPlugin(), PropertySynchronization())
 	builtin-type-bases: ServerPlugin() -> [ClientServerPlugin(), PropertySynchronization()]
 
 	builtin-type-bases: ClientServerPlugin() -> []
@@ -56,76 +56,76 @@ rules
 
 	builtin-type-bases: ComponentTemplate() -> []
 
-	is-builtin-type-base(|param0) = ?Node(); <?Object()> param0
+	is-builtin-type-base = ?(Object(), Node())
 	builtin-type-bases: Object() -> [Node()]
 
 	builtin-type-bases: ObjectManager() -> []
 
-	is-builtin-type-base(|param0) = ?Node(); <?ObjectTemplate()> param0
+	is-builtin-type-base = ?(ObjectTemplate(), Node())
 	builtin-type-bases: ObjectTemplate() -> [Node()]
 
 	builtin-type-bases: ObjectTemplateManager() -> []
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?Animation()> param0
+	is-builtin-type-base = ?(Animation(), ClientComponent())
 	builtin-type-bases: Animation() -> [ClientComponent()]
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?AreaTrigger()> param0
+	is-builtin-type-base = ?(AreaTrigger(), ClientComponent())
 	builtin-type-bases: AreaTrigger() -> [ClientComponent()]
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?Audio()> param0
+	is-builtin-type-base = ?(Audio(), ClientComponent())
 	builtin-type-bases: Audio() -> [ClientComponent()]
 
 	builtin-type-bases: Axis() -> []
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?Camera()> param0
+	is-builtin-type-base = ?(Camera(), ClientComponent())
 	builtin-type-bases: Camera() -> [ClientComponent()]
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?CollisionShape()> param0
+	is-builtin-type-base = ?(CollisionShape(), ClientComponent())
 	builtin-type-bases: CollisionShape() -> [ClientComponent()]
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?Entity()> param0
+	is-builtin-type-base = ?(Entity(), ClientComponent())
 	builtin-type-bases: Entity() -> [ClientComponent()]
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?ForceField()> param0
+	is-builtin-type-base = ?(ForceField(), ClientComponent())
 	builtin-type-bases: ForceField() -> [ClientComponent()]
 
-	is-builtin-type-base(|param0) = ?ServerPlugin(); <?GameMode()> param0
+	is-builtin-type-base = ?(GameMode(), ServerPlugin())
 	builtin-type-bases: GameMode() -> [ServerPlugin()]
 
 	builtin-type-bases: InputManager() -> []
 
 	builtin-type-bases: KeyboardState() -> []
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?Light()> param0
+	is-builtin-type-base = ?(Light(), ClientComponent())
 	builtin-type-bases: Light() -> [ClientComponent()]
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?Mesh()> param0
+	is-builtin-type-base = ?(Mesh(), ClientComponent())
 	builtin-type-bases: Mesh() -> [ClientComponent()]
 
 	builtin-type-bases: MouseState() -> []
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?Particle()> param0
+	is-builtin-type-base = ?(Particle(), ClientComponent())
 	builtin-type-bases: Particle() -> [ClientComponent()]
 
-	is-builtin-type-base(|param0) = ?ServerPlugin(); <?ResourceManager()> param0
+	is-builtin-type-base = ?(ResourceManager(), ServerPlugin())
 	builtin-type-bases: ResourceManager() -> [ServerPlugin()]
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?RigidBody()> param0
+	is-builtin-type-base = ?(RigidBody(), ClientComponent())
 	builtin-type-bases: RigidBody() -> [ClientComponent()]
 
-	is-builtin-type-base(|param0) = ?ServerPlugin(); <?SceneManager()> param0
+	is-builtin-type-base = ?(SceneManager(), ServerPlugin())
 	builtin-type-bases: SceneManager() -> [ServerPlugin()]
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?SceneNode()> param0
+	is-builtin-type-base = ?(SceneNode(), ClientComponent())
 	builtin-type-bases: SceneNode() -> [ClientComponent()]
 
-	is-builtin-type-base(|param0) = ?ServerPlugin(); <?Sky()> param0
+	is-builtin-type-base = ?(Sky(), ServerPlugin())
 	builtin-type-bases: Sky() -> [ServerPlugin()]
 
-	is-builtin-type-base(|param0) = ?ServerPlugin(); <?Terrain()> param0
+	is-builtin-type-base = ?(Terrain(), ServerPlugin())
 	builtin-type-bases: Terrain() -> [ServerPlugin()]
 
-	is-builtin-type-base(|param0) = ?ClientComponent(); <?Text()> param0
+	is-builtin-type-base = ?(Text(), ClientComponent())
 	builtin-type-bases: Text() -> [ClientComponent()]
 
 	builtin-type-bases: PropertySynchronization() -> []

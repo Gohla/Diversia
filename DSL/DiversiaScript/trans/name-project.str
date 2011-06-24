@@ -41,14 +41,15 @@ rules // Name-based look-up transformations
 	get-all-states: objectName -> <get-all-declarations(|States(objectName))>
 	get-all-defaultstates: objectName -> <get-all-declarations(|DefaultStates(objectName))>
 	
-	get-object: objectName -> <get-declaration(|Objects())> objectName
+	get-object: objectName -> <get-declaration(|Objects())> objectName where not (<?CustomType(_)> objectName)
 	get-object: CustomType(objectName) -> <get-declaration(|Objects())> objectName
 	get-component: componentName -> <get-declaration(|Components())> componentName
 	get-component: (objectName, componentName) -> <get-declaration(|Components(objectName))> componentName
 	get-component: (objectName, stateName, componentName) -> <get-declaration(|Components(objectName, stateName))> componentName
 	get-plugin: pluginName -> <get-declaration(|Plugins())> pluginName
 	get-var: (objectName, varName) -> <get-declaration(|Vars(objectName))> varName
-	get-prop: (objectName, propName) -> <get-declaration(|Props(objectName))> propName
+	get-prop: (objectName, propName) -> <get-declaration(|Props(objectName))> propName where not (<?CustomType(_)> objectName)
+	get-prop: (CustomType(objectName), propName) -> <get-declaration(|Props(objectName))> propName
 	get-var: varName -> <get-declaration(|Vars())> varName
 	get-event: eventName -> <get-declaration(|Events())> eventName
 	get-event: (objectName, eventName) -> <get-declaration(|Events(objectName))> eventName

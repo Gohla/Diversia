@@ -1,5 +1,5 @@
 plugin SceneManager {
-	//SkyMaterial = "SpaceSkyBox"
+	SkyMaterial = "SpaceSkyBox"
 	SkyType = SkyType.Box
 	SkyEnabled = true
 	SkyDrawFirst = true
@@ -27,9 +27,6 @@ def CameraYaw {
     
     // States
     default state Alive {
-    	Position = 1
-    	MouseRotation = "lola"
-    	
         // Events
         on MousePressed(Button : MouseButton) {
             if(Button == MouseButton.Right) mRMB = true;
@@ -44,7 +41,7 @@ def CameraYaw {
             if(mRMB) { // If right mouse button is pressed
                 // Yaw the camera
                 this.Yaw(Radian(Degree(-mMouseState.X.Relative * MouseRotation)), TransformSpace.Local);
-
+				
                 // Pitch the camera
                 var Pitch : Radian = CameraPitch.Orientation.Pitch;
                 var DegreeChange : Degree = Degree(-mMouseState.Y.Relative * MouseRotation);

@@ -36,7 +36,9 @@ TypeVisitor typeVisitor;
 
 inline static String S(const String& s) { return "\"" + s + "\""; };
 inline String boolCons( bool b ) { return b ? "True()" : "False()"; }
-inline String makeCons( const String& rName ) { return rName + "()"; }
+inline String cons( const String& rName ) { return rName + "()"; }
+inline String tupl( const String& t1, const String& t2 ) { return "(" + t1 + ", " + t2 + ")"; }
+inline String tupl( const String& t1, const String& t2, const String& t3 ) { return "(" + t1 + ", " + t2 + ", " + t3 + ")"; }
 inline bool isObject( const String& rObject ) { return rObject == "Object" || rObject == "ClientObject" || rObject == "Node"; }
 
 int main( int argc, char* argv[] )
@@ -86,7 +88,7 @@ int main( int argc, char* argv[] )
         {
             const camp::Class& metaclass = camp::classByIndex( i );
             String className = metaclass.name();
-            String classCons = makeCons( className );
+            String classCons = cons( className );
             LOGI << className;
             sdfType->contextfree( S(className), "BuiltinType", className );
             strType->rule( "is-builtin-type", "?" + classCons );
@@ -98,9 +100,9 @@ int main( int argc, char* argv[] )
                 bool first = true;
                 for( size_t j = 0; j < baseCount; ++j )
                 {
-                    String baseCons = makeCons( metaclass.base( j ).name() );
+                    String baseCons = cons( metaclass.base( j ).name() );
 
-                    strTypeBases->rule( "is-builtin-type-base", list_of(classCons), "?" + baseCons );
+                    strTypeBases->rule( "is-builtin-type-base", "?" + tupl(classCons, baseCons ) );
                     if( !first ) bases += ", ";
                     bases += baseCons;
                     first = false;
@@ -125,7 +127,7 @@ int main( int argc, char* argv[] )
                         types += cons.argTypeInfo(k).apply_visitor( typeVisitor );
                         first = false;
                     }
-                    strTypeCons->rule( "has-builtin-type-cons", list_of(classCons), "?" + types + "]" );
+                    strTypeCons->rule( "has-builtin-type-cons", "?" + tupl( classCons, types + "]" ) );
                 }
                 if( consCount ) strTypeCons->writeLn();
             }
@@ -140,7 +142,7 @@ int main( int argc, char* argv[] )
                     const camp::Property& prop = metaclass.property( j, true );
                     String propName = algorithm::replace_all_copy( prop.name(), " ", "_" ); // TODO: Get rid of spaces in property names.
                     String propNameS = S(propName);
-                    String propCons = makeCons( propName );
+                    String propCons = cons( propName );
                     String propType = prop.typeInfo().apply_visitor( typeVisitor );
                     bool propWritable = prop.writable();
 
@@ -150,9 +152,9 @@ int main( int argc, char* argv[] )
 
                     sdfTypeProp->contextfree( propNameS, "BuiltinProperty", propName );
                     if( isObject( className ) ) sdfTypeProp->contextfree( propNameS, "BuiltinObjectProperty", propName );
-                    strTypeProp->rule( "has-builtin-type-prop", list_of(classCons), "?" + propCons );
-                    if( propWritable ) strTypeProp->rule( "is-builtin-type-prop-writable", list_of(classCons), "?" + propCons );
-                    strTypeProp->matchRule( "builtin-type-prop-type", list_of(classCons), propCons, propType );
+                    strTypeProp->rule( "has-builtin-type-prop", "?" + tupl( classCons, propCons ) );
+                    if( propWritable ) strTypeProp->rule( "is-builtin-type-prop-writable", "?" + tupl( classCons, propCons ) );
+                    strTypeProp->matchRule( "builtin-type-prop-type", tupl( classCons, propCons ), propType );
                 }
                 if( propCount ) sdfTypeProp->writeLn();
                 strTypeProp->matchRule( "builtin-type-props", classCons, props + "]" );
@@ -169,7 +171,7 @@ int main( int argc, char* argv[] )
                     const camp::Function& func = metaclass.function( j, true );
                     String funcName = algorithm::replace_all_copy( func.name(), " ", "_" ); // TODO: Get rid of spaces in function names.
                     String funcNameS = S(funcName);
-                    String funcCons = makeCons( funcName );
+                    String funcCons = cons( funcName );
                     String funcReturn = func.returnTypeInfo().apply_visitor( typeVisitor );
                     String funcParams = "[";
 
@@ -188,9 +190,9 @@ int main( int argc, char* argv[] )
                     first = false; 
 
                     sdfTypeFunc->contextfree( funcNameS, "BuiltinFunction", funcName );
-                    strTypeFunc->rule( "has-builtin-type-func", list_of(classCons), "?" + funcCons );
-                    strTypeFunc->matchRule( "builtin-type-func-return", list_of(classCons), funcCons, funcReturn );
-                    strTypeFunc->matchRule( "builtin-type-func-params", list_of(classCons), funcCons, funcParams );
+                    strTypeFunc->rule( "has-builtin-type-func", "?" + tupl( classCons, funcCons ) );
+                    strTypeFunc->matchRule( "builtin-type-func-return", tupl( classCons, funcCons ), funcReturn );
+                    strTypeFunc->matchRule( "builtin-type-func-params", tupl( classCons, funcCons ), funcParams );
                 }
                 if( funcCount ) sdfTypeFunc->writeLn();
                 strTypeFunc->matchRule( "builtin-type-funcs", classCons, funcs + "]" );
@@ -213,9 +215,9 @@ int main( int argc, char* argv[] )
                     ops += "Operator(" + opCons + ", " + opReturn + ", " + opParam + ")";
                     first = false;
 
-                    strTypeOp->rule( "has-builtin-type-op", list_of(classCons), "?" + opCons );
-                    strTypeOp->rule( "has-builtin-type-op", list_of(classCons), "?(" + opCons + ", " + opParam + ")" );
-                    strTypeOp->matchRule( "builtin-type-op-return", list_of(classCons), "(" + opCons + ", " + opParam + ")", opReturn );
+                    strTypeOp->rule( "has-builtin-type-op", "?" + tupl( classCons, opCons ) );
+                    strTypeOp->rule( "has-builtin-type-op", "?" + tupl( classCons, opCons, opParam ) );
+                    strTypeOp->matchRule( "builtin-type-op-return", tupl( classCons, opCons, opParam ), opReturn );
                 }
                 strTypeOp->matchRule( "builtin-type-ops", classCons, ops + "]" );
                 strTypeOp->writeLn();
@@ -237,7 +239,7 @@ int main( int argc, char* argv[] )
             String enumName = metaenum.name();
             String enumType = enumName + "EnumType";
             String enumValue = enumName + "Value";
-            String enumCons = makeCons( enumName );
+            String enumCons = cons( enumName );
             LOGI << enumName;
             sdfEnum->contextfree( S(enumName), enumType, enumName );
             sdfEnum->contextfree( enumType, "EnumType" );
@@ -252,7 +254,7 @@ int main( int argc, char* argv[] )
             {
                 const camp::Enum::Pair& pair = metaenum.pair( j );
                 String valueName = algorithm::replace_all_copy( pair.name, " ", "_" ); // TODO: Get rid of spaces in enum value names.
-                String valueCons = makeCons( valueName );
+                String valueCons = cons( valueName );
                 String value = lexical_cast<String>( pair.value );
 
                 if( !first ) values += ", ";
@@ -283,7 +285,7 @@ int main( int argc, char* argv[] )
             if( Object::hasAutoCreateComponent( i->first ) ) continue;
 
             String componentName = i->second->getTypeName();
-            String componentCons = makeCons( componentName );
+            String componentCons = cons( componentName );
             bool componentMultiple = i->second->multiple();
             LOGI << componentName;
             sdfComponent->contextfree( S(componentName), "ComponentType", componentName );
@@ -305,7 +307,7 @@ int main( int argc, char* argv[] )
             if( ClientServerPluginManager::hasAutoCreatePlugin( i->first ) ) continue;
 
             String pluginName = i->second->getTypeName();
-            String pluginCons = makeCons( pluginName );
+            String pluginCons = cons( pluginName );
             LOGI << pluginName;
             sdfPlugin->contextfree( S(pluginName), "PluginType", pluginName );
             strPlugin->rule( "is-builtin-plugin", "?" + pluginCons );

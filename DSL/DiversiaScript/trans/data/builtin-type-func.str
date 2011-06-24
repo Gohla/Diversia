@@ -23,202 +23,202 @@ rules
 
 	builtin-type-funcs: ClientObjectTemplateManager() -> []
 
-	has-builtin-type-func(|param0) = ?Run_garbage_collection(); <?Lua()> param0
-	builtin-type-func-return(|param0) = ?Run_garbage_collection(); <?Lua()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Run_garbage_collection(); <?Lua()> param0; ![]
+	has-builtin-type-func = ?(Lua(), Run_garbage_collection())
+	builtin-type-func-return: (Lua(), Run_garbage_collection()) -> VoidType()
+	builtin-type-func-params: (Lua(), Run_garbage_collection()) -> []
 	builtin-type-funcs: Lua() -> [Function(Run_garbage_collection(), VoidType(), [])]
 
 	builtin-type-funcs: PermissionManager() -> []
 
 	builtin-type-funcs: ServerNeighborsPlugin() -> []
 
-	has-builtin-type-func(|param0) = ?ForceSerialize(); <?ServerPlugin()> param0
-	builtin-type-func-return(|param0) = ?ForceSerialize(); <?ServerPlugin()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?ForceSerialize(); <?ServerPlugin()> param0; ![]
+	has-builtin-type-func = ?(ServerPlugin(), ForceSerialize())
+	builtin-type-func-return: (ServerPlugin(), ForceSerialize()) -> VoidType()
+	builtin-type-func-params: (ServerPlugin(), ForceSerialize()) -> []
 	builtin-type-funcs: ServerPlugin() -> [Function(ForceSerialize(), VoidType(), [])]
 
 	builtin-type-funcs: ClientServerPlugin() -> []
 
-	has-builtin-type-func(|param0) = ?CreatePlugin(); <?ClientServerPluginManager()> param0
-	builtin-type-func-return(|param0) = ?CreatePlugin(); <?ClientServerPluginManager()> param0; !ClientServerPlugin()
-	builtin-type-func-params(|param0) = ?CreatePlugin(); <?ClientServerPluginManager()> param0; ![ClientServerPluginType()]
-	has-builtin-type-func(|param0) = ?GetPlugin(); <?ClientServerPluginManager()> param0
-	builtin-type-func-return(|param0) = ?GetPlugin(); <?ClientServerPluginManager()> param0; !ClientServerPlugin()
-	builtin-type-func-params(|param0) = ?GetPlugin(); <?ClientServerPluginManager()> param0; ![ClientServerPluginType()]
-	has-builtin-type-func(|param0) = ?HasPlugin(); <?ClientServerPluginManager()> param0
-	builtin-type-func-return(|param0) = ?HasPlugin(); <?ClientServerPluginManager()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?HasPlugin(); <?ClientServerPluginManager()> param0; ![ClientServerPluginType()]
-	has-builtin-type-func(|param0) = ?DestroyPlugin(); <?ClientServerPluginManager()> param0
-	builtin-type-func-return(|param0) = ?DestroyPlugin(); <?ClientServerPluginManager()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?DestroyPlugin(); <?ClientServerPluginManager()> param0; ![ClientServerPluginType()]
+	has-builtin-type-func = ?(ClientServerPluginManager(), CreatePlugin())
+	builtin-type-func-return: (ClientServerPluginManager(), CreatePlugin()) -> ClientServerPlugin()
+	builtin-type-func-params: (ClientServerPluginManager(), CreatePlugin()) -> [ClientServerPluginType()]
+	has-builtin-type-func = ?(ClientServerPluginManager(), GetPlugin())
+	builtin-type-func-return: (ClientServerPluginManager(), GetPlugin()) -> ClientServerPlugin()
+	builtin-type-func-params: (ClientServerPluginManager(), GetPlugin()) -> [ClientServerPluginType()]
+	has-builtin-type-func = ?(ClientServerPluginManager(), HasPlugin())
+	builtin-type-func-return: (ClientServerPluginManager(), HasPlugin()) -> BoolType()
+	builtin-type-func-params: (ClientServerPluginManager(), HasPlugin()) -> [ClientServerPluginType()]
+	has-builtin-type-func = ?(ClientServerPluginManager(), DestroyPlugin())
+	builtin-type-func-return: (ClientServerPluginManager(), DestroyPlugin()) -> VoidType()
+	builtin-type-func-params: (ClientServerPluginManager(), DestroyPlugin()) -> [ClientServerPluginType()]
 	builtin-type-funcs: ClientServerPluginManager() -> [Function(CreatePlugin(), ClientServerPlugin(), [ClientServerPluginType()]), Function(GetPlugin(), ClientServerPlugin(), [ClientServerPluginType()]), Function(HasPlugin(), BoolType(), [ClientServerPluginType()]), Function(DestroyPlugin(), VoidType(), [ClientServerPluginType()])]
 
 	builtin-type-funcs: LayerInstance() -> []
 
-	has-builtin-type-func(|param0) = ?IsCreatedBy(); <?Component()> param0
-	builtin-type-func-return(|param0) = ?IsCreatedBy(); <?Component()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsCreatedBy(); <?Component()> param0; ![RakNetGUID()]
-	has-builtin-type-func(|param0) = ?IsCreatedBySource(); <?Component()> param0
-	builtin-type-func-return(|param0) = ?IsCreatedBySource(); <?Component()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsCreatedBySource(); <?Component()> param0; ![RakNetGUID()]
-	has-builtin-type-func(|param0) = ?Destroy(); <?Component()> param0
-	builtin-type-func-return(|param0) = ?Destroy(); <?Component()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Destroy(); <?Component()> param0; ![]
+	has-builtin-type-func = ?(Component(), IsCreatedBy())
+	builtin-type-func-return: (Component(), IsCreatedBy()) -> BoolType()
+	builtin-type-func-params: (Component(), IsCreatedBy()) -> [RakNetGUID()]
+	has-builtin-type-func = ?(Component(), IsCreatedBySource())
+	builtin-type-func-return: (Component(), IsCreatedBySource()) -> BoolType()
+	builtin-type-func-params: (Component(), IsCreatedBySource()) -> [RakNetGUID()]
+	has-builtin-type-func = ?(Component(), Destroy())
+	builtin-type-func-return: (Component(), Destroy()) -> VoidType()
+	builtin-type-func-params: (Component(), Destroy()) -> []
 	builtin-type-funcs: Component() -> [Function(IsCreatedBy(), BoolType(), [RakNetGUID()]), Function(IsCreatedBySource(), BoolType(), [RakNetGUID()]), Function(Destroy(), VoidType(), [])]
 
 	builtin-type-funcs: ComponentHandle() -> []
 
-	has-builtin-type-func(|param0) = ?IsCreatedBy(); <?ComponentTemplate()> param0
-	builtin-type-func-return(|param0) = ?IsCreatedBy(); <?ComponentTemplate()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsCreatedBy(); <?ComponentTemplate()> param0; ![RakNetGUID()]
-	has-builtin-type-func(|param0) = ?IsCreatedBySource(); <?ComponentTemplate()> param0
-	builtin-type-func-return(|param0) = ?IsCreatedBySource(); <?ComponentTemplate()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsCreatedBySource(); <?ComponentTemplate()> param0; ![RakNetGUID()]
-	has-builtin-type-func(|param0) = ?Destroy(); <?ComponentTemplate()> param0
-	builtin-type-func-return(|param0) = ?Destroy(); <?ComponentTemplate()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Destroy(); <?ComponentTemplate()> param0; ![]
-	has-builtin-type-func(|param0) = ?SetProperty(); <?ComponentTemplate()> param0
-	builtin-type-func-return(|param0) = ?SetProperty(); <?ComponentTemplate()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?SetProperty(); <?ComponentTemplate()> param0; ![StringType(), VoidType()]
+	has-builtin-type-func = ?(ComponentTemplate(), IsCreatedBy())
+	builtin-type-func-return: (ComponentTemplate(), IsCreatedBy()) -> BoolType()
+	builtin-type-func-params: (ComponentTemplate(), IsCreatedBy()) -> [RakNetGUID()]
+	has-builtin-type-func = ?(ComponentTemplate(), IsCreatedBySource())
+	builtin-type-func-return: (ComponentTemplate(), IsCreatedBySource()) -> BoolType()
+	builtin-type-func-params: (ComponentTemplate(), IsCreatedBySource()) -> [RakNetGUID()]
+	has-builtin-type-func = ?(ComponentTemplate(), Destroy())
+	builtin-type-func-return: (ComponentTemplate(), Destroy()) -> VoidType()
+	builtin-type-func-params: (ComponentTemplate(), Destroy()) -> []
+	has-builtin-type-func = ?(ComponentTemplate(), SetProperty())
+	builtin-type-func-return: (ComponentTemplate(), SetProperty()) -> VoidType()
+	builtin-type-func-params: (ComponentTemplate(), SetProperty()) -> [StringType(), VoidType()]
 	builtin-type-funcs: ComponentTemplate() -> [Function(IsCreatedBy(), BoolType(), [RakNetGUID()]), Function(IsCreatedBySource(), BoolType(), [RakNetGUID()]), Function(Destroy(), VoidType(), []), Function(SetProperty(), VoidType(), [StringType(), VoidType()])]
 
-	has-builtin-type-func(|param0) = ?IsCreatedBy(); <?Object()> param0
-	builtin-type-func-return(|param0) = ?IsCreatedBy(); <?Object()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsCreatedBy(); <?Object()> param0; ![RakNetGUID()]
-	has-builtin-type-func(|param0) = ?IsCreatedBySource(); <?Object()> param0
-	builtin-type-func-return(|param0) = ?IsCreatedBySource(); <?Object()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsCreatedBySource(); <?Object()> param0; ![RakNetGUID()]
-	has-builtin-type-func(|param0) = ?CreateChildObject(); <?Object()> param0
-	builtin-type-func-return(|param0) = ?CreateChildObject(); <?Object()> param0; !Object()
-	builtin-type-func-params(|param0) = ?CreateChildObject(); <?Object()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?CreateComponent(); <?Object()> param0
-	builtin-type-func-return(|param0) = ?CreateComponent(); <?Object()> param0; !Component()
-	builtin-type-func-params(|param0) = ?CreateComponent(); <?Object()> param0; ![IntType(), StringType(), BoolType()]
-	has-builtin-type-func(|param0) = ?CreateComponentByHandle(); <?Object()> param0
-	builtin-type-func-return(|param0) = ?CreateComponentByHandle(); <?Object()> param0; !Component()
-	builtin-type-func-params(|param0) = ?CreateComponentByHandle(); <?Object()> param0; ![ComponentHandle()]
-	has-builtin-type-func(|param0) = ?GetComponent(); <?Object()> param0
-	builtin-type-func-return(|param0) = ?GetComponent(); <?Object()> param0; !Component()
-	builtin-type-func-params(|param0) = ?GetComponent(); <?Object()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?HasComponent(); <?Object()> param0
-	builtin-type-func-return(|param0) = ?HasComponent(); <?Object()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?HasComponent(); <?Object()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?DestroyComponent(); <?Object()> param0
-	builtin-type-func-return(|param0) = ?DestroyComponent(); <?Object()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?DestroyComponent(); <?Object()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?Destroy(); <?Object()> param0
-	builtin-type-func-return(|param0) = ?Destroy(); <?Object()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Destroy(); <?Object()> param0; ![]
+	has-builtin-type-func = ?(Object(), IsCreatedBy())
+	builtin-type-func-return: (Object(), IsCreatedBy()) -> BoolType()
+	builtin-type-func-params: (Object(), IsCreatedBy()) -> [RakNetGUID()]
+	has-builtin-type-func = ?(Object(), IsCreatedBySource())
+	builtin-type-func-return: (Object(), IsCreatedBySource()) -> BoolType()
+	builtin-type-func-params: (Object(), IsCreatedBySource()) -> [RakNetGUID()]
+	has-builtin-type-func = ?(Object(), CreateChildObject())
+	builtin-type-func-return: (Object(), CreateChildObject()) -> Object()
+	builtin-type-func-params: (Object(), CreateChildObject()) -> [StringType()]
+	has-builtin-type-func = ?(Object(), CreateComponent())
+	builtin-type-func-return: (Object(), CreateComponent()) -> Component()
+	builtin-type-func-params: (Object(), CreateComponent()) -> [IntType(), StringType(), BoolType()]
+	has-builtin-type-func = ?(Object(), CreateComponentByHandle())
+	builtin-type-func-return: (Object(), CreateComponentByHandle()) -> Component()
+	builtin-type-func-params: (Object(), CreateComponentByHandle()) -> [ComponentHandle()]
+	has-builtin-type-func = ?(Object(), GetComponent())
+	builtin-type-func-return: (Object(), GetComponent()) -> Component()
+	builtin-type-func-params: (Object(), GetComponent()) -> [StringType()]
+	has-builtin-type-func = ?(Object(), HasComponent())
+	builtin-type-func-return: (Object(), HasComponent()) -> BoolType()
+	builtin-type-func-params: (Object(), HasComponent()) -> [StringType()]
+	has-builtin-type-func = ?(Object(), DestroyComponent())
+	builtin-type-func-return: (Object(), DestroyComponent()) -> VoidType()
+	builtin-type-func-params: (Object(), DestroyComponent()) -> [StringType()]
+	has-builtin-type-func = ?(Object(), Destroy())
+	builtin-type-func-return: (Object(), Destroy()) -> VoidType()
+	builtin-type-func-params: (Object(), Destroy()) -> []
 	builtin-type-funcs: Object() -> [Function(IsCreatedBy(), BoolType(), [RakNetGUID()]), Function(IsCreatedBySource(), BoolType(), [RakNetGUID()]), Function(CreateChildObject(), Object(), [StringType()]), Function(CreateComponent(), Component(), [IntType(), StringType(), BoolType()]), Function(CreateComponentByHandle(), Component(), [ComponentHandle()]), Function(GetComponent(), Component(), [StringType()]), Function(HasComponent(), BoolType(), [StringType()]), Function(DestroyComponent(), VoidType(), [StringType()]), Function(Destroy(), VoidType(), [])]
 
-	has-builtin-type-func(|param0) = ?CreateLocalObject(); <?ObjectManager()> param0
-	builtin-type-func-return(|param0) = ?CreateLocalObject(); <?ObjectManager()> param0; !Object()
-	builtin-type-func-params(|param0) = ?CreateLocalObject(); <?ObjectManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?CreateNormalLocalObject(); <?ObjectManager()> param0
-	builtin-type-func-return(|param0) = ?CreateNormalLocalObject(); <?ObjectManager()> param0; !Object()
-	builtin-type-func-params(|param0) = ?CreateNormalLocalObject(); <?ObjectManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?CreateRemoteObject(); <?ObjectManager()> param0
-	builtin-type-func-return(|param0) = ?CreateRemoteObject(); <?ObjectManager()> param0; !Object()
-	builtin-type-func-params(|param0) = ?CreateRemoteObject(); <?ObjectManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?CreateObject(); <?ObjectManager()> param0
-	builtin-type-func-return(|param0) = ?CreateObject(); <?ObjectManager()> param0; !Object()
-	builtin-type-func-params(|param0) = ?CreateObject(); <?ObjectManager()> param0; ![StringType(), NetworkingType()]
-	has-builtin-type-func(|param0) = ?GetObject(); <?ObjectManager()> param0
-	builtin-type-func-return(|param0) = ?GetObject(); <?ObjectManager()> param0; !Object()
-	builtin-type-func-params(|param0) = ?GetObject(); <?ObjectManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?HasObject(); <?ObjectManager()> param0
-	builtin-type-func-return(|param0) = ?HasObject(); <?ObjectManager()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?HasObject(); <?ObjectManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?DestroyObject(); <?ObjectManager()> param0
-	builtin-type-func-return(|param0) = ?DestroyObject(); <?ObjectManager()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?DestroyObject(); <?ObjectManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?DestroyObjectTree(); <?ObjectManager()> param0
-	builtin-type-func-return(|param0) = ?DestroyObjectTree(); <?ObjectManager()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?DestroyObjectTree(); <?ObjectManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?DestroyWholeObjectTree(); <?ObjectManager()> param0
-	builtin-type-func-return(|param0) = ?DestroyWholeObjectTree(); <?ObjectManager()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?DestroyWholeObjectTree(); <?ObjectManager()> param0; ![StringType()]
+	has-builtin-type-func = ?(ObjectManager(), CreateLocalObject())
+	builtin-type-func-return: (ObjectManager(), CreateLocalObject()) -> Object()
+	builtin-type-func-params: (ObjectManager(), CreateLocalObject()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectManager(), CreateNormalLocalObject())
+	builtin-type-func-return: (ObjectManager(), CreateNormalLocalObject()) -> Object()
+	builtin-type-func-params: (ObjectManager(), CreateNormalLocalObject()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectManager(), CreateRemoteObject())
+	builtin-type-func-return: (ObjectManager(), CreateRemoteObject()) -> Object()
+	builtin-type-func-params: (ObjectManager(), CreateRemoteObject()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectManager(), CreateObject())
+	builtin-type-func-return: (ObjectManager(), CreateObject()) -> Object()
+	builtin-type-func-params: (ObjectManager(), CreateObject()) -> [StringType(), NetworkingType()]
+	has-builtin-type-func = ?(ObjectManager(), GetObject())
+	builtin-type-func-return: (ObjectManager(), GetObject()) -> Object()
+	builtin-type-func-params: (ObjectManager(), GetObject()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectManager(), HasObject())
+	builtin-type-func-return: (ObjectManager(), HasObject()) -> BoolType()
+	builtin-type-func-params: (ObjectManager(), HasObject()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectManager(), DestroyObject())
+	builtin-type-func-return: (ObjectManager(), DestroyObject()) -> VoidType()
+	builtin-type-func-params: (ObjectManager(), DestroyObject()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectManager(), DestroyObjectTree())
+	builtin-type-func-return: (ObjectManager(), DestroyObjectTree()) -> VoidType()
+	builtin-type-func-params: (ObjectManager(), DestroyObjectTree()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectManager(), DestroyWholeObjectTree())
+	builtin-type-func-return: (ObjectManager(), DestroyWholeObjectTree()) -> VoidType()
+	builtin-type-func-params: (ObjectManager(), DestroyWholeObjectTree()) -> [StringType()]
 	builtin-type-funcs: ObjectManager() -> [Function(CreateLocalObject(), Object(), [StringType()]), Function(CreateNormalLocalObject(), Object(), [StringType()]), Function(CreateRemoteObject(), Object(), [StringType()]), Function(CreateObject(), Object(), [StringType(), NetworkingType()]), Function(GetObject(), Object(), [StringType()]), Function(HasObject(), BoolType(), [StringType()]), Function(DestroyObject(), VoidType(), [StringType()]), Function(DestroyObjectTree(), VoidType(), [StringType()]), Function(DestroyWholeObjectTree(), VoidType(), [StringType()])]
 
-	has-builtin-type-func(|param0) = ?IsCreatedBy(); <?ObjectTemplate()> param0
-	builtin-type-func-return(|param0) = ?IsCreatedBy(); <?ObjectTemplate()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsCreatedBy(); <?ObjectTemplate()> param0; ![RakNetGUID()]
-	has-builtin-type-func(|param0) = ?IsCreatedBySource(); <?ObjectTemplate()> param0
-	builtin-type-func-return(|param0) = ?IsCreatedBySource(); <?ObjectTemplate()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsCreatedBySource(); <?ObjectTemplate()> param0; ![RakNetGUID()]
-	has-builtin-type-func(|param0) = ?CreateChildObjectTemplate(); <?ObjectTemplate()> param0
-	builtin-type-func-return(|param0) = ?CreateChildObjectTemplate(); <?ObjectTemplate()> param0; !ObjectTemplate()
-	builtin-type-func-params(|param0) = ?CreateChildObjectTemplate(); <?ObjectTemplate()> param0; ![StringType(), StringType()]
-	has-builtin-type-func(|param0) = ?CreateComponentTemplate(); <?ObjectTemplate()> param0
-	builtin-type-func-return(|param0) = ?CreateComponentTemplate(); <?ObjectTemplate()> param0; !ComponentTemplate()
-	builtin-type-func-params(|param0) = ?CreateComponentTemplate(); <?ObjectTemplate()> param0; ![IntType(), StringType(), BoolType()]
-	has-builtin-type-func(|param0) = ?CreateComponentTemplateByHandle(); <?ObjectTemplate()> param0
-	builtin-type-func-return(|param0) = ?CreateComponentTemplateByHandle(); <?ObjectTemplate()> param0; !ComponentTemplate()
-	builtin-type-func-params(|param0) = ?CreateComponentTemplateByHandle(); <?ObjectTemplate()> param0; ![ComponentHandle()]
-	has-builtin-type-func(|param0) = ?GetComponentTemplate(); <?ObjectTemplate()> param0
-	builtin-type-func-return(|param0) = ?GetComponentTemplate(); <?ObjectTemplate()> param0; !ComponentTemplate()
-	builtin-type-func-params(|param0) = ?GetComponentTemplate(); <?ObjectTemplate()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?HasComponentTemplate(); <?ObjectTemplate()> param0
-	builtin-type-func-return(|param0) = ?HasComponentTemplate(); <?ObjectTemplate()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?HasComponentTemplate(); <?ObjectTemplate()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?DestroyComponentTemplate(); <?ObjectTemplate()> param0
-	builtin-type-func-return(|param0) = ?DestroyComponentTemplate(); <?ObjectTemplate()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?DestroyComponentTemplate(); <?ObjectTemplate()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?Destroy(); <?ObjectTemplate()> param0
-	builtin-type-func-return(|param0) = ?Destroy(); <?ObjectTemplate()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Destroy(); <?ObjectTemplate()> param0; ![]
+	has-builtin-type-func = ?(ObjectTemplate(), IsCreatedBy())
+	builtin-type-func-return: (ObjectTemplate(), IsCreatedBy()) -> BoolType()
+	builtin-type-func-params: (ObjectTemplate(), IsCreatedBy()) -> [RakNetGUID()]
+	has-builtin-type-func = ?(ObjectTemplate(), IsCreatedBySource())
+	builtin-type-func-return: (ObjectTemplate(), IsCreatedBySource()) -> BoolType()
+	builtin-type-func-params: (ObjectTemplate(), IsCreatedBySource()) -> [RakNetGUID()]
+	has-builtin-type-func = ?(ObjectTemplate(), CreateChildObjectTemplate())
+	builtin-type-func-return: (ObjectTemplate(), CreateChildObjectTemplate()) -> ObjectTemplate()
+	builtin-type-func-params: (ObjectTemplate(), CreateChildObjectTemplate()) -> [StringType(), StringType()]
+	has-builtin-type-func = ?(ObjectTemplate(), CreateComponentTemplate())
+	builtin-type-func-return: (ObjectTemplate(), CreateComponentTemplate()) -> ComponentTemplate()
+	builtin-type-func-params: (ObjectTemplate(), CreateComponentTemplate()) -> [IntType(), StringType(), BoolType()]
+	has-builtin-type-func = ?(ObjectTemplate(), CreateComponentTemplateByHandle())
+	builtin-type-func-return: (ObjectTemplate(), CreateComponentTemplateByHandle()) -> ComponentTemplate()
+	builtin-type-func-params: (ObjectTemplate(), CreateComponentTemplateByHandle()) -> [ComponentHandle()]
+	has-builtin-type-func = ?(ObjectTemplate(), GetComponentTemplate())
+	builtin-type-func-return: (ObjectTemplate(), GetComponentTemplate()) -> ComponentTemplate()
+	builtin-type-func-params: (ObjectTemplate(), GetComponentTemplate()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectTemplate(), HasComponentTemplate())
+	builtin-type-func-return: (ObjectTemplate(), HasComponentTemplate()) -> BoolType()
+	builtin-type-func-params: (ObjectTemplate(), HasComponentTemplate()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectTemplate(), DestroyComponentTemplate())
+	builtin-type-func-return: (ObjectTemplate(), DestroyComponentTemplate()) -> VoidType()
+	builtin-type-func-params: (ObjectTemplate(), DestroyComponentTemplate()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectTemplate(), Destroy())
+	builtin-type-func-return: (ObjectTemplate(), Destroy()) -> VoidType()
+	builtin-type-func-params: (ObjectTemplate(), Destroy()) -> []
 	builtin-type-funcs: ObjectTemplate() -> [Function(IsCreatedBy(), BoolType(), [RakNetGUID()]), Function(IsCreatedBySource(), BoolType(), [RakNetGUID()]), Function(CreateChildObjectTemplate(), ObjectTemplate(), [StringType(), StringType()]), Function(CreateComponentTemplate(), ComponentTemplate(), [IntType(), StringType(), BoolType()]), Function(CreateComponentTemplateByHandle(), ComponentTemplate(), [ComponentHandle()]), Function(GetComponentTemplate(), ComponentTemplate(), [StringType()]), Function(HasComponentTemplate(), BoolType(), [StringType()]), Function(DestroyComponentTemplate(), VoidType(), [StringType()]), Function(Destroy(), VoidType(), [])]
 
-	has-builtin-type-func(|param0) = ?CreateLocalObjectTemplate(); <?ObjectTemplateManager()> param0
-	builtin-type-func-return(|param0) = ?CreateLocalObjectTemplate(); <?ObjectTemplateManager()> param0; !ObjectTemplate()
-	builtin-type-func-params(|param0) = ?CreateLocalObjectTemplate(); <?ObjectTemplateManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?CreateRemoteObjectTemplate(); <?ObjectTemplateManager()> param0
-	builtin-type-func-return(|param0) = ?CreateRemoteObjectTemplate(); <?ObjectTemplateManager()> param0; !ObjectTemplate()
-	builtin-type-func-params(|param0) = ?CreateRemoteObjectTemplate(); <?ObjectTemplateManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?CreateObjectTemplate(); <?ObjectTemplateManager()> param0
-	builtin-type-func-return(|param0) = ?CreateObjectTemplate(); <?ObjectTemplateManager()> param0; !ObjectTemplate()
-	builtin-type-func-params(|param0) = ?CreateObjectTemplate(); <?ObjectTemplateManager()> param0; ![StringType(), NetworkingType()]
-	has-builtin-type-func(|param0) = ?GetObjectTemplate(); <?ObjectTemplateManager()> param0
-	builtin-type-func-return(|param0) = ?GetObjectTemplate(); <?ObjectTemplateManager()> param0; !ObjectTemplate()
-	builtin-type-func-params(|param0) = ?GetObjectTemplate(); <?ObjectTemplateManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?HasObjectTemplate(); <?ObjectTemplateManager()> param0
-	builtin-type-func-return(|param0) = ?HasObjectTemplate(); <?ObjectTemplateManager()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?HasObjectTemplate(); <?ObjectTemplateManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?DestroyObjectTemplate(); <?ObjectTemplateManager()> param0
-	builtin-type-func-return(|param0) = ?DestroyObjectTemplate(); <?ObjectTemplateManager()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?DestroyObjectTemplate(); <?ObjectTemplateManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?DestroyObjectTemplateTree(); <?ObjectTemplateManager()> param0
-	builtin-type-func-return(|param0) = ?DestroyObjectTemplateTree(); <?ObjectTemplateManager()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?DestroyObjectTemplateTree(); <?ObjectTemplateManager()> param0; ![StringType()]
-	has-builtin-type-func(|param0) = ?DestroyWholeObjectTemplateTree(); <?ObjectTemplateManager()> param0
-	builtin-type-func-return(|param0) = ?DestroyWholeObjectTemplateTree(); <?ObjectTemplateManager()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?DestroyWholeObjectTemplateTree(); <?ObjectTemplateManager()> param0; ![StringType()]
+	has-builtin-type-func = ?(ObjectTemplateManager(), CreateLocalObjectTemplate())
+	builtin-type-func-return: (ObjectTemplateManager(), CreateLocalObjectTemplate()) -> ObjectTemplate()
+	builtin-type-func-params: (ObjectTemplateManager(), CreateLocalObjectTemplate()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectTemplateManager(), CreateRemoteObjectTemplate())
+	builtin-type-func-return: (ObjectTemplateManager(), CreateRemoteObjectTemplate()) -> ObjectTemplate()
+	builtin-type-func-params: (ObjectTemplateManager(), CreateRemoteObjectTemplate()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectTemplateManager(), CreateObjectTemplate())
+	builtin-type-func-return: (ObjectTemplateManager(), CreateObjectTemplate()) -> ObjectTemplate()
+	builtin-type-func-params: (ObjectTemplateManager(), CreateObjectTemplate()) -> [StringType(), NetworkingType()]
+	has-builtin-type-func = ?(ObjectTemplateManager(), GetObjectTemplate())
+	builtin-type-func-return: (ObjectTemplateManager(), GetObjectTemplate()) -> ObjectTemplate()
+	builtin-type-func-params: (ObjectTemplateManager(), GetObjectTemplate()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectTemplateManager(), HasObjectTemplate())
+	builtin-type-func-return: (ObjectTemplateManager(), HasObjectTemplate()) -> BoolType()
+	builtin-type-func-params: (ObjectTemplateManager(), HasObjectTemplate()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectTemplateManager(), DestroyObjectTemplate())
+	builtin-type-func-return: (ObjectTemplateManager(), DestroyObjectTemplate()) -> VoidType()
+	builtin-type-func-params: (ObjectTemplateManager(), DestroyObjectTemplate()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectTemplateManager(), DestroyObjectTemplateTree())
+	builtin-type-func-return: (ObjectTemplateManager(), DestroyObjectTemplateTree()) -> VoidType()
+	builtin-type-func-params: (ObjectTemplateManager(), DestroyObjectTemplateTree()) -> [StringType()]
+	has-builtin-type-func = ?(ObjectTemplateManager(), DestroyWholeObjectTemplateTree())
+	builtin-type-func-return: (ObjectTemplateManager(), DestroyWholeObjectTemplateTree()) -> VoidType()
+	builtin-type-func-params: (ObjectTemplateManager(), DestroyWholeObjectTemplateTree()) -> [StringType()]
 	builtin-type-funcs: ObjectTemplateManager() -> [Function(CreateLocalObjectTemplate(), ObjectTemplate(), [StringType()]), Function(CreateRemoteObjectTemplate(), ObjectTemplate(), [StringType()]), Function(CreateObjectTemplate(), ObjectTemplate(), [StringType(), NetworkingType()]), Function(GetObjectTemplate(), ObjectTemplate(), [StringType()]), Function(HasObjectTemplate(), BoolType(), [StringType()]), Function(DestroyObjectTemplate(), VoidType(), [StringType()]), Function(DestroyObjectTemplateTree(), VoidType(), [StringType()]), Function(DestroyWholeObjectTemplateTree(), VoidType(), [StringType()])]
 
-	has-builtin-type-func(|param0) = ?HasEnded(); <?Animation()> param0
-	builtin-type-func-return(|param0) = ?HasEnded(); <?Animation()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?HasEnded(); <?Animation()> param0; ![]
-	has-builtin-type-func(|param0) = ?AddTime(); <?Animation()> param0
-	builtin-type-func-return(|param0) = ?AddTime(); <?Animation()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?AddTime(); <?Animation()> param0; ![RealType()]
+	has-builtin-type-func = ?(Animation(), HasEnded())
+	builtin-type-func-return: (Animation(), HasEnded()) -> BoolType()
+	builtin-type-func-params: (Animation(), HasEnded()) -> []
+	has-builtin-type-func = ?(Animation(), AddTime())
+	builtin-type-func-return: (Animation(), AddTime()) -> VoidType()
+	builtin-type-func-params: (Animation(), AddTime()) -> [RealType()]
 	builtin-type-funcs: Animation() -> [Function(HasEnded(), BoolType(), []), Function(AddTime(), VoidType(), [RealType()])]
 
 	builtin-type-funcs: AreaTrigger() -> []
 
-	has-builtin-type-func(|param0) = ?Play(); <?Audio()> param0
-	builtin-type-func-return(|param0) = ?Play(); <?Audio()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?Play(); <?Audio()> param0; ![]
-	has-builtin-type-func(|param0) = ?Stop(); <?Audio()> param0
-	builtin-type-func-return(|param0) = ?Stop(); <?Audio()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Stop(); <?Audio()> param0; ![]
-	has-builtin-type-func(|param0) = ?Pause(); <?Audio()> param0
-	builtin-type-func-return(|param0) = ?Pause(); <?Audio()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Pause(); <?Audio()> param0; ![]
+	has-builtin-type-func = ?(Audio(), Play())
+	builtin-type-func-return: (Audio(), Play()) -> BoolType()
+	builtin-type-func-params: (Audio(), Play()) -> []
+	has-builtin-type-func = ?(Audio(), Stop())
+	builtin-type-func-return: (Audio(), Stop()) -> VoidType()
+	builtin-type-func-params: (Audio(), Stop()) -> []
+	has-builtin-type-func = ?(Audio(), Pause())
+	builtin-type-func-return: (Audio(), Pause()) -> VoidType()
+	builtin-type-func-params: (Audio(), Pause()) -> []
 	builtin-type-funcs: Audio() -> [Function(Play(), BoolType(), []), Function(Stop(), VoidType(), []), Function(Pause(), VoidType(), [])]
 
-	has-builtin-type-func(|param0) = ?Clear(); <?Axis()> param0
-	builtin-type-func-return(|param0) = ?Clear(); <?Axis()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Clear(); <?Axis()> param0; ![]
+	has-builtin-type-func = ?(Axis(), Clear())
+	builtin-type-func-return: (Axis(), Clear()) -> VoidType()
+	builtin-type-func-params: (Axis(), Clear()) -> []
 	builtin-type-funcs: Axis() -> [Function(Clear(), VoidType(), [])]
 
 	builtin-type-funcs: Camera() -> []
@@ -229,91 +229,91 @@ rules
 
 	builtin-type-funcs: ForceField() -> []
 
-	has-builtin-type-func(|param0) = ?Reload_script(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?Reload_script(); <?GameMode()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Reload_script(); <?GameMode()> param0; ![]
-	has-builtin-type-func(|param0) = ?Destroy_script(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?Destroy_script(); <?GameMode()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Destroy_script(); <?GameMode()> param0; ![]
-	has-builtin-type-func(|param0) = ?Create_script(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?Create_script(); <?GameMode()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Create_script(); <?GameMode()> param0; ![]
-	has-builtin-type-func(|param0) = ?Disconnect(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?Disconnect(); <?GameMode()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Disconnect(); <?GameMode()> param0; ![GameModeScriptEvent()]
-	has-builtin-type-func(|param0) = ?IsDisconnect(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?IsDisconnect(); <?GameMode()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsDisconnect(); <?GameMode()> param0; ![GameModeScriptEvent()]
-	has-builtin-type-func(|param0) = ?Connect(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?Connect(); <?GameMode()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Connect(); <?GameMode()> param0; ![GameModeScriptEvent()]
-	has-builtin-type-func(|param0) = ?IsConnected(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?IsConnected(); <?GameMode()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsConnected(); <?GameMode()> param0; ![GameModeScriptEvent()]
-	has-builtin-type-func(|param0) = ?Block(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?Block(); <?GameMode()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Block(); <?GameMode()> param0; ![GameModeScriptEvent(), BoolType()]
-	has-builtin-type-func(|param0) = ?IsBlocked(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?IsBlocked(); <?GameMode()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsBlocked(); <?GameMode()> param0; ![GameModeScriptEvent()]
-	has-builtin-type-func(|param0) = ?DisconnectAll(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?DisconnectAll(); <?GameMode()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?DisconnectAll(); <?GameMode()> param0; ![]
-	has-builtin-type-func(|param0) = ?ConnectAll(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?ConnectAll(); <?GameMode()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?ConnectAll(); <?GameMode()> param0; ![]
-	has-builtin-type-func(|param0) = ?BlockAll(); <?GameMode()> param0
-	builtin-type-func-return(|param0) = ?BlockAll(); <?GameMode()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?BlockAll(); <?GameMode()> param0; ![BoolType()]
+	has-builtin-type-func = ?(GameMode(), Reload_script())
+	builtin-type-func-return: (GameMode(), Reload_script()) -> VoidType()
+	builtin-type-func-params: (GameMode(), Reload_script()) -> []
+	has-builtin-type-func = ?(GameMode(), Destroy_script())
+	builtin-type-func-return: (GameMode(), Destroy_script()) -> VoidType()
+	builtin-type-func-params: (GameMode(), Destroy_script()) -> []
+	has-builtin-type-func = ?(GameMode(), Create_script())
+	builtin-type-func-return: (GameMode(), Create_script()) -> VoidType()
+	builtin-type-func-params: (GameMode(), Create_script()) -> []
+	has-builtin-type-func = ?(GameMode(), Disconnect())
+	builtin-type-func-return: (GameMode(), Disconnect()) -> VoidType()
+	builtin-type-func-params: (GameMode(), Disconnect()) -> [GameModeScriptEvent()]
+	has-builtin-type-func = ?(GameMode(), IsDisconnect())
+	builtin-type-func-return: (GameMode(), IsDisconnect()) -> BoolType()
+	builtin-type-func-params: (GameMode(), IsDisconnect()) -> [GameModeScriptEvent()]
+	has-builtin-type-func = ?(GameMode(), Connect())
+	builtin-type-func-return: (GameMode(), Connect()) -> VoidType()
+	builtin-type-func-params: (GameMode(), Connect()) -> [GameModeScriptEvent()]
+	has-builtin-type-func = ?(GameMode(), IsConnected())
+	builtin-type-func-return: (GameMode(), IsConnected()) -> BoolType()
+	builtin-type-func-params: (GameMode(), IsConnected()) -> [GameModeScriptEvent()]
+	has-builtin-type-func = ?(GameMode(), Block())
+	builtin-type-func-return: (GameMode(), Block()) -> VoidType()
+	builtin-type-func-params: (GameMode(), Block()) -> [GameModeScriptEvent(), BoolType()]
+	has-builtin-type-func = ?(GameMode(), IsBlocked())
+	builtin-type-func-return: (GameMode(), IsBlocked()) -> BoolType()
+	builtin-type-func-params: (GameMode(), IsBlocked()) -> [GameModeScriptEvent()]
+	has-builtin-type-func = ?(GameMode(), DisconnectAll())
+	builtin-type-func-return: (GameMode(), DisconnectAll()) -> VoidType()
+	builtin-type-func-params: (GameMode(), DisconnectAll()) -> []
+	has-builtin-type-func = ?(GameMode(), ConnectAll())
+	builtin-type-func-return: (GameMode(), ConnectAll()) -> VoidType()
+	builtin-type-func-params: (GameMode(), ConnectAll()) -> []
+	has-builtin-type-func = ?(GameMode(), BlockAll())
+	builtin-type-func-return: (GameMode(), BlockAll()) -> VoidType()
+	builtin-type-func-params: (GameMode(), BlockAll()) -> [BoolType()]
 	builtin-type-funcs: GameMode() -> [Function(Reload_script(), VoidType(), []), Function(Destroy_script(), VoidType(), []), Function(Create_script(), VoidType(), []), Function(Disconnect(), VoidType(), [GameModeScriptEvent()]), Function(IsDisconnect(), BoolType(), [GameModeScriptEvent()]), Function(Connect(), VoidType(), [GameModeScriptEvent()]), Function(IsConnected(), BoolType(), [GameModeScriptEvent()]), Function(Block(), VoidType(), [GameModeScriptEvent(), BoolType()]), Function(IsBlocked(), BoolType(), [GameModeScriptEvent()]), Function(DisconnectAll(), VoidType(), []), Function(ConnectAll(), VoidType(), []), Function(BlockAll(), VoidType(), [BoolType()])]
 
 	builtin-type-funcs: InputManager() -> []
 
-	has-builtin-type-func(|param0) = ?IsButtonDown(); <?KeyboardState()> param0
-	builtin-type-func-return(|param0) = ?IsButtonDown(); <?KeyboardState()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsButtonDown(); <?KeyboardState()> param0; ![KeyboardButton()]
-	has-builtin-type-func(|param0) = ?Clear(); <?KeyboardState()> param0
-	builtin-type-func-return(|param0) = ?Clear(); <?KeyboardState()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Clear(); <?KeyboardState()> param0; ![]
+	has-builtin-type-func = ?(KeyboardState(), IsButtonDown())
+	builtin-type-func-return: (KeyboardState(), IsButtonDown()) -> BoolType()
+	builtin-type-func-params: (KeyboardState(), IsButtonDown()) -> [KeyboardButton()]
+	has-builtin-type-func = ?(KeyboardState(), Clear())
+	builtin-type-func-return: (KeyboardState(), Clear()) -> VoidType()
+	builtin-type-func-params: (KeyboardState(), Clear()) -> []
 	builtin-type-funcs: KeyboardState() -> [Function(IsButtonDown(), BoolType(), [KeyboardButton()]), Function(Clear(), VoidType(), [])]
 
 	builtin-type-funcs: Light() -> []
 
 	builtin-type-funcs: Mesh() -> []
 
-	has-builtin-type-func(|param0) = ?IsButtonDown(); <?MouseState()> param0
-	builtin-type-func-return(|param0) = ?IsButtonDown(); <?MouseState()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?IsButtonDown(); <?MouseState()> param0; ![MouseButton()]
-	has-builtin-type-func(|param0) = ?Clear(); <?MouseState()> param0
-	builtin-type-func-return(|param0) = ?Clear(); <?MouseState()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Clear(); <?MouseState()> param0; ![]
+	has-builtin-type-func = ?(MouseState(), IsButtonDown())
+	builtin-type-func-return: (MouseState(), IsButtonDown()) -> BoolType()
+	builtin-type-func-params: (MouseState(), IsButtonDown()) -> [MouseButton()]
+	has-builtin-type-func = ?(MouseState(), Clear())
+	builtin-type-func-return: (MouseState(), Clear()) -> VoidType()
+	builtin-type-func-params: (MouseState(), Clear()) -> []
 	builtin-type-funcs: MouseState() -> [Function(IsButtonDown(), BoolType(), [MouseButton()]), Function(Clear(), VoidType(), [])]
 
-	has-builtin-type-func(|param0) = ?Clear(); <?Particle()> param0
-	builtin-type-func-return(|param0) = ?Clear(); <?Particle()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Clear(); <?Particle()> param0; ![]
+	has-builtin-type-func = ?(Particle(), Clear())
+	builtin-type-func-return: (Particle(), Clear()) -> VoidType()
+	builtin-type-func-params: (Particle(), Clear()) -> []
 	builtin-type-funcs: Particle() -> [Function(Clear(), VoidType(), [])]
 
 	builtin-type-funcs: ResourceManager() -> []
 
-	has-builtin-type-func(|param0) = ?Activate(); <?RigidBody()> param0
-	builtin-type-func-return(|param0) = ?Activate(); <?RigidBody()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Activate(); <?RigidBody()> param0; ![BoolType()]
-	has-builtin-type-func(|param0) = ?ApplyForce(); <?RigidBody()> param0
-	builtin-type-func-return(|param0) = ?ApplyForce(); <?RigidBody()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?ApplyForce(); <?RigidBody()> param0; ![Vector3(), Vector3()]
-	has-builtin-type-func(|param0) = ?ApplyCentralForce(); <?RigidBody()> param0
-	builtin-type-func-return(|param0) = ?ApplyCentralForce(); <?RigidBody()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?ApplyCentralForce(); <?RigidBody()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?ApplyImpulse(); <?RigidBody()> param0
-	builtin-type-func-return(|param0) = ?ApplyImpulse(); <?RigidBody()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?ApplyImpulse(); <?RigidBody()> param0; ![Vector3(), Vector3()]
-	has-builtin-type-func(|param0) = ?ApplyCentralImpulse(); <?RigidBody()> param0
-	builtin-type-func-return(|param0) = ?ApplyCentralImpulse(); <?RigidBody()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?ApplyCentralImpulse(); <?RigidBody()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?ApplyTorque(); <?RigidBody()> param0
-	builtin-type-func-return(|param0) = ?ApplyTorque(); <?RigidBody()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?ApplyTorque(); <?RigidBody()> param0; ![Vector3()]
+	has-builtin-type-func = ?(RigidBody(), Activate())
+	builtin-type-func-return: (RigidBody(), Activate()) -> VoidType()
+	builtin-type-func-params: (RigidBody(), Activate()) -> [BoolType()]
+	has-builtin-type-func = ?(RigidBody(), ApplyForce())
+	builtin-type-func-return: (RigidBody(), ApplyForce()) -> VoidType()
+	builtin-type-func-params: (RigidBody(), ApplyForce()) -> [Vector3(), Vector3()]
+	has-builtin-type-func = ?(RigidBody(), ApplyCentralForce())
+	builtin-type-func-return: (RigidBody(), ApplyCentralForce()) -> VoidType()
+	builtin-type-func-params: (RigidBody(), ApplyCentralForce()) -> [Vector3()]
+	has-builtin-type-func = ?(RigidBody(), ApplyImpulse())
+	builtin-type-func-return: (RigidBody(), ApplyImpulse()) -> VoidType()
+	builtin-type-func-params: (RigidBody(), ApplyImpulse()) -> [Vector3(), Vector3()]
+	has-builtin-type-func = ?(RigidBody(), ApplyCentralImpulse())
+	builtin-type-func-return: (RigidBody(), ApplyCentralImpulse()) -> VoidType()
+	builtin-type-func-params: (RigidBody(), ApplyCentralImpulse()) -> [Vector3()]
+	has-builtin-type-func = ?(RigidBody(), ApplyTorque())
+	builtin-type-func-return: (RigidBody(), ApplyTorque()) -> VoidType()
+	builtin-type-func-params: (RigidBody(), ApplyTorque()) -> [Vector3()]
 	builtin-type-funcs: RigidBody() -> [Function(Activate(), VoidType(), [BoolType()]), Function(ApplyForce(), VoidType(), [Vector3(), Vector3()]), Function(ApplyCentralForce(), VoidType(), [Vector3()]), Function(ApplyImpulse(), VoidType(), [Vector3(), Vector3()]), Function(ApplyCentralImpulse(), VoidType(), [Vector3()]), Function(ApplyTorque(), VoidType(), [Vector3()])]
 
 	builtin-type-funcs: SceneManager() -> []
@@ -332,21 +332,21 @@ rules
 
 	builtin-type-funcs: ServerInfo() -> []
 
-	has-builtin-type-func(|param0) = ?AddServer(); <?ServerNeighbors()> param0
-	builtin-type-func-return(|param0) = ?AddServer(); <?ServerNeighbors()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?AddServer(); <?ServerNeighbors()> param0; ![Direction(), ServerInfo()]
-	has-builtin-type-func(|param0) = ?GetServer(); <?ServerNeighbors()> param0
-	builtin-type-func-return(|param0) = ?GetServer(); <?ServerNeighbors()> param0; !ServerInfo()
-	builtin-type-func-params(|param0) = ?GetServer(); <?ServerNeighbors()> param0; ![Direction()]
-	has-builtin-type-func(|param0) = ?HasServer(); <?ServerNeighbors()> param0
-	builtin-type-func-return(|param0) = ?HasServer(); <?ServerNeighbors()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?HasServer(); <?ServerNeighbors()> param0; ![Direction()]
-	has-builtin-type-func(|param0) = ?RemoveServer(); <?ServerNeighbors()> param0
-	builtin-type-func-return(|param0) = ?RemoveServer(); <?ServerNeighbors()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?RemoveServer(); <?ServerNeighbors()> param0; ![Direction()]
-	has-builtin-type-func(|param0) = ?Clear(); <?ServerNeighbors()> param0
-	builtin-type-func-return(|param0) = ?Clear(); <?ServerNeighbors()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Clear(); <?ServerNeighbors()> param0; ![]
+	has-builtin-type-func = ?(ServerNeighbors(), AddServer())
+	builtin-type-func-return: (ServerNeighbors(), AddServer()) -> VoidType()
+	builtin-type-func-params: (ServerNeighbors(), AddServer()) -> [Direction(), ServerInfo()]
+	has-builtin-type-func = ?(ServerNeighbors(), GetServer())
+	builtin-type-func-return: (ServerNeighbors(), GetServer()) -> ServerInfo()
+	builtin-type-func-params: (ServerNeighbors(), GetServer()) -> [Direction()]
+	has-builtin-type-func = ?(ServerNeighbors(), HasServer())
+	builtin-type-func-return: (ServerNeighbors(), HasServer()) -> BoolType()
+	builtin-type-func-params: (ServerNeighbors(), HasServer()) -> [Direction()]
+	has-builtin-type-func = ?(ServerNeighbors(), RemoveServer())
+	builtin-type-func-return: (ServerNeighbors(), RemoveServer()) -> VoidType()
+	builtin-type-func-params: (ServerNeighbors(), RemoveServer()) -> [Direction()]
+	has-builtin-type-func = ?(ServerNeighbors(), Clear())
+	builtin-type-func-return: (ServerNeighbors(), Clear()) -> VoidType()
+	builtin-type-func-params: (ServerNeighbors(), Clear()) -> []
 	builtin-type-funcs: ServerNeighbors() -> [Function(AddServer(), VoidType(), [Direction(), ServerInfo()]), Function(GetServer(), ServerInfo(), [Direction()]), Function(HasServer(), BoolType(), [Direction()]), Function(RemoveServer(), VoidType(), [Direction()]), Function(Clear(), VoidType(), [])]
 
 	builtin-type-funcs: Angle() -> []
@@ -359,136 +359,136 @@ rules
 
 	builtin-type-funcs: Matrix4() -> []
 
-	has-builtin-type-func(|param0) = ?Translate(); <?Node()> param0
-	builtin-type-func-return(|param0) = ?Translate(); <?Node()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Translate(); <?Node()> param0; ![Vector3(), TransformSpace()]
-	has-builtin-type-func(|param0) = ?Roll(); <?Node()> param0
-	builtin-type-func-return(|param0) = ?Roll(); <?Node()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Roll(); <?Node()> param0; ![Radian(), TransformSpace()]
-	has-builtin-type-func(|param0) = ?Pitch(); <?Node()> param0
-	builtin-type-func-return(|param0) = ?Pitch(); <?Node()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Pitch(); <?Node()> param0; ![Radian(), TransformSpace()]
-	has-builtin-type-func(|param0) = ?Yaw(); <?Node()> param0
-	builtin-type-func-return(|param0) = ?Yaw(); <?Node()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Yaw(); <?Node()> param0; ![Radian(), TransformSpace()]
-	has-builtin-type-func(|param0) = ?Rotate(); <?Node()> param0
-	builtin-type-func-return(|param0) = ?Rotate(); <?Node()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?Rotate(); <?Node()> param0; ![Vector3(), Radian(), TransformSpace()]
-	has-builtin-type-func(|param0) = ?SetInitialState(); <?Node()> param0
-	builtin-type-func-return(|param0) = ?SetInitialState(); <?Node()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?SetInitialState(); <?Node()> param0; ![]
-	has-builtin-type-func(|param0) = ?ResetToInitialState(); <?Node()> param0
-	builtin-type-func-return(|param0) = ?ResetToInitialState(); <?Node()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?ResetToInitialState(); <?Node()> param0; ![]
-	has-builtin-type-func(|param0) = ?ConvertWorldToLocalPosition(); <?Node()> param0
-	builtin-type-func-return(|param0) = ?ConvertWorldToLocalPosition(); <?Node()> param0; !Vector3()
-	builtin-type-func-params(|param0) = ?ConvertWorldToLocalPosition(); <?Node()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?ConvertLocalToWorldPosition(); <?Node()> param0
-	builtin-type-func-return(|param0) = ?ConvertLocalToWorldPosition(); <?Node()> param0; !Vector3()
-	builtin-type-func-params(|param0) = ?ConvertLocalToWorldPosition(); <?Node()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?ConvertWorldToLocalOrientation(); <?Node()> param0
-	builtin-type-func-return(|param0) = ?ConvertWorldToLocalOrientation(); <?Node()> param0; !Quaternion()
-	builtin-type-func-params(|param0) = ?ConvertWorldToLocalOrientation(); <?Node()> param0; ![Quaternion()]
-	has-builtin-type-func(|param0) = ?ConvertLocalToWorldOrientation(); <?Node()> param0
-	builtin-type-func-return(|param0) = ?ConvertLocalToWorldOrientation(); <?Node()> param0; !Quaternion()
-	builtin-type-func-params(|param0) = ?ConvertLocalToWorldOrientation(); <?Node()> param0; ![Quaternion()]
+	has-builtin-type-func = ?(Node(), Translate())
+	builtin-type-func-return: (Node(), Translate()) -> VoidType()
+	builtin-type-func-params: (Node(), Translate()) -> [Vector3(), TransformSpace()]
+	has-builtin-type-func = ?(Node(), Roll())
+	builtin-type-func-return: (Node(), Roll()) -> VoidType()
+	builtin-type-func-params: (Node(), Roll()) -> [Radian(), TransformSpace()]
+	has-builtin-type-func = ?(Node(), Pitch())
+	builtin-type-func-return: (Node(), Pitch()) -> VoidType()
+	builtin-type-func-params: (Node(), Pitch()) -> [Radian(), TransformSpace()]
+	has-builtin-type-func = ?(Node(), Yaw())
+	builtin-type-func-return: (Node(), Yaw()) -> VoidType()
+	builtin-type-func-params: (Node(), Yaw()) -> [Radian(), TransformSpace()]
+	has-builtin-type-func = ?(Node(), Rotate())
+	builtin-type-func-return: (Node(), Rotate()) -> VoidType()
+	builtin-type-func-params: (Node(), Rotate()) -> [Vector3(), Radian(), TransformSpace()]
+	has-builtin-type-func = ?(Node(), SetInitialState())
+	builtin-type-func-return: (Node(), SetInitialState()) -> VoidType()
+	builtin-type-func-params: (Node(), SetInitialState()) -> []
+	has-builtin-type-func = ?(Node(), ResetToInitialState())
+	builtin-type-func-return: (Node(), ResetToInitialState()) -> VoidType()
+	builtin-type-func-params: (Node(), ResetToInitialState()) -> []
+	has-builtin-type-func = ?(Node(), ConvertWorldToLocalPosition())
+	builtin-type-func-return: (Node(), ConvertWorldToLocalPosition()) -> Vector3()
+	builtin-type-func-params: (Node(), ConvertWorldToLocalPosition()) -> [Vector3()]
+	has-builtin-type-func = ?(Node(), ConvertLocalToWorldPosition())
+	builtin-type-func-return: (Node(), ConvertLocalToWorldPosition()) -> Vector3()
+	builtin-type-func-params: (Node(), ConvertLocalToWorldPosition()) -> [Vector3()]
+	has-builtin-type-func = ?(Node(), ConvertWorldToLocalOrientation())
+	builtin-type-func-return: (Node(), ConvertWorldToLocalOrientation()) -> Quaternion()
+	builtin-type-func-params: (Node(), ConvertWorldToLocalOrientation()) -> [Quaternion()]
+	has-builtin-type-func = ?(Node(), ConvertLocalToWorldOrientation())
+	builtin-type-func-return: (Node(), ConvertLocalToWorldOrientation()) -> Quaternion()
+	builtin-type-func-params: (Node(), ConvertLocalToWorldOrientation()) -> [Quaternion()]
 	builtin-type-funcs: Node() -> [Function(Translate(), VoidType(), [Vector3(), TransformSpace()]), Function(Roll(), VoidType(), [Radian(), TransformSpace()]), Function(Pitch(), VoidType(), [Radian(), TransformSpace()]), Function(Yaw(), VoidType(), [Radian(), TransformSpace()]), Function(Rotate(), VoidType(), [Vector3(), Radian(), TransformSpace()]), Function(SetInitialState(), VoidType(), []), Function(ResetToInitialState(), VoidType(), []), Function(ConvertWorldToLocalPosition(), Vector3(), [Vector3()]), Function(ConvertLocalToWorldPosition(), Vector3(), [Vector3()]), Function(ConvertWorldToLocalOrientation(), Quaternion(), [Quaternion()]), Function(ConvertLocalToWorldOrientation(), Quaternion(), [Quaternion()])]
 
-	has-builtin-type-func(|param0) = ?Dot(); <?Quaternion()> param0
-	builtin-type-func-return(|param0) = ?Dot(); <?Quaternion()> param0; !RealType()
-	builtin-type-func-params(|param0) = ?Dot(); <?Quaternion()> param0; ![Quaternion()]
-	has-builtin-type-func(|param0) = ?Normalize(); <?Quaternion()> param0
-	builtin-type-func-return(|param0) = ?Normalize(); <?Quaternion()> param0; !RealType()
-	builtin-type-func-params(|param0) = ?Normalize(); <?Quaternion()> param0; ![]
+	has-builtin-type-func = ?(Quaternion(), Dot())
+	builtin-type-func-return: (Quaternion(), Dot()) -> RealType()
+	builtin-type-func-params: (Quaternion(), Dot()) -> [Quaternion()]
+	has-builtin-type-func = ?(Quaternion(), Normalize())
+	builtin-type-func-return: (Quaternion(), Normalize()) -> RealType()
+	builtin-type-func-params: (Quaternion(), Normalize()) -> []
 	builtin-type-funcs: Quaternion() -> [Function(Dot(), RealType(), [Quaternion()]), Function(Normalize(), RealType(), [])]
 
 	builtin-type-funcs: Radian() -> []
 
-	has-builtin-type-func(|param0) = ?Dot(); <?Vector2()> param0
-	builtin-type-func-return(|param0) = ?Dot(); <?Vector2()> param0; !RealType()
-	builtin-type-func-params(|param0) = ?Dot(); <?Vector2()> param0; ![Vector2()]
-	has-builtin-type-func(|param0) = ?Normalize(); <?Vector2()> param0
-	builtin-type-func-return(|param0) = ?Normalize(); <?Vector2()> param0; !RealType()
-	builtin-type-func-params(|param0) = ?Normalize(); <?Vector2()> param0; ![]
-	has-builtin-type-func(|param0) = ?MidPoint(); <?Vector2()> param0
-	builtin-type-func-return(|param0) = ?MidPoint(); <?Vector2()> param0; !Vector2()
-	builtin-type-func-params(|param0) = ?MidPoint(); <?Vector2()> param0; ![Vector2()]
-	has-builtin-type-func(|param0) = ?MakeFloor(); <?Vector2()> param0
-	builtin-type-func-return(|param0) = ?MakeFloor(); <?Vector2()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?MakeFloor(); <?Vector2()> param0; ![Vector2()]
-	has-builtin-type-func(|param0) = ?MakeCeil(); <?Vector2()> param0
-	builtin-type-func-return(|param0) = ?MakeCeil(); <?Vector2()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?MakeCeil(); <?Vector2()> param0; ![Vector2()]
-	has-builtin-type-func(|param0) = ?Perpendicular(); <?Vector2()> param0
-	builtin-type-func-return(|param0) = ?Perpendicular(); <?Vector2()> param0; !Vector2()
-	builtin-type-func-params(|param0) = ?Perpendicular(); <?Vector2()> param0; ![]
-	has-builtin-type-func(|param0) = ?Cross(); <?Vector2()> param0
-	builtin-type-func-return(|param0) = ?Cross(); <?Vector2()> param0; !RealType()
-	builtin-type-func-params(|param0) = ?Cross(); <?Vector2()> param0; ![Vector2()]
-	has-builtin-type-func(|param0) = ?RandomDeviant(); <?Vector2()> param0
-	builtin-type-func-return(|param0) = ?RandomDeviant(); <?Vector2()> param0; !Vector2()
-	builtin-type-func-params(|param0) = ?RandomDeviant(); <?Vector2()> param0; ![RealType()]
-	has-builtin-type-func(|param0) = ?Reflect(); <?Vector2()> param0
-	builtin-type-func-return(|param0) = ?Reflect(); <?Vector2()> param0; !Vector2()
-	builtin-type-func-params(|param0) = ?Reflect(); <?Vector2()> param0; ![Vector2()]
+	has-builtin-type-func = ?(Vector2(), Dot())
+	builtin-type-func-return: (Vector2(), Dot()) -> RealType()
+	builtin-type-func-params: (Vector2(), Dot()) -> [Vector2()]
+	has-builtin-type-func = ?(Vector2(), Normalize())
+	builtin-type-func-return: (Vector2(), Normalize()) -> RealType()
+	builtin-type-func-params: (Vector2(), Normalize()) -> []
+	has-builtin-type-func = ?(Vector2(), MidPoint())
+	builtin-type-func-return: (Vector2(), MidPoint()) -> Vector2()
+	builtin-type-func-params: (Vector2(), MidPoint()) -> [Vector2()]
+	has-builtin-type-func = ?(Vector2(), MakeFloor())
+	builtin-type-func-return: (Vector2(), MakeFloor()) -> VoidType()
+	builtin-type-func-params: (Vector2(), MakeFloor()) -> [Vector2()]
+	has-builtin-type-func = ?(Vector2(), MakeCeil())
+	builtin-type-func-return: (Vector2(), MakeCeil()) -> VoidType()
+	builtin-type-func-params: (Vector2(), MakeCeil()) -> [Vector2()]
+	has-builtin-type-func = ?(Vector2(), Perpendicular())
+	builtin-type-func-return: (Vector2(), Perpendicular()) -> Vector2()
+	builtin-type-func-params: (Vector2(), Perpendicular()) -> []
+	has-builtin-type-func = ?(Vector2(), Cross())
+	builtin-type-func-return: (Vector2(), Cross()) -> RealType()
+	builtin-type-func-params: (Vector2(), Cross()) -> [Vector2()]
+	has-builtin-type-func = ?(Vector2(), RandomDeviant())
+	builtin-type-func-return: (Vector2(), RandomDeviant()) -> Vector2()
+	builtin-type-func-params: (Vector2(), RandomDeviant()) -> [RealType()]
+	has-builtin-type-func = ?(Vector2(), Reflect())
+	builtin-type-func-return: (Vector2(), Reflect()) -> Vector2()
+	builtin-type-func-params: (Vector2(), Reflect()) -> [Vector2()]
 	builtin-type-funcs: Vector2() -> [Function(Dot(), RealType(), [Vector2()]), Function(Normalize(), RealType(), []), Function(MidPoint(), Vector2(), [Vector2()]), Function(MakeFloor(), VoidType(), [Vector2()]), Function(MakeCeil(), VoidType(), [Vector2()]), Function(Perpendicular(), Vector2(), []), Function(Cross(), RealType(), [Vector2()]), Function(RandomDeviant(), Vector2(), [RealType()]), Function(Reflect(), Vector2(), [Vector2()])]
 
-	has-builtin-type-func(|param0) = ?Distance(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?Distance(); <?Vector3()> param0; !RealType()
-	builtin-type-func-params(|param0) = ?Distance(); <?Vector3()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?SquaredDistance(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?SquaredDistance(); <?Vector3()> param0; !RealType()
-	builtin-type-func-params(|param0) = ?SquaredDistance(); <?Vector3()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?Dot(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?Dot(); <?Vector3()> param0; !RealType()
-	builtin-type-func-params(|param0) = ?Dot(); <?Vector3()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?AbsDot(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?AbsDot(); <?Vector3()> param0; !RealType()
-	builtin-type-func-params(|param0) = ?AbsDot(); <?Vector3()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?Normalize(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?Normalize(); <?Vector3()> param0; !RealType()
-	builtin-type-func-params(|param0) = ?Normalize(); <?Vector3()> param0; ![]
-	has-builtin-type-func(|param0) = ?Cross(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?Cross(); <?Vector3()> param0; !Vector3()
-	builtin-type-func-params(|param0) = ?Cross(); <?Vector3()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?MidPoint(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?MidPoint(); <?Vector3()> param0; !Vector3()
-	builtin-type-func-params(|param0) = ?MidPoint(); <?Vector3()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?MakeFloor(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?MakeFloor(); <?Vector3()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?MakeFloor(); <?Vector3()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?MakeCeil(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?MakeCeil(); <?Vector3()> param0; !VoidType()
-	builtin-type-func-params(|param0) = ?MakeCeil(); <?Vector3()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?Perpendicular(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?Perpendicular(); <?Vector3()> param0; !Vector3()
-	builtin-type-func-params(|param0) = ?Perpendicular(); <?Vector3()> param0; ![]
-	has-builtin-type-func(|param0) = ?RandomDeviant(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?RandomDeviant(); <?Vector3()> param0; !Vector3()
-	builtin-type-func-params(|param0) = ?RandomDeviant(); <?Vector3()> param0; ![Radian(), Vector3()]
-	has-builtin-type-func(|param0) = ?AngleBetween(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?AngleBetween(); <?Vector3()> param0; !Radian()
-	builtin-type-func-params(|param0) = ?AngleBetween(); <?Vector3()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?GetRotationTo(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?GetRotationTo(); <?Vector3()> param0; !Quaternion()
-	builtin-type-func-params(|param0) = ?GetRotationTo(); <?Vector3()> param0; ![Vector3(), Vector3()]
-	has-builtin-type-func(|param0) = ?Reflect(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?Reflect(); <?Vector3()> param0; !Vector3()
-	builtin-type-func-params(|param0) = ?Reflect(); <?Vector3()> param0; ![Vector3()]
-	has-builtin-type-func(|param0) = ?PositionEquals(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?PositionEquals(); <?Vector3()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?PositionEquals(); <?Vector3()> param0; ![Vector3(), RealType()]
-	has-builtin-type-func(|param0) = ?PositionCloses(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?PositionCloses(); <?Vector3()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?PositionCloses(); <?Vector3()> param0; ![Vector3(), RealType()]
-	has-builtin-type-func(|param0) = ?DirectionEquals(); <?Vector3()> param0
-	builtin-type-func-return(|param0) = ?DirectionEquals(); <?Vector3()> param0; !BoolType()
-	builtin-type-func-params(|param0) = ?DirectionEquals(); <?Vector3()> param0; ![Vector3(), Radian()]
+	has-builtin-type-func = ?(Vector3(), Distance())
+	builtin-type-func-return: (Vector3(), Distance()) -> RealType()
+	builtin-type-func-params: (Vector3(), Distance()) -> [Vector3()]
+	has-builtin-type-func = ?(Vector3(), SquaredDistance())
+	builtin-type-func-return: (Vector3(), SquaredDistance()) -> RealType()
+	builtin-type-func-params: (Vector3(), SquaredDistance()) -> [Vector3()]
+	has-builtin-type-func = ?(Vector3(), Dot())
+	builtin-type-func-return: (Vector3(), Dot()) -> RealType()
+	builtin-type-func-params: (Vector3(), Dot()) -> [Vector3()]
+	has-builtin-type-func = ?(Vector3(), AbsDot())
+	builtin-type-func-return: (Vector3(), AbsDot()) -> RealType()
+	builtin-type-func-params: (Vector3(), AbsDot()) -> [Vector3()]
+	has-builtin-type-func = ?(Vector3(), Normalize())
+	builtin-type-func-return: (Vector3(), Normalize()) -> RealType()
+	builtin-type-func-params: (Vector3(), Normalize()) -> []
+	has-builtin-type-func = ?(Vector3(), Cross())
+	builtin-type-func-return: (Vector3(), Cross()) -> Vector3()
+	builtin-type-func-params: (Vector3(), Cross()) -> [Vector3()]
+	has-builtin-type-func = ?(Vector3(), MidPoint())
+	builtin-type-func-return: (Vector3(), MidPoint()) -> Vector3()
+	builtin-type-func-params: (Vector3(), MidPoint()) -> [Vector3()]
+	has-builtin-type-func = ?(Vector3(), MakeFloor())
+	builtin-type-func-return: (Vector3(), MakeFloor()) -> VoidType()
+	builtin-type-func-params: (Vector3(), MakeFloor()) -> [Vector3()]
+	has-builtin-type-func = ?(Vector3(), MakeCeil())
+	builtin-type-func-return: (Vector3(), MakeCeil()) -> VoidType()
+	builtin-type-func-params: (Vector3(), MakeCeil()) -> [Vector3()]
+	has-builtin-type-func = ?(Vector3(), Perpendicular())
+	builtin-type-func-return: (Vector3(), Perpendicular()) -> Vector3()
+	builtin-type-func-params: (Vector3(), Perpendicular()) -> []
+	has-builtin-type-func = ?(Vector3(), RandomDeviant())
+	builtin-type-func-return: (Vector3(), RandomDeviant()) -> Vector3()
+	builtin-type-func-params: (Vector3(), RandomDeviant()) -> [Radian(), Vector3()]
+	has-builtin-type-func = ?(Vector3(), AngleBetween())
+	builtin-type-func-return: (Vector3(), AngleBetween()) -> Radian()
+	builtin-type-func-params: (Vector3(), AngleBetween()) -> [Vector3()]
+	has-builtin-type-func = ?(Vector3(), GetRotationTo())
+	builtin-type-func-return: (Vector3(), GetRotationTo()) -> Quaternion()
+	builtin-type-func-params: (Vector3(), GetRotationTo()) -> [Vector3(), Vector3()]
+	has-builtin-type-func = ?(Vector3(), Reflect())
+	builtin-type-func-return: (Vector3(), Reflect()) -> Vector3()
+	builtin-type-func-params: (Vector3(), Reflect()) -> [Vector3()]
+	has-builtin-type-func = ?(Vector3(), PositionEquals())
+	builtin-type-func-return: (Vector3(), PositionEquals()) -> BoolType()
+	builtin-type-func-params: (Vector3(), PositionEquals()) -> [Vector3(), RealType()]
+	has-builtin-type-func = ?(Vector3(), PositionCloses())
+	builtin-type-func-return: (Vector3(), PositionCloses()) -> BoolType()
+	builtin-type-func-params: (Vector3(), PositionCloses()) -> [Vector3(), RealType()]
+	has-builtin-type-func = ?(Vector3(), DirectionEquals())
+	builtin-type-func-return: (Vector3(), DirectionEquals()) -> BoolType()
+	builtin-type-func-params: (Vector3(), DirectionEquals()) -> [Vector3(), Radian()]
 	builtin-type-funcs: Vector3() -> [Function(Distance(), RealType(), [Vector3()]), Function(SquaredDistance(), RealType(), [Vector3()]), Function(Dot(), RealType(), [Vector3()]), Function(AbsDot(), RealType(), [Vector3()]), Function(Normalize(), RealType(), []), Function(Cross(), Vector3(), [Vector3()]), Function(MidPoint(), Vector3(), [Vector3()]), Function(MakeFloor(), VoidType(), [Vector3()]), Function(MakeCeil(), VoidType(), [Vector3()]), Function(Perpendicular(), Vector3(), []), Function(RandomDeviant(), Vector3(), [Radian(), Vector3()]), Function(AngleBetween(), Radian(), [Vector3()]), Function(GetRotationTo(), Quaternion(), [Vector3(), Vector3()]), Function(Reflect(), Vector3(), [Vector3()]), Function(PositionEquals(), BoolType(), [Vector3(), RealType()]), Function(PositionCloses(), BoolType(), [Vector3(), RealType()]), Function(DirectionEquals(), BoolType(), [Vector3(), Radian()])]
 
-	has-builtin-type-func(|param0) = ?Dot(); <?Vector4()> param0
-	builtin-type-func-return(|param0) = ?Dot(); <?Vector4()> param0; !RealType()
-	builtin-type-func-params(|param0) = ?Dot(); <?Vector4()> param0; ![Vector4()]
+	has-builtin-type-func = ?(Vector4(), Dot())
+	builtin-type-func-return: (Vector4(), Dot()) -> RealType()
+	builtin-type-func-params: (Vector4(), Dot()) -> [Vector4()]
 	builtin-type-funcs: Vector4() -> [Function(Dot(), RealType(), [Vector4()])]
 
 	builtin-type-funcs: RakNetGUID() -> []

@@ -13,17 +13,17 @@ imports
 rules // util
 	
 	printable = 
-		switch ?type
+		switch ?input
 		    case BoolType() : !"Boolean"
 		    case IntType() : !"Int"
 			case RealType() : !"Real"
 			case StringType() : !"String"
 			case VoidType() : !"Void"
 			case NullType() : !"Void*"
-			case CustomType(?name) : !$[[name] (object)]
+			case CustomType(?name) : !$[[name]]
 			case [?type|[]] : <printable> type
-			case [?type|?types]; not(<?[]> types) : !$[[<printable> type], [<printable>types]] 
-		    otherwise : ?name#(_); !$[[name] (built-in)]
+			case [?type|?types]; not(<?[]> types) : !$[[<printable> type], [<printable> types]] 
+		    otherwise : ?name#(_); !$[[name]]
 		end		
 
 rules // type matching
@@ -66,14 +66,18 @@ rules  // expr
 	type-of: Vector3Const(_,_,_) -> Vector3()
 	type-of: Vector4Const(_,_,_,_) -> Vector4()
 	
-	type-of: VarRef(name) -> <type-of><get-var> name
-	type-of: PropRef(property, exp) -> <type-of><get-object-property>(<type-of>exp, property) // TODO: not sure if this is right		
+	type-of: VarRef(name) -> <type-of> <get-var> name
+	type-of: PropRef(prop, exp) -> <get-property-type(|prop)> <type-of> exp		
 	type-of: This(name) -> <type-of><get-object> name
 	type-of: New(type, _) -> type
-	type-of: Access(exp, prop) -> <type-of><get-object-property> (<type-of>exp,prop)
-	type-of: BuiltinAccess(exp, prop) -> <builtin-type-prop-type(|<type-of> exp)> prop
-	type-of: Call(exp, func, _) -> <type-of><get-object-property>(<type-of>exp,func)
-	type-of: BuiltinCall(exp, func, _) -> <builtin-type-func-return(|<type-of> exp)> func
+	type-of: Access(exp, prop) -> <get-property-type(|prop)> <type-of> exp
+	type-of: BuiltinAccess(exp, prop) -> <get-property-type(|prop)> <type-of> exp
+	type-of: ObjectBuiltinAccess(objectProp, prop) -> <get-property-type(|prop)> type
+		where type := <get-property-type(|objectProp)> ClientObject()
+	type-of: Call(exp, func, _) -> <get-function-type(|func)> <type-of> exp
+	type-of: BuiltinCall(exp, func, _) -> <get-function-type(|func)> <type-of> exp
+	type-of: ObjectBuiltinCall(objectProp, func, _) -> <get-function-type(|func)> type
+		where type := <get-property-type(|objectProp)> ClientObject()
 	type-of: ObjectNew(objectRef, _) -> <type-of> objectRef
 	type-of: ObjectRef(name) -> <type-of><get-object> name
 	type-of: ComponentRef(name) -> <type-of><get-component> name
@@ -90,8 +94,43 @@ rules // defs
     type-of: ComponentDef(_, type, _) -> type
 	type-of: PluginDef(_, type, _) -> type
 	
-rules // getting type data
+rules // Type projections
+		
+	// Gets the type of a property.
+	get-property-type(|prop): CustomType(type) -> propType
+		where
+			(<type-of> <get-object-property> (type, prop) 
+			<+ <get-property-type(|prop)> ClientObject())
+			=> propType
+	get-property-type(|prop): type -> propType
+		where not(<is-object-type> type)
+		where 
+			(<builtin-type-prop-type> (type, prop) 
+			<+ <fetch-elem(builtin-type-prop-type)> <map(\ t -> (t, prop) \)> <get-type-parents> type) 
+			=> propType
+
+	// Gets the type of a function.
+	get-function-type(|func): CustomType(type) -> funcType
+		where funcType := 
+			//<type-of> <get-object-function> (type, func) <+ // TODO: Objects do not have custom functions yet.  
+			<get-function-type(|func)> ClientObject()
+	get-function-type(|func): type -> funcType
+		where not(<is-object-type> type)
+		where 
+			<builtin-type-func-return> (type, func) 
+			<+ <fetch-elem(builtin-type-func-return)> <map(\ t -> (t, func) \)> <get-type-parents> type
+			=> funcType
+			
+	// Gets the parents of given type.
+	get-type-parents: CustomType(type) -> [ClientObject() | <builtin-type-bases> ClientObject()]
+	get-type-parents: type -> <concat> [bases, <mapconcat(get-type-parents)> bases]
+		where not(<is-object-type> type)
+		where bases := <builtin-type-bases> type
+	get-type-parent: (type, parent) -> <?parent> <get-type-parents> type
 	
+rules // Type checks
+	
+	// Checks if given type is of standard (POD) type.
 	is-standard-type = ?VoidType()
 	is-standard-type = ?BoolType()
 	is-standard-type = ?IntType()
@@ -99,27 +138,25 @@ rules // getting type data
 	is-standard-type = ?StringType()
 	is-standard-type = ?NullType()
 	
+	// Checks if given type is of object type.
 	is-object-type = ?CustomType(_)
 	
+	// Checks if given type is a type at all.
 	is-type = is-standard-type <+ is-object-type <+ is-builtin-type <+ is-builtin-enum
 	
+	// Checks if the property is defined in given type
 	type-has-property(|prop) = ?CustomType(type); 
 		(<get-object-property> (type, prop) <+
 		<type-has-property(|prop)> ClientObject()) 
 	type-has-property(|prop) = ?type; 
 		not(<is-object-type> type);
-		(<has-builtin-type-prop(|type)> prop <+
+		(<has-builtin-type-prop> (type, prop) <+
 		<one(type-has-property(|prop))> <get-type-parents> type)
+	// Checks if the function is defined in given type
 	type-has-function(|func) = ?CustomType(type); 
 		//<get-object-function> (type, prop) <+ // TODO: Objects do not have custom functions yet. 
 		<type-has-function(|func)> ClientObject() 
 	type-has-function(|func) = ?type; 
 		not(<is-object-type> type);
-		(<has-builtin-type-func(|type)> func <+
-		<one(type-has-function(|func))> <get-type-parents> type)
-
-	get-type-parents: CustomType(type) -> [ClientObject() | <builtin-type-bases> ClientObject()]
-	get-type-parents: type -> <builtin-type-bases> type
-		where not(<is-object-type> type)
-	get-type-parent: (type, parent) -> <?parent> <get-type-parents> type
-		
+		(<has-builtin-type-func> (type, func) <+
+		<one(type-has-function(|func))> <get-type-parents> type)	

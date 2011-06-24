@@ -1,0 +1,23 @@
+module assignable-project
+
+imports
+	
+	include/DiversiaScript
+	data/builtin-type-prop
+	type-project
+	signatures
+
+rules // Writable checks
+
+	is-assignable = ?VarRef(_)
+	is-assignable = ?PropRef(_, _)
+	is-assignable = ?Access(_, _)
+	is-assignable = ?BuiltinAccess(exp, prop); <is-property-assignable(|prop)> <type-of> exp
+	is-assignable = ?ObjectBuiltinAccess(objectProp, prop); <is-property-assignable(|prop)> <get-property-type(|objectProp)> ClientObject()
+	
+	is-property-assignable(|prop) = ?CustomType(type);
+		<is-property-assignable(|prop)> ClientObject()
+	is-property-assignable(|prop) = ?type; 
+		not(<is-object-type> type);
+		(<is-builtin-type-prop-writable> (type, prop) <+
+		<one(is-property-assignable(|prop))> <get-type-parents> type)

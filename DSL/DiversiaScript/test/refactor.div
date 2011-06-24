@@ -6,7 +6,7 @@ plugin SceneManager {
 	AmbientLight = Colour(0.23, 0.2, 0.3, 1)
 }
 
-/*def Test {
+def Test {
 	component Entity {
 		Material = GraphicsShape.Sphere
 	}
@@ -27,4 +27,4 @@ on Create
 	
 	var dummy : Int = vec.X;
 	dummy = quat.Z;
-}*/
+}
