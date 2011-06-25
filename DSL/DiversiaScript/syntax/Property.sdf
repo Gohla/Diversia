@@ -1,0 +1,34 @@
+module Property
+
+imports
+	
+  Lexical
+  Type
+	
+  data/builtin-type-prop
+
+exports
+    
+  context-free syntax 
+   
+    %% Property
+    Id "=" Exp -> ObjectProp {cons("ObjectProp"), avoid}
+    BuiltinObjectProperty "=" Exp -> ObjectProp {cons("BuiltinObjectProp")}
+    ObjectProp -> InsideDef
+    
+    %% Parameter
+    Id ":" Type -> Param {cons("Param")}
+    Id -> Param {cons("Param")} %% Type inference
+    
+    %% Variable
+    "var" Id ":" Type "=" Exp -> VarDef {cons("VarDef")}
+    "var" Id ":" Type -> VarDef {cons("VarDefNoInit")} %% Desugared
+    "var" Id "=" Exp -> VarDef {cons("VarDefNoType")} %% Type inference
+    VarDef -> InsideDef
+    
+    %% Property Def
+    "prop" Id ":" Type "=" Exp -> PropDef {cons("PropDef")}
+    "prop" Id ":" Type -> PropDef {cons("PropDefNoInit")} %% Desugared
+    "prop" Id "=" Exp -> PropDef {cons("PropDefNoType")} %% Type inference
+    PropDef -> InsideObjectDef
+    

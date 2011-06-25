@@ -34,7 +34,7 @@ exports
     [0-9]+ [\.] [0-9]+ 		-> FloatConst
     
     %% Strings
-	"\"" StrChar* "\""		-> StrConst
+    "\"" StrChar* "\""		-> StrConst
 	
 	~[\\\"\n]				-> StrChar
 	[\\] [n]				-> StrChar
@@ -45,35 +45,22 @@ exports
 	[\\] [\\]				-> StrChar
 	[\\] [\ \t\n]+ [\\]		-> StrChar
 	
-	%% Time units
-	"milliseconds"	-> TimeUnit
-	"ms"			-> TimeUnit
-	"seconds"		-> TimeUnit
-	"s"				-> TimeUnit
-	"minutes"		-> TimeUnit
-	"m"				-> TimeUnit
-	"hours"			-> TimeUnit
-	"h"				-> TimeUnit
-	
-	%% Interpolation
-	"linearly"		-> InterpolationType
-	"exponentially"	-> InterpolationType
-	
   lexical syntax  %% Spacing
+  	
     [\ \t\n\r] -> LAYOUT
     
     %% Block comments
-	BlockComment			-> LAYOUT
-	"/*" CommentPart* "*/"	-> BlockComment
+    BlockComment			-> LAYOUT
+    "/*" CommentPart* "*/"	-> BlockComment
 	~[\/\*]      			-> CommentPart
-	Asterisk     			-> CommentPart
-	Slash        			-> CommentPart
-	BlockComment 			-> CommentPart
+    Asterisk     			-> CommentPart
+    Slash        			-> CommentPart
+    BlockComment 			-> CommentPart
 	[\/] 					-> Slash
 	[\*] 					-> Asterisk
 
 	%% Comments
-	"//" ~[\n\r]* ([\n\r] | EOF)     -> LAYOUT
+    "//" ~[\n\r]* ([\n\r] | EOF)     -> LAYOUT
 
     -> EOF
   
@@ -88,23 +75,23 @@ exports
     %% Ensure greedy matching for keywords.
     
     "this"      -/- [a-zA-Z0-9\_]
-	"true"      -/- [a-zA-Z0-9\_]
-	"false"     -/- [a-zA-Z0-9\_]
-	"boolean"   -/- [a-zA-Z0-9\_]
-	"class"     -/- [a-zA-Z0-9\_]
-	"else"      -/- [a-zA-Z0-9\_]
-	"if"      	-/- [a-zA-Z0-9\_]
-	"int"     	-/- [a-zA-Z0-9\_]
-	"new"		-/- [a-zA-Z0-9\_]
-	"public"    -/- [a-zA-Z0-9\_]
-	"return"    -/- [a-zA-Z0-9\_]
-	"static"    -/- [a-zA-Z0-9\_]
-	"void"      -/- [a-zA-Z0-9\_]
-	"while"     -/- [a-zA-Z0-9\_]
-	"print"     -/- [a-zA-Z0-9\_]
+    "true"      -/- [a-zA-Z0-9\_]
+    "false"     -/- [a-zA-Z0-9\_]
+    "boolean"   -/- [a-zA-Z0-9\_]
+    "class"     -/- [a-zA-Z0-9\_]
+    "else"      -/- [a-zA-Z0-9\_]
+    "if"      	-/- [a-zA-Z0-9\_]
+    "int"     	-/- [a-zA-Z0-9\_]
+    "new"		-/- [a-zA-Z0-9\_]
+    "public"    -/- [a-zA-Z0-9\_]
+    "return"    -/- [a-zA-Z0-9\_]
+    "static"    -/- [a-zA-Z0-9\_]
+    "void"      -/- [a-zA-Z0-9\_]
+    "while"     -/- [a-zA-Z0-9\_]
+    "print"     -/- [a-zA-Z0-9\_]
     
-	Asterisk -/- [\/]
-	Slash    -/- [\*]
+    Asterisk -/- [\/]
+    Slash    -/- [\*]
     
     %% EOF may not be followed by any char
     

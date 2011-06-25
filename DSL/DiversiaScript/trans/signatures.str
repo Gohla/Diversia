@@ -26,7 +26,7 @@ signature constructors // Operators
 	UOp		: UnaryOp * Exp -> Exp
 	NoOp	: NoOp
 
-signature constructors // Object & state
+signature constructors // Structure
 
 	Start: List(PluginDef) * List(ObjectDef) * List(EventDef) -> Start
 	
@@ -35,7 +35,14 @@ signature constructors // Object & state
 	
 	StateDef: Id * List(ObjectProp) * List(ComponentDef) * List(VarDef) * List(EventDef) -> StateDef
 	DefaultStateDef: Id * List(ObjectProp) * List(ComponentDef) * List(VarDef) * List(EventDef) -> StateDef
-	
+
+signature constructors // Types
+
+	//EnumType: Id -> Type
+	NullType: Type
+
+signature constructors // Variables & properties
+		
 	PropDef: Id * Id * Type * Exp -> PropDef
 	VarDef: Id * Id * Type * Exp -> VarDef
 	
@@ -48,6 +55,3 @@ signature constructors // Object & state
 	ObjectProp: Type * Id * Exp -> ObjectProp
 	PluginProp: Type * Id * Exp -> PluginProp
 	ComponentProp: Type * Id * Exp -> ComponentProp
-	
-	EnumType: Id -> Type
-	NullType: Type

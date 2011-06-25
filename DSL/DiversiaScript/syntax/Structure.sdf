@@ -1,0 +1,45 @@
+module Structure
+
+imports
+	
+  Lexical
+  Type
+  Property
+  Statement
+	
+  data/builtin-type-prop
+
+exports
+
+  context-free syntax
+    
+    %% Object
+    "def" Id "{" InsideObjectDef*  "}" -> ObjectDef {cons("ObjectDef")}
+    "external" "def" Id -> ObjectDef {cons("ExternalObjectDef")}
+    ObjectDef -> GlobalDef
+    ObjectDef -> InsideDef
+    InsideDef -> InsideObjectDef
+    Id -> ObjectRef {cons("ObjectRef")}
+    
+    %% Component
+    "component" Id ":" ComponentType "{" ComponentProp* "}" -> InsideDef {cons("ComponentDef")}
+    "component" ComponentType "{" ComponentProp* "}" -> InsideDef {cons("ComponentDef")} %% Desugared
+    BuiltinProperty "=" Exp -> ComponentProp {cons("ComponentProp")}
+    
+    %% Plugin
+    "plugin" Id ":" PluginType "{" PluginProp* "}" -> GlobalDef {cons("PluginDef")}
+    "plugin" PluginType "{" PluginProp* "}" -> GlobalDef {cons("PluginDef")} %% Desugared
+    BuiltinProperty "=" Exp -> PluginProp {cons("PluginProp")}
+    
+    %% State
+    "state" Id "{" InsideDef* "}" -> StateDef {cons("StateDef")}
+    "default" "state" Id "{" InsideDef* "}" -> StateDef {cons("DefaultStateDef")}
+    StateDef -> InsideObjectDef
+    Id -> StateRef {cons("StateRef")}
+    
+    %% Event reaction
+    "on" Id "(" {Param ","}* ")" "{" Statement* "}" -> EventDef {cons("EventDef")}
+    "on" Id "{" Statement* "}" -> EventDef {cons("EventDef")} %% Desugared
+    EventDef -> GlobalDef
+    EventDef -> InsideDef
+    

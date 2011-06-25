@@ -1,18 +1,20 @@
 module rename
 
-imports 
+imports
+	
 	include/DiversiaScript
 	lib/namespaces
-	namespace
+	
 	signatures
+	namespace
 	
 strategies
 
-	rename-all = /*enable-namespace-debugging;*/ rename-all-defs  
+	rename-all = rename-all-defs  
 	rename-all-refs = alltd(rename-ref)
 	rename-all-defs = alltd(rename-def)
 
-rules //defs
+rules // Definitions
 	
 	rename-def :
 		Start(pluginDefs, objectDefs, eventDefs) -> Start(pluginDefs', objectDefs', eventDefs'')
@@ -27,8 +29,8 @@ rules //defs
 			)
 	
 	rename-def :
-		ObjectDef(name, propAssigns, propDefs, componentDefs, /*objectDefs,*/ varDefs, defaultStateDef, stateDefs, eventDefs) -> 
-		ObjectDef(name, propAssigns', propDefs, componentDefs'', /*objectDefs',*/ varDefs'', defaultStateDef'', stateDefs'', eventDefs')
+		ObjectDef(name, propAssigns, propDefs, componentDefs, /*objectDefs, */ varDefs, defaultStateDef, stateDefs, eventDefs) -> 
+		ObjectDef(name, propAssigns', propDefs, componentDefs'', /*objectDefs', */ varDefs'', defaultStateDef'', stateDefs'', eventDefs')
 		where 
 			//<rename-declaration(|Vars())> name => name';
 			new-scope (	
@@ -85,15 +87,15 @@ rules //defs
 			)
 	
 	rename-def :
-		Param(name,type) -> Param(name',type)
+		Param(name, type) -> Param(name', type)
 		where
 			<rename-declaration(|Vars())> name => name'		
 	rename-def:
-		ComponentDef(name, type, props)-> ComponentDef(name',type, props)
+		ComponentDef(name, type, props)-> ComponentDef(name', type, props)
 		where
 			<rename-declaration(|Components())> name => name'
 	rename-def:
-		PluginDef(name, type, props)-> PluginDef(name',type, props)
+		PluginDef(name, type, props)-> PluginDef(name', type, props)
 		where
 			<rename-declaration(|Plugins())> name => name'
 
@@ -102,7 +104,7 @@ rules //defs
 		where
 			<rename-declaration(|Vars())> name => name'
 						
-rules // refs
+rules // References
 	
 	rename-ref :
 		PropRef(name, object) -> VarRef(name')
@@ -119,6 +121,4 @@ rules // refs
 	rename-ref :
 		StateRef(name) -> StateRef(name')
 		where <rename-reference(|States())> name => name'
-	
-			
 		

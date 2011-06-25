@@ -1,11 +1,14 @@
-module assignable-project
+module projection/assignable
 
 imports
 	
 	include/DiversiaScript
-	data/builtin-type-prop
-	type-project
+	
 	signatures
+	
+	projection/type
+	
+	data/builtin-type-prop
 
 rules // Writable checks
 
@@ -18,6 +21,6 @@ rules // Writable checks
 	is-property-assignable(|prop) = ?CustomType(type);
 		<is-property-assignable(|prop)> ClientObject()
 	is-property-assignable(|prop) = ?type; 
-		not(<is-object-type> type);
+		not (<is-object-type> type);
 		(<is-builtin-type-prop-writable> (type, prop) <+
 		<one(is-property-assignable(|prop))> <get-type-parents> type)

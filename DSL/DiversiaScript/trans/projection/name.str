@@ -1,17 +1,19 @@
-module name-project
+module projection/name
 
 imports
 	include/DiversiaScript
 	lib/namespaces
-	data/events
-	namespace
+	
 	signatures
+	namespace
+	
+	data/events
 	
 rules // Name-based projections  //TODO need to check these
 	
 	get-name: ObjectDef(n, _, _, _, _, _, _, _, _) -> n //pre desugar
 	get-name: ObjectDef(n, _, _, _, _, _, _, _) -> n  //post desugar
-	get-name: PropDef(_,n,_,_) -> n
+	get-name: PropDef(_, n, _, _) -> n
 	get-name: ComponentDef(n, _, _) -> n
 	get-name: VarDef(_, n, _, _) -> n
 	get-name: EventDef(n, _, _) -> n
@@ -19,7 +21,7 @@ rules // Name-based projections  //TODO need to check these
 	get-name: CustomType(n) -> n
 	
 	get-proposal: ObjectDef(name, _, _, _, _, _, _, _) -> (name, $[[name] : ClientObject])
-	get-proposal: PropDef(_,name,_,_)  -> (name, $[[name] : Type  info ])
+	get-proposal: PropDef(_, name, _, _)  -> (name, $[[name] : Type  info ])
 	
 	has-name(|name) = ?ObjectDef(name, _, _, _, _, _, _, _, _)
 	has-name(|name) = ?PropDef(_, name, _, _)
@@ -72,7 +74,7 @@ rules // Event
 		where objectEvent := <get-event> (objectName, name)
 		where stateEvents := <get-all-objectevents> (objectName, name)
 	object-events(|objectName): Event(name, _) -> stateEvents
-		where not( <get-event> (objectName, name) )
+		where not (<get-event> (objectName, name))
 		where stateEvents := <get-all-objectevents> (objectName, name)
 		
 rules // Vars

@@ -25,7 +25,7 @@ exports
     IntConst "." IntConst 	-> FloatConst
     
     %% Strings
-	"\"" StrChar* "\""		-> StrConst
+    "\"" StrChar* "\""		-> StrConst
 	
 	~[\\\"\n]				-> StrChar
 	[\\] [n]				-> StrChar
@@ -37,10 +37,11 @@ exports
 	[\\] [\ \t\n]+ [\\]		-> StrChar
 	
   lexical syntax  %% Spacing
+  	
     [\ \t\n\r] -> LAYOUT
 
 	%% Comments
-	"--" ~[\n\r]* ([\n\r] | EOF)     -> LAYOUT
+    "--" ~[\n\r]* ([\n\r] | EOF)     -> LAYOUT
 
     -> EOF
   
@@ -55,12 +56,12 @@ exports
     %% Ensure greedy matching for keywords.
     
     "nil"       -/- [a-zA-Z0-9\_]
-	"true"      -/- [a-zA-Z0-9\_]
-	"false"     -/- [a-zA-Z0-9\_]
-	"else"      -/- [a-zA-Z0-9\_]
-	"if"      	-/- [a-zA-Z0-9\_]
-	"return"    -/- [a-zA-Z0-9\_]
-	"while"     -/- [a-zA-Z0-9\_]
+    "true"      -/- [a-zA-Z0-9\_]
+    "false"     -/- [a-zA-Z0-9\_]
+    "else"      -/- [a-zA-Z0-9\_]
+    "if"      	-/- [a-zA-Z0-9\_]
+    "return"    -/- [a-zA-Z0-9\_]
+    "while"     -/- [a-zA-Z0-9\_]
     
     %% EOF may not be followed by any char
     

@@ -1,0 +1,13 @@
+module editor/check/warning
+
+imports
+	
+	include/DiversiaScript
+	
+	signatures
+
+rules  
+	
+	editor-warning: w@PropDefNoType(_, _) -> (w, $[Type must be set, there is no type inference yet.])
+	editor-warning: w@VarDefNoType(_, _) -> (w, $[Type must be set, there is no type inference yet.])
+	editor-warning: w@Param(_) -> (w, $[Type must be set, there is no type inference yet.])

@@ -1,25 +1,25 @@
-module DiversiaScript
+module diversiascript
 
 imports
-  libstratego-lib
-  libstratego-gpp
-  libstratego-aterm
-  include/DiversiaScript
-  lib/editor-common.generated
-  complete
-  rename
-  store
-  desugar
-  decorate
-  codegen/lua/luagen
-  
-  lib/namespaces
-  namespace
-  type-project
 
-  note-check
-  error-check
-  warning-check
+	libstratego-lib
+	libstratego-gpp
+	libstratego-aterm
+	include/DiversiaScript
+	lib/editor-common.generated
+	  
+	rename
+	store
+	desugar
+	decorate
+	  
+	codegen/lua/luagen
+	
+	editor/complete
+	editor/hover
+	editor/check/error
+	editor/check/warning
+	editor/check/note
   
 strategies
 	
@@ -84,17 +84,16 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 			editor-init;
 			filename := <guarantee-extension(|"aterm")> path;
 			result   := selected
-	
+			
+	// Code completion
+	editor-complete: (node, position, ast, path, project-path) -> proposals
+	where
+		editor-init;
+		<analyse-all> ast => ast';
+		<collect-one(propose-analysed)> ast' => proposals <+ ![] => proposals
+			
 	// Hover tooltip
-	editor-hover: (node, position, ast, path, project-path) ->  $[Type: [<printable> type]]
-		where 
+	editor-hover: (node, position, ast, path, project-path) -> result
+		where
 			<desugar-all> ast => ast';
-			<desugar-position-innermost(desugar|ast)> position => position';
-			<term-at-position(|position')> ast' => node';
-			<debug> node';
-			<type-of> node' => type
-	desugar-position-innermost(desugar|ast): position -> position'
-	    where
-	      ast'  := <at-position(!<id>{MARKER()}|position)> ast;
-	      ast'' := <innermost(preserve-annos({?x; desugar; not(?x)}))> ast';
-	      position' := <position-of-term({?_{a*}; <one(?MARKER())> a*})> ast''
+			<editor-hover> (node, position, ast) => result

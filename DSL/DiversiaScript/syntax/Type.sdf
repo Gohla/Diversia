@@ -1,0 +1,31 @@
+module Type
+
+imports
+	
+  Lexical
+	
+  data/builtin-type
+  data/builtin-enum
+  data/builtin-component
+  data/builtin-plugin
+
+exports
+
+  context-free syntax
+    
+    %% Types
+    "Int" -> Type {cons("IntType")}
+    "Real" -> Type {cons("RealType")}
+    "Bool" -> Type {cons("BoolType")}
+    "String" -> Type {cons("StringType")}
+    "Void" -> Type {cons("VoidType")}
+    BuiltinType -> Type
+    EnumType -> Type
+    ComponentType -> Type {prefer}
+    PluginType -> Type {prefer}
+    Id -> Type {cons("CustomType"), avoid}
+    
+  context-free restrictions
+  	
+  	Type -/- [a-zA-Z0-9\_]
+  	

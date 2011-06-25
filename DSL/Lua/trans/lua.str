@@ -1,6 +1,7 @@
-module Lua
+module lua
 
 imports
+	
   libstratego-lib
   libstratego-gpp
   libstratego-aterm

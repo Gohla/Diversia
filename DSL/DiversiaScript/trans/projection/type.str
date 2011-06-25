@@ -1,9 +1,12 @@
-module type-project
+module projection/type
 
 imports
 	include/DiversiaScript
+	
 	signatures
-	name-project
+	
+	projection/name
+	
 	data/builtin-type
 	data/builtin-type-base
 	data/builtin-type-prop
@@ -22,7 +25,7 @@ rules // util
 			case NullType() : !"Void*"
 			case CustomType(?name) : !$[[name]]
 			case [?type|[]] : <printable> type
-			case [?type|?types]; not(<?[]> types) : !$[[<printable> type], [<printable> types]] 
+			case [?type|?types]; not (<?[]> types) : !$[[<printable> type], [<printable> types]] 
 		    otherwise : ?name#(_); !$[[name]]
 		end		
 
@@ -40,7 +43,7 @@ rules // type matching
 		
 	// Matches lists of types.
 	match-types = ?([], [])
-	match-types = ?([var-type|rest1],[exp-type|rest2]); <match-type>(var-type,exp-type); <match-types>(rest1,rest2)
+	match-types = ?([var-type|rest1], [exp-type|rest2]); <match-type> (var-type, exp-type); <match-types> (rest1, rest2)
 
 rules  // expr
 	
@@ -48,27 +51,28 @@ rules  // expr
 	
 	type-of: BOp(_, _, _) -> BoolType()
 	type-of: AOp(_, exp1, exp2) -> RealType()
-		where not(
-			<?IntType()><type-of> exp1;
-			<?IntType()><type-of> exp2)
+		where not (
+			<?IntType()> <type-of> exp1;
+			<?IntType()> <type-of> exp2)
 	type-of: AOp(_, exp1, exp2) -> IntType()
 		where 
-			<?IntType()><type-of> exp1;
-			<?IntType()><type-of> exp2
+			<?IntType()> <type-of> exp1;
+			<?IntType()> <type-of> exp2
 	type-of: Concat(_, _) -> StringType()
+	type-of: Not(_) -> BoolType()
 	type-of: True() -> BoolType()
 	type-of: False() -> BoolType()
 	type-of: IntConst(_) -> IntType()
 	type-of: FloatConst(_) -> RealType()
 	type-of: StrConst(_) -> StringType()
 	type-of: Null() -> NullType()
-	type-of: Vector2Const(_,_) -> Vector2()
-	type-of: Vector3Const(_,_,_) -> Vector3()
-	type-of: Vector4Const(_,_,_,_) -> Vector4()
+	type-of: Vector2Const(_, _) -> Vector2()
+	type-of: Vector3Const(_, _, _) -> Vector3()
+	type-of: Vector4Const(_, _, _, _) -> Vector4()
 	
 	type-of: VarRef(name) -> <type-of> <get-var> name
 	type-of: PropRef(prop, exp) -> <get-property-type(|prop)> <type-of> exp		
-	type-of: This(name) -> <type-of><get-object> name
+	type-of: This(name) -> <type-of> <get-object> name
 	type-of: New(type, _) -> type
 	type-of: Access(exp, prop) -> <get-property-type(|prop)> <type-of> exp
 	type-of: BuiltinAccess(exp, prop) -> <get-property-type(|prop)> <type-of> exp
@@ -79,9 +83,9 @@ rules  // expr
 	type-of: ObjectBuiltinCall(objectProp, func, _) -> <get-function-type(|func)> type
 		where type := <get-property-type(|objectProp)> ClientObject()
 	type-of: ObjectNew(objectRef, _) -> <type-of> objectRef
-	type-of: ObjectRef(name) -> <type-of><get-object> name
-	type-of: ComponentRef(name) -> <type-of><get-component> name
-	type-of: PluginRef(name) -> <type-of><get-plugin> name
+	type-of: ObjectRef(name) -> <type-of> <get-object> name
+	type-of: ComponentRef(name) -> <type-of> <get-component> name
+	type-of: PluginRef(name) -> <type-of> <get-plugin> name
 	type-of: EnumValueRef(name, _) -> name
 
 rules // defs
@@ -90,7 +94,7 @@ rules // defs
 	type-of: ExternalObjectDef(name) -> CustomType(name)
 	type-of: Param(_, type) -> type
     type-of: VarDef(_, _, type, _) -> type	
-    type-of: PropDef(_,_,type,_) -> type
+    type-of: PropDef(_, _, type, _) -> type
     type-of: ComponentDef(_, type, _) -> type
 	type-of: PluginDef(_, type, _) -> type
 	
@@ -103,7 +107,7 @@ rules // Type projections
 			<+ <get-property-type(|prop)> ClientObject())
 			=> propType
 	get-property-type(|prop): type -> propType
-		where not(<is-object-type> type)
+		where not (<is-object-type> type)
 		where 
 			(<builtin-type-prop-type> (type, prop) 
 			<+ <fetch-elem(builtin-type-prop-type)> <map(\ t -> (t, prop) \)> <get-type-parents> type) 
@@ -115,7 +119,7 @@ rules // Type projections
 			//<type-of> <get-object-function> (type, func) <+ // TODO: Objects do not have custom functions yet.  
 			<get-function-type(|func)> ClientObject()
 	get-function-type(|func): type -> funcType
-		where not(<is-object-type> type)
+		where not (<is-object-type> type)
 		where 
 			<builtin-type-func-return> (type, func) 
 			<+ <fetch-elem(builtin-type-func-return)> <map(\ t -> (t, func) \)> <get-type-parents> type
@@ -124,7 +128,7 @@ rules // Type projections
 	// Gets the parents of given type.
 	get-type-parents: CustomType(type) -> [ClientObject() | <builtin-type-bases> ClientObject()]
 	get-type-parents: type -> <concat> [bases, <mapconcat(get-type-parents)> bases]
-		where not(<is-object-type> type)
+		where not (<is-object-type> type)
 		where bases := <builtin-type-bases> type
 	get-type-parent: (type, parent) -> <?parent> <get-type-parents> type
 	
@@ -149,7 +153,7 @@ rules // Type checks
 		(<get-object-property> (type, prop) <+
 		<type-has-property(|prop)> ClientObject()) 
 	type-has-property(|prop) = ?type; 
-		not(<is-object-type> type);
+		not (<is-object-type> type);
 		(<has-builtin-type-prop> (type, prop) <+
 		<one(type-has-property(|prop))> <get-type-parents> type)
 	// Checks if the function is defined in given type
@@ -157,6 +161,6 @@ rules // Type checks
 		//<get-object-function> (type, prop) <+ // TODO: Objects do not have custom functions yet. 
 		<type-has-function(|func)> ClientObject() 
 	type-has-function(|func) = ?type; 
-		not(<is-object-type> type);
+		not (<is-object-type> type);
 		(<has-builtin-type-func> (type, func) <+
 		<one(type-has-function(|func))> <get-type-parents> type)	

@@ -1,6 +1,6 @@
 module namespace
 	
-signature constructors // namespaces
+signature constructors // Namespaces
 	
 	Objects 		: Namespace
 	States 			: Object 			-> Namespace

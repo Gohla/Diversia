@@ -1,26 +1,31 @@
 module desugar
 
-imports 
+imports
+	 
 	include/DiversiaScript
+	
 	signatures
-	type-project
-	name-project
+	
+	projection/type
+	projection/name
 
 strategies
-	desugar-all = innermost(desugar); desugar-object //topdown(repeat(desugar))
+	
+	desugar-all = innermost(desugar); desugar-object
 	post-desugar-all = desugar-object
 	
-rules  // simple desugars
+rules  // Definitions
 
-	desugar: EventDef(name,statements) -> EventDef(name,[],statements)
-	desugar: VarDefNoInit(name,type) -> VarDef(name,type,Null())
-	desugar: PropDefNoInit(name,type) -> PropDef(name,type,Null())
-	desugar: ComponentDef(type,props) -> ComponentDef(name,type,props)
+	desugar: EventDef(name, statements) -> EventDef(name, [], statements)
+	desugar: VarDefNoInit(name, type) -> VarDef(name, type, Null())
+	desugar: PropDefNoInit(name, type) -> PropDef(name, type, Null())
+	desugar: ComponentDef(type, props) -> ComponentDef(name, type, props)
 		where <?name#(_)> type
-	desugar: PluginDef(type,props) -> PluginDef(name,type,props)
+	desugar: PluginDef(type, props) -> PluginDef(name, type, props)
 		where <?name#(_)> type
 	
-	//desugar: VarDefNoType(name, exp) -> VarDef(name, <type-of> exp, exp) // only gets the easy exp
+rules // Operators
+	
 	desugar: Add(e1, e2) 	-> AOp(ADD(), e1, e2)
 	desugar: Sub(e1, e2) 	-> AOp(SUB(), e1, e2)
 	desugar: Mul(e1, e2) 	-> AOp(MUL(), e1, e2)
@@ -34,25 +39,27 @@ rules  // simple desugars
 	desugar: And(e1, e2) 	-> BOp(AND(), e1, e2)
 	desugar: Or(e1, e2) 	-> BOp(OR(), e1, e2)
 	
-	isVarDef = ?VarDef(_,_,_)
-	isVarDef = ?VarDefNoInit(_,_)
-	isEventDef = ?EventDef(_,_)
-	isEventDef = ?EventDef(_,_,_)	
-	isStateDef = ?StateDef(_,_)
-	isStateDef = ?StateDef(_,_,_,_,_)
-	isDefaultStateDef = ?DefaultStateDef(_,_)
-	isDefaultStateDef = ?DefaultStateDef(_,_,_,_,_)
-	isObjectDef = ?ObjectDef(_,_)
-	isObjectDef = ?ObjectDef(_,_,_,_,_,_,_,_,_)
+rules // Structural	
+
+	isVarDef = ?VarDef(_, _, _)
+	isVarDef = ?VarDefNoInit(_, _)
+	isEventDef = ?EventDef(_, _)
+	isEventDef = ?EventDef(_, _, _)	
+	isStateDef = ?StateDef(_, _)
+	isStateDef = ?StateDef(_, _, _, _, _)
+	isDefaultStateDef = ?DefaultStateDef(_, _)
+	isDefaultStateDef = ?DefaultStateDef(_, _, _, _, _)
+	isObjectDef = ?ObjectDef(_, _)
+	isObjectDef = ?ObjectDef(_, _, _, _, _, _, _, _, _)
 	isObjectDef = ?ExternalObjectDef(_)
-	isComponentDef = ?ComponentDef(_,_)
-	isComponentDef = ?ComponentDef(_,_,_)	
-	isPluginDef = ?PluginDef(_,_) 
-	isPluginDef = ?PluginDef(_,_,_)
-	isPropDef = ?PropDef(_,_,_)
-	isPropDef = ?PropDefNoInit(_,_)
-	isObjectProp = ?ObjectProp(_,_)
-	isObjectProp = ?BuiltinObjectProp(_,_)
+	isComponentDef = ?ComponentDef(_, _)
+	isComponentDef = ?ComponentDef(_, _, _)	
+	isPluginDef = ?PluginDef(_, _) 
+	isPluginDef = ?PluginDef(_, _, _)
+	isPropDef = ?PropDef(_, _, _)
+	isPropDef = ?PropDefNoInit(_, _)
+	isObjectProp = ?ObjectProp(_, _)
+	isObjectProp = ?BuiltinObjectProp(_, _)
 	
 	desugar: Start(defs) -> Start(pluginDefs, objectDefs, eventDefs)
 		where
@@ -85,16 +92,16 @@ rules  // simple desugars
 			<filter(isPropDef)> defs => propDefs;
 			<filter(isEventDef)> defs => eventDefs
 
-rules   // post desugar stuff
+rules // Child object
 
 	desugar-object: Start(pluginDefs, objectDefs, eventDefs) -> Start(pluginDefs, objectDefs', eventDefs)
 		where 
-			<map(desugar-object)><collect-all(?ObjectDef(_,_,_,_,_,_,_,_,_))> objectDefs => objectDefs'
+			<map(desugar-object)> <collect-all(?ObjectDef(_, _, _, _, _, _, _, _, _))> objectDefs => objectDefs'
 			
 	desugar-object: ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs,  eventDefs) -> 
 					ObjectDef(name, propAssigns, propDefs, componentDefs,             varDefs', defaultStateDef, stateDefs, eventDefs)
 		where
-			<conc>(<map(object-to-var)> objectDefs, varDefs) => varDefs'
+			<conc> (<map(object-to-var)> objectDefs, varDefs) => varDefs'
 	
 	object-to-var: ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs , varDefs, defaultStateDef, stateDefs, eventDefs) ->
 		PropDef(name, CustomType(name), ObjectNew(ObjectRef(name), [ObjectProp("Parent", This())]))
@@ -107,11 +114,11 @@ rules   // post desugar stuff
     get-param-types: name -> []
     typeof: name -> ""
     
-	desugar-type: EventDef(event-name,params, statements) -> EventDef(event-name,params',statements) 
+	desugar-type: EventDef(event-name, params, statements) -> EventDef(event-name, params', statements) 
 	where 
 		<get-param-types> event-name => param-types;
 		<zip(desugar-params)> (params, param-types) => params'
 	
-	desugar-params: (Param(name),type) -> Param(name, type)
+	desugar-params: (Param(name), type) -> Param(name, type)
     desugar-type: VarDefNoType(name, value) -> VarDef(name, <typeof> value, value) // might need te be changed
     */

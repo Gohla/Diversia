@@ -1,0 +1,29 @@
+module editor/hover
+
+imports
+
+	include/DiversiaScript
+	lib/editor-common.generated
+	
+	projection/type
+	
+	desugar
+	
+strategies
+	
+	editor-hover: (node, position, ast) ->  $[Type: [<printable> type]]
+		where 
+			
+			<desugar-position-innermost(desugar|ast)> position => position';
+			<term-at-position(|position')> ast => node';
+			<debug> node';
+			<type-of> node' => type
+			
+rules
+	
+	desugar-position-innermost(desugar|ast): position -> position'
+	    where
+	      ast'  := <at-position(!<id>{MARKER()}|position)> ast;
+	      ast'' := <innermost(preserve-annos({?x; desugar; not (?x)}))> ast';
+	      position' := <position-of-term({?_{a*}; <one(?MARKER())> a*})> ast''
+	      

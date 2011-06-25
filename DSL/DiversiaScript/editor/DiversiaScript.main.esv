@@ -8,8 +8,8 @@ language General properties
   id            : DiversiaScript
   extends       : Root
                   
-  description   : "Spoofax/IMP-generated editor for the DiversiaScript language"
-  url           : http://strategoxt.org
+  description   : "Diversia scripting language"
+  url           : http://diversia.org
                   
   extensions    : div
   table         : include/DiversiaScript.tbl

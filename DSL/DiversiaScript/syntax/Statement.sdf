@@ -1,0 +1,42 @@
+module Statement
+
+imports
+	
+  Lexical
+  Structure
+  Property
+
+exports
+	
+  lexical syntax
+  	
+	%% Time units
+    "milliseconds"	-> TimeUnit
+    "ms"			-> TimeUnit
+    "seconds"		-> TimeUnit
+    "s"				-> TimeUnit
+    "minutes"		-> TimeUnit
+    "m"				-> TimeUnit
+    "hours"			-> TimeUnit
+    "h"				-> TimeUnit
+	
+	%% Interpolation
+    "linearly"		-> InterpolationType
+    "exponentially"	-> InterpolationType
+
+  context-free syntax
+    
+    "{" Statement* "}"                                  							-> Statement {cons("Statements")}
+    "if" "(" Exp ")" Statement "else" Statement   									-> Statement {cons("If")}
+    "if" "(" Exp ")" Statement    													-> Statement {cons("If")}
+    "while" "(" Exp ")" Statement                       							-> Statement {cons("While")}
+    Exp "=" Exp ";"                                     							-> Statement {cons("Assign")}
+    "setstate" StateRef ";"                                   						-> Statement {cons("StateChange")}
+    "switch" "(" Exp ")" "{" Case* "}"                  							-> Statement {cons("Switch")}
+    "case" Exp ":" Statement                       									-> Case {cons("Case")}
+    "in" Exp TimeUnit "{" Statement* "}"    										-> Statement {cons("Delay")}
+    "interpolate" Exp InterpolationType? "from" Exp "to" Exp "over" Exp TimeUnit ";"-> Statement {cons("Interpolation")}
+    "print" Exp ";"																	-> Statement {cons("Print")}
+    Exp ";"																			-> Statement {cons("Expression")}    
+    VarDef ";"																		-> Statement {bracket}
+    

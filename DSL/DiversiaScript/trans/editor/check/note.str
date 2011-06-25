@@ -1,0 +1,11 @@
+module editor/check/note
+
+imports
+	
+	include/DiversiaScript
+	signatures
+
+rules  
+
+	editor-note: x -> <fail> x
+	

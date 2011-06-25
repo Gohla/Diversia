@@ -157,7 +157,7 @@ strategies // access declarations
 	* 
 	* @type a -> b
 	*/
-	get-declaration(s|namespace) = project-declaration(where(s)|namespace)
+	get-declaration(s|namespace) = project-declaration(where (s)|namespace)
 	
 	/**
 	* maps a name to its declarations for which strategy s holds
@@ -168,7 +168,7 @@ strategies // access declarations
 	* 
 	* @type a -> List(b)
 	*/
-	get-declarations(s|namespace) = project-declarations(where(s)|namespace)
+	get-declarations(s|namespace) = project-declarations(where (s)|namespace)
 	
 strategies // project declarations
 	
@@ -198,7 +198,7 @@ strategies // access all declarations
 	
 	get-all-declarations(|namespace) = all-keys-Declared ; filter(?(namespace, _)); mapconcat(bagof-Declared)
 	
-	get-all-declarations(s|namespace) = get-all-declarations(|namespace) ; filter(where(s)) 
+	get-all-declarations(s|namespace) = get-all-declarations(|namespace) ; filter(where (s)) 
 
 	project-all-declarations(s|namespace) = get-all-declarations(|namespace) ; filter(s) 
 	 
@@ -221,7 +221,7 @@ strategies
 	get-proposals(s|namespace) = 
 		( 
 			<Propose> () ; 
-			filter(where( get-declaration(s|namespace) )) ; 
+			filter(where ( get-declaration(s|namespace) )) ; 
 			map(rm-annotations) 
 		) <+ ![]
 
@@ -230,4 +230,4 @@ strategies
 	enable-namespace-debugging  = rules(DebugNS: x -> x)
 	disable-namespace-debugging = rules(DebugNS:- _ )
 	
-	debug-namespace = not(DebugNS) <+ debug
+	debug-namespace = not (DebugNS) <+ debug

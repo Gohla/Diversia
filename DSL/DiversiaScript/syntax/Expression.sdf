@@ -1,0 +1,36 @@
+module Expression
+
+imports
+	
+  Lexical
+  Structure
+  Property
+	
+  data/builtin-type-func
+
+exports
+
+  context-free syntax
+        
+    "true"                           			-> Exp {cons("True")}
+    "false"                           			-> Exp {cons("False")}
+    IntConst                            		-> Exp {cons("IntConst")}
+    FloatConst                          		-> Exp {cons("FloatConst")}
+    StrConst                            		-> Exp {cons("StrConst")}
+    "[" Exp "," Exp "]"                 		-> Exp {cons("Vector2Const")}
+    "[" Exp "," Exp "," Exp "]"         		-> Exp {cons("Vector3Const")}
+    "[" Exp "," Exp "," Exp "," Exp "]" 		-> Exp {cons("Vector4Const")}
+    Id                                  		-> Exp {cons("VarRef")}
+    "this"                              		-> Exp {cons("This")}
+    "null"                              		-> Exp {cons("Null")}
+    BuiltinType "(" {Exp ","}* ")"      		-> Exp {cons("New")}
+    Exp "." Id                        			-> Exp {cons("Access"), left, avoid}
+    Exp "." BuiltinProperty 					-> Exp {cons("BuiltinAccess"), left}
+    BuiltinObjectProperty "." BuiltinProperty 	-> Exp {cons("ObjectBuiltinAccess"), left, prefer}
+    Exp "." Id "(" {Exp ","}* ")"   			-> Exp {cons("Call"), left, avoid}
+    Exp "." BuiltinFunction "(" {Exp ","}* ")" 	-> Exp {cons("BuiltinCall"), left}
+    BuiltinObjectProperty "." BuiltinFunction "(" {Exp ","}* ")"
+    	-> Exp {cons("ObjectBuiltinCall"), left, prefer}
+    "new" ObjectRef "{" ObjectProp* "}" 		-> Exp {cons("ObjectNew")}
+    "(" Exp ")"                         		-> Exp {bracket}
+    

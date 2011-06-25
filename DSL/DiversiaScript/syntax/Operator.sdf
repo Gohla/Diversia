@@ -1,0 +1,35 @@
+module Operator
+
+imports
+	
+  Lexical
+  Expression
+
+exports
+
+  context-free syntax
+  	
+    "!" Exp         -> Exp {cons("Not"), right}
+    "-" Exp 		-> Exp {cons("Umin"), right}
+    Exp "+" Exp     -> Exp {cons("Add"), left}
+    Exp "-" Exp     -> Exp {cons("Sub"), left}
+    Exp "*" Exp     -> Exp {cons("Mul"), left}
+    Exp "/" Exp     -> Exp {cons("Div"), left}
+    Exp "==" Exp    -> Exp {cons("Eq"), left}
+    Exp "!=" Exp    -> Exp {cons("Neq"), left}
+    Exp "<" Exp     -> Exp {cons("Lt"), left}
+    Exp "<=" Exp    -> Exp {cons("Lte"), left}
+    Exp ">" Exp     -> Exp {cons("Gt"), left}
+    Exp ">=" Exp    -> Exp {cons("Gte"), left}
+    Exp "&&" Exp    -> Exp {cons("And"), left}
+    Exp "||" Exp    -> Exp {cons("Or"), left}
+    Exp ".." Exp    -> Exp {cons("Concat"), right}
+    "++" Exp		-> Exp {cons("PreInc"), right}
+    Exp "++"		-> Exp {cons("PostInc"), right}
+    "--" Exp		-> Exp {cons("PreDec"), right}
+    Exp "--"		-> Exp {cons("PostDec"), right}
+	
+  context-free restrictions
+  	
+    "-" Exp -/- [\-]
+  	

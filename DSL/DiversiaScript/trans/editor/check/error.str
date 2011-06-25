@@ -1,11 +1,15 @@
-module error-check
+module editor/check/error
 
-imports 
+imports
+	
 	include/DiversiaScript
+	
 	signatures
-	type-project
-	name-project
-	assignable-project
+	
+	projection/type
+	projection/name
+	projection/assignable
+	
 	data/builtin-type
 	data/builtin-type-prop
 	data/builtin-type-func
@@ -14,7 +18,7 @@ imports
 rules // Definitions
 	
 	editor-error: VarDef(_, _, type, _) -> (type, $[Unknown type: [<printable> type]])
-		where not(<is-type> type)
+		where not (<is-type> type)
 	
 	editor-error: e@VarDef(object, name, _, _) -> (e, $[Overwriting object property [name] not allowed.])
 		where <get-object-property> (CustomType(object), <strip-annos> name)		
@@ -22,7 +26,7 @@ rules // Definitions
 	editor-error: VarDef(_, _, type, exp)-> (exp, $[Expected [<printable> type] but found [<printable> type2].])
 		where 
 			<type-of> exp => type2;
-			not(<match-type> (type, type2))
+			not (<match-type> (type, type2))
 	
 	editor-error: e@PropDef(_, name, _, _) -> (e, $[Overwriting built-in property [name] is not allowed.])
 		where <has-builtin-type-prop> (ClientComponent(), name#([]))
@@ -30,7 +34,7 @@ rules // Definitions
 	editor-error: PropDef(_, _, type, exp)-> (exp, $[Expected [<printable> type] but found [<printable> type2].])
 		where 
 			<type-of> exp => type2;
-			not(<match-type> (type, type2)) 
+			not (<match-type> (type, type2)) 
 
 	// TODO: Disallow overwriting of function if functions are added
 	
@@ -56,116 +60,116 @@ rules // Types
 		where
 			<type-of> exp1 => type1;
 			<type-of> exp2 => type2;
-			not(<match-type>(type1, type2))
+			not (<match-type> (type1, type2))
 			
 	editor-error: e@AOp(_, _, exp) -> (exp, $[Expected Int or Real but found [<printable> type]])
 		where 
 			<type-of> exp => type;
-			not(<match-type>(<type-of> e, type))
+			not (<match-type> (<type-of> e, type))
 			
 	editor-error: e@AOp(_, exp, _) -> (exp, $[Expected Int or Real but found [<printable> type]])
 		where 
 			<type-of> exp => type;
-			not(<match-type>(<type-of> e, type))
+			not (<match-type> (<type-of> e, type))
 			
 	editor-error: Concat(exp, _) -> (exp, $[Expected String but found [<printable> type]])
 		where 
 			<type-of> exp => type;
-			not(<match-type>(StringType(), type))
+			not (<match-type> (StringType(), type))
 				
 	editor-error: Concat(_, exp) -> (exp, $[Expected String but found [<printable> type]])
 		where 
 			<type-of> exp => type;
-			not(<match-type>(StringType(), type))
+			not (<match-type> (StringType(), type))
 			
 	editor-error: ObjectProp(CustomType(object), name, exp) -> (exp, $[Expected [<printable> type] but found [<printable> type2].])
 		where
 			<type-of> <get-object-property> (object, name) => type;
 			<type-of> exp => type2;
-			not(<match-type> (type, type2))
+			not (<match-type> (type, type2))
 
 	editor-error: BuiltinObjectProp(prop, exp) -> (exp, $[Expected [<printable> type] but found [<printable> type2].])
 		where
 			<get-property-type(|prop)> ClientObject() => type;
 			<type-of> exp => type2;
-			not(<match-type> (type, type2))
+			not (<match-type> (type, type2))
 		
 	editor-error: PluginProp(plugin, prop, exp) -> (exp, $[Expected [<printable> type] but found [<printable> type2].])
 		where 
 			<get-property-type(|prop)> plugin => type;
 			<type-of> exp => type2;
-			not(<match-type> (type, type2))
+			not (<match-type> (type, type2))
 		
 	editor-error: ComponentProp(component, prop, exp) -> (exp, $[Expected [<printable> type] but found [<printable> type2].])
 		where
 			<get-property-type(|prop)> component => type;
 			<type-of> exp => type2;
-			not(<match-type>(type, type2))
+			not (<match-type> (type, type2))
 
 rules // References
 	
 	editor-error: e@ObjectRef(name) -> (e, $[Undefined object: [name]])
-		where not(<get-object> name)
+		where not (<get-object> name)
 	
 	editor-error: e@PropRef(name, exp) -> (e, $[Undefined property: [name]])
 		where not (<type-of> exp)
 		
 	editor-error: e@PropRef(name, exp) -> (e, $[Variable or property [name] is undefined in type [<printable> type].])
 		where type := <type-of> exp
-		where not(<type-has-property(|name)> type)
+		where not (<type-has-property(|name)> type)
 
 	editor-error: e@Access(exp, name) -> (e, $[Property [name] is undefined in type [<printable> type].])
 		where type := <type-of> exp
-		where not(<type-has-property(|name)> type)
+		where not (<type-has-property(|name)> type)
 				
 	editor-error: e@BuiltinAccess(exp, prop) -> (e, $[Property [<printable> prop] is undefined in type [<printable> type].])
 		where type := <type-of> exp
-		where not(<type-has-property(|prop)> type)
+		where not (<type-has-property(|prop)> type)
 	
 	editor-error: e@Call(exp, func, _) -> (e, $[Function [<printable> func] is undefined in type [<printable> type].])
 		where type := <type-of> exp
-		where not(<type-has-function(|func)> type)
+		where not (<type-has-function(|func)> type)
 		// TODO: Parameter check
 		
 	editor-error: e@BuiltinCall(exp, func, _) -> (e, $[Function [<printable> func] is undefined in type [<printable> type].])
 		where type := <type-of> exp
-		where not(<type-has-function(|func)> type)
+		where not (<type-has-function(|func)> type)
 		// TODO: Parameter check
 		
 	editor-error: ObjectProp(type, name, _) -> (name, $[Property [name] is undefined in type [<printable> type].])
-		where not(<type-has-property(|name)> type)
+		where not (<type-has-property(|name)> type)
 		
 	editor-error: PluginProp(type, prop, _) -> (prop, $[Property [<printable> prop] is undefined in type [<printable> type].])
-		where not(<type-has-property(|prop)> type)
+		where not (<type-has-property(|prop)> type)
 		
 	editor-error: ComponentProp(type, prop, _) -> (prop, $[Property [<printable> prop] is undefined in type [<printable> type].])
-		where not(<type-has-property(|prop)> type)
+		where not (<type-has-property(|prop)> type)
 
 rules // States
 	
 	editor-error: StateRef(name) -> (name, $[Undefined state: [name]])
-		where not(<get-state> name)
+		where not (<get-state> name)
 	
-	editor-error: ObjectDef(name,_,_,_,_,[],states,_)-> (name, $[Object [name] is missing a default state.])
-		where <gt>(<length> states, 0)
+	editor-error: ObjectDef(name, _, _, _, _, [], states, _)-> (name, $[Object [name] is missing a default state.])
+		where <gt> (<length> states, 0)
 
 rules // Events
 	
 	editor-error: EventDef(name, _, _) -> (name, $[Undefined event: [name]])
-		where not(<get-event-data> name)
+		where not (<get-event-data> name)
 		
 	editor-error: EventDef(name, params, _) -> (name, $[Parameters do not match expected parameters: [<printable> types1].])
 		where 
 			<get-event-types> name => types1;
 			<types-of> params => types2;
-			not(<match-types>(types2, types1))
+			not (<match-types> (types2, types1))
 		
 rules // Statements
 	
 	editor-error: Print(exp) -> (exp, $[Expected String but found [<printable> type].])
 		where 
 			<type-of> exp => type;
-			not(<match-type>(StringType(), type))
+			not (<match-type> (StringType(), type))
 			
 rules // Debug
 	

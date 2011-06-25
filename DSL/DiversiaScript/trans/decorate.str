@@ -2,13 +2,18 @@ module decorate
 
 imports 
 	include/DiversiaScript
+	
 	signatures
-	type-project
-	name-project
+	
+	projection/type
+	projection/name
+	
 	data/builtin-type
 
 strategies
+	
 	decorate-all = alltd(decorate); topdown(try(decorate-props))
+	
 rules 
 
 	decorate: EventDef(name, params, statements) -> 
@@ -17,7 +22,7 @@ rules
 			 	<innermost(decorate-event)> statements => statements'
 	
 	decorate-event: VarRef(name) -> PropRef(name, "ShouldNotHereAfterRename")
-	decorate-event: VarDef(name,type,expr) -> VarDef("Global", name,type,expr)
+	decorate-event: VarDef(name, type, expr) -> VarDef("Global", name, type, expr)
 
 	decorate: ObjectDef(name, propAssigns, propDefs, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) ->
 			  ObjectDef(name, propAssigns', propDefs', componentDefs', varDefs', defaultStateDef', stateDefs', eventDefs')
@@ -31,10 +36,10 @@ rules
 			 	<innermost(decorate-object(|name))> propDefs => propDefs'
 			 	
 	decorate-object(|object): VarRef(name) -> PropRef(name, This())
-	decorate-object(|object): PropDef(name,type,expr) -> PropDef(object,name,type,expr)
-	decorate-object(|object): VarDef(name,type,expr) -> VarDef(object, name,type,expr)
+	decorate-object(|object): PropDef(name, type, expr) -> PropDef(object, name, type, expr)
+	decorate-object(|object): VarDef(name, type, expr) -> VarDef(object, name, type, expr)
 	decorate-object(|object): New(type, params) -> Call(This(), type, params)
-		where not(<is-builtin-type> type) //TODO match with constructor too.
+		where not (<is-builtin-type> type) //TODO match with constructor too.
 	decorate-object(|object): This() -> This(object)
 	
 	decorate-props: ObjectDef(name, props, propDefs, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) ->

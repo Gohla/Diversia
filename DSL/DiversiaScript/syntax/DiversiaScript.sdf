@@ -2,208 +2,22 @@ module DiversiaScript
 
 imports 
 	
-	Lexical
-	
-	data/builtin-type
-	data/builtin-type-func
-	data/builtin-type-prop
-	data/builtin-enum
-	data/builtin-component
-	data/builtin-plugin
+  Lexical
+  Structure
+  Type
+  Property
+  Expression
+  Operator
+  Statement
+  Priority
 
 exports
 
   context-free start-symbols
+  
     Start
 
   context-free syntax
-    %% Start
+  	
     GlobalDef* -> Start {cons("Start")}
     
-    %% Object
-    "def" Id "{" InsideObjectDef*  "}" -> ObjectDef {cons("ObjectDef")}
-    "external" "def" Id -> ObjectDef {cons("ExternalObjectDef")}
-    ObjectDef -> GlobalDef
-    ObjectDef -> InsideDef
-    InsideDef -> InsideObjectDef
-    Id -> ObjectRef {cons("ObjectRef")}
-    
-    %% Component
-    "component" Id ":" ComponentType "{" ComponentProp* "}" -> InsideDef {cons("ComponentDef")}
-    "component" ComponentType "{" ComponentProp* "}" -> InsideDef {cons("ComponentDef")} %% desugared
-    BuiltinProperty "=" Exp -> ComponentProp {cons("ComponentProp")}
-    
-    %% Plugin
-    "plugin" Id ":" PluginType "{" PluginProp* "}" -> GlobalDef {cons("PluginDef")}
-    "plugin" PluginType "{" PluginProp* "}" -> GlobalDef {cons("PluginDef")} %% desugared
-    BuiltinProperty "=" Exp -> PluginProp {cons("PluginProp")}
-    
-    %% State
-    "state" Id "{" InsideDef* "}" -> StateDef {cons("StateDef")}
-    "default" "state" Id "{" InsideDef* "}" -> StateDef {cons("DefaultStateDef")}
-    StateDef -> InsideObjectDef
-    Id -> StateRef {cons("StateRef")}
-    
-    %% Event reaction
-    "on" Id "(" {Param ","}* ")" "{" Statement* "}" -> EventDef {cons("EventDef")}
-    "on" Id "{" Statement* "}" -> EventDef {cons("EventDef")} %% desugared
-    EventDef -> GlobalDef
-    EventDef -> InsideDef
-    
-    %% Property
-    Id "=" Exp -> ObjectProp {cons("ObjectProp"), avoid}
-    BuiltinObjectProperty "=" Exp -> ObjectProp {cons("BuiltinObjectProp")}
-    ObjectProp -> InsideDef
-    
-    %% Parameter
-    Id ":" Type -> Param {cons("Param")}
-    Id -> Param {cons("Param")} %% type inferance
-    
-    %% Variable
-    "var" Id ":" Type "=" Exp -> VarDef {cons("VarDef")}
-    "var" Id ":" Type -> VarDef {cons("VarDefNoInit")} %% desugared
-    "var" Id "=" Exp -> VarDef {cons("VarDefNoType")} %% type inferance
-    VarDef -> InsideDef
-    
-    %% Property Def
-    "prop" Id ":" Type "=" Exp -> PropDef {cons("PropDef")}
-    "prop" Id ":" Type -> PropDef {cons("PropDefNoInit")} %% desugared
-    "prop" Id "=" Exp -> PropDef {cons("PropDefNoType")} %% type inferance
-    PropDef -> InsideObjectDef
-    
-    %% Expressions
-    "true"                           			-> Exp {cons("True")}
-    "false"                           			-> Exp {cons("False")}
-    IntConst                            		-> Exp {cons("IntConst")}
-    FloatConst                          		-> Exp {cons("FloatConst")}
-    StrConst                            		-> Exp {cons("StrConst")}
-    "[" Exp "," Exp "]"                 		-> Exp {cons("Vector2Const")}
-    "[" Exp "," Exp "," Exp "]"         		-> Exp {cons("Vector3Const")}
-    "[" Exp "," Exp "," Exp "," Exp "]" 		-> Exp {cons("Vector4Const")}
-    Id                                  		-> Exp {cons("VarRef")}
-    "this"                              		-> Exp {cons("This")}
-    "null"                              		-> Exp {cons("Null")}
-    BuiltinType "(" {Exp ","}* ")"      		-> Exp {cons("New")}
-    Exp "." Id                        			-> Exp {cons("Access"), left, avoid}
-	Exp "." BuiltinProperty 					-> Exp {cons("BuiltinAccess"), left}
-	BuiltinObjectProperty "." BuiltinProperty 	-> Exp {cons("ObjectBuiltinAccess"), left, prefer}
-    Exp "." Id "(" {Exp ","}* ")"   			-> Exp {cons("Call"), left, avoid}
-    Exp "." BuiltinFunction "(" {Exp ","}* ")" 	-> Exp {cons("BuiltinCall"), left}
-    BuiltinObjectProperty "." BuiltinFunction "(" {Exp ","}* ")"
-    	-> Exp {cons("ObjectBuiltinCall"), left, prefer}
-    "new" ObjectRef "{" ObjectProp* "}" 		-> Exp {cons("ObjectNew")}
-    "(" Exp ")"                         		-> Exp {bracket}
-    
-    %% Operators
-    "!" Exp         -> Exp {cons("Not"), right}
-    "-" Exp 		-> Exp {cons("Umin"), right}
-  
-  context-free restrictions
-  	
-  	"-" Exp -/- [\-]
-  	
-  context-free syntax 
-   
-    Exp "+" Exp     -> Exp {cons("Add"), left}
-    Exp "-" Exp     -> Exp {cons("Sub"), left}
-    Exp "*" Exp     -> Exp {cons("Mul"), left}
-    Exp "/" Exp     -> Exp {cons("Div"), left}
-    Exp "==" Exp    -> Exp {cons("Eq"), left}
-    Exp "!=" Exp    -> Exp {cons("Neq"), left}
-    Exp "<" Exp     -> Exp {cons("Lt"), left}
-    Exp "<=" Exp    -> Exp {cons("Lte"), left}
-    Exp ">" Exp     -> Exp {cons("Gt"), left}
-    Exp ">=" Exp    -> Exp {cons("Gte"), left}
-    Exp "&&" Exp    -> Exp {cons("And"), left}
-    Exp "||" Exp    -> Exp {cons("Or"), left}
-    Exp ".." Exp    -> Exp {cons("Concat"), right}
-    "++" Exp		-> Exp {cons("PreInc"), right}
-    Exp "++"		-> Exp {cons("PostInc"), right}
-	"--" Exp		-> Exp {cons("PreDec"), right}
-	Exp "--"		-> Exp {cons("PostDec"), right}
-	
-    %% Statements
-    "{" Statement* "}"                                  							-> Statement {cons("Statements")}
-    "if" "(" Exp ")" Statement "else" Statement   									-> Statement {cons("If")}
-    "if" "(" Exp ")" Statement    													-> Statement {cons("If")}
-    "while" "(" Exp ")" Statement                       							-> Statement {cons("While")}
-    Exp "=" Exp ";"                                     							-> Statement {cons("Assign")}
-    "setstate" StateRef ";"                                   						-> Statement {cons("StateChange")}
-    "switch" "(" Exp ")" "{" Case* "}"                  							-> Statement {cons("Switch")}
-    "case" Exp ":" Statement                       									-> Case {cons("Case")}
-    "in" Exp TimeUnit "{" Statement* "}"    										-> Statement {cons("Delay")}
-    "interpolate" Exp InterpolationType? "from" Exp "to" Exp "over" Exp TimeUnit ";"-> Statement {cons("Interpolation")}
-    "print" Exp	";"																	-> Statement {cons("Print")}
-    Exp ";"																			-> Statement {cons("Expression")}    
-    VarDef ";"																		-> Statement {bracket}
-   	
-    %% Types
-    "Int" -> Type {cons("IntType")}
-    "Real" -> Type {cons("RealType")}
-    "Bool" -> Type {cons("BoolType")}
-    "String" -> Type {cons("StringType")}
-    "Void" -> Type {cons("VoidType")}
-    BuiltinType -> Type
-    EnumType -> Type
-    ComponentType -> Type {prefer}
-    PluginType -> Type {prefer}
-    Id -> Type {cons("CustomType"), avoid}
-    
-    context-free restrictions
-  	
-  	  Type -/- [a-zA-Z0-9\_]
-		
-    context-free priorities %% Operators
-        %% Operators, following the operator predecence from: http://www.uni-bonn.de/~manfear/javaoperators.php
-        {
-            left:
-            Exp "." Id -> Exp
-            Exp "." BuiltinProperty -> Exp
-            BuiltinObjectProperty "." BuiltinProperty -> Exp
-            Exp "." Id "(" {Exp ","}* ")" -> Exp
-            Exp "." BuiltinFunction "(" {Exp ","}* ")" -> Exp
-            BuiltinObjectProperty "." BuiltinFunction "(" {Exp ","}* ")" -> Exp
-        }
-        >
-        {
-        	right:
-        	"!" Exp -> Exp
-            "-" Exp -> Exp
-            "++" Exp -> Exp
-            Exp "++" -> Exp
-            "--" Exp -> Exp
-            Exp "--" -> Exp
-        }
-        >
-        {
-            left:
-            Exp "*" Exp -> Exp
-            Exp "/" Exp -> Exp
-        } 
-        > 
-        {
-            left: 
-            Exp "+" Exp -> Exp
-            Exp "-" Exp -> Exp
-        }
-        >
-	    {
-	    	right:
-	    	Exp ".." Exp -> Exp
-		}
-	    >
-        {
-            left:
-            Exp "==" Exp -> Exp
-            Exp "!=" Exp -> Exp
-            Exp "<" Exp -> Exp
-            Exp "<=" Exp -> Exp
-            Exp ">" Exp -> Exp
-            Exp ">=" Exp -> Exp
-        }
-        >
-        {
-            left:
-            Exp "&&" Exp -> Exp
-            Exp "||" Exp -> Exp
-        }

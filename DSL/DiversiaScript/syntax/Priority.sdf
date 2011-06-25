@@ -1,0 +1,65 @@
+module Priority
+
+imports
+	
+  Lexical
+  Expression
+  Operator
+
+exports
+	
+  context-free priorities
+  	
+    {
+      left:
+        Exp "." Id -> Exp
+        Exp "." BuiltinProperty -> Exp
+        BuiltinObjectProperty "." BuiltinProperty -> Exp
+        Exp "." Id "(" {Exp ","}* ")" -> Exp
+        Exp "." BuiltinFunction "(" {Exp ","}* ")" -> Exp
+        BuiltinObjectProperty "." BuiltinFunction "(" {Exp ","}* ")" -> Exp
+    }
+    >
+    {
+      right:
+        "!" Exp -> Exp
+        "-" Exp -> Exp
+        "++" Exp -> Exp
+        Exp "++" -> Exp
+        "--" Exp -> Exp
+        Exp "--" -> Exp
+    }
+    >
+    {
+      left:
+        Exp "*" Exp -> Exp
+        Exp "/" Exp -> Exp
+    } 
+    > 
+    {
+      left: 
+        Exp "+" Exp -> Exp
+        Exp "-" Exp -> Exp
+    }
+    >
+    {
+      right:
+        Exp ".." Exp -> Exp
+	}
+    >
+    {
+      left:
+        Exp "==" Exp -> Exp
+        Exp "!=" Exp -> Exp
+        Exp "<" Exp -> Exp
+        Exp "<=" Exp -> Exp
+        Exp ">" Exp -> Exp
+        Exp ">=" Exp -> Exp
+    }
+    >
+    {
+      left:
+        Exp "&&" Exp -> Exp
+        Exp "||" Exp -> Exp
+    }
+    
