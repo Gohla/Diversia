@@ -144,7 +144,7 @@ def Ball {
         }
         on LateUpdate() {
             // Move camera to the ball
-            CameraYaw.Position = this.Position;
+            CameraYaw.Position = Position;
         }
     }
     state Dead {

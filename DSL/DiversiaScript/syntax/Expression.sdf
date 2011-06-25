@@ -23,6 +23,7 @@ exports
     "[" Exp "," Exp "," Exp "]"         		-> Exp {cons("Vector3Const")}
     "[" Exp "," Exp "," Exp "," Exp "]" 		-> Exp {cons("Vector4Const")}
     Id                                  		-> Exp {cons("VarRef")}
+    BuiltinObjectProperty						-> Exp {cons("ObjectBuiltinRef"), prefer} %% Desugared into BuiltinAccess(This(), _)
     "this"                              		-> Exp {cons("This")}
     "null"                              		-> Exp {cons("Null")}
     BuiltinType "(" {Exp ","}* ")"      		-> Exp {cons("New")}

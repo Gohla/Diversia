@@ -49,8 +49,8 @@ def Test2 {
 	DisplayName = 1
 	
 	// Incorrect value type in parent.
-	Position = 1
-	Orientation = 1
+	Position = Orientation.X
+	Orientation = Position.X
 	
 	// Read only
 	Mode = Mode.Client

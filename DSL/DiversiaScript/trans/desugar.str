@@ -24,6 +24,10 @@ rules  // Definitions
 	desugar: ComponentDef(type, props) -> ComponentDef(<crush> type, type, props)
 	desugar: PluginDef(type, props) -> PluginDef(<crush> type, type, props)
 	
+rules // References
+	
+	desugar: ObjectBuiltinRef(prop) -> BuiltinAccess(This(), prop)
+	
 rules // Operators
 	
 	desugar: Add(e1, e2) 	-> AOp(ADD(), e1, e2)
