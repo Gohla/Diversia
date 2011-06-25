@@ -1,0 +1,23 @@
+on Create() {
+	var mInt : Int = 1;
+	var mBool : Bool = false;
+	var mVector3 : Vector3 = [1, 2, 3];
+
+	// All of the following operators should produce an error.
+	// Undefined operators on basic types.
+	1 * true;	
+	true - 1++;
+	true + false;
+	"test" / "test";
+	-true;
+	-1 * "test" + false - true;
+	--++"test"++;
+	
+	// Undefined operators on builtin types.
+	1 * Mode.Client; // TODO: Since an enum value is basically an integer, allow this?
+	[1, 2, 3] / [1, 2, 3, 4];
+	--Radian(50) * --Degree(50);
+	1 * [1, 2, 3];
+	[1, 2] && [3, 4]; // TODO
+	[1, 2] || "test" || Radian(42); // TODO
+}

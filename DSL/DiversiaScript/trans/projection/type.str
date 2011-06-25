@@ -12,6 +12,7 @@ imports
 	data/type-base
 	data/type-prop
 	data/type-func
+	data/type-op
 	data/enum
 	
 rules // Utility
@@ -27,8 +28,28 @@ rules // Utility
 			case CustomType(?name) : !$[[name]]
 			case [?type|[]] : <printable> type
 			case [?type|?types]; not (<?[]> types) : !$[[<printable> type], [<printable> types]] 
-		    otherwise : ?name#(_); !$[[name]]
+		    otherwise : <printable-specialised> input <+ ?name#(_); !$[[name]]
 		end		
+	
+	printable-specialised: ADD() -> "+"
+	printable-specialised: SUB() -> "-"
+	printable-specialised: MUL() -> "*"
+	printable-specialised: DIV() -> "/"
+	printable-specialised: EQ() -> "=="
+	printable-specialised: NEQ() -> "!="
+	printable-specialised: LT() -> "<"
+	printable-specialised: LTE() -> "<="
+	printable-specialised: GT() -> ">"
+	printable-specialised: GTE() -> ">="
+	printable-specialised: AND() -> "&&"
+	printable-specialised: OR() -> "||"
+	printable-specialised: NOT() -> "!"
+	printable-specialised: UMIN() -> "-"
+	printable-specialised: UPLUS() -> "+"
+	printable-specialised: PREINC() -> "--T"
+	printable-specialised: POSTINC() -> "T--"
+	printable-specialised: PREDEC() -> "++T"
+	printable-specialised: POSTDEC() -> "T++"
 
 rules // Type matching (compatibility)
 	
@@ -52,13 +73,28 @@ rules  // Expressions
 	
 	type-of: BOp(_, _, _) -> BoolType()
 	type-of: AOp(_, exp1, exp2) -> RealType()
+		where not(
+			<is-builtin-type> <type-of> exp1 <+
+			<is-builtin-type> <type-of> exp2)
 		where not (
 			<?IntType()> <type-of> exp1;
 			<?IntType()> <type-of> exp2)
 	type-of: AOp(_, exp1, exp2) -> IntType()
+		where not(
+			<is-builtin-type> <type-of> exp1 <+
+			<is-builtin-type> <type-of> exp2)
 		where 
 			<?IntType()> <type-of> exp1;
 			<?IntType()> <type-of> exp2
+	type-of: AOp(op, exp1, exp2) -> <builtin-type-op-return> (<type-of> exp1, op, <type-of> exp2)
+		where 
+			<is-builtin-type> <type-of> exp1 <+
+			<is-builtin-type> <type-of> exp2
+	type-of: Umin(exp) -> <type-of> exp
+	type-of: PreInc(exp) -> <type-of> exp
+	type-of: PostInc(exp) -> <type-of> exp
+	type-of: PreDec(exp) -> <type-of> exp
+	type-of: PostDec(exp) -> <type-of> exp
 	type-of: Concat(_, _) -> StringType()
 	type-of: Not(_) -> BoolType()
 	type-of: True() -> BoolType()

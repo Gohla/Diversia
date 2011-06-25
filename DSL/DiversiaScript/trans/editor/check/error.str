@@ -13,6 +13,7 @@ imports
 	data/type
 	data/type-prop
 	data/type-func
+	data/type-op
 	data/event
 
 rules // Definitions
@@ -62,22 +63,77 @@ rules // Types
 			<type-of> exp2 => type2;
 			not (<match-type> (type1, type2))
 			
-	editor-error: e@AOp(_, _, exp) -> (exp, $[Expected Int or Real but found [<printable> type]])
+	editor-error: e@AOp(_, exp1, exp2) -> (exp1, $[Expected Int or Real but found [<printable> type].])
+		where not (
+			<is-builtin-type> <type-of> exp1  <+
+			<is-builtin-type> <type-of> exp2)
 		where 
-			<type-of> exp => type;
+			<type-of> exp1 => type;
 			not (<match-type> (<type-of> e, type))
 			
-	editor-error: e@AOp(_, exp, _) -> (exp, $[Expected Int or Real but found [<printable> type]])
+	editor-error: e@AOp(_, exp1, exp2) -> (exp2, $[Expected Int or Real but found [<printable> type].])
+		where not (
+			<is-builtin-type> <type-of> exp1  <+
+			<is-builtin-type> <type-of> exp2)
 		where 
-			<type-of> exp => type;
+			<type-of> exp2 => type;
 			not (<match-type> (<type-of> e, type))
-			
-	editor-error: Concat(exp, _) -> (exp, $[Expected String but found [<printable> type]])
+
+	editor-error: e@AOp(op, exp1, exp2) -> (e, $[Operator [<printable> type1] [<printable> op] [<printable> type2] is undefined.])
+		where 
+			(<is-builtin-type> <type-of> exp1 <+
+			<is-builtin-type> <type-of> exp2)
+		where
+			<type-of> exp1 => type1;
+			<type-of> exp2 => type2
+		where not (<has-builtin-type-op> (type1, op, type2))
+		
+	unary-op-basic-error: exp -> <type-of> exp
+		where not (<is-builtin-type> <type-of> exp)
+		where <type-of> exp => type
+		where not (<?IntType()> type <+ <?RealType()> type)
+
+	unary-op-builtin-error: (exp, op) -> <type-of> exp
+		where <is-builtin-type> <type-of> exp
+		where <type-of> exp => type
+		where not (<has-builtin-type-op> (type, op, VoidType()))
+		
+	editor-error: Umin(exp) -> (exp, $[Expected Int or Real but found [<printable> type].])
+		where <unary-op-basic-error> exp => type
+
+	editor-error: e@Umin(exp) -> (e, $[Operator -[<printable> type] is undefined.])
+		where <unary-op-builtin-error> (exp, UMIN()) => type
+
+	editor-error: PreDec(exp) -> (exp, $[Expected Int or Real but found [<printable> type].])
+		where <unary-op-basic-error> exp => type
+
+	editor-error: e@PreDec(exp) -> (e, $[Operator --[<printable> type] is undefined.])
+		where <unary-op-builtin-error> (exp, PREDEC()) => type
+
+	editor-error: PostDec(exp) -> (exp, $[Expected Int or Real but found [<printable> type].])
+		where <unary-op-basic-error> exp => type
+
+	editor-error: e@PostDec(exp) -> (e, $[Operator [<printable> type]-- is undefined.])
+		where <unary-op-builtin-error> (exp, POSTDEC()) => type
+
+	editor-error: PreInc(exp) -> (exp, $[Expected Int or Real but found [<printable> type].])
+		where <unary-op-basic-error> exp => type
+
+	editor-error: e@PreInc(exp) -> (e, $[Operator ++[<printable> type] is undefined.])
+		where <unary-op-builtin-error> (exp, PREINC()) => type
+
+	editor-error: PostInc(exp) -> (exp, $[Expected Int or Real but found [<printable> type].])
+		where <unary-op-basic-error> exp => type
+
+	editor-error: e@PostInc(exp) -> (e, $[Operator [<printable> type]++ is undefined.])
+		where <unary-op-builtin-error> (exp, POSTINC()) => type
+		
+	editor-error: Concat(exp, _) -> (exp, $[Expected String but found [<printable> type].])
 		where 
 			<type-of> exp => type;
 			not (<match-type> (StringType(), type))
 				
-	editor-error: Concat(_, exp) -> (exp, $[Expected String but found [<printable> type]])
+	editor-error: Concat(_, exp) -> (exp, $[Expected String but found [<printable> type].])
 		where 
 			<type-of> exp => type;
 			not (<match-type> (StringType(), type))
