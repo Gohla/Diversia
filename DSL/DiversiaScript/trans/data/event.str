@@ -1,6 +1,7 @@
-module data/events
+module data/event
 
 imports
+
 	include/DiversiaScript
 	signatures
 

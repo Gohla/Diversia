@@ -104,7 +104,7 @@ void registerCamp()
     camp::classByType<RigidBody>();
     camp::classByType<Audio>();
     //camp::classByType<AudioManager>();
-    //camp::classByType<LuaObjectScript>();
+    camp::classByType<LuaObjectScript>();
     camp::classByType<Particle>();
     camp::classByType<Axis>();
     camp::classByType<MouseState>();

@@ -8,7 +8,7 @@ imports
 	
 	projection/type
 	
-	data/builtin-type-prop
+	data/type-prop
 
 rules // Writable checks
 

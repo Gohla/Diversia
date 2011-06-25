@@ -6,7 +6,9 @@ imports
   Structure
   Property
 	
-  data/builtin-type-func
+  data/type
+  data/type-prop
+  data/type-func
 
 exports
 

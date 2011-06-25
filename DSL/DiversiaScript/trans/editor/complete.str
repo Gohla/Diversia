@@ -10,7 +10,7 @@ imports
 	projection/type
 	projection/name
 	
-	data/events
+	data/event
 
 rules	
 		

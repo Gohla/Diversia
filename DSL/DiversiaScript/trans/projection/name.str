@@ -1,13 +1,14 @@
 module projection/name
 
 imports
+	
 	include/DiversiaScript
 	lib/namespaces
 	
 	signatures
 	namespace
 	
-	data/events
+	data/event
 	
 rules // Name-based projections  //TODO need to check these
 	

@@ -4,8 +4,9 @@ imports
 	
   Lexical
   Type
+  Expression
 	
-  data/builtin-type-prop
+  data/type-prop
 
 exports
     

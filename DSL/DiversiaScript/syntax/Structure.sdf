@@ -7,7 +7,9 @@ imports
   Property
   Statement
 	
-  data/builtin-type-prop
+  data/type-prop
+  data/component
+  data/plugin
 
 exports
 

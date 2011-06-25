@@ -1,19 +1,20 @@
 module projection/type
 
 imports
+	
 	include/DiversiaScript
 	
 	signatures
 	
 	projection/name
 	
-	data/builtin-type
-	data/builtin-type-base
-	data/builtin-type-prop
-	data/builtin-type-func
-	data/builtin-enum
+	data/type
+	data/type-base
+	data/type-prop
+	data/type-func
+	data/enum
 	
-rules // util
+rules // Utility
 	
 	printable = 
 		switch ?input
@@ -29,7 +30,7 @@ rules // util
 		    otherwise : ?name#(_); !$[[name]]
 		end		
 
-rules // type matching
+rules // Type matching (compatibility)
 	
 	// Matches if types are the same or if the second type is a parent type of the first.
 	match-type = ?(type1, type2); (<?type1> type2 <+ <get-type-parent> (type2, type1)) 
@@ -45,7 +46,7 @@ rules // type matching
 	match-types = ?([], [])
 	match-types = ?([var-type|rest1], [exp-type|rest2]); <match-type> (var-type, exp-type); <match-types> (rest1, rest2)
 
-rules  // expr
+rules  // Expressions
 	
 	types-of : list -> <map(type-of)> list
 	
@@ -88,7 +89,7 @@ rules  // expr
 	type-of: PluginRef(name) -> <type-of> <get-plugin> name
 	type-of: EnumValueRef(name, _) -> name
 
-rules // defs
+rules // Definitions
 	
 	type-of: ObjectDef(name, _, _, _, _, _, _, _) -> CustomType(name)
 	type-of: ExternalObjectDef(name) -> CustomType(name)
@@ -126,11 +127,11 @@ rules // Type projections
 			=> funcType
 			
 	// Gets the parents of given type.
-	get-type-parents: CustomType(type) -> [ClientObject() | <builtin-type-bases> ClientObject()]
+	get-type-parents: CustomType(type) -> [ClientObject() | <get-type-parents> ClientObject()]
 	get-type-parents: type -> <concat> [bases, <mapconcat(get-type-parents)> bases]
 		where not (<is-object-type> type)
 		where bases := <builtin-type-bases> type
-	get-type-parent: (type, parent) -> <?parent> <get-type-parents> type
+	get-type-parent: (type, parent) -> <fetch(?parent)> <get-type-parents> type
 	
 rules // Type checks
 	

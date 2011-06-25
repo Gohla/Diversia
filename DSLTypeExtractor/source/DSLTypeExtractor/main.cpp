@@ -50,34 +50,34 @@ int main( int argc, char* argv[] )
 
     // Classes
     {
-        scoped_ptr<SDFFile> sdfType( new SDFFile( "builtin-type.sdf", "data/builtin-type" ) );
+        scoped_ptr<SDFFile> sdfType( new SDFFile( "type.sdf", "data/type" ) );
         sdfType->contextfree();
-        scoped_ptr<STRFile> strType( new STRFile( "builtin-type.str", "data/builtin-type", list_of("include/DiversiaScript") ) ); 
+        scoped_ptr<STRFile> strType( new STRFile( "type.str", "data/type", list_of("include/DiversiaScript") ) ); 
         strType->rules();
 
-        scoped_ptr<STRFile> strTypeBases( new STRFile( "builtin-type-base.str", "data/builtin-type-base", list_of("include/DiversiaScript") ) );
+        scoped_ptr<STRFile> strTypeBases( new STRFile( "type-base.str", "data/type-base", list_of("include/DiversiaScript") ) );
         strTypeBases->rules();
 
-        scoped_ptr<STRFile> strTypeCons( new STRFile( "builtin-type-cons.str", "data/builtin-type-cons", list_of("include/DiversiaScript") ) );
+        scoped_ptr<STRFile> strTypeCons( new STRFile( "type-cons.str", "data/type-cons", list_of("include/DiversiaScript") ) );
         strTypeCons->rules();
 
-        scoped_ptr<SDFFile> sdfTypeProp( new SDFFile( "builtin-type-prop.sdf", "data/builtin-type-prop") );
+        scoped_ptr<SDFFile> sdfTypeProp( new SDFFile( "type-prop.sdf", "data/type-prop") );
         sdfTypeProp->contextfree();
-        scoped_ptr<STRFile> strTypeProp( new STRFile( "builtin-type-prop.str", "data/builtin-type-prop", list_of("include/DiversiaScript") ) ); 
+        scoped_ptr<STRFile> strTypeProp( new STRFile( "type-prop.str", "data/type-prop", list_of("include/DiversiaScript") ) ); 
         strTypeProp->signatures();
         strTypeProp->signature( "Property", list_of("BuiltinProperty")("Type")("Writable"), "Property" );
         strTypeProp->removeIdent();
         strTypeProp->rules();
 
-        scoped_ptr<SDFFile> sdfTypeFunc( new SDFFile( "builtin-type-func.sdf", "data/builtin-type-func") );
+        scoped_ptr<SDFFile> sdfTypeFunc( new SDFFile( "type-func.sdf", "data/type-func") );
         sdfTypeFunc->contextfree();
-        scoped_ptr<STRFile> strTypeFunc( new STRFile( "builtin-type-func.str", "data/builtin-type-func", list_of("include/DiversiaScript") ) ); 
+        scoped_ptr<STRFile> strTypeFunc( new STRFile( "type-func.str", "data/type-func", list_of("include/DiversiaScript") ) ); 
         strTypeFunc->signatures();
         strTypeFunc->signature( "Function", list_of("FunctionName")("ReturnType")("List(ParamType)"), "Function" );
         strTypeFunc->removeIdent();
         strTypeFunc->rules();
 
-        scoped_ptr<STRFile> strTypeOp( new STRFile( "builtin-type-op.str", "data/builtin-type-op", list_of("include/DiversiaScript")("signatures") ) ); 
+        scoped_ptr<STRFile> strTypeOp( new STRFile( "type-op.str", "data/type-op", list_of("include/DiversiaScript")("signatures") ) ); 
         strTypeOp->signatures();
         strTypeOp->signature( "Operator", list_of("Op")("ReturnType")("ParamType"), "Operator" );
         strTypeOp->removeIdent();
@@ -227,9 +227,9 @@ int main( int argc, char* argv[] )
     
     // Enums
     {
-        scoped_ptr<SDFFile> sdfEnum( new SDFFile( "builtin-enum.sdf", "data/builtin-enum" ) );
+        scoped_ptr<SDFFile> sdfEnum( new SDFFile( "enum.sdf", "data/enum" ) );
         sdfEnum->contextfree();
-        scoped_ptr<STRFile> strEnum( new STRFile( "builtin-enum.str", "data/builtin-enum", list_of("include/DiversiaScript") ) );
+        scoped_ptr<STRFile> strEnum( new STRFile( "enum.str", "data/enum", list_of("include/DiversiaScript") ) );
         strEnum->rules();
 
         size_t enumCount = camp::enumCount();
@@ -274,9 +274,9 @@ int main( int argc, char* argv[] )
 
     // Components
     {
-        scoped_ptr<SDFFile> sdfComponent( new SDFFile( "builtin-component.sdf", "data/builtin-component" ) );
+        scoped_ptr<SDFFile> sdfComponent( new SDFFile( "component.sdf", "data/component" ) );
         sdfComponent->contextfree();
-        scoped_ptr<STRFile> strComponent( new STRFile( "builtin-component.str", "data/builtin-component", list_of("include/DiversiaScript") ) );
+        scoped_ptr<STRFile> strComponent( new STRFile( "component.str", "data/component", list_of("include/DiversiaScript") ) );
         strComponent->rules();
 
         const ComponentFactories& components = ComponentFactoryManager::getComponentFactories();
@@ -296,9 +296,9 @@ int main( int argc, char* argv[] )
 
     // ClientServerPlugins
     {
-        scoped_ptr<SDFFile> sdfPlugin( new SDFFile( "builtin-plugin.sdf", "data/builtin-plugin" ) );
+        scoped_ptr<SDFFile> sdfPlugin( new SDFFile( "plugin.sdf", "data/plugin" ) );
         sdfPlugin->contextfree();
-        scoped_ptr<STRFile> strPlugin( new STRFile( "builtin-plugin.str", "data/builtin-plugin", list_of("include/DiversiaScript") ) );
+        scoped_ptr<STRFile> strPlugin( new STRFile( "plugin.str", "data/plugin", list_of("include/DiversiaScript") ) );
         strPlugin->rules();
 
         const ClientServerPluginFactories& plugins = ClientServerPluginFactoryManager::getPluginFactories();

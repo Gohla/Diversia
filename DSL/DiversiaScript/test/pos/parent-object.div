@@ -1,0 +1,12 @@
+// Should produce no errors.
+def Test {
+	def Test2 {
+		def Test3 {
+			def Test4 {
+				def Test5 {
+					
+				}
+			}
+		}
+	}
+}

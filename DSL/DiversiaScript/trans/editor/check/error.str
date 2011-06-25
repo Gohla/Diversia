@@ -10,10 +10,10 @@ imports
 	projection/name
 	projection/assignable
 	
-	data/builtin-type
-	data/builtin-type-prop
-	data/builtin-type-func
-	data/events
+	data/type
+	data/type-prop
+	data/type-func
+	data/event
 
 rules // Definitions
 	

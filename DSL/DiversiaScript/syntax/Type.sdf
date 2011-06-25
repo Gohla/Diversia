@@ -4,10 +4,10 @@ imports
 	
   Lexical
 	
-  data/builtin-type
-  data/builtin-enum
-  data/builtin-component
-  data/builtin-plugin
+  data/type
+  data/enum
+  data/component
+  data/plugin
 
 exports
 

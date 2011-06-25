@@ -5,4 +5,5 @@ rules // Utilities
 	take-1: [elem|rest] -> (elem, rest)
 	get-1: [elem|_] -> elem
 	take-2: [elem1|[elem2|rest]] -> (elem1, elem2, rest)
-	
+	crush: cons -> str where <?str#(_)> cons
+	crush-noquote: cons -> <un-double-quote> <crush> cons

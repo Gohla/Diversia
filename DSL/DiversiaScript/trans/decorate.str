@@ -1,6 +1,7 @@
 module decorate
 
-imports 
+imports
+	
 	include/DiversiaScript
 	
 	signatures
@@ -8,7 +9,7 @@ imports
 	projection/type
 	projection/name
 	
-	data/builtin-type
+	data/type
 
 strategies
 	

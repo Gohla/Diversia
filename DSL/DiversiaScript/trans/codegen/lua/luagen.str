@@ -14,7 +14,7 @@ imports
 	projection/name
 	projection/type
 	
-	data/events
+	data/event
 	
 	util
 	
@@ -162,19 +162,22 @@ rules // Syntax transformation
 		where ((stateName, EventDef(name, params, statements)), otherEvents) := <take-1> events
 		
 	// Components
-	component-to-lua(|varName): ComponentDef(_{name}, CustomType(type), properties) -> [
-		Assignment([VarRef(name)], [Call(VarRef(varName), "CreateComponent", Args([Access(VarRef("ComponentType"), type), String(name), False()]))]),
+	component-to-lua(|varName): ComponentDef(_{name}, type, properties) -> [
+		Assignment([VarRef(name)], [Call(VarRef(varName), "CreateComponent", Args([Access(VarRef("ComponentType"), <crush> type), String(name), False()]))]),
 		<map(componentprop-to-lua(|name))> properties
 	]
-	componentprop-to-lua(|componentName): ComponentProp(type, name, exp) -> Assignment([Access(componentName, VarRef(name))], <to-lua> exp)
+	componentprop-to-lua(|componentName): ComponentProp(_, prop, exp) -> Assignment([Access(VarRef(componentName), <crush> prop)], <to-lua> exp)
 	destroy-component-to-lua: name -> Call(VarRef(name), "Destroy", Args([]))
 	
 	// Object properties
-	propassign-to-lua: ObjectProp(_, name, exp) -> If(Eq(VarRef(name), LuaNil()), Chunk([Assignment([VarRef(name)], <to-lua> exp)]))	
-	propassign-to-lua: BuiltinObjectProp(name, exp) -> Assignment([Access(VarRef("Object"), name)], <to-lua> exp)	
-	propassign-to-lua(|varName): ObjectProp(_, name, exp) -> Assignment([Access(VarRef(varName), name)], <to-lua> exp)
-	propassign-to-lua(|varName): BuiltinObjectProp(name, exp) -> Assignment([Access(VarRef(varName), Access(VarRef("Object"), name))], <to-lua> exp)
-
+	propassign-to-lua: ObjectProp(_, name, exp) -> 
+		If(Eq(VarRef(name), LuaNil()), Chunk([Assignment([VarRef(name)], <to-lua> exp)]))	
+	propassign-to-lua: BuiltinObjectProp(prop, exp) -> 
+		Assignment([Access(VarRef("Object"), <crush> prop)], <to-lua> exp)
+	propassign-to-lua(|varName): ObjectProp(_, name, exp) -> 
+		Assignment([Access(VarRef(varName), name)], <to-lua> exp)
+	propassign-to-lua(|varName): BuiltinObjectProp(prop, exp) -> 
+		Assignment([Access(VarRef(varName), Access(VarRef("Object"), <crush> prop))], <to-lua> exp)
 	// States
 	states-to-lua: (states, functions) -> <concat> [functions, <map(state-to-lua)> states]
 	state-to-lua: StateDef(name, propAssigns, componentDefs, varDefs, eventDefs) -> <state-to-lua> (name, propAssigns, componentDefs, varDefs, eventDefs)
@@ -209,17 +212,19 @@ rules // Syntax transformation
 		where not (<fetch-elem(?EventDef("StateExit", _, _))> eventDefs)
 		
 	// Plugins
-	to-lua: PluginDef(name, CustomType(type), properties) -> [
-		Assignment([VarRef(name)], [Call(VarRef("PluginManager"), "CreatePlugin", Args([Access(VarRef("PluginType"), type), String(name)]))]),
+	to-lua: PluginDef(name, type, properties) -> [
+		Assignment([VarRef(name)], [Call(VarRef("PluginManager"), "CreatePlugin", Args([Access(VarRef("PluginType"), <crush> type), String(name)]))]),
 		<map(pluginprop-to-lua(|name))> properties
 	]
-	pluginprop-to-lua(|pluginName): PluginProp(type, name, exp) -> Assignment([Access(pluginName, VarRef(name))], <to-lua> exp)
+	pluginprop-to-lua(|pluginName): PluginProp(_, prop, exp) -> 
+		Assignment([Access(pluginName, VarRef(<crush> prop))], <to-lua> exp)
 	
 	// Global events
 	global-event-to-lua: EventDef(name, params, statements) -> <lua-funcdef> (name, <map(to-lua)> params, <map(to-lua)> statements)
 	
 rules // Expressions
 	
+	// Constants
 	to-lua: True() -> True()
 	to-lua: False() -> False()
 	to-lua: IntConst(num) -> Number(num)
@@ -228,9 +233,13 @@ rules // Expressions
 		where string' := <un-double-quote> string
 	to-lua: StrConst(string) -> String(string)
 		where not (<un-double-quote> string)
-	to-lua: Vector2Const(exp1, exp2) -> <to-lua> New("Vector2", [exp1, exp2])
-	to-lua: Vector3Const(exp1, exp2, exp3) -> <to-lua> New("Vector3", [exp1, exp2, exp3])
-	to-lua: Vector4Const(exp1, exp2, exp3, exp4) -> <to-lua> New("Vector4", [exp1, exp2, exp3, exp4])
+	to-lua: Vector2Const(exp1, exp2) -> <to-lua> New(Vector2(), [exp1, exp2])
+	to-lua: Vector3Const(exp1, exp2, exp3) -> <to-lua> New(Vector3(), [exp1, exp2, exp3])
+	to-lua: Vector4Const(exp1, exp2, exp3, exp4) -> <to-lua> New(Vector4(), [exp1, exp2, exp3, exp4])
+	to-lua: Null() -> LuaNil()
+	to-lua: This(_) -> VarRef("Object")
+		
+	// References
 	to-lua: VarRef(_{name}) -> VarRef(name)
 	to-lua: ComponentRef(_{name}) -> VarRef(name)
 	to-lua: PluginRef(_{name}) -> VarRef(name)
@@ -239,18 +248,40 @@ rules // Expressions
 		where <type-has-function(|prop)> objectName
 	to-lua: PropRef(prop, objectName) -> VarRef(prop)
 		where not (<type-has-function(|prop)> objectName)
-	to-lua: Null() -> LuaNil()
-	to-lua: New(type, args) -> Call(Access(VarRef(type), "new"), Args(<map(to-lua)> args))
-	to-lua: c@Call(obj, name, args) -> Call(<to-lua> obj, name, Args(<map(to-lua)> args))
+
+	// New
+	to-lua: New(type, args) -> Call(Access(VarRef(<crush> type), "new"), Args(<map(to-lua)> args))
+	
+	// Call
+	is-object-call = ?Call(obj, func, _)
+		; <get-type-parent> (<type-of> obj, ClientObject())
+		; <type-has-function(|func)> ClientObject() 
+	to-lua: c@Call(obj, func, args) -> Call(<to-lua> obj, <crush> func, Args(<map(to-lua)> args))
 		where not (<?This(_)> obj)
-	to-lua: c@BuiltinCall(obj, name, args) -> Call(Access(<to-lua> obj, "Object"), name, Args(<map(to-lua)> args))
+		where not (<is-object-call> c)
+	to-lua: c@Call(obj, func, args) -> Call(Access(<to-lua> obj, "Object"), <crush> func, Args(<map(to-lua)> args))
 		where not (<?This(_)> obj)
-	to-lua: Call(This(_), name, args) -> Call(name, Args(<map(to-lua)> args))
-	to-lua: BuiltinCall(This(_), name, args) -> Call(VarRef("Object"), name, Args(<map(to-lua)> args))
-	to-lua: a@Access(exp, name) -> Access(<to-lua> exp, name)
-	to-lua: a@BuiltinAccess(exp, name) -> Access(Access(<to-lua> exp, "Object"), name)
-	to-lua: EnumValueRef(name, valueName) -> Access(VarRef(name), valueName)
-	to-lua: This(_) -> VarRef("Object")
+		where <is-object-call> c  
+	to-lua: BuiltinCall(obj, func, args) -> <to-lua> Call(obj, func, args)
+		where not (<?This(_)> obj)
+	to-lua: c@Call(This(_), func, args) -> Call(VarRef("Object"), <crush> func, Args(<map(to-lua)> args))
+		where <type-has-function(|func)> ClientObject() 
+	to-lua: c@Call(This(_), func, args) -> Call(<crush> func, Args(<map(to-lua)> args))
+		where not (<type-has-function(|func)> ClientObject() )
+	to-lua: BuiltinCall(This(_), func, args) -> Call(VarRef("Object"), <crush> func, Args(<map(to-lua)> args))
+	
+	// Access
+	is-object-access = ?BuiltinAccess(exp, prop)
+		; not (<?This(_)> exp)
+		; <get-type-parent> (<type-of> exp, ClientObject())
+		; <type-has-property(|prop)> ClientObject() 
+	to-lua: Access(exp, name) -> Access(<to-lua> exp, name)
+	to-lua: a@BuiltinAccess(exp, prop) -> Access(<to-lua> exp, <crush> prop)
+		where not (<is-object-access> a)
+	to-lua: a@BuiltinAccess(exp, prop) -> Access(Access(<to-lua> exp, "Object"), <crush> prop)
+		where <is-object-access> a  
+	to-lua: BuiltinAccess(This(_), prop) -> Access("Object", <crush> prop)
+	to-lua: EnumValueRef(type, value) -> Access(VarRef(<crush> type), <crush> value)
 	
 rules // Operators
 	
@@ -295,9 +326,9 @@ rules // Statements
 	new-object-to-lua(|objectName): ObjectNew(ObjectRef(name), props) -> <concat> [
 			[
 				Assignment([VarRef(objectName)], [Call(VarRef("ObjectManager"), "CreateLocalObject", Args([String(objectName)]))]),
-				<component-to-lua(|objectName)> ComponentDef(""{luaScriptName}, CustomType("LuaObjectScript"), [
-					ComponentProp(CustomType("LuaObjectScript"), "ClientScriptFile", StrConst($[gen/[name].lua])),
-					ComponentProp(CustomType("LuaObjectScript"), "ClientSecurityLevel", StrConst("Low"))
+				<component-to-lua(|objectName)> ComponentDef(""{luaScriptName}, LuaObjectScript(), [
+					ComponentProp(LuaObjectScript(), ClientScriptFile(), StrConst($[gen/[name].lua])),
+					ComponentProp(LuaObjectScript(), ClientSecurityLevel(), StrConst("Low"))
 				])
 			],
 			[Call(VarRef(luaScriptName), "CreateEnv", Args([]))],
@@ -306,7 +337,6 @@ rules // Statements
 		]
 		where luaScriptName := $[[objectName]__LuaObjectScript]
 	new-object-to-lua-replace(|luaScriptName, objectName): _ ->
-		//[Assignment([VarRef(objectName)], [TableVarRef(VarRef("_G"), Access(VarRef(luaScriptName), "ClientEnvironmentName"))])]
 		[Call(VarRef(luaScriptName), "ReplaceVarWithThisEnv", Args([String(""), String(objectName)]))]
 		where <?True()> <GamemodeScript>
 	new-object-to-lua-replace(|luaScriptName, objectName): _ -> 
