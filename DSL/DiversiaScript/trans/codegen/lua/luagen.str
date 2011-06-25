@@ -171,11 +171,19 @@ rules // Syntax transformation
 	
 	// Object properties
 	propassign-to-lua: ObjectProp(_, name, exp) -> 
-		If(Eq(VarRef(name), LuaNil()), Chunk([Assignment([VarRef(name)], <to-lua> exp)]))	
+		If(Eq(VarRef(name), LuaNil()), Chunk([Assignment([VarRef(name)], <to-lua> exp)]))
+		where not (<is-object-type> <type-of> exp)
+	propassign-to-lua: ObjectProp(_, name, exp) -> 
+		If(Eq(VarRef(name), LuaNil()), Chunk([Assignment([VarRef(name)], Access(<to-lua> exp, "Object"))]))
+		where <is-object-type> <type-of> exp	
 	propassign-to-lua: BuiltinObjectProp(prop, exp) -> 
 		Assignment([Access(VarRef("Object"), <crush> prop)], <to-lua> exp)
 	propassign-to-lua(|varName): ObjectProp(_, name, exp) -> 
 		Assignment([Access(VarRef(varName), name)], <to-lua> exp)
+		where not (<is-object-type> <type-of> exp)
+	propassign-to-lua(|varName): ObjectProp(_, name, exp) -> 
+		Assignment([Access(VarRef(varName), name)], Access(<to-lua> exp, "Object"))
+		where <is-object-type> <type-of> exp
 	propassign-to-lua(|varName): BuiltinObjectProp(prop, exp) -> 
 		Assignment([Access(VarRef(varName), Access(VarRef("Object"), <crush> prop))], <to-lua> exp)
 	// States
@@ -323,6 +331,10 @@ rules // Statements
 	to-lua: While(condition, statements) -> While(<to-lua> condition, Chunk(<map(to-lua)> statements))
 	to-lua: Assign(exp, val) -> Assignment([<to-lua> exp], [<to-lua> val])
 		where not (<?ObjectNew(_, _)> val)
+		where not (<match-type> (<type-of> exp, Object()))
+	to-lua: Assign(exp, val) -> Assignment([<to-lua> exp], [Access(<to-lua> val, "Object")])
+		where not (<?ObjectNew(_, _)> val)
+		where <match-type> (<type-of> exp, Object())
 	new-object-to-lua(|objectName): ObjectNew(ObjectRef(name), props) -> <concat> [
 			[
 				Assignment([VarRef(objectName)], [Call(VarRef("ObjectManager"), "CreateLocalObject", Args([String(objectName)]))]),

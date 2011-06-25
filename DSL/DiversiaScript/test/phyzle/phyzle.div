@@ -7,7 +7,7 @@ plugin SceneManager {
 }
 
 // Camera object definition
-def CameraYaw {
+def OrbitCamera {
     Position = [0, 0.5, 0] // Standard position offset
 
     // Child objects
@@ -24,6 +24,7 @@ def CameraYaw {
     var mRMB : Bool = false
     var mMouseState : MouseState = null
     prop MouseRotation : Real = 0.25
+    prop Target : Object = null
     
     // States
     default state Alive {
@@ -67,6 +68,10 @@ def CameraYaw {
                 mMouseState.Clear();
             }
         }
+        on LateUpdate() {
+            // Move camera to the target.
+            Position = Target.Position;
+        }
     }
     state Dead {
         // Do nothing
@@ -96,11 +101,8 @@ def Ball {
         AngularDampening = 0.7
     }
     
-	var CameraYaw : CameraYaw = new CameraYaw { 
-		MouseRotation = 0.25 
-		Position = [0, 0.5, 0] 
-	}
 	prop Speed : Int = 10
+	prop Camera : Object
 
     default state Alive {
         var mMove : Int = 0
@@ -134,17 +136,13 @@ def Ball {
             
             // Move the ball forwards or backwards
             if(mMove != 0) {
-                RigidBody.ApplyCentralForce(CameraYaw.DerivedOrientation * [0, 0, Speed * -mMove * mSpeedMultiplier]);
+                RigidBody.ApplyCentralForce(Camera.DerivedOrientation * [0, 0, Speed * -mMove * mSpeedMultiplier]);
             }
             
             // Move the ball sideways
             if(mStrafe != 0) {
-                RigidBody.ApplyCentralForce(CameraYaw.DerivedOrientation * [Speed * -mStrafe * mSpeedMultiplier, 0, 0]);
+                RigidBody.ApplyCentralForce(Camera.DerivedOrientation * [Speed * -mStrafe * mSpeedMultiplier, 0, 0]);
             }
-        }
-        on LateUpdate() {
-            // Move camera to the ball
-            CameraYaw.Position = Position;
         }
     }
     state Dead {
@@ -185,8 +183,14 @@ on Create() {
     new Floor {
         Position = [0, 0, 0]
     };
-    new Ball {
+    
+    var Ball : Ball = new Ball {
         Position = [0, 50, -50]
         Speed = 10
     };
+	var OrbitCamera : OrbitCamera = new OrbitCamera { 
+		MouseRotation = 0.25
+		Target = Ball
+	};
+	Ball.Camera = OrbitCamera;
 }
