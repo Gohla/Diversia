@@ -87,6 +87,53 @@ rules // Types
 			<type-of> exp1 => type1;
 			<type-of> exp2 => type2
 		where not (<has-builtin-type-op> (type1, op, type2))
+
+	is-comparison = ?EQ() <+ ?NEQ()
+
+	editor-error: BOp(op, exp1, exp2) -> (exp1, $[Expected Boolean (convertable) type but found [<printable> type].])
+		where not (<is-builtin-type> <type-of> exp1)
+		where not (<is-comparison> op)
+		where
+			<type-of> exp1 => type; 
+			not (<bool-convertable> type)
+
+	editor-error: BOp(op, exp1, exp2) -> (exp2, $[Expected Boolean (convertable) type but found [<printable> type].])
+		where not (<is-builtin-type> <type-of> exp2)
+		where not (<is-comparison> op)
+		where
+			<type-of> exp2 => type; 
+			not (<bool-convertable> type)
+
+	editor-error: e@BOp(op, exp1, exp2) -> (e, $[Operator [<printable> type1] [<printable> op] [<printable> type2] is undefined.])
+		where not
+			(<is-builtin-type> <type-of> exp1 <+
+			<is-builtin-type> <type-of> exp2)
+		where <is-comparison> op
+		where
+			<type-of> exp1 => type1; 
+			<type-of> exp2 => type2; 
+			not (<match-type> (type1, type2))
+
+	editor-error: e@BOp(op, exp1, exp2) -> (e, $[Operator [<printable> type1] [<printable> op] [<printable> type2] is undefined.])
+		where 
+			(<is-builtin-type> <type-of> exp1 <+
+			<is-builtin-type> <type-of> exp2)
+		where not (<is-comparison> op)
+		where
+			<type-of> exp1 => type1;
+			<type-of> exp2 => type2
+		where not (<has-builtin-type-op> (type1, op, type2))
+
+	editor-error: e@BOp(op, exp1, exp2) -> (e, $[Operator [<printable> type1] [<printable> op] [<printable> type2] is undefined.])
+		where 
+			(<is-builtin-type> <type-of> exp1 <+
+			<is-builtin-type> <type-of> exp2)
+		where <is-comparison> op
+		where
+			<type-of> exp1 => type1;
+			<type-of> exp2 => type2
+		where not (<?NullType()> type2)
+		where not (<has-builtin-type-op> (type1, op, type2))
 		
 	unary-op-basic-error: exp -> <type-of> exp
 		where not (<is-builtin-type> <type-of> exp)
@@ -127,6 +174,14 @@ rules // Types
 
 	editor-error: e@PostInc(exp) -> (e, $[Operator [<printable> type]++ is undefined.])
 		where <unary-op-builtin-error> (exp, POSTINC()) => type
+
+	editor-error: Not(exp) -> (exp, $[Expected Boolean but found [<printable> type].])
+		where not (<is-builtin-type> <type-of> exp)
+		where <type-of> exp => type
+		where not (<?BoolType()> type)
+
+	editor-error: e@Not(exp) -> (e, $[Operator ![<printable> type] is undefined.])
+		where <unary-op-builtin-error> (exp, NOT()) => type
 		
 	editor-error: Concat(exp, _) -> (exp, $[Expected String but found [<printable> type].])
 		where 

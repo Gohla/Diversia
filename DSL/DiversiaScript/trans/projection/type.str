@@ -59,13 +59,20 @@ rules // Type matching (compatibility)
 	// Matches reals and integers.
 	match-type = ?(RealType(), IntType())
 	match-type = ?(IntType(), RealType())
-		
+	
 	// Matches everything with null.
 	match-type = ?(_, NullType())
 		
 	// Matches lists of types.
 	match-types = ?([], [])
 	match-types = ?([var-type|rest1], [exp-type|rest2]); <match-type> (var-type, exp-type); <match-types> (rest1, rest2)
+
+rules // Boolean conversion
+	
+	bool-convertable = ?BoolType()
+	bool-convertable = ?IntType()
+	bool-convertable = ?RealType()
+	bool-convertable = ?NullType()
 
 rules  // Expressions
 	
@@ -182,8 +189,11 @@ rules // Type checks
 	// Checks if given type is of object type.
 	is-object-type = ?CustomType(_)
 	
+	// Checks if given type is a builtin type or enum.
+	is-builtin-type-or-enum = is-builtin-type <+ is-builtin-enum
+	
 	// Checks if given type is a type at all.
-	is-type = is-standard-type <+ is-object-type <+ is-builtin-type <+ is-builtin-enum
+	is-type = is-standard-type <+ is-object-type <+ is-builtin-type-or-enum
 	
 	// Checks if the property is defined in given type
 	type-has-property(|prop) = ?CustomType(type); 
