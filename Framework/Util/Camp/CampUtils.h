@@ -27,8 +27,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_CAMPUTILS_H
 #define DIVERSIA_UTIL_CAMPUTILS_H
 
-#include "Util/Platform/Prerequisites.h"
-
 namespace camp
 {
 

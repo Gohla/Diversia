@@ -106,6 +106,12 @@
     <ClInclude Include="..\..\Framework\Client\Object\ClientObjectTemplate.h">
       <Filter>Object</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Platform\Forward.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Platform\Defines.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Framework\Client\Platform\src\StableHeaders.cpp">

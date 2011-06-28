@@ -28,9 +28,10 @@ THE SOFTWARE.
 
 #include "Util/Platform/StableHeaders.h"
 
+#include "Util/Camp/BindingType.h"
+#include "Util/Math/Matrix3.h"
 #include "Util/Math/Matrix4.h"
 #include "Util/Math/Vector3.h"
-#include "Util/Math/Matrix3.h"
 
 //------------------------------------------------------------------------------
 namespace Diversia
@@ -251,6 +252,22 @@ void Matrix4::makeInverseTransform(const Vector3& position, const Vector3& scale
 	// No projection term
 	m[3][0] = 0; m[3][1] = 0; m[3][2] = 0; m[3][3] = 1;
 }
+
+void Matrix4::bindMatrix4()
+{
+    camp::Class::declare<Matrix4>( "Matrix4" )
+        .tag( "BindingType", BindingType_Matrix4 )
+        // Constructors
+        .constructor0();
+        // Member variables
+        // Static member variables
+        // Properties (read-only)
+        // Properties (read/write)
+        // Functions
+        // Static functions
+        // Operators
+}
+
 //------------------------------------------------------------------------------
 } // namespace Util
 } // namespace Diversia

@@ -25,8 +25,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_REQUEST_H
 #define DIVERSIA_UTIL_REQUEST_H
 
-#include "Util/Platform/Prerequisites.h"
-
 namespace Diversia
 {
 namespace Util

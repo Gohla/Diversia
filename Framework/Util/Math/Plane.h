@@ -22,8 +22,6 @@ the Magic Software web site.  This file is subject to the license.
 #ifndef DIVERSIA_UTIL_PLANE_H
 #define DIVERSIA_UTIL_PLANE_H
 
-#include "Util/Platform/Prerequisites.h"
-
 #include "Util/Math/Vector3.h"
 
 //------------------------------------------------------------------------------

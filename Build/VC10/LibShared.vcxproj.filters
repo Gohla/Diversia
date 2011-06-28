@@ -145,6 +145,12 @@
     <ClInclude Include="..\..\Framework\Shared\Physics\AreaTriggerCallback.h">
       <Filter>Physics</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Platform\Forward.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Platform\Defines.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Framework\Shared\Platform\src\StableHeaders.cpp">
@@ -190,6 +196,9 @@
       <Filter>Crash</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Framework\Shared\Camp\src\PropertySynchronization.cpp">
+      <Filter>Camp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Camp\src\CampStringInterpreter.cpp">
       <Filter>Camp</Filter>
     </ClCompile>
   </ItemGroup>

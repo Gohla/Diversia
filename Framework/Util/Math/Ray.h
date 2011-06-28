@@ -29,10 +29,7 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_RAY_H
 #define DIVERSIA_UTIL_RAY_H
 
-#include "Util/Platform/Prerequisites.h"
-
 #include "Util/Math/Vector3.h"
-//#include "Util/PlaneBoundedVolume.h"
 
 //------------------------------------------------------------------------------
 namespace Diversia

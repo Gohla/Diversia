@@ -11,6 +11,9 @@ This file is part of Diversia.
 
 #include "Platform/Prerequisites.h"
 
+#include <QtTreePropertyBrowser>
+#include <QtProperty>
+
 namespace Diversia
 {
 namespace QtOgreEditor

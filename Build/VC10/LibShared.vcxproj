@@ -108,6 +108,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Framework\Shared\Physics\AreaTriggerCallback.h" />
+    <ClInclude Include="..\..\Framework\Shared\Platform\Defines.h" />
+    <ClInclude Include="..\..\Framework\Shared\Platform\Forward.h" />
     <ClInclude Include="..\..\Framework\Shared\Platform\Prerequisites.h" />
     <ClInclude Include="..\..\Framework\Shared\Platform\StableHeaders.h" />
     <ClInclude Include="..\..\Framework\Shared\Communication\BitStream.h" />
@@ -144,6 +146,7 @@
     <ClInclude Include="..\..\Framework\Shared\SharedIncludes.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Framework\Shared\Camp\src\CampStringInterpreter.cpp" />
     <ClCompile Include="..\..\Framework\Shared\Camp\src\PropertySynchronization.cpp" />
     <ClCompile Include="..\..\Framework\Shared\Platform\src\StableHeaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>

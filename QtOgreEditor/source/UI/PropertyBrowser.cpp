@@ -8,8 +8,9 @@ This file is part of Diversia.
 
 #include "Platform/StableHeaders.h"
 
-#include "UI/PropertyBrowser.h"
 #include "Camp/CampPropertyManager.h"
+#include "UI/PropertyBrowser.h"
+#include <QtProperty>
 
 namespace Diversia
 {

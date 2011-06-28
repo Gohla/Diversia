@@ -22,8 +22,6 @@ the Magic Software web site.  This file is subject to the license.
 #ifndef DIVERSIA_UTIL_QUATERNION_H
 #define DIVERSIA_UTIL_QUATERNION_H
 
-#include "Util/Platform/Prerequisites.h"
-
 #include "Util/Math/Math.h"
 
 //------------------------------------------------------------------------------
@@ -232,6 +230,8 @@ public:
 		o << "Quaternion(" << q.w << ", " << q.x << ", " << q.y << ", " << q.z << ")";
 		return o;
 	}
+
+    static void bindQuaternion();
 };
 //------------------------------------------------------------------------------
 /**
@@ -253,6 +253,6 @@ inline ToType toQuaternion(const FromType& q)
 } // namespace Util
 } // namespace Diversia
 
-CAMP_AUTO_TYPE( Diversia::Util::Quaternion, &Diversia::Util::Bindings::CampBindings::bindQuaternion );
+CAMP_AUTO_TYPE( Diversia::Util::Quaternion, &Diversia::Util::Quaternion::bindQuaternion );
 
 #endif // DIVERSIA_UTIL_QUATERNION_H

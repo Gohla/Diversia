@@ -36,6 +36,12 @@
     <ClInclude Include="..\..\Framework\Object\ComponentTemplate.h" />
     <ClInclude Include="..\..\Framework\Object\ObjectTemplate.h" />
     <ClInclude Include="..\..\Framework\Object\ObjectTemplateManager.h" />
+    <ClInclude Include="..\..\Framework\Object\Platform\Defines.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Object\Platform\Forward.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Framework\Object\Platform\src\StableHeaders.cpp">

@@ -110,6 +110,9 @@
     <ClInclude Include="..\..\QtOgreEditor\source\State\PauseState.h">
       <Filter>State</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\QtOgreEditor\source\Platform\Forward.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\QtOgreEditor\source\Platform\StableHeaders.cpp">

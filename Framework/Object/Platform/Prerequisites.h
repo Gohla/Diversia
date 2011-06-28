@@ -31,6 +31,9 @@ THE SOFTWARE.
 // Include dependent libraries
 #include "Util/Platform/Prerequisites.h"
 
+// Logging
+#include "Util/Log/Log.h"
+
 namespace Diversia
 {
 namespace ObjectSystem
@@ -62,67 +65,9 @@ namespace ObjectSystem
 #   endif
 #endif
 
-// Forward declarations
-class Component;
-class ComponentHandle;
-class ComponentFactory;
-class ComponentTemplate;
-class Object;
-class ObjectManager;
-class ObjectTemplate;
-class ObjectTemplateManager;
-
 // Used namespaces
 using namespace Diversia::Util;
 
-// Typedefs
-typedef unsigned char ReplicaType;
-typedef unsigned char ComponentType;
-
-// Enums
-/**
-Represents client or server mode.
-**/
-enum Mode
-{
-    CLIENT = 0,
-    SERVER = 1
-};
-
-/**
-Represents a source.
-**/
-typedef Mode Source;
-
-/**
-Represents local or remote mode.
-**/
-enum NetworkingType
-{
-    LOCAL = 0,
-    REMOTE = 1
-};
-
-// Defines
-// Replica type
-#define REPLICATYPE_OBJECT                  0x00
-#define REPLICATYPE_COMPONENT               0x01
-//#define REPLICATYPE_CLIENTSERVERPLUGIN    0x02
-#define REPLICATYPE_OBJECTTEMPLATE          0x03
-#define REPLICATYPE_COMPONENTTEMPLATE       0x04
-
-} // namespace ObjectSystem
-} // namespace Diversia
-
-// Include after the configuration has been set.
-#include "Util/Build/StdHeaders.h"
-
-// Logging
-#include "Util/Log/Log.h"
-namespace Diversia
-{
-namespace ObjectSystem
-{
 namespace Log
 {
 // Static logger
@@ -144,15 +89,8 @@ static boost::log::sources::severity_channel_logger_mt< Diversia::Util::LogLevel
 } // Namespace Object
 } // Namespace Diversia
 
-// RPC3 forward declaration.
-namespace RakNet {
-    class RPC3;
-}
-
-// Camp bindings
+// Definitions
 #include "Object/Camp/CampBindings.h"
-
-CAMP_AUTO_TYPE( Diversia::ObjectSystem::Mode, &Diversia::ObjectSystem::Bindings::CampBindings::bindModeEnum );
-CAMP_AUTO_TYPE( Diversia::ObjectSystem::NetworkingType, &Diversia::ObjectSystem::Bindings::CampBindings::bindNetworkingTypeEnum );
+#include "Object/Platform/Defines.h"
 
 #endif // DIVERSIA_OBJECT_PREREQUISITES_H

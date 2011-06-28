@@ -25,8 +25,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_STATE_H
 #define DIVERSIA_UTIL_STATE_H
 
-#include "Util/Platform/Prerequisites.h"
-
 #include "Util/State/StateMachine.h"
 
 namespace Diversia

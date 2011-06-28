@@ -33,6 +33,7 @@ THE SOFTWARE.
 #include "Util/Math/AsmMath.h"
 #include "Util/Math/Vector2.h"
 #include "Util/Math/Vector3.h"
+#include "Util/Camp/BindingType.h"
 
 //------------------------------------------------------------------------------
 namespace Diversia
@@ -269,6 +270,107 @@ bool Math::RealEqual(Real a, Real b, Real tolerance)
 		return false;
 }
 //------------------------------------------------------------------------------
+
+void Radian::bindRadian()
+{
+    camp::Class::declare<Radian>( "Radian" )
+        .tag( "BindingType", BindingType_Radian )
+        // Constructors
+        .constructor1<Real>()
+        .constructor1<const Degree&>()
+        .constructor1<const Radian&>()
+        // Properties (read-only)
+        .property( "Degrees", &Radian::valueDegrees )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "AngleUnits", &Radian::valueAngleUnits )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        // Properties (read/write)
+        .property( "Radians", &Radian::mRad )
+            .tag( "Configurable" )
+        // Functions
+        // Operators
+        .addOperator<camp::add, Radian, const Radian&>()
+        .addOperator<camp::add, Radian, const Degree&>()
+        .addOperator<camp::sub, Radian, const Radian&>()
+        .addOperator<camp::sub, Radian, const Degree&>()
+        .addOperator<camp::mul, Radian, const Radian&>()
+        .addOperator<camp::mul, Radian, Real>()
+        .addOperator<camp::div, Radian, Real>()
+        .addOperator<camp::umin, Radian>()
+        .addOperator<camp::eq, const Radian&>()
+        .addOperator<camp::neq, const Radian&>()
+        .addOperator<camp::lt, const Radian&>()
+        .addOperator<camp::lte, const Radian&>()
+        .addOperator<camp::gt, const Radian&>()
+        .addOperator<camp::gte, const Radian&>();
+        // Static functions
+}
+
+void Degree::bindDegree()
+{
+    camp::Class::declare<Degree>( "Degree" )
+        .tag( "BindingType", BindingType_Degree )
+        // Constructors
+        .constructor1<Real>()
+        .constructor1<const Radian&>()
+        // Properties (read-only)
+        .property( "Radians", &Degree::valueRadians )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "AngleUnits", &Degree::valueAngleUnits )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        // Properties (read/write)
+        .property( "Degrees", &Degree::mDeg )
+            .tag( "Configurable" )
+        // Functions
+        // Operators
+        .addOperator<camp::add, Degree, const Degree&>()
+        .addOperator<camp::add, Degree, const Radian&>()
+        .addOperator<camp::sub, Degree, const Degree&>()
+        .addOperator<camp::sub, Degree, const Radian&>()
+        .addOperator<camp::mul, Degree, const Degree&>()
+        .addOperator<camp::mul, Degree, Real>()
+        .addOperator<camp::div, Degree, Real>()
+        .addOperator<camp::umin, Degree>()
+        .addOperator<camp::eq, const Degree&>()
+        .addOperator<camp::neq, const Degree&>()
+        .addOperator<camp::lt, const Degree&>()
+        .addOperator<camp::lte, const Degree&>()
+        .addOperator<camp::gt, const Degree&>()
+        .addOperator<camp::gte, const Degree&>();
+        // Static functions
+}
+
+void Angle::bindAngle()
+{
+    camp::Class::declare<Angle>( "Angle" )
+        .tag( "BindingType", BindingType_Angle )
+        // Constructors
+        .constructor1<Real>()
+        // Properties (read-only)
+        .property( "Radian", &Angle::operator Radian )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "Degree", &Angle::operator Degree )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        // Properties (read/write)
+        .property( "Angle", &Angle::mAngle )
+            .tag( "Configurable" );
+        // Functions
+        // Static functions
+        // Operators
+}
+
+//------------------------------------------------------------------------------
 } // namespace Util
 } // namespace Diversia
-//------------------------------------------------------------------------------

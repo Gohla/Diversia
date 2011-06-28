@@ -25,10 +25,9 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "OgreClient/Platform/Prerequisites.h"
 
-#include <OGRE/OgrePrerequisites.h>
-#include <OGRE/OgreArchive.h>
-#include <OGRE/OgreArchiveFactory.h>
-#include <Camp/arraymapper.hpp>
+#include <ogre/OgreArchive.h>
+#include <ogre/OgreArchiveFactory.h>
+#include "Util/XML/rapidxml.hpp"
 
 namespace Diversia
 {

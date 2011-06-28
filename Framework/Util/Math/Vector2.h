@@ -29,7 +29,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_VECTOR2_H
 #define DIVERSIA_UTIL_VECTOR2_H
 
-#include "Util/Platform/Prerequisites.h"
 
 #include "Util/Math/Math.h"
 
@@ -530,6 +529,8 @@ public:
 		o << "Vector2(" << v.x << ", " << v.y <<  ")";
 		return o;
 	}
+
+    static void bindVector2();
 };
 //------------------------------------------------------------------------------
 /**
@@ -551,6 +552,6 @@ ToType toVector2(const FromType& v)
 } // namespace Util
 } // namespace Diversia
 
-CAMP_AUTO_TYPE( Diversia::Util::Vector2, &Diversia::Util::Bindings::CampBindings::bindVector2 );
+CAMP_AUTO_TYPE( Diversia::Util::Vector2, &Diversia::Util::Vector2::bindVector2 );
 
 #endif // DIVERSIA_UTIL_VECTOR2_H

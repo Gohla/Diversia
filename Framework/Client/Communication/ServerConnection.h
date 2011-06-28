@@ -29,8 +29,9 @@ THE SOFTWARE.
 
 #include "Client/Platform/Prerequisites.h"
 
-#include "Shared/Communication/ServerInfo.h"
+#include "Object/RPC3/RPC3.h"
 #include "Shared/Communication/ReplicaManager.h"
+#include "Shared/Communication/ServerInfo.h"
 
 namespace Diversia
 {

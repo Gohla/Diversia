@@ -11,6 +11,9 @@ This file is part of Diversia.
 
 #include "Platform/Prerequisites.h"
 
+#include <boost/log/formatters.hpp>
+#include <boost/log/sinks.hpp>
+
 namespace Diversia
 {
 namespace QtOgreEditor

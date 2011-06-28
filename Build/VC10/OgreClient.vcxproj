@@ -156,6 +156,7 @@
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\GUI\LoginGUI.h" />
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\GUI\MenuGUI.h" />
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Input\OISInputManager.h" />
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Platform\Forward.h" />
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Platform\Prerequisites.h" />
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Platform\StableHeaders.h" />
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\State\LoadingState.h" />

@@ -27,8 +27,8 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_XMLSERIALIZATIONFILE_H
 #define DIVERSIA_UTIL_XMLSERIALIZATIONFILE_H
 
-#include "Util/Platform/Prerequisites.h"
 #include "Util/Serialization/SerializationFile.h"
+#include "Util/XML/rapidxml.hpp"
 
 namespace Diversia
 {

@@ -28,6 +28,7 @@ THE SOFTWARE.
 
 #include "Util/Platform/StableHeaders.h"
 
+#include "Util/Camp/BindingType.h"
 #include "Util/Math/Colour.h"
 #include "Util/Math/Math.h"
 
@@ -408,6 +409,47 @@ void Colour::getHSB(Real* hue, Real* saturation, Real* brightness) const
 			*hue -= 1.0f;
 	}
 }
+
+void Colour::bindColour()
+{
+    camp::Class::declare<Colour>( "Colour" )
+        .tag( "BindingType", BindingType_Colour )
+        // Constructors
+        .constructor0()
+        .constructor3<float, float, float>()
+        .constructor4<float, float, float, float>()
+        // Static member variables
+        // Properties (read-only)
+        // Properties (read/write)
+        .property( "R", &Colour::r )
+            .tag( "Configurable" )
+            .tag( "QtDoublePrecicion", 4 )
+        .property( "G", &Colour::g )
+            .tag( "Configurable" )
+            .tag( "QtDoublePrecicion", 4 )
+        .property( "B", &Colour::b )
+            .tag( "Configurable" )
+            .tag( "QtDoublePrecicion", 4 )
+        .property( "A", &Colour::a )
+            .tag( "Configurable" )
+            .tag( "QtDoublePrecicion", 4 )
+        // Functions
+        // Operators
+        .addOperator<camp::add, Colour, const Colour&>()
+        .addOperator<camp::sub, Colour, const Colour&>()
+        .addOperator<camp::mul, Colour, const Colour&>()
+        .addOperator<camp::mul, Colour, Real>()
+        .addOperator<camp::div, Colour, const Colour&>()
+        .addOperator<camp::div, Colour, Real>()
+        .addOperator<camp::eq, const Colour&>()
+        .addOperator<camp::neq, const Colour&>()
+        .addOperator<camp::lt, const Colour&>()
+        .addOperator<camp::lte, const Colour&>()
+        .addOperator<camp::gt, const Colour&>()
+        .addOperator<camp::gte, const Colour&>();
+        // Static functions
+}
+
 //------------------------------------------------------------------------------
 } // namespace Util
 } // namespace Diversia

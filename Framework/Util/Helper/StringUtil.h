@@ -13,9 +13,6 @@ Copyright (C) 2008-2009 TidalWare
 #ifndef DIVERSIA_UTIL_STRINGUTIL_H
 #define DIVERSIA_UTIL_STRINGUTIL_H
 
-#include "Util/Platform/Prerequisites.h"
-
-/*#include "Util/Helper/SmartPtr.h"*/
 #include "Util/Math/Math.h"
 
 //------------------------------------------------------------------------------

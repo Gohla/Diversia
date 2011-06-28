@@ -27,8 +27,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_SORTEDSIGNAL_H
 #define DIVERSIA_UTIL_SORTEDSIGNAL_H
 
-#include "Util/Platform/Prerequisites.h"
-
 namespace Diversia
 {
 namespace Util

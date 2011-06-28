@@ -50,8 +50,10 @@ This file is part of Diversia.
 #include "Shared/Object/TemplateComponentFactory.h"
 #include "State/InitialState.h"
 #include "UI/MainWindow.h"
+#include "Util/Config/ConfigManager.h"
 #include "Util/Serialization/XMLSerializationFile.h"
 #include "Util/State/StateMachine.h"
+#include <boost/timer.hpp>
 
 namespace Diversia
 {
@@ -61,6 +63,7 @@ namespace QtOgreEditor
 
 EditorApplication::EditorApplication( int argc, char* argv[] ):
     QApplication( argc, argv ),
+    mTimer( new boost::timer() ),
     mStopUpdates( true )
 {
     if( !QResource::registerResource( "../../qt/MainWindow.rcc" ) )
@@ -235,7 +238,7 @@ void EditorApplication::init( int argc, char* argv[] )
 void EditorApplication::run()
 {
     // Start the update timer.
-    mTimer.restart();
+    mTimer->restart();
     QObject::connect( mUpdateTimer, SIGNAL( timeout() ), this, SLOT( update() ) );
     mUpdateTimer->setSingleShot( false );
     mUpdateTimer->setInterval( 0 );
@@ -258,8 +261,8 @@ void EditorApplication::run()
 
 void EditorApplication::update()
 {
-    const Real elapsed = mTimer.elapsed();
-    mTimer.restart();
+    const Real elapsed = mTimer->elapsed();
+    mTimer->restart();
 
     if( !mStopUpdates ) 
     {

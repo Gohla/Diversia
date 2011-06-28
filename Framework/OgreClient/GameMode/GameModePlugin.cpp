@@ -83,7 +83,8 @@ void GameModePlugin::create()
         {
             // Load lua gamemode(s)
             ResourceList resourceList;
-            for( Paths::iterator i = mClientScriptFiles.begin(); i != mClientScriptFiles.end(); ++i )
+            for( std::vector<Path>::iterator i = mClientScriptFiles.begin(); 
+                i != mClientScriptFiles.end(); ++i )
             {
                 resourceList.push_back( ResourceInfo( *i, "Generic" ) );
             }
@@ -128,7 +129,8 @@ void GameModePlugin::destroy()
         }
 
         // Unload script resources
-        for( Paths::iterator i = mClientScriptFiles.begin(); i != mClientScriptFiles.end(); ++i )
+        for( std::vector<Path>::iterator i = mClientScriptFiles.begin(); 
+            i != mClientScriptFiles.end(); ++i )
         {
             GenericResourceManager::getSingletonPtr()->unload( (*i).string() );
         }
@@ -162,7 +164,8 @@ void GameModePlugin::stateChanged( PluginState state, PluginState prevState )
 void GameModePlugin::resourcesLoaded()
 {
     // Load scripts
-    for( Paths::iterator i = mClientScriptFiles.begin(); i != mClientScriptFiles.end(); ++i )
+    for( std::vector<Path>::iterator i = mClientScriptFiles.begin(); i != mClientScriptFiles.end(); 
+        ++i )
     {
         GenericResourcePtr resource = GenericResourceManager::getSingleton().getByName( 
             (*i).string(), mResourceManager.getGroup() );

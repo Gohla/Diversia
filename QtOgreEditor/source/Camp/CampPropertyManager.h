@@ -9,16 +9,33 @@ This file is part of Diversia.
 #ifndef DIVERSIA_QTOGREEDITOR_CAMPPROPERTYMANAGER_H
 #define DIVERSIA_QTOGREEDITOR_CAMPPROPERTYMANAGER_H
 
-#include "Platform/Prerequisites.h"
+#include <QtAbstractPropertyManager>
+#include <QtTreePropertyBrowser>
 
-#include "Client/Undo/UndoStack.h"
-#include "Client/Undo/PropertyChangeCommand.h"
+// Forward declarations
+class QtGroupPropertyManager;
+class QtStringPropertyManager;
+class QtBoolPropertyManager;
+class QtIntPropertyManager;
+class QtDoublePropertyManager;
+class QtStringPropertyManager;
+class QtEnumPropertyManager;
+class QtIntPropertyManager;
+class QtCheckBoxFactory;
+class QtSpinBoxFactory;
+class QtDoubleSpinBoxFactory;
+class QtLineEditFactory;
+class QtEnumEditorFactory;
+class QtProperty;
 
 namespace Diversia
 {
 namespace QtOgreEditor
 {
 //------------------------------------------------------------------------------
+
+// Forward declarations
+class QtFix;
 
 /**
 Interface for keeping track of camp properties.
@@ -141,9 +158,6 @@ struct CampArrayPropertyData : public CampPropertyDataInterface
 };
 
 //------------------------------------------------------------------------------
-
-// Forward declaration
-class QtFix;
 
 /**
 Camp compound property manager for managing nested properties.

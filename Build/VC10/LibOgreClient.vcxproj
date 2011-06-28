@@ -154,6 +154,8 @@
     <ClInclude Include="..\..\Framework\OgreClient\Object\Text.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Physics\PhysicsManager.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Platform\Config.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Platform\Defines.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Platform\Forward.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Platform\Prerequisites.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Platform\StableHeaders.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Resource\GenericResource.h" />

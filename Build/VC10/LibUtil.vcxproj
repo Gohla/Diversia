@@ -87,12 +87,13 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">
     <ClCompile>
       <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
-      <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Util\Platform\StableHeaders.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>DIVERSIA_UTIL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PrecompiledHeader>Use</PrecompiledHeader>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\..\Framework\Util\Camp\src\BindingType.cpp" />
     <ClCompile Include="..\..\Framework\Util\Helper\src\ConsoleInput.cpp" />
     <ClCompile Include="..\..\Framework\Util\Helper\src\Exception.cpp" />
     <ClCompile Include="..\..\Framework\Util\Helper\src\StringUtil.cpp" />
@@ -111,20 +112,20 @@
     <ClCompile Include="..\..\Framework\Util\Math\src\Vector4.cpp" />
     <ClCompile Include="..\..\Framework\Util\Platform\src\StableHeaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
-      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\Framework\Util\State\src\StateMachine.cpp" />
     <ClCompile Include="..\..\Framework\Util\Job\src\Job.cpp" />
     <ClCompile Include="..\..\Framework\Util\Job\src\Request.cpp" />
     <ClCompile Include="..\..\Framework\Util\Job\src\RequestManager.cpp" />
-    <ClCompile Include="..\..\Framework\Util\Camp\src\CampBindings.cpp" />
     <ClCompile Include="..\..\Framework\Util\Config\src\ConfigManager.cpp" />
     <ClCompile Include="..\..\Framework\Util\Signal\DelayedCall.cpp" />
     <ClCompile Include="..\..\Framework\Util\Signal\UserObjectChange.cpp" />
     <ClCompile Include="..\..\Framework\Util\Serialization\src\XMLSerializationFile.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\Framework\Util\Camp\BindingType.h" />
     <ClInclude Include="..\..\Framework\Util\Camp\CampUtils.h" />
     <ClInclude Include="..\..\Framework\Util\Helper\ConsoleInput.h" />
     <ClInclude Include="..\..\Framework\Util\Helper\ContainerInitializer.h" />
@@ -148,6 +149,8 @@
     <ClInclude Include="..\..\Framework\Util\Math\Vector2.h" />
     <ClInclude Include="..\..\Framework\Util\Math\Vector3.h" />
     <ClInclude Include="..\..\Framework\Util\Math\Vector4.h" />
+    <ClInclude Include="..\..\Framework\Util\Platform\Defines.h" />
+    <ClInclude Include="..\..\Framework\Util\Platform\Forward.h" />
     <ClInclude Include="..\..\Framework\Util\Platform\Prerequisites.h" />
     <ClInclude Include="..\..\Framework\Util\Platform\StableHeaders.h" />
     <ClInclude Include="..\..\Framework\Util\XML\rapidxml.hpp" />
@@ -163,7 +166,6 @@
     <ClInclude Include="..\..\Framework\Util\Job\Request.h" />
     <ClInclude Include="..\..\Framework\Util\Job\RequestManager.h" />
     <ClInclude Include="..\..\Framework\Util\Camp\BindingsPrinter.h" />
-    <ClInclude Include="..\..\Framework\Util\Camp\CampBindings.h" />
     <ClInclude Include="..\..\Framework\Util\Camp\ValueMapper.h" />
     <ClInclude Include="..\..\Framework\Util\Config\ConfigManager.h" />
     <ClInclude Include="..\..\Framework\Util\Signal\DelayedCall.h" />

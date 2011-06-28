@@ -70,6 +70,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "Shared/Crash/CrashReporter.h"
 #include "Shared/Object/TemplateComponentFactory.h"
 #include "State/LoadingState.h"
+#include "Util/Config/ConfigManager.h"
 #include "Util/Serialization/XMLSerializationFile.h"
 #include "Util/State/StateMachine.h"
 #include <boost/program_options.hpp>

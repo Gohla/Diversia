@@ -33,6 +33,9 @@ THE SOFTWARE.
 #include "Object/Platform/Prerequisites.h"
 #include "Shared/Platform/Prerequisites.h"
 
+// Logging
+#include "Util/Log/Log.h"
+
 namespace Diversia
 {
 namespace Client
@@ -69,53 +72,6 @@ using namespace Diversia::Util;
 using namespace Diversia::ObjectSystem;
 using namespace Diversia;
 
-// Forward declarations
-// ClientServerPlugin
-class ServerPlugin;
-class ServerPluginManager;
-
-// Communication
-class GridManager;
-class ServerAbstract;
-class Server;
-class OfflineServer;
-class ServerConnection;
-class ServerNeighborsPlugin;
-
-// Lua
-class LuaPlugin;
-
-// Object
-class ClientComponent;
-class ClientComponentTemplate;
-class ClientObject;
-class ClientObjectTemplate;
-class ClientObjectManager;
-class ClientObjectTemplateManager;
-
-// Permission
-class PermissionManager;
-
-// Undo
-class ComponentCommand;
-class ObjectCommand;
-class FunctionCommand;
-class PropertyChangeCommand;
-class UndoCommand;
-class UndoStack;
-
-} // namespace Client
-} // namespace Diversia
-
-// Include after the configuration has been set.
-#include "Util/Build/StdHeaders.h"
-
-// Logging
-#include "Util/Log/Log.h"
-namespace Diversia
-{
-namespace Client
-{
 namespace Log
 {
 // Static logger
@@ -137,7 +93,8 @@ static boost::log::sources::severity_channel_logger_mt< Diversia::Util::LogLevel
 } // Namespace Client
 } // Namespace Diversia
 
-// Camp bindings
+// Definitions
 #include "Client/Camp/CampBindings.h"
+#include "Client/Platform/Defines.h"
 
 #endif // DIVERSIA_CLIENT_PREREQUISITES_H

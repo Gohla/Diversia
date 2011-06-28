@@ -23,23 +23,13 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #ifndef DIVERSIA_OGRECLIENT_GLOBALSBASE_H
 #define DIVERSIA_OGRECLIENT_GLOBALSBASE_H
 
-#include "Platform/Prerequisites.h"
-
-// Forward declarations
-class btDiscreteDynamicsWorld;
-class btAxisSweep3;
-namespace Ogre
-{
-    class SceneManager;
-}
-
 namespace Diversia
 {
 namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_OGRECLIENT_API GlobalsBase : public boost::noncopyable
+class /*DIVERSIA_OGRECLIENT_API*/ GlobalsBase /*: public boost::noncopyable*/
 {
 public:
     static ApplicationBase*         mApp;

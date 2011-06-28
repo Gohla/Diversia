@@ -29,10 +29,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_EXCEPTION_H
 #define DIVERSIA_UTIL_EXCEPTION_H
 
-#include "Util/Platform/Prerequisites.h"
-
-#include <exception>
-
 // RELEASE_EXCEPTIONS mode
 #if DIVERSIA_ASSERT_MODE == 1
 #   ifdef DIVERSIA_DEBUG

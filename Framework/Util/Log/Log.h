@@ -63,10 +63,12 @@ inline std::basic_ostream< CharT, TraitsT >& operator<< (
     return strm;
 }
 
+void bindLogLevel();
+
 //------------------------------------------------------------------------------
 } // Namespace Util
 } // Namespace Diversia
 
-CAMP_AUTO_TYPE( Diversia::Util::LogLevel, &Diversia::Util::Bindings::CampBindings::bindLogLevel );
+CAMP_AUTO_TYPE( Diversia::Util::LogLevel, &Diversia::Util::bindLogLevel );
 
 #endif

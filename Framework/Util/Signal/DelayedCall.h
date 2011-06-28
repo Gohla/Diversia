@@ -27,7 +27,11 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_DELAYEDCALL_H
 #define DIVERSIA_UTIL_DELAYEDCALL_H
 
-#include "Util/Platform/Prerequisites.h"
+// Forward declare boost::timer.
+namespace boost
+{
+    class timer;
+}
 
 namespace Diversia
 {
@@ -67,9 +71,9 @@ private:
 
     static sigc::signal<void>* mUpdateSignal;
 
-    sigc::slot<void>    mSlot;
-    Real                mCallTime;
-    boost::timer        mTimer;
+    sigc::slot<void>                mSlot;
+    Real                            mCallTime;
+    boost::scoped_ptr<boost::timer> mTimer;
 };
 
 //------------------------------------------------------------------------------

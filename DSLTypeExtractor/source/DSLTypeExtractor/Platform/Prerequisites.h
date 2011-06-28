@@ -35,6 +35,9 @@ THE SOFTWARE.
 #include "Client/Platform/Prerequisites.h"
 #include "OgreClient/Platform/Prerequisites.h"
 
+// Logging
+#include "Util/Log/Log.h"
+
 namespace Diversia
 {
 namespace DSLTypeExtractor
@@ -45,18 +48,7 @@ using namespace Diversia::ObjectSystem;
 using namespace Diversia;
 using namespace Diversia::Client;
 using namespace Diversia::OgreClient;
-} // namespace DSLTypeExtractor
-} // namespace Diversia
 
-// Include after the configuration has been set.
-#include "Util/Build/StdHeaders.h"
-
-// Logging
-#include "Util/Log/Log.h"
-namespace Diversia
-{
-namespace DSLTypeExtractor
-{
 namespace Log
 {
 // Static logger

@@ -75,4 +75,7 @@ THE SOFTWARE.
 #   define BOOST_ALL_DYN_LINK
 #endif
 
+// Boost parameter max arity
+#define BOOST_PARAMETER_MAX_ARITY 7
+
 #endif // DIVERSIA_CONFIG_H

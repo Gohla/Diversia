@@ -27,8 +27,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_USEROBJECTCHANGE_H
 #define DIVERSIA_UTIL_USEROBJECTCHANGE_H
 
-#include "Util/Platform/Prerequisites.h"
-
 namespace Diversia
 {
 namespace Util

@@ -29,8 +29,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_COLOUR_H
 #define DIVERSIA_UTIL_COLOUR_H
 
-#include "Util/Platform/Prerequisites.h"
-
 //------------------------------------------------------------------------------
 namespace Diversia
 {
@@ -343,6 +341,8 @@ public:
 	@param brightness Output brightness level, [0,1]
 	*/
 	void getHSB(Real* hue, Real* saturation, Real* brightness) const;
+
+    static void bindColour();
 };
 //------------------------------------------------------------------------------
 /**
@@ -364,6 +364,6 @@ ToType toColour(const FromType& c)
 } // namespace Util
 } // namespace Diversia
 
-CAMP_AUTO_TYPE( Diversia::Util::Colour, &Diversia::Util::Bindings::CampBindings::bindColour );
+CAMP_AUTO_TYPE( Diversia::Util::Colour, &Diversia::Util::Colour::bindColour );
 
 #endif // DIVERSIA_UTIL_COLOUR_H

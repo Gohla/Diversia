@@ -131,9 +131,9 @@ private:
     GameModeBase*       mGameMode;
 
     bool                mClientLoadDefaultGamemode;
-    Paths               mClientScriptFiles;
+    std::vector<Path>   mClientScriptFiles;
     LuaSecurityLevel    mClientSecurityLevel;
-    Paths               mServerScriptFiles;
+    std::vector<Path>   mServerScriptFiles;
     LuaSecurityLevel    mServerSecurityLevel;
 
     int                 mMousePriority;

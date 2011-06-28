@@ -760,6 +760,85 @@ void Node::processQueuedUpdates()
     }
     msQueuedUpdates.clear();
 }
+
+void Node::bindNode()
+{
+    camp::Class::declare<Node>( "Node" )
+    	// Constructors
+    	// Properties (read-only)
+        .property( "LocalAxes", &Node::getLocalAxes )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "FullTransform", &Node::_getFullTransform )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "DerivedScale", &Node::_getDerivedScale )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "InitialPosition", &Node::getInitialPosition )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "InitialOrientation", &Node::getInitialOrientation )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "InitialScale", &Node::getInitialScale )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+    	// Properties (read/write)
+        .property( "Position", (Vector3&(Node::*)())&Node::getPosition, (void(Node::*)(const Vector3&))&Node::setPosition )
+            .tag( "Configurable" )
+            .tag( "NoBitStream" )
+            .tag( "QtContinuousUpdate" )
+        .property( "DerivedPosition", &Node::_getDerivedPosition, &Node::_setDerivedPosition )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "Orientation", (Quaternion&(Node::*)())&Node::getOrientation, (void(Node::*)(Quaternion))&Node::setOrientation )
+            .tag( "Configurable" )
+            .tag( "NoBitStream" )
+            .tag( "QtContinuousUpdate" )
+        .property( "DerivedOrientation", &Node::_getDerivedOrientation, &Node::_setDerivedOrientation )
+            .tag( "NoSerialization" )
+            .tag( "NoBitStream" )
+            .tag( "NoPropertyBrowser" )
+        .property( "Scale", (Vector3&(Node::*)())&Node::getScale, (void(Node::*)(const Vector3&))&Node::setScale )
+            .tag( "Configurable" )
+            .tag( "NoBitStream" )
+            .tag( "QtContinuousUpdate" )
+        .property( "InheritOrientation", &Node::getInheritOrientation, &Node::setInheritOrientation )
+            .tag( "Configurable" )
+        .property( "InheritScale", &Node::getInheritScale, &Node::setInheritScale )
+            .tag( "Configurable" )
+    	// Functions
+        .function( "Translate", (void(Node::*)(const Vector3&, Node::TransformSpace))&Node::translate)
+        .function( "Roll", &Node::roll )
+        .function( "Pitch", &Node::pitch )
+        .function( "Yaw", &Node::yaw )
+        .function( "Rotate", (void(Node::*)(const Vector3&, const Radian&, Node::TransformSpace))&Node::rotate )
+        .function( "SetInitialState", &Node::setInitialState )
+        .function( "ResetToInitialState", &Node::resetToInitialState )
+        .function( "ConvertWorldToLocalPosition", &Node::convertWorldToLocalPosition )
+        .function( "ConvertLocalToWorldPosition", &Node::convertLocalToWorldPosition )
+        .function( "ConvertWorldToLocalOrientation", &Node::convertWorldToLocalOrientation )
+        .function( "ConvertLocalToWorldOrientation", &Node::convertLocalToWorldOrientation );
+    	// Static functions
+    	// Operators
+}
+
+void Node::bindTransformSpace()
+{
+    camp::Enum::declare<Node::TransformSpace>( "TransformSpace" )
+        .value( "Local", Node::TS_LOCAL )
+        .value( "Parent", Node::TS_PARENT )
+        .value( "World", Node::TS_WORLD );
+}
+
 //---------------------------------------------------------------------
 
 } // Namespace Util

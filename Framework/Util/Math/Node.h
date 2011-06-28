@@ -28,8 +28,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_NODE_H
 #define DIVERSIA_UTIL_NODE_H
 
-#include "Util/Platform/Prerequisites.h"
-
 #include "Util/Math/Quaternion.h"
 #include "Util/Math/Vector3.h"
 #include "Util/Math/Matrix4.h"
@@ -729,16 +727,16 @@ public:
     {
         return mLocalTransformChangeSignal.connect( rSlot );
     }
+
+    static void bindNode();
+    static void bindTransformSpace();
 };
 /** @} */
 /** @} */
 } // Namespace Util
 } // Namespace Diversia
 
-CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::Util::Node,
-    &Diversia::Util::Bindings::CampBindings::bindNode );
-
-CAMP_AUTO_TYPE( Diversia::Util::Node::TransformSpace, 
-    &Diversia::Util::Bindings::CampBindings::bindTransformSpace );
+CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::Util::Node, &Diversia::Util::Node::bindNode );
+CAMP_AUTO_TYPE( Diversia::Util::Node::TransformSpace, &Diversia::Util::Node::bindTransformSpace );
 
 #endif // DIVERSIA_UTIL_NODE_H

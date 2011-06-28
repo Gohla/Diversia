@@ -29,8 +29,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_MATH_H
 #define DIVERSIA_UTIL_MATH_H
 
-#include "Util/Platform/Prerequisites.h"
-
 //------------------------------------------------------------------------------
 namespace Diversia
 {
@@ -75,8 +73,9 @@ public:
 	bool operator >= ( const Radian& r ) const { return mRad >= r.mRad; }
 	bool operator >  ( const Radian& r ) const { return mRad >  r.mRad; }
 
+    static void bindRadian();
+
 private:
-    friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
 	Real mRad;
 }; // class Radian
@@ -129,8 +128,9 @@ public:
 	bool operator >= ( const Degree& d ) const { return mDeg >= d.mDeg; }
 	bool operator >  ( const Degree& d ) const { return mDeg >  d.mDeg; }
 
+    static void bindDegree();
+
 private:
-    friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
 	Real mDeg; // if you get an error here - make sure to define/typedef 'Real' first
 }; // class Degree
@@ -155,8 +155,9 @@ public:
 	operator Radian() const;
 	operator Degree() const;
 
+    static void bindAngle();
+
 private:
-    friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
     Real mAngle;
 };
@@ -453,8 +454,8 @@ inline Degree operator / (Real a, const Degree& b)
 } // namespace Diversia
 //------------------------------------------------------------------------------
 
-CAMP_AUTO_TYPE( Diversia::Util::Radian, &Diversia::Util::Bindings::CampBindings::bindRadian );
-CAMP_AUTO_TYPE( Diversia::Util::Degree, &Diversia::Util::Bindings::CampBindings::bindDegree );
-CAMP_AUTO_TYPE( Diversia::Util::Angle, &Diversia::Util::Bindings::CampBindings::bindAngle );
+CAMP_AUTO_TYPE( Diversia::Util::Radian, &Diversia::Util::Radian::bindRadian );
+CAMP_AUTO_TYPE( Diversia::Util::Degree, &Diversia::Util::Degree::bindDegree );
+CAMP_AUTO_TYPE( Diversia::Util::Angle, &Diversia::Util::Angle::bindAngle );
 
 #endif // DIVERSIA_UTIL_MATH_H

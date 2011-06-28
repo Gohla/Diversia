@@ -23,8 +23,6 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #ifndef DIVERSIA_OGRECLIENT_CAMPBINDINGS_H
 #define DIVERSIA_OGRECLIENT_CAMPBINDINGS_H
 
-#include "OgreClient/Platform/Prerequisites.h"
-
 namespace Diversia
 {
 namespace OgreClient

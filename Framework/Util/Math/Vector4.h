@@ -29,8 +29,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_VECTOR4_H
 #define DIVERSIA_UTIL_VECTOR4_H
 
-#include "Util/Platform/Prerequisites.h"
-
 #include "Util/Math/Vector3.h"
 
 //------------------------------------------------------------------------------
@@ -413,11 +411,13 @@ public:
     }
     // special
     static const Vector4 ZERO;
+
+    static void bindVector4();
 };
 //------------------------------------------------------------------------------
 } // namespace Util
 } // namespace Diversia
 
-CAMP_AUTO_TYPE( Diversia::Util::Vector4, &Diversia::Util::Bindings::CampBindings::bindVector4 );
+CAMP_AUTO_TYPE( Diversia::Util::Vector4, &Diversia::Util::Vector4::bindVector4 );
 
 #endif // DIVERSIA_UTIL_VECTOR4_H

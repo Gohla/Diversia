@@ -30,6 +30,7 @@ THE SOFTWARE.
 #include "Shared/Platform/Prerequisites.h" 
 
 #include "Shared/Communication/BitStream.h"
+#include <boost/timer.hpp>
 
 namespace Diversia
 {

@@ -102,9 +102,6 @@
     <ClCompile Include="..\..\Framework\Util\Job\src\RequestManager.cpp">
       <Filter>Job</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Camp\src\CampBindings.cpp">
-      <Filter>Camp</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Framework\Util\Config\src\ConfigManager.cpp">
       <Filter>Config</Filter>
     </ClCompile>
@@ -116,6 +113,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Framework\Util\Serialization\src\XMLSerializationFile.cpp">
       <Filter>Serialization</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Util\Camp\src\BindingType.cpp">
+      <Filter>Camp</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -230,9 +230,6 @@
     <ClInclude Include="..\..\Framework\Util\Camp\BindingsPrinter.h">
       <Filter>Camp</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\Framework\Util\Camp\CampBindings.h">
-      <Filter>Camp</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\Framework\Util\Camp\ValueMapper.h">
       <Filter>Camp</Filter>
     </ClInclude>
@@ -260,6 +257,15 @@
     <ClInclude Include="..\..\Framework\Util\UtilIncludes.h" />
     <ClInclude Include="..\..\Framework\Util\Camp\CampUtils.h">
       <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Camp\BindingType.h">
+      <Filter>Camp</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Platform\Defines.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Util\Platform\Forward.h">
+      <Filter>Platform</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

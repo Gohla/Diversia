@@ -25,18 +25,18 @@ THE SOFTWARE.
 #ifndef DIVERSIA_DSLTYPEEXTRACTOR_STABLEHEADERS_H
 #define DIVERSIA_DSLTYPEEXTRACTOR_STABLEHEADERS_H
 
+// Platform
+#include "Util/Build/Platform.h"
+#include "Util/Build/StdHeaders.h"
+#include "OgreClient/Platform/Forward.h"
 #include "DSLTypeExtractor/Platform/Prerequisites.h"
 
-// Framework stable headers
-#include "Util/UtilIncludes.h"
-#include "Object/ObjectIncludes.h"
-#include "Shared/SharedIncludes.h"
-#include "Client/ClientIncludes.h"
-
+// Libraries
 // RakNet
 #include <RakNet/RakPeerInterface.h>
 #include <RakNet/NetworkIDManager.h>
 #include <RakNet/ReplicaManager3.h>
+#include <RakNet/RakString.h>
 #include <RakNet/BitStream.h>
 #include <RakNet/MessageIdentifiers.h>
 #include <RakNet/Kbhit.h>
@@ -62,5 +62,10 @@ THE SOFTWARE.
 // cAudio
 #include <cAudio.h>
 
+// Framework
+#include "Util/UtilIncludes.h"
+#include "Object/ObjectIncludes.h"
+#include "Shared/SharedIncludes.h"
+#include "Client/ClientIncludes.h"
 
 #endif // DIVERSIA_DSLTYPEEXTRACTOR_STABLEHEADERS_H

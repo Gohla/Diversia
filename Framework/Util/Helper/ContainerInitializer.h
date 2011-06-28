@@ -24,8 +24,6 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#include "Util/Platform/Prerequisites.h"
-
 #define rep(z, n, text) t.insert( t.end(), d ## n );
 #define repmap(z, n, text) rContainer.insert( std::make_pair( key, d ## n ) );
 

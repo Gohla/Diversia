@@ -25,9 +25,13 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_STABLEHEADERS_H
 #define DIVERSIA_UTIL_STABLEHEADERS_H
 
+// Platform
 #include "Util/Build/Platform.h"
+#include "Util/Build/StdHeaders.h"
+#include "Util/Platform/Forward.h"
 #include "Util/Platform/Prerequisites.h"
 
+// Framework
 #include "Util/Helper/Exception.h"
 
 #endif // DIVERSIA_UTIL_STABLEHEADERS_H

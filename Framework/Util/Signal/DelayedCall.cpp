@@ -27,6 +27,7 @@ THE SOFTWARE.
 #include "Util/Platform/StableHeaders.h"
 
 #include "Util/Signal/DelayedCall.h"
+#include <boost/timer.hpp>
 
 namespace Diversia
 {
@@ -44,12 +45,14 @@ void DelayedCall::create( const sigc::slot<void>& rSlot, Real timeSeconds )
 
 DelayedCall::DelayedCall( const sigc::slot<void>& rSlot, Real timeSecond ):
     mSlot( rSlot ),
-    mCallTime( timeSecond )
+    mCallTime( timeSecond ),
+    mTimer( new boost::timer() )
 {
     mUpdateSignal->connect( sigc::mem_fun( this, &DelayedCall::update ) );
 }
 
-DelayedCall::DelayedCall()
+DelayedCall::DelayedCall():
+    mTimer( new boost::timer() )
 {
 
 }
@@ -61,7 +64,7 @@ DelayedCall::~DelayedCall()
 
 void DelayedCall::update()
 {
-    if( mTimer.elapsed() >= mCallTime )
+    if( mTimer->elapsed() >= mCallTime )
     {
         mSlot();
         delete this;

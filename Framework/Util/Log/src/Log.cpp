@@ -30,14 +30,19 @@ namespace Diversia
 {
 namespace Util
 {
-namespace Log
+//------------------------------------------------------------------------------
+
+void bindLogLevel()
 {
-//------------------------------------------------------------------------------
+    camp::Enum::declare<LogLevel>( "LogLevel" )
+        .value( "EntryExit", LOG_ENTRYEXIT )
+        .value( "Debug", LOG_DEBUG )
+        .value( "Info", LOG_INFO )
+        .value( "Warning", LOG_WARNING )
+        .value( "Error", LOG_ERROR )
+        .value( "Critical", LOG_CRITICAL );
+}
 
-// Define global logger.
-/*BOOST_LOG_DECLARE_GLOBAL_LOGGER( Logger, boost::log::sources::logger_mt )*/
-
 //------------------------------------------------------------------------------
-} // Namespace Log
 } // Namespace Util
 } // Namespace Diversia

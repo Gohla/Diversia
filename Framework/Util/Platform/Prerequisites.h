@@ -28,9 +28,7 @@ THE SOFTWARE.
 // Platform-specific stuff
 #include "Util/Build/Platform.h"
 
-// Needed for DIVERSIA_WCHAR_T_STRINGS below
-#include <string>
-
+// Disable certain warnings in visual studio.
 #if DIVERSIA_COMPILER == DIVERSIA_COMPILER_MSVC
 // disable: "conversion from 'double' to 'float', possible loss of data
 #   pragma warning (disable : 4244)
@@ -59,6 +57,12 @@ THE SOFTWARE.
 // will ever be actually removed from VC anyway, it would break too much code.
 #   pragma warning (disable: 4996)
 #endif
+
+// Logging
+#include "Util/Log/Log.h"
+
+// Definitions
+#include "Util/Platform/Defines.h"
 
 namespace Diversia
 {
@@ -91,100 +95,6 @@ namespace Util
 #   endif
 #endif
 
-// Shortened typedefs
-typedef unsigned char uchar;
-typedef unsigned short ushort;
-typedef unsigned int uint;
-typedef unsigned long ulong;
-
-// define the real number values to be used
-// default to use 'float' unless precompiler option set
-#if DIVERSIA_DOUBLE_PRECISION == 1
-    typedef double Real;
-#else
-    typedef float Real;
-#endif
-
-// Forward declarations
-// Helper
-class Exception;
-class ConsoleInput;
-
-// Math
-class Angle;
-class BoundingBox;
-class BoundingSphere;
-class Colour;
-class Degree;
-class Math;
-class Matrix3;
-class Matrix4;
-class Node;
-class Plane;
-class Quaternion;
-class Radian;
-class Ray;
-class Vector2;
-class Vector3;
-class Vector4;
-
-// Serialization
-class SerializationFile;
-class XMLSerializationFile;
-
-// Job
-class Job;
-class Request;
-class RequestManager;
-
-// State
-class State;
-class StateMachine;
-} // namespace Util
-} // namespace Diversia
-
-// Include after the configuration has been set.
-#include "Util/Build/StdHeaders.h"
-
-namespace Diversia
-{
-namespace Util
-{
-#if DIVERSIA_WCHAR_T_STRINGS
-    typedef std::wstring _StringBase;
-#else
-    typedef std::string _StringBase;
-#endif
-
-#if DIVERSIA_WCHAR_T_STRINGS
-    typedef std::basic_stringstream<wchar_t,std::char_traits<wchar_t>,std::allocator<wchar_t> > _StringStreamBase;
-#else
-    typedef std::basic_stringstream<char,std::char_traits<char>,std::allocator<char> > _StringStreamBase;
-#endif
-
-typedef _StringBase String;
-typedef _StringStreamBase StringStream;
-typedef StringStream stringstream;
-
-typedef boost::filesystem::path Path;
-typedef std::vector<Path> Paths;
-} // namespace Util
-} // namespace Diversia
-
-// Camp class macro
-#define CAMP_CLASS(className) CAMP_RTTI() \
-    friend class Bindings::CampBindings; \
-    friend void camp::detail::destroy<className>( const UserObject& object );
-
-// Camp bindings
-#include "Util/Camp/CampBindings.h"
-
-// Logging
-#include "Util/Log/Log.h"
-namespace Diversia
-{
-namespace Util
-{
 namespace Log
 {
 // Static logger
@@ -203,7 +113,7 @@ static boost::log::sources::severity_channel_logger_mt< Diversia::Util::LogLevel
 #define ULOGD BOOST_LOG_SEV(Diversia::Util::Log::lg, Diversia::Util::LOG_DEBUG)
 #define ULOGDE BOOST_LOG_SEV(Diversia::Util::Log::lg, Diversia::Util::LOG_ENTRYEXIT)
 } // Namespace Log
-} // Namespace Util
-} // Namespace Diversia
+} // namespace Util
+} // namespace Diversia
 
 #endif // DIVERSIA_UTIL_PREREQUISITES_H

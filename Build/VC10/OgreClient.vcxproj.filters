@@ -91,5 +91,8 @@
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Camp\CampBindings.h">
       <Filter>Camp</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Platform\Forward.h">
+      <Filter>Platform</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

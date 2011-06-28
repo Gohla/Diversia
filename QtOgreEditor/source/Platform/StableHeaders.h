@@ -7,18 +7,18 @@ Copyright (c) 2008-2010 Diversia
 #ifndef DIVERSIA_QTOGREEDITOR_STABLEHEADERS_H
 #define DIVERSIA_QTOGREEDITOR_STABLEHEADERS_H
 
+// Platform
+#include "Util/Build/Platform.h"
+#include "Util/Build/StdHeaders.h"
+#include "Platform/Forward.h"
 #include "Platform/Prerequisites.h"
 
-// Framework stable headers
-#include "Util/UtilIncludes.h"
-#include "Object/ObjectIncludes.h"
-#include "Shared/SharedIncludes.h"
-#include "Client/ClientIncludes.h"
-
+// Libraries
 // RakNet
 #include <RakNet/RakPeerInterface.h>
 #include <RakNet/NetworkIDManager.h>
 #include <RakNet/ReplicaManager3.h>
+#include <RakNet/RakString.h>
 #include <RakNet/BitStream.h>
 #include <RakNet/MessageIdentifiers.h>
 #include <RakNet/Kbhit.h>
@@ -39,14 +39,6 @@ Copyright (c) 2008-2010 Diversia
 #include FT_FREETYPE_H
 #include FT_GLYPH_H
 
-// OIS
-#include <OIS/OIS.h>
-
-// MyGUI
-#include <MYGUI/MyGUI.h>
-#include <MYGUI/MyGUI_Delegate.h>
-#include <MYGUI/MyGUI_OgrePlatform.h>
-
 // curl
 #include <curl/curl.h>
 #include <curl/easy.h>
@@ -61,39 +53,13 @@ Copyright (c) 2008-2010 Diversia
 #include <cAudio.h>
 
 // Qt
-#include <QtCore/QVariant>
-#include <QtGui/QAction>
-#include <QtGui/QApplication>
-#include <QtGui/QButtonGroup>
-#include <QtGui/QGridLayout>
-#include <QtGui/QHBoxLayout>
-#include <QtGui/QHeaderView>
-#include <QtGui/QMainWindow>
-#include <QtGui/QMenu>
-#include <QtGui/QMenuBar>
-#include <QtGui/QStatusBar>
-#include <QtGui/QTabWidget>
-#include <QtGui/QTextEdit>
-#include <QtGui/QToolBar>
-#include <QtGui/QTreeView>
-#include <QtGui/QVBoxLayout>
-#include <QtGui/QWidget>
-#include <QSettings>
-#include <QWidget>
-#include <QEvent>
-#include <QResource>
-#include <QTimer>
-#include <QTextStream>
-#include <QPointer>
-#include "qevent.h"
-#include <QMessageBox>
-#include <QStandardItemModel>
-#include <QString>
+#include <QtGui/QtGui>
+#include <QtCore/QtCore>
 
-#include <QtTreePropertyBrowser>
-#include <QtVariantProperty>
-#include <QtProperty>
-#include "qtpropertymanager.h"
-#include "qteditorfactory.h"
+// Framework
+#include "Util/UtilIncludes.h"
+#include "Object/ObjectIncludes.h"
+#include "Shared/SharedIncludes.h"
+#include "Client/ClientIncludes.h"
 
 #endif // DIVERSIA_QTOGREEDITOR_STABLEHEADERS_H

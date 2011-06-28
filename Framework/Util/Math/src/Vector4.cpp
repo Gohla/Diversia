@@ -28,17 +28,59 @@ THE SOFTWARE.
 
 #include "Util/Platform/StableHeaders.h"
 
+#include "Util/Camp/BindingType.h"
 #include "Util/Math/Vector4.h"
-#include "Util/Math/Math.h"
 
-//------------------------------------------------------------------------------
 namespace Diversia
 {
 namespace Util
 {
 //------------------------------------------------------------------------------
+
 const Vector4 Vector4::ZERO( 0, 0, 0, 0 );
+
+void Vector4::bindVector4()
+{
+    camp::Class::declare<Vector4>( "Vector4" )
+        .tag( "BindingType", BindingType_Vector4 )
+        // Constructors
+        .constructor0()
+        .constructor4<Real, Real, Real, Real>()
+        .constructor1<Real>()
+        // Static member variables
+        // Properties (read-only)
+        // Properties (read/write)
+        .property( "X", &Vector4::x )
+            .tag( "Configurable" )
+            .tag( "QtDoublePrecicion", 4 )
+        .property( "Y", &Vector4::y )
+            .tag( "Configurable" )
+            .tag( "QtDoublePrecicion", 4 )
+        .property( "Z", &Vector4::z )
+            .tag( "Configurable" )
+            .tag( "QtDoublePrecicion", 4 )
+        .property( "W", &Vector4::w )
+            .tag( "Configurable" )
+            .tag( "QtDoublePrecicion", 4 )
+        // Functions
+        .function( "Dot", &Vector4::dotProduct )
+        // Operators
+        .addOperator<camp::add, Vector4, const Vector4&>()
+        .addOperator<camp::sub, Vector4, const Vector4&>()
+        .addOperator<camp::mul, Vector4, const Vector4&>()
+        .addOperator<camp::mul, Vector4, Real>()
+        .addOperator<camp::div, Vector4, const Vector4&>()
+        .addOperator<camp::div, Vector4, Real>()
+        .addOperator<camp::umin, Vector4>()
+        .addOperator<camp::eq, const Vector4&>()
+        .addOperator<camp::neq, const Vector4&>()
+        .addOperator<camp::lt, const Vector4&>()
+        .addOperator<camp::lte, const Vector4&>()
+        .addOperator<camp::gt, const Vector4&>()
+        .addOperator<camp::gte, const Vector4&>();
+        // Static functions
+}
+
 //------------------------------------------------------------------------------
 } // namespace Util
 } // namespace Diversia
-//------------------------------------------------------------------------------

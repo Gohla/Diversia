@@ -113,6 +113,8 @@
     <ClInclude Include="..\..\Framework\Client\Object\ClientComponentTemplate.h" />
     <ClInclude Include="..\..\Framework\Client\Object\ClientObjectTemplate.h" />
     <ClInclude Include="..\..\Framework\Client\Object\ClientObjectTemplateManager.h" />
+    <ClInclude Include="..\..\Framework\Client\Platform\Defines.h" />
+    <ClInclude Include="..\..\Framework\Client\Platform\Forward.h" />
     <ClInclude Include="..\..\Framework\Client\Platform\Prerequisites.h" />
     <ClInclude Include="..\..\Framework\Client\Platform\StableHeaders.h" />
     <ClInclude Include="..\..\Framework\Client\Camp\CampBindings.h" />

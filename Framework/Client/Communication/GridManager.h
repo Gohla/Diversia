@@ -173,7 +173,7 @@ private:
     ServerAbstract*                     mActiveServer;
     Object*                             mAvatar;
     Vector3                             mAvatarLastPosition;
-    boost::timer                        mSwitchTimer;
+    boost::scoped_ptr<boost::timer>     mSwitchTimer;
     bool                                mSwitching;
     std::set<GridPosition>              mLoadingServers;
     bool                                mLoadingSignalEmitted;

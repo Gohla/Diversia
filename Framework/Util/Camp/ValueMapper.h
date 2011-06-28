@@ -27,7 +27,7 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_VALUEMAPPER_H
 #define DIVERSIA_UTIL_VALUEMAPPER_H
 
-#include "Util/Platform/Prerequisites.h"
+#include <camp/valuemapper.hpp>
 
 namespace camp_ext
 {

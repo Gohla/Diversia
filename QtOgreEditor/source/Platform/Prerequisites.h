@@ -17,6 +17,9 @@ Copyright (c) 2008-2010 Diversia
 #include "Client/Platform/Prerequisites.h"
 #include "OgreClient/Platform/Prerequisites.h"
 
+// Logging
+#include "Util/Log/Log.h"
+
 namespace Diversia
 {
 namespace QtOgreEditor
@@ -28,65 +31,6 @@ using namespace Diversia;
 using namespace Diversia::Client;
 using namespace Diversia::OgreClient;
 
-// Forward declarations
-class EditorApplication;
-
-// Camp
-class CampPropertyManager;
-
-// Graphics
-class OgreWidget;
-
-// Input
-class QtInputManager;
-
-// Model
-class ObjectComponentModel;
-class ObjectItem;
-class ComponentItem;
-class ObjectComponentTemplateModel;
-class ObjectTemplateItem;
-class ComponentTemplateItem;
-class ClientServerPluginModel;
-class PluginItem;
-class UndoModel;
-class UndoItem;
-
-// Object
-class EditorObject;
-class EditorObjectManager;
-
-// Log
-class QtLogger;
-
-// State
-class EditState;
-class InitialState;
-class LoadingState;
-class PauseState;
-class PlayState;
-
-// UI
-class ConnectDialog;
-class MainWindow;
-class NewGameDialog;
-class ObjectTreeView;
-class PluginTreeView;
-class PropertyBrowser;
-class UndoListView;
-
-} // namespace QTOgreEditor
-} // namespace Diversia
-
-// Include after the configuration has been set.
-#include "Util/Build/StdHeaders.h"
-
-// Logging
-#include "Util/Log/Log.h"
-namespace Diversia
-{
-namespace QtOgreEditor
-{
 namespace Log
 {
 // Static logger
@@ -108,10 +52,8 @@ static boost::log::sources::severity_channel_logger_mt< Diversia::Util::LogLevel
 } // Namespace QTOgreEditor
 } // Namespace Diversia
 
-// Globals
+// Definitions
 #include "EditorGlobals.h"
-
-// Camp bindings
 #include "Camp/CampBindings.h"
 
 #endif // DIVERSIA_QTOGREEDITOR_PREREQUISITES_H

@@ -29,8 +29,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_MATRIX4_H
 #define DIVERSIA_UTIL_MATRIX4_H
 
-#include "Util/Platform/Prerequisites.h"
-
 #include "Util/Math/Vector3.h"
 #include "Util/Math/Matrix3.h"
 #include "Util/Math/Vector4.h"
@@ -606,6 +604,8 @@ public:
 			m[2][0] * v.x + m[2][1] * v.y + m[2][2] * v.z + m[2][3] * v.w,
 			v.w);
 	}
+
+    static void bindMatrix4();
 };
 
 /* Removed from Vector4 and made a non-member here because otherwise
@@ -625,6 +625,6 @@ inline Vector4 operator * (const Vector4& v, const Matrix4& mat)
 } // namespace Util
 } // namespace Diversia
 
-CAMP_AUTO_TYPE( Diversia::Util::Matrix4, &Diversia::Util::Bindings::CampBindings::bindMatrix4 );
+CAMP_AUTO_TYPE( Diversia::Util::Matrix4, &Diversia::Util::Matrix4::bindMatrix4 );
 
 #endif // DIVERSIA_UTIL_MATRIX4_H

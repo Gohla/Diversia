@@ -7,8 +7,6 @@
 //! \file rapidxml_utils.hpp This file contains high-level rapidxml utilities that can be useful
 //! in certain simple scenarios. They should probably not be used if maximizing performance is the main objective.
 
-#include "Util/Platform/Prerequisites.h"
-
 #include "Util/XML/rapidxml.hpp"
 
 namespace rapidxml

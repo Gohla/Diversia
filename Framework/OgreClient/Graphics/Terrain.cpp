@@ -119,7 +119,7 @@ void Terrain::create()
     // Textures
     for( LayerInstances::iterator i = mLayerInstances.begin(); i != mLayerInstances.end(); ++i )
     {
-        for( Paths::iterator j = (*i).mTextureFiles.begin(); j != (*i).mTextureFiles.end(); ++j )
+        for( std::vector<Path>::iterator j = (*i).mTextureFiles.begin(); j != (*i).mTextureFiles.end(); ++j )
         {
             resourceList.push_back( ResourceInfo( *j ) );
         }
@@ -176,7 +176,7 @@ void Terrain::resourcesLoaded()
         for( unsigned int i = 0; i < mLayerInstances.size(); ++i )
         {
             imp.layerList[i].worldSize = mLayerInstances[i].mWorldSize;
-            for( Paths::iterator j = mLayerInstances[i].mTextureFiles.begin(); 
+            for( std::vector<Path>::iterator j = mLayerInstances[i].mTextureFiles.begin(); 
                 j != mLayerInstances[i].mTextureFiles.end(); ++j )
             {
                 imp.layerList[i].textureNames.push_back( (*j).string() );

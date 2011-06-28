@@ -40,8 +40,6 @@ all copies or substantial portions of the Software.
 #ifndef DIVERSIA_UTIL_BOUNDINGBOX_H
 #define DIVERSIA_UTIL_BOUNDINGBOX_H
 
-#include "Util/Platform/Prerequisites.h"
-
 #include "Util/Math/Vector3.h"
 #include "Util/Math/Matrix4.h"
 

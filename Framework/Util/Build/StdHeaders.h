@@ -91,27 +91,13 @@ THE SOFTWARE.
 #include <limits>
 
 // boost
-#include <boost/signals2.hpp>
-#include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
-#include <boost/any.hpp>
-#include <boost/timer.hpp>
-#include <boost/regex.hpp>
-#include <boost/function.hpp>
-#include <boost/bind.hpp>
-#include <boost/preprocessor.hpp>
-
-#include <boost/log/core.hpp>
-#include <boost/log/common.hpp>
-#include <boost/log/attributes.hpp>
-#include <boost/log/sinks.hpp>
-#include <boost/log/formatters.hpp>
-#include <boost/log/filters.hpp>
+#include <boost/scoped_ptr.hpp>
+#include <boost/filesystem.hpp>
 #include <boost/log/sources/severity_channel_logger.hpp>
-#include <boost/log/utility/init/to_file.hpp>
-#include <boost/log/utility/init/to_console.hpp>
-#include <boost/log/utility/init/common_attributes.hpp>
+#include <boost/log/sources/severity_feature.hpp>
+#include <boost/log/sources/record_ostream.hpp>
 
 // libsigc++
 #include <sigc++/trackable.h>
@@ -121,9 +107,6 @@ THE SOFTWARE.
 #include <sigc++/functors/ptr_fun.h>
 #include <sigc++/functors/mem_fun.h>
 #include <sigc++/bind.h>
-
-// XML
-#include "Util/XML/rapidxml.hpp"
 
 // CAMP
 #include <camp/camptype.hpp>
@@ -160,9 +143,6 @@ extern "C" {
 #   include <CoreFoundation/CoreFoundation.h>
 }
 #endif
-
-// Config
-#include "Util/Config/ConfigManager.h"
 
 #if defined ( DIVERSIA_GCC_VISIBILITY )
 #   pragma GCC visibility pop

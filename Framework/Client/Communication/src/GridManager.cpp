@@ -27,10 +27,11 @@ THE SOFTWARE.
 #include "Client/Platform/StableHeaders.h"
 
 #include "Client/Communication/GridManager.h"
+#include "Client/Communication/OfflineServer.h"
 #include "Client/Communication/ServerAbstract.h"
-#include "Shared/Communication/ServerPosition.h"
 #include "Object/Object.h"
-#include "../OfflineServer.h"
+#include "Shared/Communication/ServerPosition.h"
+#include <boost/timer.hpp>
 
 namespace Diversia
 {
@@ -41,6 +42,8 @@ namespace Client
 GridManager::GridManager( sigc::signal<void>& rUpdateSignal ):
     mActiveServer( 0 ),
     mAvatar( 0 ),
+    mAvatarLastPosition( Vector3::ZERO ),
+    mSwitchTimer( new boost::timer() ),
     mUpdateSignal( rUpdateSignal ),
     mConnectRange( 1 ),
     mHalfConnectRange( 2 ),
@@ -190,9 +193,9 @@ void GridManager::update()
         {
             // The avatar crossed a server boundary.
             mSwitching = true;
-            mSwitchTimer.restart();
+            mSwitchTimer->restart();
         }
-        else if( mSwitching && mSwitchTimer.elapsed() >= mSwitchStayTimeS )
+        else if( mSwitching && mSwitchTimer->elapsed() >= mSwitchStayTimeS )
         {
             // The avatar stayed on the other server for mSwitchStayTimeS, set new active server.
             mSwitching = false;

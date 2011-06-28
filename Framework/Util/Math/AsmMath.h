@@ -28,8 +28,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_ASMMATH_H
 #define DIVERSIA_UTIL_ASMMATH_H
 
-#include "Util/Platform/Prerequisites.h"
-
 //------------------------------------------------------------------------------
 namespace Diversia
 {

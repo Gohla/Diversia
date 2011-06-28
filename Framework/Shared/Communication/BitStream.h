@@ -29,12 +29,8 @@ THE SOFTWARE.
 
 #include "Shared/Platform/Prerequisites.h"
 
-#include <RakNet/BitStream.h>
-#include <RakNet/RakString.h>
-
-#include "Util/Camp/CampBindings.h"
-#include "Util/Math/Math.h"
 #include "Shared/Resource/ResourceInfo.h"
+#include "Util/Camp/BindingType.h"
 
 namespace RakNet
 {

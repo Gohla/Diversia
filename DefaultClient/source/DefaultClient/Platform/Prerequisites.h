@@ -35,6 +35,9 @@ THE SOFTWARE.
 #include "Client/Platform/Prerequisites.h"
 #include "OgreClient/Platform/Prerequisites.h"
 
+// Logging
+#include "Util/Log/Log.h"
+
 namespace Diversia
 {
 namespace DefaultClient
@@ -46,37 +49,6 @@ using namespace Diversia;
 using namespace Diversia::Client;
 using namespace Diversia::OgreClient;
 
-// Forward declarations
-class ClientApplication;
-
-// Game mode
-class DefaultGameMode;
-
-// GUI
-class GUIManager;
-class LoginGUI;
-class MenuGUI;
-
-// Input
-class OISInputManager;
-
-// State
-class LoadingState;
-class MenuState;
-class PlayState;
-
-} // namespace DefaultClient
-} // namespace Diversia
-
-// Include after the configuration has been set.
-#include "Util/Build/StdHeaders.h"
-
-// Logging
-#include "Util/Log/Log.h"
-namespace Diversia
-{
-namespace DefaultClient
-{
 namespace Log
 {
 // Static logger
@@ -98,10 +70,8 @@ static boost::log::sources::severity_channel_logger_mt< Diversia::Util::LogLevel
 } // Namespace DefaultClient
 } // Namespace Diversia
 
-// Globals
+// Definitions
 #include "DefaultClient/ClientGlobals.h"
-
-// Camp bindings
 #include "DefaultClient/Camp/CampBindings.h"
 
 #endif // DIVERSIA_DEFAULTCLIENT_PREREQUISITES_H

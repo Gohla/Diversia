@@ -37,6 +37,9 @@ THE SOFTWARE.
 #include "Shared/Platform/Prerequisites.h"
 #include "Client/Platform/Prerequisites.h"
 
+// Logging
+#include "Util/Log/Log.h"
+
 namespace Diversia
 {
 namespace OgreClient
@@ -74,85 +77,6 @@ using namespace Diversia::ObjectSystem;
 using namespace Diversia;
 using namespace Diversia::Client;
 
-// Forward declarations
-class ApplicationBase;
-
-// Audio
-class AudioManager;
-class AudioResourceLoader;
-
-// Game mode
-class GameModeBase;
-class GameModePlugin;
-
-// Graphics
-class Atlas;
-class CameraManager;
-class Canvas;
-class Fader;
-class Gizmo;
-class OgreResourceParams;
-class GraphicsManager;
-class RotationGizmo;
-class ScaleGizmo;
-class SceneManagerPlugin;
-class SkyPlugin;
-class Terrain;
-class TextCanvas;
-class TextCanvasBatch;
-class TranslationGizmo;
-
-// Input
-class Axis;
-class MouseState;
-class KeyboardState;
-class InputManager;
-class MouseListener;
-class KeyboardListener;
-class MouseController;
-class ObjectSelection;
-class WindowsMouseController;
-
-// Object
-class Animation;
-class AreaTrigger;
-class Audio;
-class Camera;
-class CollisionShape;
-class Entity;
-class ForceField;
-class Light;
-class LuaObjectScript;
-class Mesh;
-class ObjectSelector;
-class Particle;
-class RigidBody;
-class SceneNode;
-class Text;
-
-// Physics
-class PhysicsManager;
-
-// Resource
-class GenericResource;
-class GenericResourceManager;
-class ResourceManager;
-class URLArchiveParams;
-class URLArchiveParamsHolder;
-class URLArchive;
-
-} // namespace OgreClient
-} // namespace Diversia
-
-// Include after the configuration has been set.
-#include "Util/Build/StdHeaders.h"
-
-// Logging
-#include "Util/Log/Log.h"
-namespace Diversia
-{
-namespace OgreClient
-{
 namespace Log
 {
 // Static logger
@@ -174,10 +98,8 @@ static boost::log::sources::severity_channel_logger_mt< Diversia::Util::LogLevel
 } // Namespace OgreClient
 } // Namespace Diversia
 
-// Globals
-#include "OgreClient/GlobalsBase.h"
-
-// Camp bindings
+// Definitions
 #include "OgreClient/Camp/CampBindings.h"
+#include "OgreClient/Platform/Defines.h"
 
 #endif // DIVERSIA_OGRECLIENT_PREREQUISITES_H

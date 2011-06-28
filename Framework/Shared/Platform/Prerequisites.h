@@ -32,6 +32,9 @@ THE SOFTWARE.
 #include "Util/Platform/Prerequisites.h"
 #include "Object/Platform/Prerequisites.h"
 
+// Logging
+#include "Util/Log/Log.h"
+
 namespace Diversia
 {
 // Exports
@@ -64,124 +67,6 @@ namespace Diversia
 // Used namespaces
 using namespace Diversia::Util;
 using namespace Diversia::ObjectSystem;
-
-// Forward declarations
-// Camp
-class PropertySynchronization;
-class PropertyTransaction;
-
-// ClientServerPlugin
-class ServerNeighbors;
-class ClientServerPlugin;
-class ClientServerPluginFactory;
-class ClientServerPluginFactoryManager;
-class ClientServerPluginManager;
-
-// Communication
-class ReplicaConnection;
-class ReplicaManager;
-class GridPosition;
-class ServerInfo;
-class ServerPosition;
-class UserInfo;
-
-// Crash
-class CrashReporter;
-class WindowsCrashReporter;
-
-// Lua
-class LuaManager;
-
-// Permission
-class Permission;
-
-// Physics
-template <typename T> class AreaTriggerCallback;
-class PhysicsHeightfield;
-
-// Resource
-class ResourceInfo;
-
-// Terrain
-class LayerInstance;
-
-// Defines
-// Replica type
-//#define REPLICATYPE_OBJECT            0x00
-//#define REPLICATYPE_COMPONENT         0x01
-#define REPLICATYPE_CLIENTSERVERPLUGIN  0x02
-//#define REPLICATYPE_OBJECTTEMPLATE    0x03
-//#define REPLICATYPE_COMPONENTTEMPLATE 0x04
-
-// Client-server plugins, when changed also update CampBindings::bindClientServerPluginTypeEnum!
-typedef unsigned char ClientServerPluginType;
-enum ClientServerPluginTypeEnum
-{
-    CLIENTSERVERPLUGINTYPE_PERMISSIONMANAGER = 0x00,
-    CLIENTSERVERPLUGINTYPE_RESOURCEMANAGER = 0x01,
-    CLIENTSERVERPLUGINTYPE_LUA = 0x02,
-    CLIENTSERVERPLUGINTYPE_SERVERNEIGHBORS = 0x03,
-    CLIENTSERVERPLUGINTYPE_SKY = 0x04,
-    CLIENTSERVERPLUGINTYPE_OBJECTTEMPLATEMANAGER = 0x05,
-    CLIENTSERVERPLUGINTYPE_OBJECTMANAGER = 0x06,
-    CLIENTSERVERPLUGINTYPE_TERRAIN = 0x07,
-    CLIENTSERVERPLUGINTYPE_GAMEMODE = 0x08,
-    CLIENTSERVERPLUGINTYPE_SCENEMANAGER = 0x09
-};
-#define CLIENTSERVERPLUGINNAME_PERMISSIONMANAGER "PermissionManager"
-#define CLIENTSERVERPLUGINNAME_RESOURCEMANAGER "ResourceManager"
-#define CLIENTSERVERPLUGINNAME_LUA "Lua"
-#define CLIENTSERVERPLUGINNAME_SERVERNEIGHBORS "ServerNeighbors"
-#define CLIENTSERVERPLUGINNAME_SKY "Sky"
-#define CLIENTSERVERPLUGINNAME_OBJECTTEMPLATEMANAGER "ObjectTemplateManager"
-#define CLIENTSERVERPLUGINNAME_OBJECTMANAGER "ObjectManager"
-#define CLIENTSERVERPLUGINNAME_TERRAIN "Terrain"
-#define CLIENTSERVERPLUGINNAME_GAMEMODE "GameMode"
-#define CLIENTSERVERPLUGINNAME_SCENEMANAGER "SceneManager"
-
-// Components, when changed also update CampBindings::bindComponentTypeEnum!
-enum ComponentTypeEnum
-{
-    COMPONENTTYPE_SCENENODE = 0x00,
-    COMPONENTTYPE_ENTITY = 0x01,
-    COMPONENTTYPE_MESH = 0x02,
-    COMPONENTTYPE_LIGHT = 0x03,
-    COMPONENTTYPE_ANIMATION = 0x04,
-    COMPONENTTYPE_PARTICLE = 0x05,
-    COMPONENTTYPE_COLLISIONSHAPE = 0x06,
-    COMPONENTTYPE_RIGIDBODY = 0x07,
-    COMPONENTTYPE_AREATRIGGER = 0x08,
-    COMPONENTTYPE_FORCEFIELD = 0x09,
-    COMPONENTTYPE_AUDIO = 0x0A,
-    COMPONENTTYPE_TEXT = 0x0B,
-    COMPONENTTYPE_CAMERA = 0x0C,
-    COMPONENTTYPE_LUAOBJECTSCRIPT = 0x0D
-};
-
-#define COMPONENTNAME_SCENENODE "SceneNode"
-#define COMPONENTNAME_ENTITY "Entity"
-#define COMPONENTNAME_MESH "Mesh"
-#define COMPONENTNAME_LIGHT "Light"
-#define COMPONENTNAME_ANIMATION "Animation"
-#define COMPONENTNAME_PARTICLE "Particle"
-#define COMPONENTNAME_COLLISIONSHAPE "CollisionShape"
-#define COMPONENTNAME_RIGIDBODY "RigidBody"
-#define COMPONENTNAME_AREATRIGGER "AreaTrigger"
-#define COMPONENTNAME_FORCEFIELD "ForceField"
-#define COMPONENTNAME_AUDIO "Audio"
-#define COMPONENTNAME_TEXT "Text"
-#define COMPONENTNAME_CAMERA "Camera"
-#define COMPONENTNAME_LUAOBJECTSCRIPT "LuaObjectScript"
-
-} // namespace Diversia
-
-// Include after the configuration has been set.
-#include "Util/Build/StdHeaders.h"
-
-// Logging
-#include "Util/Log/Log.h"
-namespace Diversia
-{
 namespace Shared
 {
 namespace Log
@@ -205,13 +90,8 @@ static boost::log::sources::severity_channel_logger_mt< Diversia::Util::LogLevel
 } // Namespace Shared
 } // Namespace Diversia
 
-// Camp bindings
+// Definitions
 #include "Shared/Camp/CampBindings.h"
-
-CAMP_AUTO_TYPE( Diversia::ClientServerPluginTypeEnum, 
-    &Diversia::Shared::Bindings::CampBindings::bindClientServerPluginTypeEnum );
-
-CAMP_AUTO_TYPE( Diversia::ComponentTypeEnum, 
-    &Diversia::Shared::Bindings::CampBindings::bindComponentTypeEnum );
+#include "Shared/Platform/Defines.h"
 
 #endif // DIVERSIA_SHARED_PREREQUISITES_H

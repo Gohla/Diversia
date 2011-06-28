@@ -9,7 +9,12 @@ This file is part of Diversia.
 #include "Platform/StableHeaders.h"
 
 #include "Camp/CampPropertyManager.h"
+#include "Client/Undo/PropertyChangeCommand.h"
+#include "Client/Undo/UndoStack.h"
 #include "Util/Signal/UserObjectChange.h"
+#include <QtTreePropertyBrowser>
+#include <qteditorfactory.h>
+#include <qtpropertymanager.h>
 
 namespace Diversia
 {

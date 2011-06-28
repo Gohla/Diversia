@@ -25,12 +25,16 @@ THE SOFTWARE.
 #ifndef DIVERSIA_OBJECT_STABLEHEADERS_H
 #define DIVERSIA_OBJECT_STABLEHEADERS_H
 
+// Platform
 #include "Util/Build/Platform.h"
+#include "Util/Build/StdHeaders.h"
+#include "Object/Platform/Forward.h"
 #include "Object/Platform/Prerequisites.h"
 
-// Framework includes
+// Framework
 #include "Util/UtilIncludes.h"
 
+// Libraries
 // RakNet
 #include <RakNet/ReplicaManager3.h>
 #include <RakNet/NetworkIDManager.h>

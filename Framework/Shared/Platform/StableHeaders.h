@@ -25,19 +25,27 @@ THE SOFTWARE.
 #ifndef DIVERSIA_SHARED_STABLEHEADERS_H
 #define DIVERSIA_SHARED_STABLEHEADERS_H
 
+// Platform
 #include "Util/Build/Platform.h"
+#include "Util/Build/StdHeaders.h"
+#include "Shared/Platform/Forward.h"
 #include "Shared/Platform/Prerequisites.h"
 
-// Framework includes
+// Framework
 #include "Object/ObjectIncludes.h"
 #include "Util/UtilIncludes.h"
 
+// Libraries
 // RakNet
 #include <RakNet/BitStream.h>
+#include <RakNet/RakString.h>
 #include <RakNet/ReplicaManager3.h>
 #include <RakNet/NetworkIDManager.h>
 
 // Lua
 #include <camp-lua/lua.hpp>
+
+// Framework
+#include "Shared/Communication/BitStream.h"
 
 #endif // DIVERSIA_SHARED_STABLEHEADERS_H

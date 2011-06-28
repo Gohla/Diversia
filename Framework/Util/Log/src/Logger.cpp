@@ -27,6 +27,16 @@ THE SOFTWARE.
 #include "Util/Platform/StableHeaders.h"
 
 #include "Util/Log/Logger.h"
+#include <boost/log/attributes.hpp>
+#include <boost/log/common.hpp>
+#include <boost/log/core.hpp>
+#include <boost/log/filters.hpp>
+#include <boost/log/formatters.hpp>
+#include <boost/log/sinks.hpp>
+#include <boost/log/sources/severity_channel_logger.hpp>
+#include <boost/log/utility/init/common_attributes.hpp>
+#include <boost/log/utility/init/to_console.hpp>
+#include <boost/log/utility/init/to_file.hpp>
 
 namespace Diversia
 {

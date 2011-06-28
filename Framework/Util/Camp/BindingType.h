@@ -24,17 +24,14 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_UTIL_CAMPBINDINGS_H
-#define DIVERSIA_UTIL_CAMPBINDINGS_H
-
-#include "Util/Platform/Prerequisites.h"
-
-#include "Util/Camp/ValueMapper.h"
+#ifndef DIVERSIA_UTIL_BINDINGTYPE_H
+#define DIVERSIA_UTIL_BINDINGTYPE_H
 
 namespace Diversia
 {
 namespace Util
 {
+//------------------------------------------------------------------------------
 
 enum BindingType
 {
@@ -64,36 +61,12 @@ enum BindingType
 
 BindingType DIVERSIA_UTIL_API getBindingType( const camp::Value& rValue );
 
-namespace Bindings
-{
-//------------------------------------------------------------------------------
-
-class DIVERSIA_UTIL_API CampBindings
-{
-public:
-    static void bindBindingType();
-    static void bindVector2();
-    static void bindVector3();
-    static void bindVector4();
-    static void bindColour();
-    static void bindQuaternion();
-    static void bindMatrix3();
-    static void bindMatrix4();
-    static void bindRadian();
-    static void bindDegree();
-    static void bindAngle();
-    static void bindLogLevel();
-    static void bindNode();
-    static void bindTransformSpace();
-
-};
+void bindBindingType();
 
 //------------------------------------------------------------------------------
-} // Namespace Bindings
 } // Namespace Util
 } // Namespace Diversia
 
-CAMP_AUTO_TYPE( Diversia::Util::BindingType, 
-    Diversia::Util::Bindings::CampBindings::bindBindingType )
+CAMP_AUTO_TYPE( Diversia::Util::BindingType, Diversia::Util::bindBindingType )
 
-#endif // DIVERSIA_UTIL_CAMPBINDINGS_H
+#endif // DIVERSIA_UTIL_BINDINGTYPE_H

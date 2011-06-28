@@ -13,8 +13,6 @@ Copyright (C) 2008-2009 TidalWare
 #ifndef DIVERSIA_UTIL_STLHELPERS_H
 #define DIVERSIA_UTIL_STLHELPERS_H
 
-#include "Util/Platform/Prerequisites.h"
-
 //------------------------------------------------------------------------------
 namespace Diversia
 {

@@ -27,8 +27,6 @@ THE SOFTWARE.
 #ifndef DIVERSIA_UTIL_BINDINGSPRINTER_H
 #define DIVERSIA_UTIL_BINDINGSPRINTER_H
 
-#include "Util/Platform/Prerequisites.h"
-
 #include <camp/classvisitor.hpp>
 
 namespace Diversia

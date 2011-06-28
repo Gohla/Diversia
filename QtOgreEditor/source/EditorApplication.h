@@ -42,9 +42,9 @@ private:
 
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
-    QTimer*         mUpdateTimer;
-    boost::timer    mTimer;
-    bool            mStopUpdates;
+    QTimer*                         mUpdateTimer;
+    boost::scoped_ptr<boost::timer> mTimer;
+    bool                            mStopUpdates;
 
     boost::scoped_ptr<Logger>           mLogger;
     boost::scoped_ptr<ConfigManager>    mConfigManager;

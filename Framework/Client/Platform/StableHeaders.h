@@ -25,26 +25,19 @@ THE SOFTWARE.
 #ifndef DIVERSIA_CLIENT_STABLEHEADERS_H
 #define DIVERSIA_CLIENT_STABLEHEADERS_H
 
+// Platform
 #include "Util/Build/Platform.h"
+#include "Util/Build/StdHeaders.h"
+#include "Client/Platform/Forward.h"
 #include "Client/Platform/Prerequisites.h"
 
-// Framework includes
-#include "Util/UtilIncludes.h"
-#include "Object/ObjectIncludes.h"
-#include "Shared/SharedIncludes.h"
-
-// Logging includes
-#include <boost/log/utility/init/to_file.hpp>
-#include <boost/log/utility/init/to_console.hpp>
-#include <boost/log/utility/init/common_attributes.hpp>
-#include <boost/log/attributes/timer.hpp>
-#include <boost/log/attributes/named_scope.hpp>
-
+// Libraries
 // RakNet
 #include <RakNet/RakPeerInterface.h>
 #include <RakNet/NetworkIDManager.h>
 #include <RakNet/ReplicaManager3.h>
 #include <RakNet/BitStream.h>
+#include <RakNet/RakString.h>
 #include <RakNet/MessageIdentifiers.h>
 #include <RakNet/Kbhit.h>
 #include <RakNet/RakSleep.h>
@@ -52,5 +45,10 @@ THE SOFTWARE.
 
 // Lua
 #include <camp-lua/lua.hpp>
+
+// Framework
+#include "Util/UtilIncludes.h"
+#include "Object/ObjectIncludes.h"
+#include "Shared/SharedIncludes.h"
 
 #endif // DIVERSIA_CLIENT_STABLEHEADERS_H

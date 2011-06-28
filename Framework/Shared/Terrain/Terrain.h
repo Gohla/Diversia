@@ -55,8 +55,8 @@ struct DIVERSIA_SHARED_API LayerInstance
     **/
     LayerInstance( Real worldSize = 10 ): mWorldSize( worldSize ) {}
 
-    Real    mWorldSize;
-    Paths   mTextureFiles;
+    Real                mWorldSize;
+    std::vector<Path>   mTextureFiles;
 };
 typedef std::vector<LayerInstance> LayerInstances;
 
