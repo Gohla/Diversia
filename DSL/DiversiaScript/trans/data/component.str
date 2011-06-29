@@ -24,3 +24,5 @@ rules
 	is-builtin-component = ?Text()
 	builtin-component-multiple = ?Text()
 	is-builtin-component = ?Camera()
+
+	builtin-components = ![Entity(), Mesh(), Light(), Animation(), Particle(), CollisionShape(), RigidBody(), AreaTrigger(), ForceField(), Audio(), Text(), Camera()]

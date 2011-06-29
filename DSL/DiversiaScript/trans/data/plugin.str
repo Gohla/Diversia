@@ -12,3 +12,5 @@ rules
 	is-builtin-plugin = ?Sky()
 	is-builtin-plugin = ?Terrain()
 	is-builtin-plugin = ?SceneManager()
+
+	builtin-plugins = ![ServerNeighbors(), Sky(), Terrain(), SceneManager()]

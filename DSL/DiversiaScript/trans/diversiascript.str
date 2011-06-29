@@ -95,10 +95,8 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 			
 	// Code completion
 	editor-complete: (node, position, ast, path, project-path) -> proposals
-	where
-		editor-init;
-		<analyse-all(|path)> ast => ast';
-		<collect-one(propose-analysed)> ast' => proposals <+ ![] => proposals
+		where
+			<complete> (node, position, ast) => proposals
 			
 	// Hover tooltip
 	editor-hover: (node, position, ast, path, project-path) -> result

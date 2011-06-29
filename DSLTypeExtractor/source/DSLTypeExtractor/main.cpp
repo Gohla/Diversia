@@ -279,7 +279,9 @@ int main( int argc, char* argv[] )
         scoped_ptr<STRFile> strComponent( new STRFile( "component.str", "data/component", list_of("include/DiversiaScript") ) );
         strComponent->rules();
 
+        String componentList = "![";
         const ComponentFactories& components = ComponentFactoryManager::getComponentFactories();
+        bool first = true;
         for( ComponentFactories::const_iterator i = components.begin(); i != components.end(); ++i )
         {
             if( Object::hasAutoCreateComponent( i->first ) ) continue;
@@ -288,10 +290,17 @@ int main( int argc, char* argv[] )
             String componentCons = cons( componentName );
             bool componentMultiple = i->second->multiple();
             LOGI << componentName;
+
+            if( !first ) componentList += ", ";
+            componentList += componentCons;
+            first = false;
+
             sdfComponent->contextfree( S(componentName), "ComponentType", componentName );
             strComponent->rule( "is-builtin-component", "?" + componentCons );
             if( componentMultiple ) strComponent->rule( "builtin-component-multiple", "?" + componentCons );
         }
+        strComponent->writeLn();
+        strComponent->rule( "builtin-components", componentList + "]" );
     }
 
     // ClientServerPlugins
@@ -301,7 +310,9 @@ int main( int argc, char* argv[] )
         scoped_ptr<STRFile> strPlugin( new STRFile( "plugin.str", "data/plugin", list_of("include/DiversiaScript") ) );
         strPlugin->rules();
 
+        String pluginList = "![";
         const ClientServerPluginFactories& plugins = ClientServerPluginFactoryManager::getPluginFactories();
+        bool first = true;
         for( ClientServerPluginFactories::const_iterator i = plugins.begin(); i != plugins.end(); ++i )
         {
             if( ClientServerPluginManager::hasAutoCreatePlugin( i->first ) ) continue;
@@ -309,9 +320,16 @@ int main( int argc, char* argv[] )
             String pluginName = i->second->getTypeName();
             String pluginCons = cons( pluginName );
             LOGI << pluginName;
+
+            if( !first ) pluginList += ", ";
+            pluginList += pluginCons;
+            first = false;
+
             sdfPlugin->contextfree( S(pluginName), "PluginType", pluginName );
             strPlugin->rule( "is-builtin-plugin", "?" + pluginCons );
         }
+        strPlugin->writeLn();
+        strPlugin->rule( "builtin-plugins", pluginList + "]" );
     }
     
     delete logger;

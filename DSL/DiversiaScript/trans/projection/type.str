@@ -150,6 +150,7 @@ rules // Properties
 	type-of: ObjectProp(_, type, _) -> type
 	type-of: ComponentProp(_, type, _) -> type
 	type-of: PluginProp(_, type, _) -> type
+	type-of: Property(_, type, _) -> type
 	
 rules // Type projections
 		

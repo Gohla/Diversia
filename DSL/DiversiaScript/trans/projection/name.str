@@ -9,6 +9,9 @@ imports
 	namespace
 	
 	data/event
+	data/type-prop
+	
+	util
 	
 rules // Name-based projections  //TODO need to check these
 	
@@ -20,12 +23,7 @@ rules // Name-based projections  //TODO need to check these
 	get-name: EventDef(n, _, _) -> n
 	get-name: StateDef(n, _) -> n
 	get-name: CustomType(n) -> n
-	
-	get-proposal: ObjectDef(name, _, _, _, _, _, _, _) -> (name, $[[name] : ClientObject])
-	get-proposal: PropDef(_, name, _, _)  -> (name, $[[name] : Type  info ])
-	
-	has-name(|name) = ?ObjectDef(name, _, _, _, _, _, _, _, _)
-	has-name(|name) = ?PropDef(_, name, _, _)
+	get-name: Property(prop, _, _) -> <crush> prop
 		
 rules // Name-based look-up transformations
 	
