@@ -65,3 +65,8 @@
 /DSL/DiversiaScript/lib/refactor-common.generated.str
 /DSL/org.diversia.update/plugins
 /DSL/org.diversia.update/features
+/DSL/DiversiaScript/editor/java
+/DSL/Lua/editor/java
+/runtime-EclipseApplication
+/DSL/DiversiaScript/lib/editor-common.generated.str
+/DSL/Lua/lib/editor-common.generated.str
