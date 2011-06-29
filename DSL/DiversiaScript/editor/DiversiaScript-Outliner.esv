@@ -1,9 +1,21 @@
 module DiversiaScript-Outliner
 
-imports DiversiaScript-Outliner.generated
+//imports DiversiaScript-Outliner.generated
 
 outliner
   
   // This file can be used for custom outliner rules.
   //
   // See the imported file for a brief introduction and examples.
+  
+  _.Import
+  //_.PluginDef // Spoofax cannot find proper captions for plugins, disabled for now.
+  _.ObjectDef
+  _.VarDef
+  _.VarDefNoInit
+  _.PropDef
+  _.PropDefNoInit
+  //_.ComponentDef // Spoofax cannot find proper captions for components, disabled for now.
+  _.StateDef
+  _.DefaultStateDef
+  _.EventDef

@@ -1,9 +1,16 @@
 module DiversiaScript-Folding
 
-imports DiversiaScript-Folding.generated
+//imports DiversiaScript-Folding.generated
 
 folding
   
   // This file can be used for custom folding rules.
   //
   // See the imported file for a brief introduction and examples.
+  
+  _.PluginDef
+  _.ObjectDef
+  _.ComponentDef
+  _.StateDef
+  _.DefaultStateDef
+  _.EventDef
