@@ -16,30 +16,29 @@ strategies
 	
 rules
 	
-  my-open-import(resolve-path, parse-file, analysis, record-declarations):
-    import -> import
-    where
-      if not(!import => COMPLETION(_)) then
-        path       := <resolve-path> import;
-        cache-path := <import-cache-path> path;
-        if not(<IsImported> path) then
-          rules(
-            IsImported: path
-          );
-          ( <is-newer> (cache-path, path);
-            file := <record-declarations> <ReadFromFile> cache-path
-          <+
-            file := <parse-file> path;
-            {| CurrentFile:
-              rules(CurrentFile := path);
-              if <file-exists> path then
-                // Only cache if on filesystem (e.g., ignore libstratego-lib)
-                <WriteToBinaryFile> (cache-path, <record-declarations> <analysis> file)
-              end  
-            |}
-          )
-        end
-      end
+	my-open-import(resolve-path, parse-file, analysis, record-declarations):
+		import -> import
+   	 	where
+      		if not(!import => COMPLETION(_)) then
+        		path       := <resolve-path> import;
+        		cache-path := <import-cache-path> path;
+	        	if not(<IsImported> path) then
+	          		rules(
+	            		IsImported: path
+	          		); (
+		          		<is-newer> (cache-path, path);
+			            file := <record-declarations> <ReadFromFile> cache-path
+			          	<+
+			            file := <parse-file> path;
+			            {| CurrentFile:
+			              	rules(CurrentFile := path);
+			              	if <file-exists> path then
+			                	<WriteToBinaryFile> (cache-path, <record-declarations> <analysis> file)
+			              	end  
+			            |}
+		          	)
+	        	end
+      		end
 	
 rules
 	
@@ -47,12 +46,8 @@ rules
 		where <my-open-import(import-file-path(|path), parse-file, analyse-all-nostore(|path), store-all)> name
 	import-file-path(|path): name -> $[[<dirname> path]/[<try(guarantee-extension(|"div"))> name]]
 	
-	get-cached-ast(|p): Import(name) -> ast
-    	where
-    		path       := <import-file-path(|p)> name;
-        	cache-path := <import-cache-path> path;
-        	ast 	   := <ReadFromFile> cache-path
     import-merge(|path): Start(imports, pluginDefs, objectDefs, eventDefs) -> Start(imports, pluginDefs, objectDefs', eventDefs) 
-    	where objectDefs' := <concat> [<mapconcat(get-cached-ast(|path); import-merge(|path); ast-objectDefs)> imports, objectDefs]
-    ast-objectDefs: Start(imports, pluginDefs, objectDefs, eventDefs) -> objectDefs
+    	where objectDefs' := <concat> [<mapconcat(get-cached-ast(|path); import-merge(|path); get-ast-objectDefs)> imports, objectDefs]
+	get-cached-ast(|p): Import(name) -> <ReadFromFile> <import-cache-path> <import-file-path(|p)> name
+    get-ast-objectDefs: Start(imports, pluginDefs, objectDefs, eventDefs) -> objectDefs
     

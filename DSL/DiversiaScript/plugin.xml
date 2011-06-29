@@ -3,10 +3,10 @@
 
 <plugin>
        <extension point="org.eclipse.imp.runtime.languageDescription">
-          <language extensions="div" description="DiversiaScript" language="DiversiaScript" derivedFrom="DynamicRoot" validator="DiversiaScript.DiversiaScriptValidator" validatorClass="DiversiaScript.DiversiaScriptValidator"></language>
+          <language extensions="div" description="DiversiaScript" language="DiversiaScript" derivedFrom="DynamicRoot" validator="org.diversia.script.DiversiaScriptValidator" validatorClass="org.diversia.script.DiversiaScriptValidator"></language>
        </extension>
-       <extension id="DiversiaScript.parser" name="DiversiaScript Parser" point="org.eclipse.imp.runtime.parser">
-          <parser class="DiversiaScript.DiversiaScriptParseController" language="DiversiaScript">
+       <extension id="org.diversia.script.parser" name="DiversiaScript Parser" point="org.eclipse.imp.runtime.parser">
+          <parser class="org.diversia.script.DiversiaScriptParseController" language="DiversiaScript">
           </parser>
        </extension>    
     </plugin>

@@ -43,7 +43,7 @@ rules // String and file manipulation.
 	
 	// Lua AST to string.
 	lua-tostring: ast ->
-		<box2text-string( |100 )> <ast2box(|[<import-term( ../Lua/include/Lua.pp.af )>])>
+		<box2text-string( |100 )> <ast2box(|[<import-term( include/Lua.pp.af )>])>
 	lua-script-tostring: LuaObjectScript(name, statements) -> 
 		$[------------------------------ Start object script [name] -----------------------------
 		[<lua-tostring> statements]

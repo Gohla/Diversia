@@ -45,9 +45,9 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 			<collect-all(editor-note, conc)> ast' => notes
 			
 	// Runs the DefaultClient with lua scripts generated from current AST.
-	run: (selected, position, ast, path, project-path) -> (ast)
+	run: (selected, position, ast, path, project-path) -> None()
 		where dir := <abspath> <dirname> path
-		where clientDir := "F:/MultiverseVS/Git/DefaultClient/bin/ReleaseWin32/"
+		where clientDir := $[[<plugin-path>]/client/]
 		where
 			editor-init;
 	    	(<lua-tofiles(|path)> <to-lua> <analyse-all-merge(|path)> ast <+ fatal-err(|$[Lua code generation failed.]));
@@ -56,7 +56,7 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 	    		fatal-err(|$[Could not start the client or the cliented terminated abnormally.]))
 	    		  
 	// Transforms analysed AST to Lua.
-	generate-lua-files: (selected, position, ast, path, project-path) -> (ast)
+	generate-lua-files: (selected, position, ast, path, project-path) -> None()
 		where
 			editor-init;
 	    	<lua-tofiles(|path)> <to-lua> <analyse-all-merge(|path)> ast

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <description name="Diversia eclipse update site" url="http://diversia.gohla.nl/update">
-      Diversia eclipse update site
+   <description name="Diversia update site" url="http://diversia.gohla.nl/update">
+      Diversia update site
    </description>
-   <feature url="features/org.diversia.script.feature_0.1.0.jar" id="org.diversia.script.feature" version="0.1" os="win32">
+   <feature url="features/org.diversia.script.feature_0.1.1.jar" id="org.diversia.script.feature" version="0.1.1" os="win32">
       <category name="Diversia scripting language"/>
    </feature>
    <category-def name="Diversia scripting language" label="Diversia scripting language">
