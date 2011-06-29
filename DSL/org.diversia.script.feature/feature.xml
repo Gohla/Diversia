@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
-      id="org.diversia.script"
+      id="org.diversia.script.feature"
       label="Diversia scripting language"
       version="0.1"
       provider-name="Diversia"
@@ -78,11 +78,10 @@ UNLESS OTHERWISE MUTUALLY AGREED BY THE PARTIES IN WRITING, LICENSOR OFFERS THE 
          name="Stratego/XT"/>
 
    <plugin
-         id="DiversiaScript"
+         id="org.diversia.script"
          os="win32"
          download-size="0"
          install-size="0"
-         version="0.0.0"
-         unpack="false"/>
+         version="0.0.0"/>
 
 </feature>

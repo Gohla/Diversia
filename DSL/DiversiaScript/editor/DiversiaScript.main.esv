@@ -5,7 +5,7 @@ imports DiversiaScript-Builders DiversiaScript-Colorer DiversiaScript-Completion
 language General properties
                   
   name          : DiversiaScript
-  id            : DiversiaScript
+  id            : org.diversia.script
   extends       : Root
                   
   description   : "Diversia scripting language"
