@@ -10,5 +10,5 @@ references
   
   //reference _ : editor-resolve  TODO add this later.
   
-  //hover _ : editor-hover 
+  hover _ : editor-hover 
   

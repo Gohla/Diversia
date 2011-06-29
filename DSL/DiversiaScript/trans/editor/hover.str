@@ -9,21 +9,20 @@ imports
 	
 	desugar
 	
-strategies
-	
-	editor-hover: (node, position, ast) ->  $[Type: [<printable> type]]
-		where 
-			
-			<desugar-position-innermost(desugar|ast)> position => position';
-			<term-at-position(|position')> ast => node';
-			<debug> node';
-			<type-of> node' => type
-			
 rules
 	
-	desugar-position-innermost(desugar|ast): position -> position'
-	    where
-	      ast'  := <at-position(!<id>{MARKER()}|position)> ast;
-	      ast'' := <innermost(preserve-annos({?x; desugar; not (?x)}))> ast';
-	      position' := <position-of-term({?_{a*}; <one(?MARKER())> a*})> ast''
-	      
+	// TODO: Somehow this works on variables (that are renamed and properly resolved) but the AST still contains undesugared operators..
+	
+	type-tooltip: (node, position, ast) -> $[Type: [<printable> type]]
+		where type := <type-tooltip(|0)> (node, position, ast)
+	
+	type-tooltip(|depth): (node, position, ast) -> type
+		where not (<gt> (depth, 3)) // Depth counter to prevent a lot of looping. 
+		where <type-of> node => type
+			
+	type-tooltip(|depth): (node, position, ast) -> type
+		where not (<gt> (depth, 3)) // Depth counter to prevent a lot of looping.
+		where not (<type-of> node)
+		where <parent-at-position(|position)> ast => node'
+		where <type-tooltip(|<inc> depth)> (node', <position-of-term(?node')> ast, ast) => type
+			

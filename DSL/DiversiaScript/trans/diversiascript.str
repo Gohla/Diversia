@@ -102,5 +102,4 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 	// Hover tooltip
 	editor-hover: (node, position, ast, path, project-path) -> result
 		where
-			<desugar-all> ast => ast';
-			<editor-hover> (node, position, ast) => result
+			<type-tooltip> (node, position, ast) => result
