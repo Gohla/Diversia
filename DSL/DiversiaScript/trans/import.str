@@ -52,8 +52,7 @@ rules
     		path       := <import-file-path(|p)> name;
         	cache-path := <import-cache-path> path;
         	ast 	   := <ReadFromFile> cache-path
-    import-merge(|path): ast@Start(imports, _, _, _) -> ast'
-    	where asts := <map(get-cached-ast(|path); import-merge(|path))> imports
-    	where ast' := <foldr(!ast, ast-merge)> asts
-    ast-merge: (Start(imports, pluginDefs, objectDefs, eventDefs), Start(_, _, objectDefs2, _)) ->
-    	Start(imports, pluginDefs, <concat> [objectDefs2, objectDefs], eventDefs)
+    import-merge(|path): Start(imports, pluginDefs, objectDefs, eventDefs) -> Start(imports, pluginDefs, objectDefs', eventDefs) 
+    	where objectDefs' := <concat> [<mapconcat(get-cached-ast(|path); import-merge(|path); ast-objectDefs)> imports, objectDefs]
+    ast-objectDefs: Start(imports, pluginDefs, objectDefs, eventDefs) -> objectDefs
+    
