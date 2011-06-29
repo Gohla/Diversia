@@ -8,7 +8,6 @@ references
   //                                                                                               
   // See the imported file for a brief introduction and examples.
   
-  //reference _ : editor-resolve  TODO add this later.
-  
-  hover _ : editor-hover 
+  reference _ 	: editor-resolve
+  hover _ 		: editor-hover 
   

@@ -18,6 +18,7 @@ imports
 	
 	editor/complete
 	editor/hover
+	editor/resolve
 	editor/check/error
 	editor/check/warning
 	editor/check/note
@@ -103,3 +104,8 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 	editor-hover: (node, position, ast, path, project-path) -> result
 		where
 			<type-tooltip> (node, position, ast) => result
+			
+	// Reference resolving
+	editor-resolve: (node, position, ast, path, project-path) -> result
+		where
+			<resolve> node => result

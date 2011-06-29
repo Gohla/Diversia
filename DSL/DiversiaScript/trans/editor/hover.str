@@ -7,8 +7,6 @@ imports
 	
 	projection/type
 	
-	desugar
-	
 rules
 	
 	// TODO: Somehow this works on variables (that are renamed and properly resolved) but the AST still contains undesugared operators..

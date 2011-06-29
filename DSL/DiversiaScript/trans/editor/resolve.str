@@ -1,0 +1,23 @@
+module editor/resolve
+
+imports
+
+	include/DiversiaScript
+	lib/editor-common.generated
+	signatures
+	
+	projection/name
+	projection/type
+	
+rules
+	
+	resolve: PropRef(name, This(objectName)) -> <get-prop> (objectName, name)
+	resolve: ObjectProp(CustomType(objectName), name, _) -> <get-prop> (objectName, name)
+	resolve: Access(exp, name) -> <get-prop> (objectName, name)
+		where CustomType(objectName) := <type-of> exp
+	resolve: VarRef(name) -> <get-var> name
+	resolve: ObjectRef(name) -> <get-object> name
+	resolve: ComponentRef(name) -> <get-component> name
+	resolve: PluginRef(name) -> <get-plugin> name
+	resolve: StateRef(name) -> <get-state> name
+	
