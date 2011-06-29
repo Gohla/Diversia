@@ -63,3 +63,5 @@
 /DSL/Lua/syntax/Lua.generated.pp
 /DSL/Lua/lib/refactor-common.generated.str
 /DSL/DiversiaScript/lib/refactor-common.generated.str
+/DSL/org.diversia.update/plugins
+/DSL/org.diversia.update/features
