@@ -12,7 +12,6 @@ builders
 builders
                                                                                                                                
   provider                  : include/diversiascript.ctree                                                                     
-  provider                  : include/diversiascript-java.jar
   
   observer					: editor-analyze
   

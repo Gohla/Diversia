@@ -17,7 +17,7 @@ strategies
 rules // Definitions
 	
 	rename-def :
-		Start(pluginDefs, objectDefs, eventDefs) -> Start(pluginDefs', objectDefs', eventDefs'')
+		Start(imports, pluginDefs, objectDefs, eventDefs) -> Start(imports, pluginDefs', objectDefs', eventDefs'')
 		where
 			new-scope(
 				<rename-all-defs> pluginDefs => pluginDefs';

@@ -95,7 +95,7 @@ rules // Utility
 rules // Syntax transformation
 		
 	// Definitions to lua syntax.
-	to-lua: Start(pluginDefs, objectDefs, eventDefs) -> LuaScripts(<concat> [[<gamemode-to-lua> (pluginDefs, eventDefs)], <map(objects-to-lua)> objectDefs])
+	to-lua: Start(imports, pluginDefs, objectDefs, eventDefs) -> LuaScripts(<concat> [[<gamemode-to-lua> (pluginDefs, eventDefs)], <map(objects-to-lua)> objectDefs])
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
 		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], functions'''']))
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>

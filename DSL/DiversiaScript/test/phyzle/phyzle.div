@@ -1,81 +1,12 @@
+import orbitcam
+import floor
+
 plugin SceneManager {
 	SkyMaterial = "SpaceSkyBox"
 	SkyType = SkyType.Box
 	SkyEnabled = true
 	SkyDrawFirst = true
 	AmbientLight = Colour(0.23, 0.2, 0.3, 1)
-}
-
-// Camera object definition
-def OrbitCamera {
-    Position = [0, 0.5, 0] // Standard position offset
-
-    // Child objects
-    def CameraPitch {
-        def Camera {
-            Position = [0, 0, 5]
-            component Camera {
-                Active = true
-            }
-        }
-    }
-
-    // Variable definitions
-    var mRMB : Bool = false
-    var mMouseState : MouseState = null
-    prop MouseRotation : Real = 0.25
-    prop Target : Object = null
-    
-    // States
-    default state Alive {
-        // Events
-        on MousePressed(Button : MouseButton) {
-            if(Button == MouseButton.Right) mRMB = true;
-        }
-        on MouseReleased(Button : MouseButton) {
-            if(Button == MouseButton.Right) mRMB = false;
-        }
-        on MouseMoved(State : MouseState) {
-            mMouseState = MouseState(State);
-        }
-        on Update() {	
-            if(mRMB) { // If right mouse button is pressed
-                // Yaw the camera
-                this.Yaw(Radian(Degree(-mMouseState.X.Relative * MouseRotation)), TransformSpace.Local);
-				
-                // Pitch the camera
-                var Pitch : Radian = CameraPitch.Orientation.Pitch;
-                var DegreeChange : Degree = Degree(-mMouseState.Y.Relative * MouseRotation);
-                var NewPitch : Degree = DegreeChange + Pitch;
-                if(NewPitch < Degree(85) && NewPitch > Degree(-85)) {
-                    CameraPitch.Pitch(Radian(DegreeChange), TransformSpace.Local);
-                }
-            }
-            if(mMouseState != null) {
-                // Camera distance
-                var Distance : Real = CameraPitch.Camera.Position.Z;
-                if(mMouseState.Z.Relative > 0) {
-                     Distance = Distance - Distance / 12;
-                     if(Distance < 5) Distance = 5;
-                }
-                else if(mMouseState.Z.Relative < 0) {
-                     Distance = Distance + Distance / 12;
-                     if(Distance > 50) Distance = 50;
-                }
-                CameraPitch.Camera.Position = [0, 0, Distance];
-                
-                // Clear mouse state
-                mMouseState.Clear();
-            }
-        }
-        on LateUpdate() {
-            // Move camera to the target.
-            Position = Target.Position;
-        }
-    }
-    state Dead {
-        // Do nothing
-    }
 }
 
 // Ball object definition
@@ -147,33 +78,6 @@ def Ball {
     }
     state Dead {
         // Do nothing
-    }
-}
-
-def Floor {
-	def FloorOffset {
-		Position = [0, 10, 0]
-		
-	    component Mesh {
-	        ShapeType = GraphicsShape.Plane
-	        ShapeParameters = [2000, 2000, 1]
-	        ShapeUV = [1000, 1000]
-	        ShapeXSegments = 50
-	        ShapeYSegments = 50
-	    }
-	    component Entity {
-	        Material = "Floor"
-	    }
-    }
-    component CollisionShape {
-        ShapeType = PhysicsShape.Box
-        ShapeParameters = [1000, 10, 1000]
-    }
-    component RigidBody {
-        PhysicsType = PhysicsType.Kinematic
-        Friction = 0.5
-        Restitution = 0.3
-        Mass = 0
     }
 }
 

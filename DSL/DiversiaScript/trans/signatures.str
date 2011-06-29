@@ -28,7 +28,7 @@ signature constructors // Operators
 
 signature constructors // Structure
 
-	Start: List(PluginDef) * List(ObjectDef) * List(EventDef) -> Start
+	Start: List(Imports) * List(PluginDef) * List(ObjectDef) * List(EventDef) -> Start
 	
 	ObjectDef: Id * List(ObjectProp) * List(PropDefs) * List(ComponentDef)                   * List(VarDef) * StateDef * List(StateDef) * List(EventDef) -> ObjectDef
 	ObjectDef: Id * List(ObjectProp) * List(PropDefs) * List(ComponentDef) * List(ObjectDef) * List(VarDef) * StateDef * List(StateDef) * List(EventDef) -> ObjectDef

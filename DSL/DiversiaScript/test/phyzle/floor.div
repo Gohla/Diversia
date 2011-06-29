@@ -1,0 +1,26 @@
+def Floor {
+	def FloorOffset {
+		Position = [0, 10, 0]
+		
+	    component Mesh {
+	        ShapeType = GraphicsShape.Plane
+	        ShapeParameters = [2000, 2000, 1]
+	        ShapeUV = [1000, 1000]
+	        ShapeXSegments = 50
+	        ShapeYSegments = 50
+	    }
+	    component Entity {
+	        Material = "Floor"
+	    }
+    }
+    component CollisionShape {
+        ShapeType = PhysicsShape.Box
+        ShapeParameters = [1000, 10, 1000]
+    }
+    component RigidBody {
+        PhysicsType = PhysicsType.Kinematic
+        Friction = 0.5
+        Restitution = 0.3
+        Mass = 0.0
+    }
+}

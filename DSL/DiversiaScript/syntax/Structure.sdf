@@ -15,6 +15,9 @@ exports
 
   context-free syntax
     
+    %% Import
+    "import" Id -> GlobalDef {cons("Import")}
+    
     %% Object
     "def" Id "{" InsideObjectDef*  "}" -> ObjectDef {cons("ObjectDef")}
     "external" "def" Id -> ObjectDef {cons("ExternalObjectDef")}

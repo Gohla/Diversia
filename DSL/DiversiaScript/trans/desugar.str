@@ -64,9 +64,11 @@ rules // Structural
 	isPropDef = ?PropDefNoInit(_, _)
 	isObjectProp = ?ObjectProp(_, _)
 	isObjectProp = ?BuiltinObjectProp(_, _)
+	isImport = ?Import(_)
 	
-	desugar: Start(defs) -> Start(pluginDefs, objectDefs, eventDefs)
+	desugar: Start(defs) -> Start(imports, pluginDefs, objectDefs, eventDefs)
 		where
+			<filter(isImport)> defs => imports;
 			<filter(isPluginDef)> defs => pluginDefs;
 			<filter(isObjectDef)> defs => objectDefs;
 			<filter(isEventDef)> defs => eventDefs	
@@ -98,7 +100,7 @@ rules // Structural
 
 rules // Child object
 
-	desugar-object: Start(pluginDefs, objectDefs, eventDefs) -> Start(pluginDefs, objectDefs', eventDefs)
+	desugar-object: Start(imports, pluginDefs, objectDefs, eventDefs) -> Start(imports, pluginDefs, objectDefs', eventDefs)
 		where 
 			<map(desugar-object)> <collect-all(?ObjectDef(_, _, _, _, _, _, _, _, _))> objectDefs => objectDefs'
 			
