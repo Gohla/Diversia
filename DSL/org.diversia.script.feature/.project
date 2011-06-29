@@ -3,6 +3,7 @@
 	<name>org.diversia.script</name>
 	<comment></comment>
 	<projects>
+		<project>DiversiaScript</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>

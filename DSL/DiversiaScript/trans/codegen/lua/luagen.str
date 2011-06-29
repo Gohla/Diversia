@@ -5,7 +5,7 @@ imports
 	libstratego-lib
 	libstratego-gpp
 	include/DiversiaScript
-	../Lua/include/Lua
+	include/Lua
 	lib/namespaces
 	
 	namespace
