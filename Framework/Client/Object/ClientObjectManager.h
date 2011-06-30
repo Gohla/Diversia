@@ -26,7 +26,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "Client/Platform/Prerequisites.h"
 
 #include "Object/ObjectManager.h"
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPlugin.h"
 
 namespace Diversia
 {
@@ -34,7 +34,7 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_CLIENT_API ClientObjectManager : public ServerPlugin, public ObjectManager
+class DIVERSIA_CLIENT_API ClientObjectManager : public ClientPlugin, public ObjectManager
 {
 public:
     /**
@@ -48,7 +48,7 @@ public:
     @param [in,out] rNetworkIDManager   The network ID manager. 
     **/
     ClientObjectManager( Mode mode, PluginState state, sigc::signal<void>& rUpdateSignal, 
-        sigc::signal<void>& rLateUpdateSignal, ServerPluginManager& rPluginManager, 
+        sigc::signal<void>& rLateUpdateSignal, ClientPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     /**
@@ -59,13 +59,13 @@ public:
     /**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return CLIENTSERVERPLUGINTYPE_OBJECTMANAGER; }
-    static inline ClientServerPluginTypeEnum getTypeStatic() { return CLIENTSERVERPLUGINTYPE_OBJECTMANAGER; }
+    inline PluginTypeEnum getType() const { return PLUGINTYPE_OBJECTMANAGER; }
+    static inline PluginTypeEnum getTypeStatic() { return PLUGINTYPE_OBJECTMANAGER; }
     /**
     Gets the plugin type name.
     **/
-    inline String getTypeName() const { return CLIENTSERVERPLUGINNAME_OBJECTMANAGER; }
-    static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_OBJECTMANAGER; }
+    inline String getTypeName() const { return PLUGINNAME_OBJECTMANAGER; }
+    static inline String getTypeNameStatic() { return PLUGINNAME_OBJECTMANAGER; }
     
 protected:
     friend class ClientObject;	///< For delayed destruction.

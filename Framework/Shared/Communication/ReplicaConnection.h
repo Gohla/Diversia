@@ -35,7 +35,7 @@ class DIVERSIA_SHARED_API ReplicaConnection : public RakNet::Connection_RM3
 {
 public:
     ReplicaConnection( RakNet::SystemAddress systemAddress, RakNet::RakNetGUID guid, 
-        ObjectManager* pObjectManager, ClientServerPluginManager& rPluginManager );
+        ObjectManager* pObjectManager, PluginManager& rPluginManager );
 
     RakNet::Replica3* AllocReplica( RakNet::BitStream* pAllocationIdBitstream, 
         RakNet::ReplicaManager3* pReplicaManager3 );
@@ -44,7 +44,7 @@ public:
 
 private:
     ObjectManager*              mObjectManager;
-    ClientServerPluginManager&  mPluginManager;
+    PluginManager&  mPluginManager;
 };
 
 //------------------------------------------------------------------------------

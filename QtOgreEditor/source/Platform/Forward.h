@@ -39,7 +39,7 @@ class ComponentItem;
 class ObjectComponentTemplateModel;
 class ObjectTemplateItem;
 class ComponentTemplateItem;
-class ClientServerPluginModel;
+class PluginModel;
 class PluginItem;
 class UndoModel;
 class UndoItem;

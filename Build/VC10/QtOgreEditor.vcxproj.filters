@@ -142,9 +142,6 @@
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_CampPropertyManager.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ClientServerPluginModel.cpp">
-      <Filter>Generated Files\Release</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ConnectDialog.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
@@ -172,9 +169,6 @@
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_CampPropertyManager.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_ClientServerPluginModel.cpp">
-      <Filter>Generated Files\Debug</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_ConnectDialog.cpp">
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
@@ -200,9 +194,6 @@
       <Filter>Generated Files\Debug</Filter>
     </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_CampPropertyManager.cpp">
-      <Filter>Generated Files\ReleaseDebug</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_ClientServerPluginModel.cpp">
       <Filter>Generated Files\ReleaseDebug</Filter>
     </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_ConnectDialog.cpp">
@@ -240,9 +231,6 @@
     </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\GameMode\EditorGameMode.cpp">
       <Filter>GameMode</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\QtOgreEditor\source\Model\ClientServerPluginModel.cpp">
-      <Filter>Model</Filter>
     </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Model\ObjectComponentModel.cpp">
       <Filter>Model</Filter>
@@ -334,6 +322,18 @@
     <ClCompile Include="..\..\QtOgreEditor\source\State\PauseState.cpp">
       <Filter>State</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_PluginModel.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_PluginModel.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_PluginModel.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Model\PluginModel.cpp">
+      <Filter>Model</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\QtOgreEditor\qt\Icon.ico">
@@ -385,9 +385,6 @@
     <CustomBuild Include="..\..\QtOgreEditor\source\GameMode\EditorGameMode.h">
       <Filter>GameMode</Filter>
     </CustomBuild>
-    <CustomBuild Include="..\..\QtOgreEditor\source\Model\ClientServerPluginModel.h">
-      <Filter>Model</Filter>
-    </CustomBuild>
     <CustomBuild Include="..\..\QtOgreEditor\source\Model\ObjectComponentModel.h">
       <Filter>Model</Filter>
     </CustomBuild>
@@ -409,6 +406,9 @@
     </CustomBuild>
     <CustomBuild Include="..\..\QtOgreEditor\source\Object\EditorObject.h">
       <Filter>Object</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\Model\PluginModel.h">
+      <Filter>Model</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

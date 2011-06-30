@@ -39,10 +39,10 @@ sigc::connection SkyPlugin::mUpdateConnection = sigc::connection();
 sigc::connection SkyPlugin::mCameraConnection = sigc::connection();
 unsigned int SkyPlugin::mInstanceCounter = 0;
 
-SkyPlugin::SkyPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+SkyPlugin::SkyPlugin( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
     RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
     RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
+    ClientPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
 {
     PropertySynchronization::storeUserObject();
 
@@ -76,7 +76,7 @@ void SkyPlugin::create()
     if( mInstanceCounter == 1 )
         SkyPlugin::initialize();
 
-    ServerPlugin::mLoadingCompletedSignal( *this );
+    ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
 void SkyPlugin::setServerState( ServerState serverState )

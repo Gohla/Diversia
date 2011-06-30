@@ -10,12 +10,12 @@ This file is part of Diversia.
 
 #include "UI/PluginTreeView.h"
 #include "UI/MainWindow.h"
-#include "Model/ClientServerPluginModel.h"
+#include "Model/PluginModel.h"
 #include "Client/Communication/GridManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginFactoryManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginFactory.h"
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Shared/Plugin/PluginFactoryManager.h"
+#include "Shared/Plugin/PluginFactory.h"
+#include "Client/Plugin/ClientPluginManager.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "qsignalmapper.h"
 
 namespace Diversia
@@ -26,7 +26,7 @@ namespace QtOgreEditor
 
 PluginTreeView::PluginTreeView( QWidget* pParent /*= 0*/ ):
     QTreeView( pParent ),
-    mModel( new ClientServerPluginModel( this ) )
+    mModel( new PluginModel( this ) )
 {
     QTreeView::setDragDropMode( QTreeView::NoDragDrop );
     QTreeView::setModel( mModel );
@@ -47,10 +47,10 @@ void PluginTreeView::init()
     // Create new plugin actions.
     QSignalMapper* newPluginSignalMapper = new QSignalMapper( this );
     QSignalMapper* pluginActionSignalMapper = new QSignalMapper( this );
-    const ClientServerPluginFactories& factories = 
-        ClientServerPluginFactoryManager::getPluginFactories();
+    const PluginFactories& factories = 
+        PluginFactoryManager::getPluginFactories();
     QList<QAction*> actions;
-    for( ClientServerPluginFactories::const_iterator i = factories.begin(); i != factories.end(); ++i )
+    for( PluginFactories::const_iterator i = factories.begin(); i != factories.end(); ++i )
     {
 
         try
@@ -103,17 +103,17 @@ void PluginTreeView::init()
     PluginTreeView::clear();
 }
 
-ServerPlugin& PluginTreeView::getServerPlugin( const QModelIndex& rIndex )
+ClientPlugin& PluginTreeView::getClientPlugin( const QModelIndex& rIndex )
 {
-    ClientServerPluginTypeEnum type = 
-        (ClientServerPluginTypeEnum)rIndex.data( Qt::UserRole + 1 ).toInt();
-    return static_cast<ServerPlugin&>( mPluginManager->getPlugin( type ) );
+    PluginTypeEnum type = 
+        (PluginTypeEnum)rIndex.data( Qt::UserRole + 1 ).toInt();
+    return static_cast<ClientPlugin&>( mPluginManager->getPlugin( type ) );
 }
 
 void PluginTreeView::load( const QModelIndex& rIndex )
 {
     EditorGlobals::mMainWindow->mUI.propertyBrowser->load( 
-        PluginTreeView::getServerPlugin( rIndex ) );
+        PluginTreeView::getClientPlugin( rIndex ) );
     EditorGlobals::mMainWindow->mUI.propertyBrowser->setEnabled( true );
 }
 
@@ -158,7 +158,7 @@ void PluginTreeView::showContextMenu( const QPoint& rPoint )
 
         // Add plugin specific actions.
         bool addSeperator = true;
-        ClientServerPluginTypeEnum type = (ClientServerPluginTypeEnum)index.data( Qt::UserRole + 1 ).toInt();
+        PluginTypeEnum type = (PluginTypeEnum)index.data( Qt::UserRole + 1 ).toInt();
         for( QList<QAction*>::iterator i = mPluginActions[ type ].begin(); 
             i != mPluginActions[ type ].end(); ++i )
         {
@@ -187,7 +187,7 @@ void PluginTreeView::createPlugin( int pluginType )
 {
     try
     {
-        if( mPluginManager ) mPluginManager->createPlugin( (ClientServerPluginTypeEnum)pluginType );
+        if( mPluginManager ) mPluginManager->createPlugin( (PluginTypeEnum)pluginType );
     }
     catch( Exception e )
     {
@@ -199,7 +199,7 @@ void PluginTreeView::pluginAction( QObject* pObject )
 {
     String className = pObject->property( "TypeName" ).toString().toStdString();
     String functionName = pObject->property( "FunctionName" ).toString().toStdString();
-    ClientServerPluginTypeEnum type = (ClientServerPluginTypeEnum)pObject->property( "Type" ).toInt();
+    PluginTypeEnum type = (PluginTypeEnum)pObject->property( "Type" ).toInt();
 
     try
     {
@@ -224,7 +224,7 @@ void PluginTreeView::destroyPlugin()
     {
         QModelIndexList selectedIndexes = QTreeView::selectionModel()->selectedIndexes();
         mPluginManager->destroyPlugin( 
-            PluginTreeView::getServerPlugin( selectedIndexes.at( 0 ) ).getType() );
+            PluginTreeView::getClientPlugin( selectedIndexes.at( 0 ) ).getType() );
     }
     catch( Exception e )
     {

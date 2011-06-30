@@ -8,7 +8,7 @@ This file is part of Diversia.
 
 #include "Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/ServerAbstract.h"
 #include "State/PauseState.h"

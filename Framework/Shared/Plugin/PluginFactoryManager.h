@@ -24,8 +24,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_SHARED_CLIENTSERVERPLUGINFACTORYMANAGER_H
-#define DIVERSIA_SHARED_CLIENTSERVERPLUGINFACTORYMANAGER_H
+#ifndef DIVERSIA_SHARED_PLUGINFACTORYMANAGER_H
+#define DIVERSIA_SHARED_PLUGINFACTORYMANAGER_H
 
 #include "Shared/Platform/Prerequisites.h"
 
@@ -33,21 +33,21 @@ namespace Diversia
 {
 //------------------------------------------------------------------------------
 
-typedef std::map<ClientServerPluginTypeEnum, ClientServerPluginFactory*> ClientServerPluginFactories;
+typedef std::map<PluginTypeEnum, PluginFactory*> PluginFactories;
 
-class DIVERSIA_SHARED_API ClientServerPluginFactoryManager
+class DIVERSIA_SHARED_API PluginFactoryManager
 {
 public:
     /**
     Register client server plugin factory. 
     
     @param  type                                The type of the factory. 
-    @param [in,out] pClientServerPluginFactory  The client-server plugin factory to add.
+    @param [in,out] pPluginFactory  The client-server plugin factory to add.
                                                 
     @throw  Exception   When a factory for that type already exists. 
     **/
-    static void registerPluginFactory( ClientServerPluginTypeEnum type, 
-        ClientServerPluginFactory* pClientServerPluginFactory );
+    static void registerPluginFactory( PluginTypeEnum type, 
+        PluginFactory* pPluginFactory );
     /**
     Gets a client server plugin factory. 
     
@@ -55,11 +55,11 @@ public:
                     
     @throw  Exception   When a factory for that type doesn't exists. 
     **/
-    static ClientServerPluginFactory& getPluginFactory( ClientServerPluginTypeEnum type );
+    static PluginFactory& getPluginFactory( PluginTypeEnum type );
     /**
     Gets the map of client-server plugin factories. 
     **/
-    inline static const ClientServerPluginFactories& getPluginFactories() { return msClientServerPluginFactories; }
+    inline static const PluginFactories& getPluginFactories() { return msPluginFactories; }
     /**
     Query if a client-server plugin factory is registered.
     
@@ -67,7 +67,7 @@ public:
     
     @return true if factory exists, false if not.
     **/
-    static bool hasPluginFactory( ClientServerPluginTypeEnum type );
+    static bool hasPluginFactory( PluginTypeEnum type );
     /**
     Unregister client-server plugin factory. 
     
@@ -77,21 +77,21 @@ public:
 
     @note   Doesn't destroy the factory!
     **/
-    static void unregisterPluginFactory( ClientServerPluginTypeEnum type );
+    static void unregisterPluginFactory( PluginTypeEnum type );
     /**
     Destroys all client-server plugin factories.
     **/
     static void destroyPluginFactory();
 
 private:
-    ClientServerPluginFactoryManager() {}
-    ~ClientServerPluginFactoryManager() {}
+    PluginFactoryManager() {}
+    ~PluginFactoryManager() {}
 
-    static ClientServerPluginFactories msClientServerPluginFactories;
+    static PluginFactories msPluginFactories;
 
 };
 
 //------------------------------------------------------------------------------
 } // Namespace Diversia
 
-#endif // DIVERSIA_SHARED_CLIENTSERVERPLUGINFACTORYMANAGER_H
+#endif // DIVERSIA_SHARED_PLUGINFACTORYMANAGER_H

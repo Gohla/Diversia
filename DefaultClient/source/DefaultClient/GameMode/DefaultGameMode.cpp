@@ -22,7 +22,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "DefaultClient/Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Communication/Server.h"
 #include "Client/Object/ClientObjectManager.h"
 #include "DefaultClient/GameMode/DefaultGameMode.h"

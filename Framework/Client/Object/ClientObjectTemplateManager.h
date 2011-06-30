@@ -29,9 +29,9 @@ THE SOFTWARE.
 
 #include "Client/Platform/Prerequisites.h"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "Object/ObjectTemplateManager.h"
-#include "Shared/ClientServerPlugin/Factories/TemplatePluginFactory.h"
+#include "Shared/Plugin/Factories/TemplatePluginFactory.h"
 
 namespace Diversia
 {
@@ -40,24 +40,24 @@ namespace Client
 //------------------------------------------------------------------------------
 
 class DIVERSIA_CLIENT_API ClientObjectTemplateManager : public ObjectTemplateManager, 
-    public ServerPlugin
+    public ClientPlugin
 {
 public:
     /**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return CLIENTSERVERPLUGINTYPE_OBJECTTEMPLATEMANAGER; }
-    static inline ClientServerPluginTypeEnum getTypeStatic() { return CLIENTSERVERPLUGINTYPE_OBJECTTEMPLATEMANAGER; }
+    inline PluginTypeEnum getType() const { return PLUGINTYPE_OBJECTTEMPLATEMANAGER; }
+    static inline PluginTypeEnum getTypeStatic() { return PLUGINTYPE_OBJECTTEMPLATEMANAGER; }
     /**
     Gets the plugin type name.
     **/
-    inline String getTypeName() const { return CLIENTSERVERPLUGINNAME_OBJECTTEMPLATEMANAGER; }
-    static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_OBJECTTEMPLATEMANAGER; }
+    inline String getTypeName() const { return PLUGINNAME_OBJECTTEMPLATEMANAGER; }
+    static inline String getTypeNameStatic() { return PLUGINNAME_OBJECTTEMPLATEMANAGER; }
 	
 private:
-    friend class TemplatePluginFactory<ClientObjectTemplateManager, ServerPluginManager>;
+    friend class TemplatePluginFactory<ClientObjectTemplateManager, ClientPluginManager>;
 
-    ClientObjectTemplateManager( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+    ClientObjectTemplateManager( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     virtual ~ClientObjectTemplateManager();

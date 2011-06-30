@@ -118,8 +118,6 @@
     <ClInclude Include="..\..\Framework\Client\Platform\Prerequisites.h" />
     <ClInclude Include="..\..\Framework\Client\Platform\StableHeaders.h" />
     <ClInclude Include="..\..\Framework\Client\Camp\CampBindings.h" />
-    <ClInclude Include="..\..\Framework\Client\ClientServerPlugin\ServerPlugin.h" />
-    <ClInclude Include="..\..\Framework\Client\ClientServerPlugin\ServerPluginManager.h" />
     <ClInclude Include="..\..\Framework\Client\Object\ClientComponent.h" />
     <ClInclude Include="..\..\Framework\Client\Object\ClientObject.h" />
     <ClInclude Include="..\..\Framework\Client\Object\ClientObjectManager.h" />
@@ -132,6 +130,8 @@
     <ClInclude Include="..\..\Framework\Client\Communication\ServerNeighborsPlugin.h" />
     <ClInclude Include="..\..\Framework\Client\Lua\LuaPlugin.h" />
     <ClInclude Include="..\..\Framework\Client\ClientIncludes.h" />
+    <ClInclude Include="..\..\Framework\Client\Plugin\ClientPlugin.h" />
+    <ClInclude Include="..\..\Framework\Client\Plugin\ClientPluginManager.h" />
     <ClInclude Include="..\..\Framework\Client\Undo\ComponentCommand.h" />
     <ClInclude Include="..\..\Framework\Client\Undo\FunctionCommand.h" />
     <ClInclude Include="..\..\Framework\Client\Undo\ObjectCommand.h" />
@@ -150,8 +150,6 @@
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
     <ClCompile Include="..\..\Framework\Client\Camp\src\CampBindings.cpp" />
-    <ClCompile Include="..\..\Framework\Client\ClientServerPlugin\src\ServerPlugin.cpp" />
-    <ClCompile Include="..\..\Framework\Client\ClientServerPlugin\src\ServerPluginManager.cpp" />
     <ClCompile Include="..\..\Framework\Client\Object\src\ClientComponent.cpp" />
     <ClCompile Include="..\..\Framework\Client\Object\src\ClientObject.cpp" />
     <ClCompile Include="..\..\Framework\Client\Object\src\ClientObjectManager.cpp" />
@@ -162,6 +160,8 @@
     <ClCompile Include="..\..\Framework\Client\Communication\src\ServerConnection.cpp" />
     <ClCompile Include="..\..\Framework\Client\Communication\src\ServerNeighborsPlugin.cpp" />
     <ClCompile Include="..\..\Framework\Client\Lua\src\LuaPlugin.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Plugin\src\ClientPlugin.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Plugin\src\ClientPluginManager.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\ComponentCommand.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\FunctionCommand.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\ObjectCommand.cpp" />

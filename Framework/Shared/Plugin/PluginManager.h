@@ -24,8 +24,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_SHARED_CLIENTSERVERPLUGINMANAGER_H
-#define DIVERSIA_SHARED_CLIENTSERVERPLUGINMANAGER_H
+#ifndef DIVERSIA_SHARED_PLUGINMANAGER_H
+#define DIVERSIA_SHARED_PLUGINMANAGER_H
 
 #include "Shared/Platform/Prerequisites.h"
 
@@ -33,8 +33,8 @@ namespace Diversia
 {
 //------------------------------------------------------------------------------
 
-typedef std::map<ClientServerPluginTypeEnum, ClientServerPlugin*> ClientServerPlugins;
-typedef std::set<ClientServerPluginTypeEnum> ClientServerPluginTypes;
+typedef std::map<PluginTypeEnum, Plugin*> Plugins;
+typedef std::set<PluginTypeEnum> PluginTypes;
 
 /**
 Values that represent the state of a plugin.
@@ -46,7 +46,7 @@ enum PluginState
     PAUSE	    ///< Plugin is paused and is not updated. 
 };
 
-class DIVERSIA_SHARED_API ClientServerPluginManager : public boost::noncopyable
+class DIVERSIA_SHARED_API PluginManager : public boost::noncopyable
 {
 public:
     /**
@@ -59,13 +59,13 @@ public:
     @param [in,out] rReplicaManager     Replica manager. 
     @param [in,out] rNetworkIDManager   Network ID manager. 
     **/
-    ClientServerPluginManager( Mode mode, PluginState state, sigc::signal<void>& rUpdateSignal, 
+    PluginManager( Mode mode, PluginState state, sigc::signal<void>& rUpdateSignal, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     /**
     Destructor. 
     **/
-    virtual ~ClientServerPluginManager();
+    virtual ~PluginManager();
 
     /**
     Creates a client-server plugin. The plugin specific part is initialized in the next update tick.
@@ -74,7 +74,7 @@ public:
                     
     @throw  Exception   When a client-server plugin with that name already exists.
     **/
-    ClientServerPlugin& createPlugin( ClientServerPluginTypeEnum type );
+    Plugin& createPlugin( PluginTypeEnum type );
     /**
     Creates a client-server plugin. The plugin specific part is initialized in the next update tick.
                     
@@ -91,7 +91,7 @@ public:
     **/
     template<class T> inline T& getPlugin() const
     {
-        ClientServerPlugins::const_iterator i = mPlugins.find( T::getTypeStatic() );
+        Plugins::const_iterator i = mPlugins.find( T::getTypeStatic() );
         if ( i != mPlugins.end() )
         {
             return *static_cast<T*>( i->second );
@@ -99,7 +99,7 @@ public:
         else
         {
             DIVERSIA_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, "Plugin not found.", 
-                "ClientServerPluginManager::getPlugin" );
+                "PluginManager::getPlugin" );
         }
     }
     /**
@@ -109,11 +109,11 @@ public:
     
     @throw  Exception   When client-server plugin doesn't exist.
     **/
-    ClientServerPlugin& getPlugin( ClientServerPluginTypeEnum type ) const;
+    Plugin& getPlugin( PluginTypeEnum type ) const;
     /**
     Gets the map of client-server plugins.
     **/
-    inline const ClientServerPlugins& getPlugins() const { return mPlugins; }
+    inline const Plugins& getPlugins() const { return mPlugins; }
     /**
     Query if a client-server plugin exists using the plugin's C++ type as template parameter.
     
@@ -134,7 +134,7 @@ public:
     
     @return True if client-server plugin exists, false if not. 
     **/
-    bool hasPlugin( ClientServerPluginTypeEnum type ) const;
+    bool hasPlugin( PluginTypeEnum type ) const;
     /**
     Destroys a client-server plugin by type. The plugin will be destroyed the next update tick.
     
@@ -142,7 +142,7 @@ public:
 
     @throw  Exception   When a plugin with that name doesn't exist.
     **/
-    void destroyPlugin( ClientServerPluginTypeEnum type );
+    void destroyPlugin( PluginTypeEnum type );
     /**
     Adds a plugin to the auto create plugin list. All plugin in that list will be
     automatically created. This should only be used on the client because the server already has
@@ -150,7 +150,7 @@ public:
     **/
     template<class T> static void addAutoCreatePlugin()
     {
-        ClientServerPluginManager::addAutoCreatePlugin( T::getTypeStatic() );
+        PluginManager::addAutoCreatePlugin( T::getTypeStatic() );
     }
     /**
     Adds a plugin to the auto create plugin list. All plugin in that list will be
@@ -159,7 +159,7 @@ public:
     
     @param  type    The type of the plugin. 
     **/
-    static void addAutoCreatePlugin( ClientServerPluginTypeEnum type );
+    static void addAutoCreatePlugin( PluginTypeEnum type );
     /**
     Query if given plugin type will be automatically created on plugin manager creation
     
@@ -168,7 +168,7 @@ public:
     @return True if given plugin type will be automatically created on plugin manager creation, 
             false otherwise.       
     **/
-    static bool hasAutoCreatePlugin( ClientServerPluginTypeEnum type );
+    static bool hasAutoCreatePlugin( PluginTypeEnum type );
     /**
     Gets the plugin state. 
     **/
@@ -208,12 +208,12 @@ public:
     /**
     Connects a slot to the client-server plugin created/destroyed signal. 
     
-    @param [in,out] rSlot   The slot (signature: void func(ClientServerPluginTypeEnum&, 
+    @param [in,out] rSlot   The slot (signature: void func(PluginTypeEnum&, 
                             bool [true when plugin is created, false when destroyed])) to connect. 
     
     @return Connection object to block or disconnect the connection.
     **/
-    inline sigc::connection connect( const sigc::slot<void, ClientServerPlugin&, bool>& rSlot ) 
+    inline sigc::connection connect( const sigc::slot<void, Plugin&, bool>& rSlot ) 
     {
         return mPluginSignal.connect( rSlot ); 
     }
@@ -234,7 +234,7 @@ protected:
     /**
     Gets the map of client-server plugins.
     **/
-    inline ClientServerPlugins& getPluginsMutable() { return mPlugins; }
+    inline Plugins& getPluginsMutable() { return mPlugins; }
 
 private:
     friend class Shared::Bindings::CampBindings;    ///< Allow private access for camp bindings.
@@ -249,11 +249,11 @@ private:
     PluginState                                     mPrevPluginState;
     sigc::signal<void, PluginState, PluginState>    mPluginStateChange;
     SerializationFile*                              mStoredState;
-    ClientServerPlugins                             mPlugins;
-    ClientServerPluginTypes                         mDestroyedPlugins;
-    ClientServerPluginTypes                         mCreatedPlugins;
-    sigc::signal<void, ClientServerPlugin&, bool>   mPluginSignal;
-    static ClientServerPluginTypes                  mAutoCreatePlugins;
+    Plugins                             mPlugins;
+    PluginTypes                         mDestroyedPlugins;
+    PluginTypes                         mCreatedPlugins;
+    sigc::signal<void, Plugin&, bool>   mPluginSignal;
+    static PluginTypes                  mAutoCreatePlugins;
 
     sigc::signal<void>&                             mUpdateSignal;
     sigc::connection                                mUpdateConnection;
@@ -269,7 +269,7 @@ private:
 //------------------------------------------------------------------------------
 } // Namespace Diversia
 
-CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::ClientServerPluginManager, 
-    &Diversia::Shared::Bindings::CampBindings::bindClientServerPluginManager );
+CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::PluginManager, 
+    &Diversia::Shared::Bindings::CampBindings::bindPluginManager );
 
-#endif // DIVERSIA_SHARED_CLIENTSERVERPLUGINMANAGER_H
+#endif // DIVERSIA_SHARED_PLUGINMANAGER_H

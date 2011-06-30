@@ -25,11 +25,11 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "Client/Platform/Prerequisites.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Object/ClientObject.h"
 #include "Object/Component.h"
 #include "Shared/Camp/PropertySynchronization.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/Plugin/PluginManager.h"
 #include "Shared/Resource/ResourceInfo.h"
 
 namespace Diversia
@@ -54,7 +54,7 @@ public:
     inline ServerAbstract& getServer() const
     {
         return ClientComponent::getClientObject().getClientObjectManager().
-            getServerPluginManager().getServer();
+            getClientPluginManager().getServer();
     }
     /**
     Gets the plugin state. 

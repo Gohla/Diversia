@@ -27,7 +27,7 @@ THE SOFTWARE.
 #include "Client/Platform/StableHeaders.h"
 
 #include "Client/Lua/LuaPlugin.h"
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 
 namespace Diversia
 {
@@ -35,10 +35,10 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-LuaPlugin::LuaPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+LuaPlugin::LuaPlugin( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
     RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
     RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
+    ClientPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
 {
     PropertySynchronization::storeUserObject();
 
@@ -59,7 +59,7 @@ LuaPlugin::~LuaPlugin()
 
 void LuaPlugin::create()
 {
-    ServerPlugin::mLoadingCompletedSignal( *this );
+    ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
 //------------------------------------------------------------------------------

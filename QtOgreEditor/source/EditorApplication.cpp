@@ -44,8 +44,8 @@ This file is part of Diversia.
 #include "OgreClient/Object/Text.h"
 #include "OgreClient/Physics/PhysicsManager.h"
 #include "OgreClient/Resource/ResourceManager.h"
-#include "Shared/ClientServerPlugin/Factories/ObjectManagerFactory.h"
-#include "Shared/ClientServerPlugin/Factories/TemplatePluginFactory.h"
+#include "Shared/Plugin/Factories/ObjectManagerFactory.h"
+#include "Shared/Plugin/Factories/TemplatePluginFactory.h"
 #include "Shared/Crash/CrashReporter.h"
 #include "Shared/Object/TemplateComponentFactory.h"
 #include "State/InitialState.h"
@@ -159,28 +159,28 @@ void EditorApplication::init( int argc, char* argv[] )
         camp::classByType<Particle>();
 
         // Add plugin factories, get camp class to ensure that the class is registered.
-        TemplatePluginFactory<PermissionManager, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<PermissionManager, ClientPluginManager>::registerFactory();
         camp::classByType<PermissionManager>();
-        TemplatePluginFactory<ResourceManager, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<ResourceManager, ClientPluginManager>::registerFactory();
         camp::classByType<ResourceManager>();
-        TemplatePluginFactory<ClientObjectTemplateManager, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<ClientObjectTemplateManager, ClientPluginManager>::registerFactory();
         camp::classByType<ClientObjectTemplateManager>();
-        ObjectManagerFactory<EditorObjectManager, ServerPluginManager>::registerFactory( mUpdateSignal, mLateUpdateSignal );
+        ObjectManagerFactory<EditorObjectManager, ClientPluginManager>::registerFactory( mUpdateSignal, mLateUpdateSignal );
         camp::classByType<EditorObjectManager>();
-        TemplatePluginFactory<ServerNeighborsPlugin, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<ServerNeighborsPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<ServerNeighborsPlugin>();
-        TemplatePluginFactory<SkyPlugin, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<SkyPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<SkyPlugin>();
-        TemplatePluginFactory<Terrain, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<Terrain, ClientPluginManager>::registerFactory();
         camp::classByType<Terrain>();
-        TemplatePluginFactory<SceneManagerPlugin, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<SceneManagerPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<SceneManagerPlugin>();
-        TemplatePluginFactory<LuaPlugin, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<LuaPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<LuaPlugin>();
-        ClientServerPluginManager::addAutoCreatePlugin<LuaPlugin>();
+        PluginManager::addAutoCreatePlugin<LuaPlugin>();
 
         // Override the client's default game mode with one for the editor.
-        TemplatePluginFactory<GameModePlugin, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<GameModePlugin, ClientPluginManager>::registerFactory();
         camp::classByType<GameModePlugin>();
         GameModePlugin::setDefaultSlot( sigc::ptr_fun( &EditorGameMode::createGameMode ) );
 

@@ -22,7 +22,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "OgreClient/Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/Server.h"
 #include "OgreClient/Graphics/GraphicsManager.h"
@@ -39,12 +39,12 @@ namespace OgreClient
 
 Ogre::TerrainGlobalOptions* Terrain::mTerrainGlobals = 0;
 
-Terrain::Terrain( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+Terrain::Terrain( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
     RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
     RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    ClientPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mTerrain( 0 ),
-    mResourceManager( ClientServerPlugin::getPluginManager().getPlugin<ResourceManager>() ),
+    mResourceManager( Plugin::getPluginManager().getPlugin<ResourceManager>() ),
     mTerrainType( TERRAINTYPE_AUTOBLENDMAP ),
     mHeightmapType( HEIGHTMAPTYPE_RAW ),
     mHeightmapFile( "terrain/heightmap.raw" ),
@@ -168,7 +168,7 @@ void Terrain::resourcesLoaded()
         imp.minBatchSize = 33;
         imp.maxBatchSize = 65;
         imp.pos = toVector3<Ogre::Vector3>( 
-            ServerPosition( ServerPlugin::getServer().getGridPosition() ).get3DPosition() );
+            ServerPosition( ClientPlugin::getServer().getGridPosition() ).get3DPosition() );
         mTerrain->setPosition( imp.pos );
 
         // Set textures
@@ -229,7 +229,7 @@ void Terrain::resourcesLoaded()
 
     mTerrain->freeTemporaryResources();
 
-    ServerPlugin::mLoadingCompletedSignal( *this );
+    ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
 //------------------------------------------------------------------------------

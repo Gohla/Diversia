@@ -22,7 +22,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "Client/Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Communication/Server.h"
 #include "Client/Communication/ServerConnection.h"
 #include "Client/Lua/LuaPlugin.h"
@@ -40,19 +40,19 @@ namespace Client
 
 ClientObjectManager::ClientObjectManager( Mode mode, PluginState state, 
     sigc::signal<void>& rUpdateSignal, sigc::signal<void>& rLateUpdateSignal, 
-    ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
+    ClientPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     ObjectManager( mode, rRakPeer.GetMyGUID(), rRakPeer.GetGUIDFromIndex( 0 ), rUpdateSignal, 
         rLateUpdateSignal, rPluginManager.getPlugin<ClientObjectTemplateManager>(), rReplicaManager, 
         rNetworkIDManager, rPluginManager.getServer().getServerConnection().getRPC3() ),
-    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    ClientPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mPermissionManager( rPluginManager.getPlugin<PermissionManager>() )
 {
     PropertySynchronization::storeUserObject();
 
     try
     {
-        ClientServerPlugin::getPluginManager().getPlugin<LuaPlugin>().get().object( 
+        Plugin::getPluginManager().getPlugin<LuaPlugin>().get().object( 
             "ObjectManager" ) = this;
     }
     catch( Exception e )
@@ -120,7 +120,7 @@ void ClientObjectManager::queryDestroyObject( Object& rObject, RakNet::RakNetGUI
 void ClientObjectManager::create()
 {
     // TODO: Implement real loading completed signal
-    ServerPlugin::mLoadingCompletedSignal( *this );
+    ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
 void ClientObjectManager::offlineModeChanged( bool offlineMode )

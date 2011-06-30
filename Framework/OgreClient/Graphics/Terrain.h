@@ -25,7 +25,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "OgreClient/Platform/Prerequisites.h"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "Shared/Terrain/Terrain.h"
 
 namespace Diversia
@@ -34,10 +34,10 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_OGRECLIENT_API Terrain : public ServerPlugin
+class DIVERSIA_OGRECLIENT_API Terrain : public ClientPlugin
 {
 public:
-    Terrain( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+    Terrain( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     ~Terrain();
@@ -53,13 +53,13 @@ public:
     /**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return CLIENTSERVERPLUGINTYPE_TERRAIN; }
-    static inline ClientServerPluginTypeEnum getTypeStatic() { return CLIENTSERVERPLUGINTYPE_TERRAIN; }
+    inline PluginTypeEnum getType() const { return PLUGINTYPE_TERRAIN; }
+    static inline PluginTypeEnum getTypeStatic() { return PLUGINTYPE_TERRAIN; }
     /**
     Gets the plugin type name.
     **/
-    inline String getTypeName() const { return CLIENTSERVERPLUGINNAME_TERRAIN; }
-    static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_TERRAIN; }
+    inline String getTypeName() const { return PLUGINNAME_TERRAIN; }
+    static inline String getTypeNameStatic() { return PLUGINNAME_TERRAIN; }
     
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.

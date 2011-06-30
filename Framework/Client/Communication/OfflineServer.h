@@ -76,7 +76,7 @@ public:
     /**
     Gets the plugin manager. 
     **/
-    inline ServerPluginManager& getPluginManager() { return *mPluginManager; }
+    inline ClientPluginManager& getPluginManager() { return *mPluginManager; }
 
     /**
     Connects a slot to the server state changed signal. 
@@ -99,7 +99,7 @@ private:
     UserInfo                                mUserInfo;
     sigc::signal<void>                      mDummySignal;
     boost::scoped_ptr<ServerConnection>     mServerConnection;
-    boost::scoped_ptr<ServerPluginManager>  mPluginManager;
+    boost::scoped_ptr<ClientPluginManager>  mPluginManager;
 
     sigc::connection mLoadingConnection;
     sigc::signal<void, ServerState, ServerAbstract&> mStateChangedSignal;

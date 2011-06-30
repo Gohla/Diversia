@@ -14,9 +14,9 @@ This file is part of Diversia.
 #include "Object/ComponentFactory.h"
 #include "Object/ComponentFactoryManager.h"
 #include "Object/Object.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginFactory.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginFactoryManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/Plugin/PluginFactory.h"
+#include "Shared/Plugin/PluginFactoryManager.h"
+#include "Shared/Plugin/PluginManager.h"
 #include <boost/algorithm/string/join.hpp>
 #include <boost/algorithm/string/replace.hpp>
 #include <boost/assign.hpp>
@@ -303,7 +303,7 @@ int main( int argc, char* argv[] )
         strComponent->rule( "builtin-components", componentList + "]" );
     }
 
-    // ClientServerPlugins
+    // Plugins
     {
         scoped_ptr<SDFFile> sdfPlugin( new SDFFile( "plugin.sdf", "data/plugin" ) );
         sdfPlugin->contextfree();
@@ -311,11 +311,11 @@ int main( int argc, char* argv[] )
         strPlugin->rules();
 
         String pluginList = "![";
-        const ClientServerPluginFactories& plugins = ClientServerPluginFactoryManager::getPluginFactories();
+        const PluginFactories& plugins = PluginFactoryManager::getPluginFactories();
         bool first = true;
-        for( ClientServerPluginFactories::const_iterator i = plugins.begin(); i != plugins.end(); ++i )
+        for( PluginFactories::const_iterator i = plugins.begin(); i != plugins.end(); ++i )
         {
-            if( ClientServerPluginManager::hasAutoCreatePlugin( i->first ) ) continue;
+            if( PluginManager::hasAutoCreatePlugin( i->first ) ) continue;
 
             String pluginName = i->second->getTypeName();
             String pluginCons = cons( pluginName );

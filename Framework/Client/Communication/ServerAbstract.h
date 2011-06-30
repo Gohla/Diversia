@@ -107,7 +107,7 @@ public:
     /**
     Gets the plugin manager. 
     **/
-    virtual ServerPluginManager& getPluginManager() = 0;
+    virtual ClientPluginManager& getPluginManager() = 0;
 
     /**
     Connects a slot to the server state changed signal. 

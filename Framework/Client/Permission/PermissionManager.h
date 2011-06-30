@@ -25,7 +25,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "Client/Platform/Prerequisites.h"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "Shared/Permission/Permission.h"
 
 namespace Diversia
@@ -36,7 +36,7 @@ namespace Client
 
 typedef std::map<String, Permission*> Permissions;
 
-class DIVERSIA_CLIENT_API PermissionManager : public ServerPlugin
+class DIVERSIA_CLIENT_API PermissionManager : public ClientPlugin
 {
 public:
     /**
@@ -49,7 +49,7 @@ public:
     @param [in,out] rReplicaManager     The replica manager. 
     @param [in,out] rNetworkIDManager   The network ID manager. 
     **/
-    PermissionManager( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+    PermissionManager( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     /**
@@ -60,13 +60,13 @@ public:
     /**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return CLIENTSERVERPLUGINTYPE_PERMISSIONMANAGER; }
-    static inline ClientServerPluginTypeEnum getTypeStatic() { return CLIENTSERVERPLUGINTYPE_PERMISSIONMANAGER; }
+    inline PluginTypeEnum getType() const { return PLUGINTYPE_PERMISSIONMANAGER; }
+    static inline PluginTypeEnum getTypeStatic() { return PLUGINTYPE_PERMISSIONMANAGER; }
     /**
     Gets the plugin type name.
     **/
-    inline String getTypeName() const { return CLIENTSERVERPLUGINNAME_PERMISSIONMANAGER; }
-    static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_PERMISSIONMANAGER; }
+    inline String getTypeName() const { return PLUGINNAME_PERMISSIONMANAGER; }
+    static inline String getTypeNameStatic() { return PLUGINNAME_PERMISSIONMANAGER; }
 
     /**
     Adds a permission. 

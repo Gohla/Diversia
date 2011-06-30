@@ -93,7 +93,7 @@ private:
     void mousePressEvent( QMouseEvent* pEvent );
     void dropEvent( QDropEvent* pEvent );
     void serverChange( ServerAbstract& rServer, bool created );
-    void pluginChange( ClientServerPlugin& rPlugin, bool created );
+    void pluginChange( Plugin& rPlugin, bool created );
     void objectSelectionChange( const camp::UserObject& rObject, bool selected );
     void clearActions();
     void clear();

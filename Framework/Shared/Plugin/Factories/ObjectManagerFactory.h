@@ -24,29 +24,33 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_SHARED_TEMPLATEPLUGINFACTORY_H
-#define DIVERSIA_SHARED_TEMPLATEPLUGINFACTORY_H
+#ifndef DIVERSIA_SHARED_OBJECTMANAGERFACTORY_H
+#define DIVERSIA_SHARED_OBJECTMANAGERFACTORY_H
 
 #include "Shared/Platform/Prerequisites.h"
 
-#include "Shared/ClientServerPlugin/ClientServerPluginFactoryManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginFactory.h"
+#include "Shared/Plugin/PluginFactory.h"
 
 namespace Diversia
 {
 //------------------------------------------------------------------------------
 
-/**
-Generic plugin factory for plugins that do not need special construction or destruction.
-**/
-template <class T, class U> class TemplatePluginFactory : public ClientServerPluginFactory
+template <typename T, class U> class ObjectManagerFactory : public PluginFactory
 {
 public:
     /**
+    Constructor. 
+    
+    @param [in,out] rUpdateSignal   the update signal. 
+    **/
+    ObjectManagerFactory( sigc::signal<void>& rUpdateSignal, sigc::signal<void>& rLateUpdateSignal ): 
+      mUpdateSignal( rUpdateSignal ), mLateUpdateSignal( rLateUpdateSignal ) {}
+
+    /**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return T::getTypeStatic(); }
-    inline static ClientServerPluginTypeEnum getTypeStatic() { return T::getTypeStatic(); }
+    inline PluginTypeEnum getType() const { return T::getTypeStatic(); }
+    inline static PluginTypeEnum getTypeStatic() { return T::getTypeStatic(); }
     /**
     Gets the plugin type name.
     **/
@@ -56,32 +60,39 @@ public:
     /**
     Creates an instance of a client-server plugin.
 
-    @see ClientServerPlugin::ClientServerPlugin()
+    @see Plugin::Plugin()
     **/
-    inline T& create( Mode mode, PluginState state, ClientServerPluginManager& rPluginManager, 
-        RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager,
+    inline T& create( Mode mode, PluginState state, PluginManager& rPluginManager, 
+        RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager )
     {
-        return *new T( mode, state, static_cast<U&>( rPluginManager ), rRakPeer, rReplicaManager, 
-            rNetworkIDManager ); 
+        return *new T( mode, state, mUpdateSignal, mLateUpdateSignal, 
+            static_cast<U&>( rPluginManager ), rRakPeer, rReplicaManager, rNetworkIDManager );
     }
     /**
     Destroys an instance of a client-server plugin.
     **/
-    inline void destroy( ClientServerPlugin& rPlugin ) { delete &rPlugin; }
+    inline void destroy( Plugin& rPlugin ) { delete &rPlugin; }
 
     /**
-    Register this plugin factory with the factory manager.
+    Register this plugin factory with the factory manager. 
+    
+    @param [in,out] rUpdateSignal   The (frame/tick) update signal.
     **/
-    inline static void registerFactory()
+    inline static void registerFactory( sigc::signal<void>& rUpdateSignal, 
+        sigc::signal<void>& rLateUpdateSignal )
     {
-        ClientServerPluginFactoryManager::registerPluginFactory( T::getTypeStatic(),
-            new TemplatePluginFactory<T, U>() );
+        PluginFactoryManager::registerPluginFactory( T::getTypeStatic(),
+            new ObjectManagerFactory<T, U>( rUpdateSignal, rLateUpdateSignal ) );
     }
+    
+private:
+    sigc::signal<void>& mUpdateSignal;
+    sigc::signal<void>& mLateUpdateSignal;
 
 };
 
 //------------------------------------------------------------------------------
 } // Namespace Diversia
 
-#endif // DIVERSIA_SHARED_TEMPLATEPLUGINFACTORY_H
+#endif // DIVERSIA_SHARED_OBJECTMANAGERFACTORY_H

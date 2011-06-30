@@ -34,35 +34,35 @@ namespace Diversia
 // Replica type
 //#define REPLICATYPE_OBJECT            0x00
 //#define REPLICATYPE_COMPONENT         0x01
-#define REPLICATYPE_CLIENTSERVERPLUGIN  0x02
+#define REPLICATYPE_PLUGIN  0x02
 //#define REPLICATYPE_OBJECTTEMPLATE    0x03
 //#define REPLICATYPE_COMPONENTTEMPLATE 0x04
 
-// Client-server plugins, when changed also update CampBindings::bindClientServerPluginTypeEnum!
-typedef unsigned char ClientServerPluginType;
-enum ClientServerPluginTypeEnum
+// Client-server plugins, when changed also update CampBindings::bindPluginTypeEnum!
+typedef unsigned char PluginType;
+enum PluginTypeEnum
 {
-    CLIENTSERVERPLUGINTYPE_PERMISSIONMANAGER = 0x00,
-    CLIENTSERVERPLUGINTYPE_RESOURCEMANAGER = 0x01,
-    CLIENTSERVERPLUGINTYPE_LUA = 0x02,
-    CLIENTSERVERPLUGINTYPE_SERVERNEIGHBORS = 0x03,
-    CLIENTSERVERPLUGINTYPE_SKY = 0x04,
-    CLIENTSERVERPLUGINTYPE_OBJECTTEMPLATEMANAGER = 0x05,
-    CLIENTSERVERPLUGINTYPE_OBJECTMANAGER = 0x06,
-    CLIENTSERVERPLUGINTYPE_TERRAIN = 0x07,
-    CLIENTSERVERPLUGINTYPE_GAMEMODE = 0x08,
-    CLIENTSERVERPLUGINTYPE_SCENEMANAGER = 0x09
+    PLUGINTYPE_PERMISSIONMANAGER = 0x00,
+    PLUGINTYPE_RESOURCEMANAGER = 0x01,
+    PLUGINTYPE_LUA = 0x02,
+    PLUGINTYPE_SERVERNEIGHBORS = 0x03,
+    PLUGINTYPE_SKY = 0x04,
+    PLUGINTYPE_OBJECTTEMPLATEMANAGER = 0x05,
+    PLUGINTYPE_OBJECTMANAGER = 0x06,
+    PLUGINTYPE_TERRAIN = 0x07,
+    PLUGINTYPE_GAMEMODE = 0x08,
+    PLUGINTYPE_SCENEMANAGER = 0x09
 };
-#define CLIENTSERVERPLUGINNAME_PERMISSIONMANAGER "PermissionManager"
-#define CLIENTSERVERPLUGINNAME_RESOURCEMANAGER "ResourceManager"
-#define CLIENTSERVERPLUGINNAME_LUA "Lua"
-#define CLIENTSERVERPLUGINNAME_SERVERNEIGHBORS "ServerNeighbors"
-#define CLIENTSERVERPLUGINNAME_SKY "Sky"
-#define CLIENTSERVERPLUGINNAME_OBJECTTEMPLATEMANAGER "ObjectTemplateManager"
-#define CLIENTSERVERPLUGINNAME_OBJECTMANAGER "ObjectManager"
-#define CLIENTSERVERPLUGINNAME_TERRAIN "Terrain"
-#define CLIENTSERVERPLUGINNAME_GAMEMODE "GameMode"
-#define CLIENTSERVERPLUGINNAME_SCENEMANAGER "SceneManager"
+#define PLUGINNAME_PERMISSIONMANAGER "PermissionManager"
+#define PLUGINNAME_RESOURCEMANAGER "ResourceManager"
+#define PLUGINNAME_LUA "Lua"
+#define PLUGINNAME_SERVERNEIGHBORS "ServerNeighbors"
+#define PLUGINNAME_SKY "Sky"
+#define PLUGINNAME_OBJECTTEMPLATEMANAGER "ObjectTemplateManager"
+#define PLUGINNAME_OBJECTMANAGER "ObjectManager"
+#define PLUGINNAME_TERRAIN "Terrain"
+#define PLUGINNAME_GAMEMODE "GameMode"
+#define PLUGINNAME_SCENEMANAGER "SceneManager"
 
 // Components, when changed also update CampBindings::bindComponentTypeEnum!
 enum ComponentTypeEnum
@@ -101,8 +101,8 @@ enum ComponentTypeEnum
 //------------------------------------------------------------------------------
 } // Namespace Diversia
 
-CAMP_AUTO_TYPE( Diversia::ClientServerPluginTypeEnum, 
-    &Diversia::Shared::Bindings::CampBindings::bindClientServerPluginTypeEnum );
+CAMP_AUTO_TYPE( Diversia::PluginTypeEnum, 
+    &Diversia::Shared::Bindings::CampBindings::bindPluginTypeEnum );
 
 CAMP_AUTO_TYPE( Diversia::ComponentTypeEnum, 
     &Diversia::Shared::Bindings::CampBindings::bindComponentTypeEnum );

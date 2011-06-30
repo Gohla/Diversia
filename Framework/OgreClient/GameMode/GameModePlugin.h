@@ -25,7 +25,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "OgreClient/Platform/Prerequisites.h"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "OgreClient/Input/InputManager.h"
 #include "Shared/Lua/LuaManager.h"
 
@@ -57,11 +57,11 @@ enum LuaGameModeScriptEvent
 /**
 Lua game mode scripting for the entire world.
 **/
-class DIVERSIA_OGRECLIENT_API GameModePlugin : public ServerPlugin, public KeyboardListener, 
+class DIVERSIA_OGRECLIENT_API GameModePlugin : public ClientPlugin, public KeyboardListener, 
     public MouseListener, public sigc::trackable
 {
 public:
-    GameModePlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+    GameModePlugin( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     ~GameModePlugin();
@@ -69,13 +69,13 @@ public:
     /**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return CLIENTSERVERPLUGINTYPE_GAMEMODE; }
-    static inline ClientServerPluginTypeEnum getTypeStatic() { return CLIENTSERVERPLUGINTYPE_GAMEMODE; }
+    inline PluginTypeEnum getType() const { return PLUGINTYPE_GAMEMODE; }
+    static inline PluginTypeEnum getTypeStatic() { return PLUGINTYPE_GAMEMODE; }
     /**
     Gets the plugin type name.
     **/
-    inline String getTypeName() const { return CLIENTSERVERPLUGINNAME_GAMEMODE; }
-    static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_GAMEMODE; }
+    inline String getTypeName() const { return PLUGINNAME_GAMEMODE; }
+    static inline String getTypeNameStatic() { return PLUGINNAME_GAMEMODE; }
 
     /**
     Gets the default game mode. 

@@ -8,7 +8,7 @@ This file is part of Diversia.
 
 #include "Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/Server.h"
 #include "Client/Object/ClientComponent.h"
@@ -26,7 +26,7 @@ This file is part of Diversia.
 #include "Object/Object.h"
 #include "Object/ObjectTemplateManager.h"
 #include "OgreClient/Input/ObjectSelection.h"
-#include "Shared/ClientServerPlugin/ClientServerPlugin.h"
+#include "Shared/Plugin/Plugin.h"
 #include "UI/MainWindow.h"
 #include "UI/ObjectTreeView.h"
 #include "UI/PropertyBrowser.h"
@@ -604,15 +604,15 @@ void ObjectTreeView::serverChange( ServerAbstract& rServer, bool created )
         rServer.getPluginManager().connect( sigc::mem_fun( this, &ObjectTreeView::pluginChange ) );
 }
 
-void ObjectTreeView::pluginChange( ClientServerPlugin& rPlugin, bool created )
+void ObjectTreeView::pluginChange( Plugin& rPlugin, bool created )
 {
     switch( rPlugin.getType() ) 
     {
-        case CLIENTSERVERPLUGINTYPE_OBJECTMANAGER:
+        case PLUGINTYPE_OBJECTMANAGER:
             mObjectManager = &static_cast<ClientObjectManager&>( rPlugin );
             mModel->setObjectManager( *mObjectManager );
             break;
-        case CLIENTSERVERPLUGINTYPE_OBJECTTEMPLATEMANAGER:
+        case PLUGINTYPE_OBJECTTEMPLATEMANAGER:
             mObjectTemplateManager = &static_cast<ClientObjectTemplateManager&>( rPlugin );
             break;
     }

@@ -10,7 +10,7 @@ This file is part of Diversia.
 
 #include "DSLTypeExtractor/register.hpp"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "Client/Communication/ServerNeighborsPlugin.h"
 #include "Client/Lua/LuaPlugin.h"
 #include "Client/Object/ClientComponent.h"
@@ -46,9 +46,9 @@ This file is part of Diversia.
 #include "OgreClient/Object/SceneNode.h"
 #include "OgreClient/Object/Text.h"
 #include "OgreClient/Resource/ResourceManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
-#include "Shared/ClientServerPlugin/Factories/ObjectManagerFactory.h"
-#include "Shared/ClientServerPlugin/Factories/TemplatePluginFactory.h"
+#include "Shared/Plugin/PluginManager.h"
+#include "Shared/Plugin/Factories/ObjectManagerFactory.h"
+#include "Shared/Plugin/Factories/TemplatePluginFactory.h"
 #include "Shared/Object/TemplateComponentFactory.h"
 #include "Util/Camp/CampUtils.h"
 #include "Util/Log/Logger.h"
@@ -74,8 +74,8 @@ void registerCamp()
     camp::classByType<Degree>();
     camp::classByType<Angle>();
     camp::classByType<Node>();
-    //camp::classByType<ClientServerPluginManager>();
-    //camp::classByType<ClientServerPlugin>();
+    //camp::classByType<PluginManager>();
+    //camp::classByType<Plugin>();
     //camp::classByType<ServerInfo>();
     //camp::classByType<ServerNeighbors>();
     //camp::classByType<ResourceInfo>();
@@ -130,11 +130,11 @@ void registerCamp()
     camp::classByType<ObjectTemplate>();
     camp::classByType<ObjectTemplateManager>();
     camp::classByType<ComponentTemplate>();
-    //camp::classByType<ServerPluginManager>();
+    //camp::classByType<ClientPluginManager>();
     camp::classByType<ClientObjectManager>();
     camp::classByType<ClientObject>();
     camp::classByType<ClientComponent>();
-    camp::classByType<ServerPlugin>();
+    camp::classByType<ClientPlugin>();
     camp::classByType<PermissionManager>();
     //camp::classByType<GridManager>();
     //camp::classByType<ServerConnection::Settings>();
@@ -149,7 +149,7 @@ void registerCamp()
     //camp::enumByType<LogLevel>();
     camp::enumByType<Node::TransformSpace>();
     //camp::enumByType<Direction>();
-    camp::enumByType<ClientServerPluginTypeEnum>();
+    camp::enumByType<PluginTypeEnum>();
     camp::enumByType<ComponentTypeEnum>();
     camp::enumByType<TerrainTypeEnum>();
     camp::enumByType<HeightmapTypeEnum>();
@@ -201,30 +201,30 @@ void registerCamp()
     camp::classByType<Particle>();
 
     // Add plugin factories, get camp class to ensure that the class is registered.
-    TemplatePluginFactory<PermissionManager, ServerPluginManager>::registerFactory();
+    TemplatePluginFactory<PermissionManager, ClientPluginManager>::registerFactory();
     camp::classByType<PermissionManager>();
-    ClientServerPluginManager::addAutoCreatePlugin<PermissionManager>();
-    TemplatePluginFactory<ResourceManager, ServerPluginManager>::registerFactory();
+    PluginManager::addAutoCreatePlugin<PermissionManager>();
+    TemplatePluginFactory<ResourceManager, ClientPluginManager>::registerFactory();
     camp::classByType<ResourceManager>();
-    ClientServerPluginManager::addAutoCreatePlugin<ResourceManager>();
-    TemplatePluginFactory<ClientObjectTemplateManager, ServerPluginManager>::registerFactory();
+    PluginManager::addAutoCreatePlugin<ResourceManager>();
+    TemplatePluginFactory<ClientObjectTemplateManager, ClientPluginManager>::registerFactory();
     camp::classByType<ClientObjectTemplateManager>();
-    ClientServerPluginManager::addAutoCreatePlugin<ClientObjectTemplateManager>();
+    PluginManager::addAutoCreatePlugin<ClientObjectTemplateManager>();
     sigc::signal<void> dummySignal;
-    ObjectManagerFactory<ClientObjectManager, ServerPluginManager>::registerFactory( dummySignal, dummySignal );
+    ObjectManagerFactory<ClientObjectManager, ClientPluginManager>::registerFactory( dummySignal, dummySignal );
     camp::classByType<ClientObjectManager>();
-    ClientServerPluginManager::addAutoCreatePlugin<ClientObjectManager>();
-    TemplatePluginFactory<ServerNeighborsPlugin, ServerPluginManager>::registerFactory();
+    PluginManager::addAutoCreatePlugin<ClientObjectManager>();
+    TemplatePluginFactory<ServerNeighborsPlugin, ClientPluginManager>::registerFactory();
     camp::classByType<ServerNeighborsPlugin>();
-    TemplatePluginFactory<SkyPlugin, ServerPluginManager>::registerFactory();
+    TemplatePluginFactory<SkyPlugin, ClientPluginManager>::registerFactory();
     camp::classByType<SkyPlugin>();
-    TemplatePluginFactory<Terrain, ServerPluginManager>::registerFactory();
+    TemplatePluginFactory<Terrain, ClientPluginManager>::registerFactory();
     camp::classByType<Terrain>();
-    TemplatePluginFactory<SceneManagerPlugin, ServerPluginManager>::registerFactory();
+    TemplatePluginFactory<SceneManagerPlugin, ClientPluginManager>::registerFactory();
     camp::classByType<SceneManagerPlugin>();
-    TemplatePluginFactory<LuaPlugin, ServerPluginManager>::registerFactory();
+    TemplatePluginFactory<LuaPlugin, ClientPluginManager>::registerFactory();
     camp::classByType<LuaPlugin>();
-    ClientServerPluginManager::addAutoCreatePlugin<LuaPlugin>();
+    PluginManager::addAutoCreatePlugin<LuaPlugin>();
 }
 
 //------------------------------------------------------------------------------

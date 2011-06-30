@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 #include "Client/Platform/Prerequisites.h"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "Shared/Communication/ServerNeighbors.h"
 
 namespace Diversia
@@ -38,23 +38,23 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_CLIENT_API ServerNeighborsPlugin : public ServerPlugin
+class DIVERSIA_CLIENT_API ServerNeighborsPlugin : public ClientPlugin
 {
 public:
-    ServerNeighborsPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+    ServerNeighborsPlugin( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
 
     /**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return CLIENTSERVERPLUGINTYPE_SERVERNEIGHBORS; }
-    static inline ClientServerPluginTypeEnum getTypeStatic() { return CLIENTSERVERPLUGINTYPE_SERVERNEIGHBORS; }
+    inline PluginTypeEnum getType() const { return PLUGINTYPE_SERVERNEIGHBORS; }
+    static inline PluginTypeEnum getTypeStatic() { return PLUGINTYPE_SERVERNEIGHBORS; }
     /**
     Gets the plugin type name.
     **/
-    inline String getTypeName() const { return CLIENTSERVERPLUGINNAME_SERVERNEIGHBORS; }
-    static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_SERVERNEIGHBORS; }
+    inline String getTypeName() const { return PLUGINNAME_SERVERNEIGHBORS; }
+    static inline String getTypeNameStatic() { return PLUGINNAME_SERVERNEIGHBORS; }
 
     /**
     Connects a slot to the neighbors changed signal.

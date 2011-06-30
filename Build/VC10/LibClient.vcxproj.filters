@@ -7,9 +7,6 @@
     <Filter Include="Camp">
       <UniqueIdentifier>{ad58c99c-50f1-4136-a67c-185074dc63fe}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ClientServerPlugin">
-      <UniqueIdentifier>{66305802-0366-45ae-9513-c2da77b7b840}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Object">
       <UniqueIdentifier>{e3e6a0a6-8246-4003-9061-676331a2b80f}</UniqueIdentifier>
     </Filter>
@@ -25,6 +22,9 @@
     <Filter Include="Undo">
       <UniqueIdentifier>{10b9fb36-7d06-49e1-8c5d-6cbdc118a018}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Plugin">
+      <UniqueIdentifier>{66305802-0366-45ae-9513-c2da77b7b840}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Framework\Client\Platform\Prerequisites.h">
@@ -35,12 +35,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Framework\Client\Camp\CampBindings.h">
       <Filter>Camp</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Framework\Client\ClientServerPlugin\ServerPlugin.h">
-      <Filter>ClientServerPlugin</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Framework\Client\ClientServerPlugin\ServerPluginManager.h">
-      <Filter>ClientServerPlugin</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Framework\Client\Object\ClientComponent.h">
       <Filter>Object</Filter>
@@ -112,6 +106,12 @@
     <ClInclude Include="..\..\Framework\Client\Platform\Defines.h">
       <Filter>Platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Plugin\ClientPlugin.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Client\Plugin\ClientPluginManager.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Framework\Client\Platform\src\StableHeaders.cpp">
@@ -119,12 +119,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Framework\Client\Camp\src\CampBindings.cpp">
       <Filter>Camp</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Framework\Client\ClientServerPlugin\src\ServerPlugin.cpp">
-      <Filter>ClientServerPlugin</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Framework\Client\ClientServerPlugin\src\ServerPluginManager.cpp">
-      <Filter>ClientServerPlugin</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Framework\Client\Object\src\ClientComponent.cpp">
       <Filter>Object</Filter>
@@ -182,6 +176,12 @@
     </ClCompile>
     <ClCompile Include="..\..\Framework\Client\Object\src\ClientComponentTemplate.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Plugin\src\ClientPlugin.cpp">
+      <Filter>Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Client\Plugin\src\ClientPluginManager.cpp">
+      <Filter>Plugin</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

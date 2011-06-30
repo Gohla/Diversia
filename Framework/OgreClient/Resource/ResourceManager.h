@@ -25,7 +25,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "OgreClient/Platform/Prerequisites.h"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "Shared/Resource/ResourceInfo.h"
 #include <boost/multi_index/key_extractors.hpp>
 #include <boost/multi_index/ordered_index.hpp>
@@ -73,10 +73,10 @@ typedef bidirectional_map<Ogre::BackgroundProcessTicket, ResourceCallback>::type
 
 //------------------------------------------------------------------------------
 
-class DIVERSIA_OGRECLIENT_API ResourceManager : public ServerPlugin, public Ogre::ResourceBackgroundQueue::Listener
+class DIVERSIA_OGRECLIENT_API ResourceManager : public ClientPlugin, public Ogre::ResourceBackgroundQueue::Listener
 {
 public:
-    ResourceManager( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+    ResourceManager( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     /**
@@ -97,13 +97,13 @@ public:
     /**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return CLIENTSERVERPLUGINTYPE_RESOURCEMANAGER; }
-    static inline ClientServerPluginTypeEnum getTypeStatic() { return CLIENTSERVERPLUGINTYPE_RESOURCEMANAGER; }
+    inline PluginTypeEnum getType() const { return PLUGINTYPE_RESOURCEMANAGER; }
+    static inline PluginTypeEnum getTypeStatic() { return PLUGINTYPE_RESOURCEMANAGER; }
     /**
     Gets the plugin type name.
     **/
-    inline String getTypeName() const { return CLIENTSERVERPLUGINNAME_RESOURCEMANAGER; }
-    static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_RESOURCEMANAGER; }
+    inline String getTypeName() const { return PLUGINNAME_RESOURCEMANAGER; }
+    static inline String getTypeNameStatic() { return PLUGINNAME_RESOURCEMANAGER; }
 
     /**
     Sets the resource location. 

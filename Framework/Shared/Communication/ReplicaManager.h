@@ -28,7 +28,7 @@ THE SOFTWARE.
 #include "Shared/Platform/Prerequisites.h"
 
 #include "Shared/Communication/ReplicaConnection.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/Plugin/PluginManager.h"
 
 namespace Diversia
 {
@@ -38,14 +38,14 @@ class ReplicaManager : public RakNet::ReplicaManager3
 {
 public:
     ReplicaManager(): RakNet::ReplicaManager3(), mObjectManager( 0 ),
-        mClientServerPluginManager( 0 ) {}
+        mPluginManager( 0 ) {}
     virtual ~ReplicaManager() {}
 
     inline void setObjectManager( ObjectManager& rObjectManager )
     { 
         mObjectManager = &rObjectManager;
   
-        if( mClientServerPluginManager && mClientServerPluginManager->getMode() == CLIENT )
+        if( mPluginManager && mPluginManager->getMode() == CLIENT )
         {
             for( DataStructures::DefaultIndexType i = 0; i < ReplicaManager3::GetConnectionCount();
                 ++i )
@@ -55,16 +55,16 @@ public:
             }
         }
     }
-    inline void setPluginManager( ClientServerPluginManager& rPluginManager ) 
+    inline void setPluginManager( PluginManager& rPluginManager ) 
     { 
-        mClientServerPluginManager = &rPluginManager; 
+        mPluginManager = &rPluginManager; 
     }
 
     RakNet::Connection_RM3* AllocConnection( RakNet::SystemAddress systemAddress, RakNet::RakNetGUID guid ) const 
     {
-        DivAssert( mClientServerPluginManager, "ClientServerPluginManager not set." );
+        DivAssert( mPluginManager, "PluginManager not set." );
         return new ReplicaConnection( systemAddress, guid, mObjectManager, 
-            *mClientServerPluginManager );
+            *mPluginManager );
     }
     void DeallocConnection( RakNet::Connection_RM3* pConnection ) const 
     {
@@ -73,7 +73,7 @@ public:
 
 private:
     ObjectManager*              mObjectManager;
-    ClientServerPluginManager*  mClientServerPluginManager;
+    PluginManager*  mPluginManager;
 
 };
 

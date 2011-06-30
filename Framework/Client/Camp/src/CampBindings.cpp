@@ -23,8 +23,8 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "Client/Platform/StableHeaders.h"
 
 #include "Client/Camp/CampBindings.h"
-#include "Client/ClientServerPlugin/ServerPlugin.h"
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPlugin.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/ServerConnection.h"
 #include "Client/Communication/ServerNeighborsPlugin.h"
@@ -46,10 +46,10 @@ namespace Bindings
 {
 //------------------------------------------------------------------------------
 
-void CampBindings::bindServerPluginManager()
+void CampBindings::bindClientPluginManager()
 {
-    camp::Class::declare<ServerPluginManager>( "ServerPluginManager" )
-        .base<ClientServerPluginManager>();
+    camp::Class::declare<ClientPluginManager>( "ClientPluginManager" )
+        .base<PluginManager>();
         // Constructors
         // Properties (read-only)
         // Properties (read/write)
@@ -62,7 +62,7 @@ void CampBindings::bindClientObjectManager()
 {
     camp::Class::declare<ClientObjectManager>( "ClientObjectManager" )
         .base<ObjectManager>()
-        .base<ServerPlugin>();
+        .base<ClientPlugin>();
         // Constructors
         // Properties (read-only)
         // Properties (read/write)
@@ -99,16 +99,16 @@ void CampBindings::bindClientComponent()
         // Operators
 }
 
-void CampBindings::bindServerPlugin()
+void CampBindings::bindClientPlugin()
 {
-    camp::Class::declare<ServerPlugin>( "ServerPlugin" )
-        .base<ClientServerPlugin>()
+    camp::Class::declare<ClientPlugin>( "ClientPlugin" )
+        .base<Plugin>()
         .base<PropertySynchronization>()
         // Constructors
         // Properties (read-only)
         // Properties (read/write)
         // Functions
-        .function( "ForceSerialize", &ServerPlugin::forceSerializeProperties );
+        .function( "ForceSerialize", &ClientPlugin::forceSerializeProperties );
         // Static functions
         // Operators
 }
@@ -117,7 +117,7 @@ void CampBindings::bindPermissionManager()
 {
     camp::Class::declare<PermissionManager>( "PermissionManager" )
         .tag( "QtIcon", ":/Icons/Icons/apps/klipper.png" )
-        .base<ServerPlugin>();
+        .base<ClientPlugin>();
         // Constructors
         // Properties (read-only)
         // Properties (read/write)
@@ -167,7 +167,7 @@ void CampBindings::bindServerConnectionSettings()
 void CampBindings::bindServerNeighborsPlugin()
 {
     camp::Class::declare<ServerNeighborsPlugin>( "ServerNeighborsPlugin" )
-        .base<ServerPlugin>()
+        .base<ClientPlugin>()
         .tag( "QtIcon", ":/Icons/Icons/places/network-workgroup.png" )
         // Constructors
         // Properties (read-only)
@@ -182,7 +182,7 @@ void CampBindings::bindLuaPlugin()
 {
     camp::Class::declare<LuaPlugin>( "Lua" )
         .tag( "QtIcon", ":/Icons/Icons/mimetypes/stock_script.png" )
-        .base<ServerPlugin>()
+        .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
         // Properties (read/write)
@@ -212,7 +212,7 @@ void CampBindings::bindClientObjectTemplateManager()
 {
     camp::Class::declare<ClientObjectTemplateManager>( "ClientObjectTemplateManager" )
         .base<ObjectTemplateManager>()
-        .base<ServerPlugin>();
+        .base<ClientPlugin>();
         // Constructors
         // Properties (read-only)
         // Properties (read/write)

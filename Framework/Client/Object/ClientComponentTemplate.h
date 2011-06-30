@@ -29,8 +29,8 @@ THE SOFTWARE.
 
 #include "Client/Platform/Prerequisites.h"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPlugin.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Object/ClientObjectTemplate.h"
 #include "Object/ComponentTemplate.h"
 #include "Shared/Camp/PropertySynchronization.h"
@@ -58,7 +58,7 @@ public:
     inline ServerAbstract& getServer() const
     {
         return ClientComponentTemplate::getClientObjectTemplate().getClientObjectTemplateManager().
-            getServerPluginManager().getServer();
+            getClientPluginManager().getServer();
     }
 
 private:

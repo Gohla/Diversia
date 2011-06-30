@@ -13,12 +13,6 @@
     <Filter Include="Permission">
       <UniqueIdentifier>{d9ddadf1-058b-4d8d-ad6d-ef3d3d7dc7a4}</UniqueIdentifier>
     </Filter>
-    <Filter Include="ClientServerPlugin">
-      <UniqueIdentifier>{d07aa243-125b-4143-a329-8b42d143d9d7}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="ClientServerPlugin\Factories">
-      <UniqueIdentifier>{1af18111-cb8f-4a22-b270-9fe92f9436fe}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Camp">
       <UniqueIdentifier>{317ec6b2-3993-4120-b322-8ccc31464d40}</UniqueIdentifier>
     </Filter>
@@ -39,6 +33,12 @@
     </Filter>
     <Filter Include="Graphics">
       <UniqueIdentifier>{140ff2bf-ae96-4969-9c3e-fc21e3a91681}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugin">
+      <UniqueIdentifier>{d07aa243-125b-4143-a329-8b42d143d9d7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Plugin\Factories">
+      <UniqueIdentifier>{1af18111-cb8f-4a22-b270-9fe92f9436fe}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -80,27 +80,6 @@
     </ClInclude>
     <ClInclude Include="..\..\Framework\Shared\Permission\Permission.h">
       <Filter>Permission</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\ClientServerPlugin.h">
-      <Filter>ClientServerPlugin</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\ClientServerPluginFactory.h">
-      <Filter>ClientServerPlugin</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\ClientServerPluginFactoryManager.h">
-      <Filter>ClientServerPlugin</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\ClientServerPluginManager.h">
-      <Filter>ClientServerPlugin</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\ClientServerPluginTemplate.h">
-      <Filter>ClientServerPlugin</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\Factories\ObjectManagerFactory.h">
-      <Filter>ClientServerPlugin\Factories</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\Framework\Shared\ClientServerPlugin\Factories\TemplatePluginFactory.h">
-      <Filter>ClientServerPlugin\Factories</Filter>
     </ClInclude>
     <ClInclude Include="..\..\Framework\Shared\Camp\CampBindings.h">
       <Filter>Camp</Filter>
@@ -151,6 +130,27 @@
     <ClInclude Include="..\..\Framework\Shared\Platform\Defines.h">
       <Filter>Platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Plugin\Factories\ObjectManagerFactory.h">
+      <Filter>Plugin\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Plugin\Factories\TemplatePluginFactory.h">
+      <Filter>Plugin\Factories</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Plugin\Plugin.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Plugin\PluginFactory.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Plugin\PluginFactoryManager.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Plugin\PluginManager.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\Framework\Shared\Plugin\PluginTemplate.h">
+      <Filter>Plugin</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Framework\Shared\Platform\src\StableHeaders.cpp">
@@ -167,15 +167,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Framework\Shared\Communication\src\ServerPosition.cpp">
       <Filter>Communication</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\ClientServerPlugin\src\ClientServerPlugin.cpp">
-      <Filter>ClientServerPlugin</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\ClientServerPlugin\src\ClientServerPluginFactoryManager.cpp">
-      <Filter>ClientServerPlugin</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\ClientServerPlugin\src\ClientServerPluginManager.cpp">
-      <Filter>ClientServerPlugin</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Framework\Shared\Camp\src\CampBindings.cpp">
       <Filter>Camp</Filter>
@@ -200,6 +191,15 @@
     </ClCompile>
     <ClCompile Include="..\..\Framework\Shared\Camp\src\CampStringInterpreter.cpp">
       <Filter>Camp</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Plugin\src\Plugin.cpp">
+      <Filter>Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Plugin\src\PluginFactoryManager.cpp">
+      <Filter>Plugin</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\Shared\Plugin\src\PluginManager.cpp">
+      <Filter>Plugin</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

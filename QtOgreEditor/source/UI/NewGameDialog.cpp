@@ -8,7 +8,7 @@ This file is part of Diversia.
 
 #include "Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/ServerAbstract.h"
 #include "Client/Object/ClientObjectManager.h"
@@ -40,7 +40,7 @@ NewGameDialog::~NewGameDialog()
 void NewGameDialog::accept()
 {
     EditorGlobals::mGrid->createOfflineServer();
-    ServerPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
+    ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
     pluginManager.createPlugin<PermissionManager>();
     pluginManager.createPlugin<ClientObjectTemplateManager>();
     pluginManager.createPlugin<ClientObjectManager>();

@@ -31,9 +31,9 @@ namespace Client
 //------------------------------------------------------------------------------
 
 PermissionManager::PermissionManager( Mode mode, PluginState state, 
-    ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
+    ClientPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
+    ClientPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
 {
     PropertySynchronization::storeUserObject();
 }
@@ -97,7 +97,7 @@ Permission& PermissionManager::getPermission( const String& rName ) const
     else
     {
         // Allow all permissions in offline mode.
-        if( ServerPlugin::isOfflineMode() )
+        if( ClientPlugin::isOfflineMode() )
         {
             // Hack away constness to allow creating a permission here.
             return const_cast<PermissionManager*>(this)->addPermission( rName, true );
@@ -130,59 +130,59 @@ void PermissionManager::removePermission( const String& rName )
 
 Permission::ResultType PermissionManager::checkPermission( const String& rName )
 {
-    if( ServerPlugin::isOfflineMode() ) return Permission::Permission_Allowed;
+    if( ClientPlugin::isOfflineMode() ) return Permission::Permission_Allowed;
     return getPermission( rName ).checkPermission();
 }
 
 
 bool PermissionManager::checkPermissionAllowed( const String& rName )
 {
-    if( ServerPlugin::isOfflineMode() ) return true;
+    if( ClientPlugin::isOfflineMode() ) return true;
     return getPermission( rName ).checkPermissionAllowed();
 }
 
 void PermissionManager::checkPermissionThrows( const String& rName, const String& rDesc, 
     const String& rSrc )
 {
-    if( ServerPlugin::isOfflineMode() ) return;
+    if( ClientPlugin::isOfflineMode() ) return;
     getPermission( rName ).checkPermissionThrows( rDesc, rSrc );
 }
 
 void PermissionManager::checkPermissionThrows( const String& rName, const String& rSrc )
 {
-    if( ServerPlugin::isOfflineMode() ) return;
+    if( ClientPlugin::isOfflineMode() ) return;
     getPermission( rName ).checkPermissionThrows( rSrc );
 }
 
 Permission::ResultType PermissionManager::checkPermission( const String& rName, camp::Value& rValue )
 {
-    if( ServerPlugin::isOfflineMode() ) return Permission::Permission_Allowed;
+    if( ClientPlugin::isOfflineMode() ) return Permission::Permission_Allowed;
     return getPermission( rName ).checkPermission( rValue );
 }
 
 bool PermissionManager::checkPermissionAllowed( const String& rName, camp::Value& rValue )
 {
-    if( ServerPlugin::isOfflineMode() ) return true;
+    if( ClientPlugin::isOfflineMode() ) return true;
     return getPermission( rName ).checkPermissionAllowed( rValue );
 }
 
 void PermissionManager::checkPermissionThrows( const String& rName, camp::Value& rValue, 
     const String& rDesc, const String& rSrc )
 {
-    if( ServerPlugin::isOfflineMode() ) return;
+    if( ClientPlugin::isOfflineMode() ) return;
     getPermission( rName ).checkPermissionThrows( rValue, rDesc, rSrc );
 }
 
 void PermissionManager::checkPermissionThrows( const String& rName, camp::Value& rValue, 
     const String& rSrc )
 {
-    if( ServerPlugin::isOfflineMode() ) return;
+    if( ClientPlugin::isOfflineMode() ) return;
     getPermission( rName ).checkPermissionThrows( rValue, rSrc );
 }
 
 void PermissionManager::create()
 {
-    ServerPlugin::mLoadingCompletedSignal( *this );
+    ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
 bool PermissionManager::DeserializeConstruction( RakNet::BitStream* pConstructionBitstream, 

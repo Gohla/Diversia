@@ -8,7 +8,7 @@ This file is part of Diversia.
 
 #include "Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Object/ClientObjectManager.h"
 #include "GameMode/EditorGameMode.h"
 #include "OgreClient/Object/Audio.h"

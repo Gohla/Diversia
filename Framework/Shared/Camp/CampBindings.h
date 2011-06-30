@@ -40,12 +40,12 @@ namespace Bindings
 class DIVERSIA_SHARED_API CampBindings
 {
 public:
-    static void bindClientServerPluginManager();
-    static void bindClientServerPlugin();
+    static void bindPluginManager();
+    static void bindPlugin();
     static void bindServerInfo();
     static void bindServerNeighbors();
     static void bindDirection();
-    static void bindClientServerPluginTypeEnum();
+    static void bindPluginTypeEnum();
     static void bindComponentTypeEnum();
     static void bindResourceInfo();
     static void bindTerrainTypeEnum();

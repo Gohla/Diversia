@@ -122,6 +122,20 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClInclude Include="..\..\QtOgreEditor\source\Log\QtLogger.h" />
+    <CustomBuild Include="..\..\QtOgreEditor\source\Model\PluginModel.h">
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp" "-fPlatform\StableHeaders.h" "-f..\..\Model\PluginModel.h"  -DQT_CORE_LIB -DQT_GUI_LIB -D_DEBUG -DWIN32 -D_WIN32 -D_WINDOWS -D_MBCS "-I." "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(SolutionDir)..\..\QtOgreEditor\qtpropertybrowser-2.5_1\src" "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\." "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated" "-I." "-I." "-I$(SolutionDir)..\..\$(ProjectName)\source" "-I$(SolutionDir)..\..\Framework" "-I$(SolutionDir)..\..\Libraries" "-I$(SolutionDir)dependencies\include" "-I$(SolutionDir)dependencies\include\curlpp" "-I$(SolutionDir)dependencies\include\Ogre" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\CgProgramManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\OctreeSceneManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\ParticleFX" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\Direct3D9" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\GL" "-I$(SolutionDir)dependencies\include\lua" "-I$(SolutionDir)dependencies\include\bullet" "-I$(SolutionDir)dependencies\include\cAudio\Headers" "-I$(SolutionDir)dependencies\include\cAudio\include" "-I$(SolutionDir)dependencies\include\ogre-procedural" "-I$(NOINHERIT)\." "-I." "-I." "-I." "-I." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Moc%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">.\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp" "-fPlatform\StableHeaders.h" "-f..\..\Model\PluginModel.h"  -DQT_CORE_LIB -DQT_GUI_LIB -DNDEBUG -DDBGINFO -DWIN32 -D_WIN32 -D_WINDOWS -D_MBCS "-I." "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(SolutionDir)..\..\QtOgreEditor\qtpropertybrowser-2.5_1\src" "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\." "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated" "-I." "-I." "-I$(SolutionDir)..\..\$(ProjectName)\source" "-I$(SolutionDir)..\..\Framework" "-I$(SolutionDir)..\..\Libraries" "-I$(SolutionDir)dependencies\include" "-I$(SolutionDir)dependencies\include\curlpp" "-I$(SolutionDir)dependencies\include\Ogre" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\CgProgramManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\OctreeSceneManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\ParticleFX" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\Direct3D9" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\GL" "-I$(SolutionDir)dependencies\include\lua" "-I$(SolutionDir)dependencies\include\bullet" "-I$(SolutionDir)dependencies\include\cAudio\Headers" "-I$(SolutionDir)dependencies\include\cAudio\include" "-I$(SolutionDir)dependencies\include\ogre-procedural" "-I$(NOINHERIT)\." "-I." "-I." "-I." "-I." "-I."</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath)</AdditionalInputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing %(Identity)...</Message>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp</Outputs>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"  "%(FullPath)" -o ".\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp" "-fPlatform\StableHeaders.h" "-f..\..\Model\PluginModel.h"  -DQT_CORE_LIB -DQT_GUI_LIB -DWIN32 -D_WIN32 -D_WINDOWS -D_MBCS "-I." "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(SolutionDir)..\..\QtOgreEditor\qtpropertybrowser-2.5_1\src" "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\." "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated" "-I." "-I." "-I$(SolutionDir)..\..\$(ProjectName)\source" "-I$(SolutionDir)..\..\Framework" "-I$(SolutionDir)..\..\Libraries" "-I$(SolutionDir)dependencies\include" "-I$(SolutionDir)dependencies\include\curlpp" "-I$(SolutionDir)dependencies\include\Ogre" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\CgProgramManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\OctreeSceneManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\ParticleFX" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\Direct3D9" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\GL" "-I$(SolutionDir)dependencies\include\lua" "-I$(SolutionDir)dependencies\include\bullet" "-I$(SolutionDir)dependencies\include\cAudio\Headers" "-I$(SolutionDir)dependencies\include\cAudio\include" "-I$(SolutionDir)dependencies\include\ogre-procedural" "-I$(NOINHERIT)\." "-I." "-I." "-I." "-I." "-I."</Command>
+    </CustomBuild>
     <ClInclude Include="..\..\QtOgreEditor\source\Platform\Forward.h" />
     <ClInclude Include="..\..\QtOgreEditor\source\State\PauseState.h" />
     <ClInclude Include="..\..\QtOgreEditor\source\State\PlayState.h" />
@@ -329,20 +343,6 @@
       <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(AdditionalInputs)</AdditionalInputs>
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">%(Outputs)</Outputs>
     </CustomBuild>
-    <CustomBuild Include="..\..\QtOgreEditor\source\Model\ClientServerPluginModel.h">
-      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing %(Filename)%(Extension)...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"   -DQT_CORE_LIB -DQT_GUI_LIB -D_DEBUG -DWIN32 -D_WIN32 -D_WINDOWS -D_MBCS  "-I." "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(SolutionDir)..\..\QtOgreEditor\qtpropertybrowser-2.5_1\src" "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\." "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated" "-I." "-I." "-I$(SolutionDir)..\..\$(ProjectName)\source" "-I$(SolutionDir)..\..\Framework" "-I$(SolutionDir)..\..\Libraries" "-I$(SolutionDir)dependencies\include" "-I$(SolutionDir)dependencies\include\curlpp" "-I$(SolutionDir)dependencies\include\Ogre" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\CgProgramManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\OctreeSceneManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\ParticleFX" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\Direct3D9" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\GL" "-I$(SolutionDir)dependencies\include\lua" "-I$(SolutionDir)dependencies\include\bullet" "-I$(SolutionDir)dependencies\include\cAudio\Headers" "-I$(SolutionDir)dependencies\include\cAudio\include" "-I$(SolutionDir)dependencies\include\ogre-procedural" "-I$(NOINHERIT)\." "-I." "-I." "-I." "-I." "-I." "..\..\QtOgreEditor\source\Model\ClientServerPluginModel.h" -o ".\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp" "-fPlatform\StableHeaders.h" "-f..\..\Model\ClientServerPluginModel.h"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">.\..\..\QtOgreEditor\source\Generated\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Moc%27ing %(Filename)%(Extension)...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">"$(QTDIR)\bin\moc.exe"   -DQT_CORE_LIB -DQT_GUI_LIB -DNDEBUG -DDBGINFO -DWIN32 -D_WIN32 -D_WINDOWS -D_MBCS  "-I." "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(SolutionDir)..\..\QtOgreEditor\qtpropertybrowser-2.5_1\src" "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\." "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated" "-I." "-I." "-I$(SolutionDir)..\..\$(ProjectName)\source" "-I$(SolutionDir)..\..\Framework" "-I$(SolutionDir)..\..\Libraries" "-I$(SolutionDir)dependencies\include" "-I$(SolutionDir)dependencies\include\curlpp" "-I$(SolutionDir)dependencies\include\Ogre" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\CgProgramManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\OctreeSceneManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\ParticleFX" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\Direct3D9" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\GL" "-I$(SolutionDir)dependencies\include\lua" "-I$(SolutionDir)dependencies\include\bullet" "-I$(SolutionDir)dependencies\include\cAudio\Headers" "-I$(SolutionDir)dependencies\include\cAudio\include" "-I$(SolutionDir)dependencies\include\ogre-procedural" "-I$(NOINHERIT)\." "-I." "-I." "-I." "-I." "-I." "..\..\QtOgreEditor\source\Model\ClientServerPluginModel.h" -o ".\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp" "-fPlatform\StableHeaders.h" "-f..\..\Model\ClientServerPluginModel.h"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">.\..\..\QtOgreEditor\source\Generated\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
-      <Message Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Moc%27ing %(Filename)%(Extension)...</Message>
-      <Command Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">"$(QTDIR)\bin\moc.exe"   -DQT_CORE_LIB -DQT_GUI_LIB -DWIN32 -D_WIN32 -D_WINDOWS -D_MBCS  "-I." "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(SolutionDir)..\..\QtOgreEditor\qtpropertybrowser-2.5_1\src" "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\." "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated" "-I." "-I." "-I$(SolutionDir)..\..\$(ProjectName)\source" "-I$(SolutionDir)..\..\Framework" "-I$(SolutionDir)..\..\Libraries" "-I$(SolutionDir)dependencies\include" "-I$(SolutionDir)dependencies\include\curlpp" "-I$(SolutionDir)dependencies\include\Ogre" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\CgProgramManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\OctreeSceneManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\ParticleFX" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\Direct3D9" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\GL" "-I$(SolutionDir)dependencies\include\lua" "-I$(SolutionDir)dependencies\include\bullet" "-I$(SolutionDir)dependencies\include\cAudio\Headers" "-I$(SolutionDir)dependencies\include\cAudio\include" "-I$(SolutionDir)dependencies\include\ogre-procedural" "-I$(NOINHERIT)\." "-I." "-I." "-I." "-I." "-I." "..\..\QtOgreEditor\source\Model\ClientServerPluginModel.h" -o ".\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp" "-fPlatform\StableHeaders.h" "-f..\..\Model\ClientServerPluginModel.h"</Command>
-      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">$(QTDIR)\bin\moc.exe;%(FullPath);%(AdditionalInputs)</AdditionalInputs>
-      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">.\..\..\QtOgreEditor\source\Generated\$(Configuration)\moc_%(Filename).cpp;%(Outputs)</Outputs>
-    </CustomBuild>
     <CustomBuild Include="..\..\QtOgreEditor\source\Model\ObjectComponentModel.h">
       <Message Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Moc%27ing %(Filename)%(Extension)...</Message>
       <Command Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">"$(QTDIR)\bin\moc.exe"   -DQT_CORE_LIB -DQT_GUI_LIB -D_DEBUG -DWIN32 -D_WIN32 -D_WINDOWS -D_MBCS  "-I." "-I$(QTDIR)\include" "-I$(QTDIR)\include\QtCore" "-I$(QTDIR)\include\QtGui" "-I$(SolutionDir)..\..\QtOgreEditor\qtpropertybrowser-2.5_1\src" "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\." "-I$(SolutionDir)..\..\QtOgreEditor\source\Generated" "-I." "-I." "-I$(SolutionDir)..\..\$(ProjectName)\source" "-I$(SolutionDir)..\..\Framework" "-I$(SolutionDir)..\..\Libraries" "-I$(SolutionDir)dependencies\include" "-I$(SolutionDir)dependencies\include\curlpp" "-I$(SolutionDir)dependencies\include\Ogre" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\CgProgramManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\OctreeSceneManager" "-I$(SolutionDir)dependencies\include\Ogre\Plugins\ParticleFX" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\Direct3D9" "-I$(SolutionDir)dependencies\include\Ogre\RenderSystems\GL" "-I$(SolutionDir)dependencies\include\lua" "-I$(SolutionDir)dependencies\include\bullet" "-I$(SolutionDir)dependencies\include\cAudio\Headers" "-I$(SolutionDir)dependencies\include\cAudio\include" "-I$(SolutionDir)dependencies\include\ogre-procedural" "-I$(NOINHERIT)\." "-I." "-I." "-I." "-I." "-I." "..\..\QtOgreEditor\source\Model\ObjectComponentModel.h" -o ".\..\..\QtOgreEditor\source\Generated\$(ConfigurationName)\moc_%(Filename).cpp" "-fPlatform\StableHeaders.h" "-f..\..\Model\ObjectComponentModel.h"</Command>
@@ -403,6 +403,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_PluginModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_UndoListView.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -420,6 +424,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_ObjectTemplateTreeView.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_PluginModel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -443,6 +451,10 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_PluginModel.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_UndoListView.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">true</ExcludedFromBuild>
@@ -453,6 +465,7 @@
     </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Log\QtLogger.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Model\ObjectComponentTemplateModel.cpp" />
+    <ClCompile Include="..\..\QtOgreEditor\source\Model\PluginModel.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Model\UndoModel.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Object\EditorObject.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Object\EditorObjectManager.cpp" />
@@ -472,10 +485,6 @@
     <ClCompile Include="..\..\QtOgreEditor\source\UI\PluginTreeView.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\UI\PropertyBrowser.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_CampPropertyManager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ClientServerPluginModel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -515,10 +524,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
-    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_ClientServerPluginModel.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_ConnectDialog.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -552,10 +557,6 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_CampPropertyManager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
-    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_ClientServerPluginModel.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
@@ -595,7 +596,6 @@
     <ClCompile Include="..\..\QtOgreEditor\source\State\InitialState.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\State\LoadingState.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\GameMode\EditorGameMode.cpp" />
-    <ClCompile Include="..\..\QtOgreEditor\source\Model\ClientServerPluginModel.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Model\ObjectComponentModel.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Camp\CampBindings.cpp" />
     <ClCompile Include="..\..\QtOgreEditor\source\Camp\CampPropertyManager.cpp" />

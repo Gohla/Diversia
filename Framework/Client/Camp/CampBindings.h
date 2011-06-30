@@ -36,11 +36,11 @@ namespace Bindings
 class DIVERSIA_CLIENT_API CampBindings
 {
 public:
-    static void bindServerPluginManager();
+    static void bindClientPluginManager();
     static void bindClientObjectManager();
     static void bindClientObject();
     static void bindClientComponent();
-    static void bindServerPlugin();
+    static void bindClientPlugin();
     static void bindPermissionManager();
     static void bindGridManager();
     static void bindServerConnectionSettings();

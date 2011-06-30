@@ -44,18 +44,18 @@ sigc::slot<GameModeBase*, GameModePlugin*> GameModePlugin::mDefaultSlot =
     sigc::slot<GameModeBase*, GameModePlugin*>();
 bool GameModePlugin::mForceDefault = false;
 
-GameModePlugin::GameModePlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+GameModePlugin::GameModePlugin( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
     RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
     RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    ClientPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mGameMode( 0 ),
     mMousePriority( 0 ),
     mKeyboardPriority( 0 ),
     mMouseSubscribed( false ),
     mKeyboardSubscribed( false ),
     mCreated( false ),
-    mResourceManager( ClientServerPlugin::getPluginManager().getPlugin<ResourceManager>() ),
-    mLuaManager( ClientServerPlugin::getPluginManager().getPlugin<LuaPlugin>().get() )
+    mResourceManager( Plugin::getPluginManager().getPlugin<ResourceManager>() ),
+    mLuaManager( Plugin::getPluginManager().getPlugin<LuaPlugin>().get() )
 {
     PropertySynchronization::storeUserObject();
 }
@@ -70,16 +70,16 @@ void GameModePlugin::create()
     if( !mCreated )
     {
         if( mClientScriptFiles.empty() || mClientLoadDefaultGamemode || 
-            ClientServerPlugin::getState() == STOP )
+            Plugin::getState() == STOP )
         {
             // Create default gamemode
             if( !mDefaultSlot.empty() ) mGameMode = mDefaultSlot( this );
 
-            if( mClientScriptFiles.empty() || ClientServerPlugin::getState() == STOP )
-                ServerPlugin::mLoadingCompletedSignal( *this );
+            if( mClientScriptFiles.empty() || Plugin::getState() == STOP )
+                ClientPlugin::mLoadingCompletedSignal( *this );
         }
 
-        if( !mClientScriptFiles.empty() && ClientServerPlugin::getState() == PLAY )
+        if( !mClientScriptFiles.empty() && Plugin::getState() == PLAY )
         {
             // Load lua gamemode(s)
             ResourceList resourceList;
@@ -97,7 +97,7 @@ void GameModePlugin::create()
             catch( FileNotFoundException e )
             {
                 CLOGE << e.what();
-                ServerPlugin::mLoadingCompletedSignal( *this );
+                ClientPlugin::mLoadingCompletedSignal( *this );
             }
         }
 
@@ -183,7 +183,7 @@ void GameModePlugin::resourcesLoaded()
         mLuaManager.call( "Create", "", "Global" );
     }
 
-    ServerPlugin::mLoadingCompletedSignal( *this );
+    ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
 bool GameModePlugin::mousePressed( const MouseButton button )
@@ -335,7 +335,7 @@ template <> inline sigc::connection GameModePlugin::connectImpl<LUAGAMEMODESCRIP
 
 template <> inline sigc::connection GameModePlugin::connectImpl<LUAGAMEMODESCRIPTEVENT_OBJECTCHANGE>()
 {
-    ObjectManager& objectManager = ServerPlugin::getPluginManager().getPlugin<ClientObjectManager>();
+    ObjectManager& objectManager = ClientPlugin::getPluginManager().getPlugin<ClientObjectManager>();
     return objectManager.connect( sigc::group( sigc::mem_fun( mLuaManager, 
         &LuaManager::call<Object&, bool> ), "ObjectChange", "", "Global", sigc::_1, sigc::_2 ) );
 }

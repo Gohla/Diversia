@@ -127,7 +127,7 @@ void LuaManager::registerDefaultEnums()
 {
     LuaManager::registerEnum<Mode>( "Mode" );
     LuaManager::registerEnum<NetworkingType>( "NetworkingType" );
-    LuaManager::registerEnum<ClientServerPluginTypeEnum>( "PluginType" );
+    LuaManager::registerEnum<PluginTypeEnum>( "PluginType" );
     LuaManager::registerEnum<ComponentTypeEnum>( "ComponentType" );
     LuaManager::registerEnum<PhysicsShape>( "PhysicsShape" );
     LuaManager::registerEnum<PhysicsType>( "PhysicsType" );

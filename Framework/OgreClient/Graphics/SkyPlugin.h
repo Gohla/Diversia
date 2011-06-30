@@ -26,7 +26,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Platform/Prerequisites.h"
 
 #include <Caelum/Caelum.h>
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPlugin.h"
 
 namespace Diversia
 {
@@ -34,7 +34,7 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_OGRECLIENT_API SkyPlugin : public ServerPlugin
+class DIVERSIA_OGRECLIENT_API SkyPlugin : public ClientPlugin
 {
 public:
     /**
@@ -46,7 +46,7 @@ public:
     @param [in,out] rReplicaManager     The replica manager. 
     @param [in,out] rNetworkIDManager   The network ID manager. 
     **/
-    SkyPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+    SkyPlugin( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     ~SkyPlugin();
@@ -82,13 +82,13 @@ public:
     /**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return CLIENTSERVERPLUGINTYPE_SKY; }
-    static inline ClientServerPluginTypeEnum getTypeStatic() { return CLIENTSERVERPLUGINTYPE_SKY; }
+    inline PluginTypeEnum getType() const { return PLUGINTYPE_SKY; }
+    static inline PluginTypeEnum getTypeStatic() { return PLUGINTYPE_SKY; }
     /**
     Gets the plugin type name.
     **/
-    inline String getTypeName() const { return CLIENTSERVERPLUGINNAME_SKY; }
-    static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_SKY; }
+    inline String getTypeName() const { return PLUGINNAME_SKY; }
+    static inline String getTypeNameStatic() { return PLUGINNAME_SKY; }
     /**
     Gets the precipitation type. 
     **/

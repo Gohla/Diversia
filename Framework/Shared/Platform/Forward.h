@@ -38,12 +38,12 @@ namespace Diversia
 class PropertySynchronization;
 class PropertyTransaction;
 
-// ClientServerPlugin
+// Plugin
 class ServerNeighbors;
-class ClientServerPlugin;
-class ClientServerPluginFactory;
-class ClientServerPluginFactoryManager;
-class ClientServerPluginManager;
+class Plugin;
+class PluginFactory;
+class PluginFactoryManager;
+class PluginManager;
 
 // Communication
 class ReplicaConnection;

@@ -22,10 +22,10 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "Client/Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPluginManager.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "Client/Permission/PermissionManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/Plugin/PluginManager.h"
 #include "Shared/Camp/CampStringInterpreter.h"
 
 namespace Diversia
@@ -34,10 +34,10 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-ServerPlugin::ServerPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+ClientPlugin::ClientPlugin( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
     RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
     RakNet::NetworkIDManager& rNetworkIDManager ):
-    ClientServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    Plugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     PropertySynchronization( mode )
 {
     try
@@ -50,19 +50,19 @@ ServerPlugin::ServerPlugin( Mode mode, PluginState state, ServerPluginManager& r
     }
 }
 
-ServerPluginManager& ServerPlugin::getServerPluginManager() const
+ClientPluginManager& ClientPlugin::getClientPluginManager() const
 {
     // Not inline because of cyclic dependency.
-    return static_cast<ServerPluginManager&>( ClientServerPlugin::getPluginManager() );
+    return static_cast<ClientPluginManager&>( Plugin::getPluginManager() );
 }
 
-ServerAbstract& ServerPlugin::getServer() const
+ServerAbstract& ClientPlugin::getServer() const
 {
     // Not inline because of cyclic dependency.
-    return ServerPlugin::getServerPluginManager().getServer();
+    return ClientPlugin::getClientPluginManager().getServer();
 }
 
-void ServerPlugin::setOfflineMode( bool offlineMode )
+void ClientPlugin::setOfflineMode( bool offlineMode )
 {
     if( offlineMode != mOfflineMode )
     {
@@ -71,32 +71,32 @@ void ServerPlugin::setOfflineMode( bool offlineMode )
     }
 }
 
-void ServerPlugin::SerializeConstruction( RakNet::BitStream* pConstructionBitstream, 
+void ClientPlugin::SerializeConstruction( RakNet::BitStream* pConstructionBitstream, 
     RakNet::Connection_RM3* pDestinationConnection )
 {
     PropertySynchronization::doSerializeConstruction( pConstructionBitstream, 
         pDestinationConnection );
 }
 
-bool ServerPlugin::DeserializeConstruction( RakNet::BitStream* pConstructionBitstream, 
+bool ClientPlugin::DeserializeConstruction( RakNet::BitStream* pConstructionBitstream, 
     RakNet::Connection_RM3* pSourceConnection )
 {
     PropertySynchronization::doDeserializeConstruction( pConstructionBitstream, pSourceConnection );
     return true;
 }
 
-RakNet::RM3SerializationResult ServerPlugin::Serialize( 
+RakNet::RM3SerializationResult ClientPlugin::Serialize( 
     RakNet::SerializeParameters* pSerializeParameters )
 {
     return PropertySynchronization::doSerialize( pSerializeParameters );
 }
 
-void ServerPlugin::Deserialize( RakNet::DeserializeParameters* pDeserializeParameters )
+void ClientPlugin::Deserialize( RakNet::DeserializeParameters* pDeserializeParameters )
 {
     PropertySynchronization::doDeserialize( pDeserializeParameters );
 }
 
-void ServerPlugin::querySetProperty( const String& rQuery, camp::Value& rValue )
+void ClientPlugin::querySetProperty( const String& rQuery, camp::Value& rValue )
 {
     if( mPermissionManager )
     {
@@ -104,16 +104,16 @@ void ServerPlugin::querySetProperty( const String& rQuery, camp::Value& rValue )
         mPermissionManager->checkPermissionThrows( String( "SetPropertyOn" ) + 
             getTypeName() + String( "Plugin_" ) + 
             CampStringInterpreter::removeArrayIdentifiers( rQuery ), 
-            rValue, "ServerPlugin::querySetProperty" );
+            rValue, "ClientPlugin::querySetProperty" );
     }
     else
     {
         DIVERSIA_EXCEPT( Exception::ERR_INVALID_STATE, "Permission manager has not been set yet.", 
-	        "ServerPlugin::querySetProperty" );
+	        "ClientPlugin::querySetProperty" );
     }
 }
 
-void ServerPlugin::queryInsertProperty( const String& rQuery, camp::Value& rValue )
+void ClientPlugin::queryInsertProperty( const String& rQuery, camp::Value& rValue )
 {
     if( mPermissionManager )
     {
@@ -121,16 +121,16 @@ void ServerPlugin::queryInsertProperty( const String& rQuery, camp::Value& rValu
         mPermissionManager->checkPermissionThrows( String( "InsertValueIn" ) + 
             getTypeName() + String( "Plugin_" ) + 
             CampStringInterpreter::removeArrayIdentifiers( rQuery ), 
-            rValue, "ServerPlugin::queryInsertProperty" );
+            rValue, "ClientPlugin::queryInsertProperty" );
     }
     else
     {
         DIVERSIA_EXCEPT( Exception::ERR_INVALID_STATE, "Permission manager has not been set yet.", 
-            "ServerPlugin::queryInsertProperty" );
+            "ClientPlugin::queryInsertProperty" );
     }
 }
 
-void ServerPlugin::pluginCreated( ClientServerPlugin& rPlugin, bool created )
+void ClientPlugin::pluginCreated( Plugin& rPlugin, bool created )
 {
     if( rPlugin.getType() == PermissionManager::getTypeStatic() && created )
     {

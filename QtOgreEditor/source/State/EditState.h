@@ -11,7 +11,7 @@ This file is part of Diversia.
 
 #include "Platform/Prerequisites.h"
 
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/Plugin/PluginManager.h"
 #include "Util/State/State.h"
 
 namespace Diversia

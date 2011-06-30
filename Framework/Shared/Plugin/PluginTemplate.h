@@ -24,8 +24,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_SHARED_CLIENTSERVERPLUGINTEMPLATE_H
-#define DIVERSIA_SHARED_CLIENTSERVERPLUGINTEMPLATE_H
+#ifndef DIVERSIA_SHARED_PLUGINTEMPLATE_H
+#define DIVERSIA_SHARED_PLUGINTEMPLATE_H
 
 #include "Shared/Platform/Prerequisites.h"
 
@@ -34,10 +34,10 @@ namespace Diversia
 //------------------------------------------------------------------------------
 
 template <class Plugin, class PluginManager, unsigned char Type, const char* TypeName, class Data> 
-class DIVERSIA_SHARED_API ClientServerPluginTemplate : public Plugin
+class DIVERSIA_SHARED_API PluginTemplate : public Plugin
 {
 public:
-    typedef ClientServerPluginTemplate<Plugin, PluginManager, Type, TypeName, Data> TemplateType;
+    typedef PluginTemplate<Plugin, PluginManager, Type, TypeName, Data> TemplateType;
 
     /**
     Constructor. 
@@ -49,7 +49,7 @@ public:
     @param [in,out] rReplicaManager     The replica manager. 
     @param [in,out] rNetworkIDManager   The network ID manager. 
     **/
-    ClientServerPluginTemplate( Mode mode, PluginManager& rPluginManager, 
+    PluginTemplate( Mode mode, PluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager ):
         Plugin( mode, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager, 
@@ -62,8 +62,8 @@ public:
 	/**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return Type; }
-    static inline ClientServerPluginTypeEnum getTypeStatic() { return Type; }
+    inline PluginTypeEnum getType() const { return Type; }
+    static inline PluginTypeEnum getTypeStatic() { return Type; }
     /**
     Gets the plugin type name.
     **/
@@ -72,7 +72,7 @@ public:
 
     template <const char* DataName> static void campBinding()
     {
-        camp::Class::declare<TemplateType>( String( "ClientServerPluginTemplate" ) +
+        camp::Class::declare<TemplateType>( String( "PluginTemplate" ) +
             camp::classByType<Data>().name() )
         	// Constructors
         	// Properties (read-only)
@@ -97,20 +97,20 @@ Macro to define a plugin with one variable. This macro must be used outside any 
 
 @param  class       The plugin class to inherit from.
 @param  manager     The plugin manager to accept in the constructor. 
-@param  type        The plugin type to use (of type ClientServerPluginTypeEnum)
+@param  type        The plugin type to use (of type PluginTypeEnum)
 @param  typeName    The name of the plugin, without string quotes.
 @param  dataType    The data type of the variable inside the plugin.
 @param  dataName    The name of the data, used in the camp binding of this plugin, without string 
                     quotes.
 @param  nameSpace   The namespace the plugin must be created in.
 **/
-#define DIVERSIA_SHARED_CLIENTSERVERPLUGINTEMPLATE( class, manager, type, typeName, dataType, dataName, nameSpace ) \
+#define DIVERSIA_SHARED_PLUGINTEMPLATE( class, manager, type, typeName, dataType, dataName, nameSpace ) \
 namespace Diversia \
 { \
     namespace nameSpace \
     { \
         char g##typeName##Plugin[] = #typeName; \
-        typedef ClientServerPluginTemplate<nameSpace::class, nameSpace::manager, type, g##typeName##Plugin, \
+        typedef PluginTemplate<nameSpace::class, nameSpace::manager, type, g##typeName##Plugin, \
             dataType> typeName##Plugin; \
     } \
 } \
@@ -118,4 +118,4 @@ char g##typeName##PluginDataName[] = #dataName; \
 CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::nameSpace::typeName##Plugin, \
     &Diversia::nameSpace::typeName##Plugin::campBinding<g##typeName##PluginDataName> );
 
-#endif // DIVERSIA_SHARED_CLIENTSERVERPLUGINTEMPLATE_H
+#endif // DIVERSIA_SHARED_PLUGINTEMPLATE_H

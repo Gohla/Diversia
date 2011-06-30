@@ -26,19 +26,19 @@ THE SOFTWARE.
 
 #include "Shared/Platform/StableHeaders.h"
 
-#include "Shared/ClientServerPlugin/ClientServerPlugin.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginFactory.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginFactoryManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/Plugin/Plugin.h"
+#include "Shared/Plugin/PluginFactory.h"
+#include "Shared/Plugin/PluginFactoryManager.h"
+#include "Shared/Plugin/PluginManager.h"
 #include "Util/Serialization/XMLSerializationFile.h"
 
 namespace Diversia
 {
 //------------------------------------------------------------------------------
 
-ClientServerPluginTypes ClientServerPluginManager::mAutoCreatePlugins = ClientServerPluginTypes();
+PluginTypes PluginManager::mAutoCreatePlugins = PluginTypes();
 
-ClientServerPluginManager::ClientServerPluginManager( Mode mode, PluginState state, 
+PluginManager::PluginManager( Mode mode, PluginState state, 
     sigc::signal<void>& rUpdateSignal, RakNet::RakPeerInterface& rRakPeer, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     mMode( mode ),
@@ -51,48 +51,48 @@ ClientServerPluginManager::ClientServerPluginManager( Mode mode, PluginState sta
     mNetworkIDManager( rNetworkIDManager )
 {
     mUpdateConnection = mUpdateSignal.connect( sigc::mem_fun( this, 
-        &ClientServerPluginManager::update ) );
+        &PluginManager::update ) );
 
     // Create auto create plugins.
-    for( ClientServerPluginTypes::iterator i = mAutoCreatePlugins.begin(); 
+    for( PluginTypes::iterator i = mAutoCreatePlugins.begin(); 
         i != mAutoCreatePlugins.end(); ++i )
     {
-        ClientServerPluginManager::createPlugin( *i );
+        PluginManager::createPlugin( *i );
     }
 }
 
-ClientServerPluginManager::~ClientServerPluginManager()
+PluginManager::~PluginManager()
 {
     // Destroy all plugins that were queued for destruction in the next tick.
-    for( ClientServerPluginTypes::reverse_iterator i = mDestroyedPlugins.rbegin(); 
+    for( PluginTypes::reverse_iterator i = mDestroyedPlugins.rbegin(); 
         i != mDestroyedPlugins.rend(); ++i )
     {
-        ClientServerPlugin& plugin = ClientServerPluginManager::getPlugin( *i );
+        Plugin& plugin = PluginManager::getPlugin( *i );
         mPluginSignal( plugin, false );
         mPlugins.erase( *i );
         plugin.checkBroadcastDestruction();
-        ClientServerPluginFactoryManager::getPluginFactory( *i ).destroy( plugin );
+        PluginFactoryManager::getPluginFactory( *i ).destroy( plugin );
     }
 
     // Destroy all components immediately. This is safe since objects are already destroyed in the 
     // next tick.
-    for( ClientServerPlugins::reverse_iterator i = mPlugins.rbegin(); i != mPlugins.rend(); ++i )
+    for( Plugins::reverse_iterator i = mPlugins.rbegin(); i != mPlugins.rend(); ++i )
     {
         mPluginSignal( *i->second, false );
         i->second->checkBroadcastDestruction();
-        ClientServerPluginFactoryManager::getPluginFactory( i->second->getType() ).
+        PluginFactoryManager::getPluginFactory( i->second->getType() ).
             destroy( *i->second );
     }
 }
 
-ClientServerPlugin& ClientServerPluginManager::createPlugin( ClientServerPluginTypeEnum type )
+Plugin& PluginManager::createPlugin( PluginTypeEnum type )
 {
-    if( !ClientServerPluginManager::hasPlugin( type ) )
+    if( !PluginManager::hasPlugin( type ) )
     {
         // Create the plugin now, but the plugin specific part is initialized in the next
         // tick/frame update.
-        ClientServerPlugin& plugin = 
-            ClientServerPluginFactoryManager::getPluginFactory( type ).create( mMode, mPluginState, 
+        Plugin& plugin = 
+            PluginFactoryManager::getPluginFactory( type ).create( mMode, mPluginState, 
             *this, mRakPeer, mReplicaManager, mNetworkIDManager );
         mPlugins.insert( std::make_pair( type, &plugin ) );
         mCreatedPlugins.insert( type );
@@ -103,13 +103,13 @@ ClientServerPlugin& ClientServerPluginManager::createPlugin( ClientServerPluginT
     else
     {
         DIVERSIA_EXCEPT( Exception::ERR_DUPLICATE_ITEM, 
-            "Plugin of this type already exists.", "ClientServerPluginManager::createPlugin" );
+            "Plugin of this type already exists.", "PluginManager::createPlugin" );
     }
 }
 
-ClientServerPlugin& ClientServerPluginManager::getPlugin( ClientServerPluginTypeEnum type ) const
+Plugin& PluginManager::getPlugin( PluginTypeEnum type ) const
 {
-    ClientServerPlugins::const_iterator i = mPlugins.find( type );
+    Plugins::const_iterator i = mPlugins.find( type );
     if( i != mPlugins.end() )
     {
         return *i->second;
@@ -117,18 +117,18 @@ ClientServerPlugin& ClientServerPluginManager::getPlugin( ClientServerPluginType
     else
     {
         DIVERSIA_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, "Plugin not found.", 
-            "ClientServerPluginManager::getPlugin" );
+            "PluginManager::getPlugin" );
     }
 }
 
-bool ClientServerPluginManager::hasPlugin( ClientServerPluginTypeEnum type ) const
+bool PluginManager::hasPlugin( PluginTypeEnum type ) const
 {
     return mPlugins.find( type ) != mPlugins.end();
 }
 
-void ClientServerPluginManager::destroyPlugin( ClientServerPluginTypeEnum type )
+void PluginManager::destroyPlugin( PluginTypeEnum type )
 {
-    if( ClientServerPluginManager::hasPlugin( type ) )
+    if( PluginManager::hasPlugin( type ) )
     {
         // Destroy plugin in the next tick.
         mDestroyedPlugins.insert( type );
@@ -138,40 +138,40 @@ void ClientServerPluginManager::destroyPlugin( ClientServerPluginTypeEnum type )
     else
     {
         DIVERSIA_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, "Plugin not found.", 
-            "ClientServerPluginManager::hasPlugin" );
+            "PluginManager::hasPlugin" );
     }
 }
 
-void ClientServerPluginManager::addAutoCreatePlugin( ClientServerPluginTypeEnum type )
+void PluginManager::addAutoCreatePlugin( PluginTypeEnum type )
 {
     mAutoCreatePlugins.insert( type );
 }
 
-void ClientServerPluginManager::setState( PluginState state )
+void PluginManager::setState( PluginState state )
 {
     if( state == mPluginState ) return;
 
     mPrevPluginState = mPluginState;
     mPluginState = state;
 
-    if( mPluginState == PLAY && mPrevPluginState == STOP ) ClientServerPluginManager::storeState();
-    for( ClientServerPlugins::iterator i = mPlugins.begin(); i != mPlugins.end(); ++i )
+    if( mPluginState == PLAY && mPrevPluginState == STOP ) PluginManager::storeState();
+    for( Plugins::iterator i = mPlugins.begin(); i != mPlugins.end(); ++i )
     {
         i->second->setState( mPluginState, mPrevPluginState );
     }
-    if( mPluginState == STOP ) ClientServerPluginManager::restoreState();
+    if( mPluginState == STOP ) PluginManager::restoreState();
 
     mPluginStateChange( mPluginState, mPrevPluginState );
 }
 
-void ClientServerPluginManager::storeState()
+void PluginManager::storeState()
 {
     if( mStoredState ) delete mStoredState;
     mStoredState = new XMLSerializationFile( "", "NoSerialization", false, true );
     mStoredState->serialize( this, false );
 }
 
-void ClientServerPluginManager::restoreState()
+void PluginManager::restoreState()
 {
     if( mStoredState )
     {
@@ -181,28 +181,28 @@ void ClientServerPluginManager::restoreState()
     }
 }
 
-void ClientServerPluginManager::update()
+void PluginManager::update()
 {
-    SLOGD << "ClientServerPluginManager::update";
+    SLOGD << "PluginManager::update";
 
     // Initialize plugins that were created in the previous tick/frame.
-    for( ClientServerPluginTypes::iterator i = mCreatedPlugins.begin(); i != mCreatedPlugins.end(); 
+    for( PluginTypes::iterator i = mCreatedPlugins.begin(); i != mCreatedPlugins.end(); 
         ++i )
     {
         // Initializes the plugin.
-        ClientServerPluginManager::getPlugin( *i ).create();
+        PluginManager::getPlugin( *i ).create();
     }
     mCreatedPlugins.clear();
 
     // Destroy plugins that were queued for destruction in the previous tick/frame.
-    for( ClientServerPluginTypes::reverse_iterator i = mDestroyedPlugins.rbegin(); 
+    for( PluginTypes::reverse_iterator i = mDestroyedPlugins.rbegin(); 
         i != mDestroyedPlugins.rend(); ++i )
     {
-        ClientServerPlugin& plugin = ClientServerPluginManager::getPlugin( *i );
+        Plugin& plugin = PluginManager::getPlugin( *i );
         mPluginSignal( plugin, false );
         mPlugins.erase( *i );
         plugin.checkBroadcastDestruction();
-        ClientServerPluginFactoryManager::getPluginFactory( *i ).destroy( plugin );
+        PluginFactoryManager::getPluginFactory( *i ).destroy( plugin );
     }
     mDestroyedPlugins.clear();
 
@@ -210,7 +210,7 @@ void ClientServerPluginManager::update()
     mUpdateConnection.block( true );
 }
 
-bool ClientServerPluginManager::hasAutoCreatePlugin( ClientServerPluginTypeEnum type )
+bool PluginManager::hasAutoCreatePlugin( PluginTypeEnum type )
 {
     return mAutoCreatePlugins.find( type ) != mAutoCreatePlugins.end();
 }

@@ -33,9 +33,9 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-// ClientServerPlugin
-class ServerPlugin;
-class ServerPluginManager;
+// Plugin
+class ClientPlugin;
+class ClientPluginManager;
 
 // Communication
 class GridManager;

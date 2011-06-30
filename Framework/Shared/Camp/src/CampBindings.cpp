@@ -30,8 +30,8 @@ THE SOFTWARE.
 #include "Util/Camp/ValueMapper.h"
 
 #include "Shared/Camp/PropertySynchronization.h"
-#include "Shared/ClientServerPlugin/ClientServerPlugin.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/Plugin/Plugin.h"
+#include "Shared/Plugin/PluginManager.h"
 #include "Shared/Communication/ServerDirection.h"
 #include "Shared/Communication/ServerInfo.h"
 #include "Shared/Communication/ServerNeighbors.h"
@@ -53,42 +53,42 @@ namespace Bindings
 {
 //------------------------------------------------------------------------------
 
-void CampBindings::bindClientServerPluginManager()
+void CampBindings::bindPluginManager()
 {
-    camp::Class::declare<ClientServerPluginManager>( "ClientServerPluginManager" )
+    camp::Class::declare<PluginManager>( "PluginManager" )
         // Constructors
         // Properties (read-only)
-        .property( "Mode", &ClientServerPluginManager::getMode )
+        .property( "Mode", &PluginManager::getMode )
             .tag( "NoBitStream" )
             .tag( "NoSerialization")
-        .property( "Plugins", &ClientServerPluginManager::mPlugins )
+        .property( "Plugins", &PluginManager::mPlugins )
             .tag( "NoBitStream" )
             .tag( "AddFunction", "CreatePlugin" )
         // Properties (read/write)
         // Functions
-        .function( "CreatePlugin", &ClientServerPluginManager::createPlugin )
-        .function( "GetPlugin", &ClientServerPluginManager::getPlugin )
-        .function( "HasPlugin", &ClientServerPluginManager::hasPlugin )
-        .function( "DestroyPlugin", &ClientServerPluginManager::destroyPlugin );
+        .function( "CreatePlugin", &PluginManager::createPlugin )
+        .function( "GetPlugin", &PluginManager::getPlugin )
+        .function( "HasPlugin", &PluginManager::hasPlugin )
+        .function( "DestroyPlugin", &PluginManager::destroyPlugin );
         // Static functions
         // Operators
 }
 
-void CampBindings::bindClientServerPlugin()
+void CampBindings::bindPlugin()
 {
-    camp::Class::declare<ClientServerPlugin>( "ClientServerPlugin" )
+    camp::Class::declare<Plugin>( "Plugin" )
         // Constructors
         // Properties (read-only)
-        .property( "Type", &ClientServerPlugin::getType )
+        .property( "Type", &Plugin::getType )
             .tag( "NoSerialization" )
             .tag( "NoBitStream" )
-        .property( "TypeName", &ClientServerPlugin::getTypeName )
+        .property( "TypeName", &Plugin::getTypeName )
             .tag( "NoSerialization" )
             .tag( "NoBitStream" )
-        .property( "Mode", &ClientServerPlugin::getMode )
+        .property( "Mode", &Plugin::getMode )
             .tag( "NoSerialization" )
             .tag( "NoBitStream" )
-        .property( "PluginManager", &ClientServerPlugin::getPluginManager )
+        .property( "PluginManager", &Plugin::getPluginManager )
             .tag( "NoSerialization" )
             .tag( "NoBitStream" )
             .tag( "NoPropertyBrowser" );
@@ -148,19 +148,19 @@ void CampBindings::bindDirection()
         .value( "North west", NORTH_WEST );
 }
 
-void CampBindings::bindClientServerPluginTypeEnum()
+void CampBindings::bindPluginTypeEnum()
 {
-    camp::Enum::declare<ClientServerPluginTypeEnum>( "ClientServerPluginType" )
-        .value( CLIENTSERVERPLUGINNAME_PERMISSIONMANAGER, CLIENTSERVERPLUGINTYPE_PERMISSIONMANAGER )
-        .value( CLIENTSERVERPLUGINNAME_RESOURCEMANAGER, CLIENTSERVERPLUGINTYPE_RESOURCEMANAGER )
-        .value( CLIENTSERVERPLUGINNAME_LUA, CLIENTSERVERPLUGINTYPE_LUA )
-        .value( CLIENTSERVERPLUGINNAME_SERVERNEIGHBORS, CLIENTSERVERPLUGINTYPE_SERVERNEIGHBORS )
-        .value( CLIENTSERVERPLUGINNAME_SKY, CLIENTSERVERPLUGINTYPE_SKY )
-        .value( CLIENTSERVERPLUGINNAME_OBJECTTEMPLATEMANAGER, CLIENTSERVERPLUGINTYPE_OBJECTTEMPLATEMANAGER )
-        .value( CLIENTSERVERPLUGINNAME_OBJECTMANAGER, CLIENTSERVERPLUGINTYPE_OBJECTMANAGER )
-        .value( CLIENTSERVERPLUGINNAME_TERRAIN, CLIENTSERVERPLUGINTYPE_TERRAIN )
-        .value( CLIENTSERVERPLUGINNAME_GAMEMODE, CLIENTSERVERPLUGINTYPE_GAMEMODE )
-        .value( CLIENTSERVERPLUGINNAME_SCENEMANAGER, CLIENTSERVERPLUGINTYPE_SCENEMANAGER );
+    camp::Enum::declare<PluginTypeEnum>( "PluginType" )
+        .value( PLUGINNAME_PERMISSIONMANAGER, PLUGINTYPE_PERMISSIONMANAGER )
+        .value( PLUGINNAME_RESOURCEMANAGER, PLUGINTYPE_RESOURCEMANAGER )
+        .value( PLUGINNAME_LUA, PLUGINTYPE_LUA )
+        .value( PLUGINNAME_SERVERNEIGHBORS, PLUGINTYPE_SERVERNEIGHBORS )
+        .value( PLUGINNAME_SKY, PLUGINTYPE_SKY )
+        .value( PLUGINNAME_OBJECTTEMPLATEMANAGER, PLUGINTYPE_OBJECTTEMPLATEMANAGER )
+        .value( PLUGINNAME_OBJECTMANAGER, PLUGINTYPE_OBJECTMANAGER )
+        .value( PLUGINNAME_TERRAIN, PLUGINTYPE_TERRAIN )
+        .value( PLUGINNAME_GAMEMODE, PLUGINTYPE_GAMEMODE )
+        .value( PLUGINNAME_SCENEMANAGER, PLUGINTYPE_SCENEMANAGER );
 }
 
 void CampBindings::bindComponentTypeEnum()

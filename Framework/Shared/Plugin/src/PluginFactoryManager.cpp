@@ -26,37 +26,37 @@ THE SOFTWARE.
 
 #include "Shared/Platform/StableHeaders.h"
 
-#include "Shared/ClientServerPlugin/ClientServerPluginFactoryManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginFactory.h"
+#include "Shared/Plugin/PluginFactoryManager.h"
+#include "Shared/Plugin/PluginFactory.h"
 
 namespace Diversia
 {
 //------------------------------------------------------------------------------
 
-ClientServerPluginFactories ClientServerPluginFactoryManager::msClientServerPluginFactories = 
-    ClientServerPluginFactories();
+PluginFactories PluginFactoryManager::msPluginFactories = 
+    PluginFactories();
 
-void ClientServerPluginFactoryManager::registerPluginFactory( ClientServerPluginTypeEnum type, 
-    ClientServerPluginFactory* pClientServerPluginFactory )
+void PluginFactoryManager::registerPluginFactory( PluginTypeEnum type, 
+    PluginFactory* pPluginFactory )
 {
     if( !hasPluginFactory( type ) )
     {
-        msClientServerPluginFactories.insert( std::make_pair( type, pClientServerPluginFactory ) );
+        msPluginFactories.insert( std::make_pair( type, pPluginFactory ) );
     }
     else
     {
         DIVERSIA_EXCEPT( Exception::ERR_DUPLICATE_ITEM, 
             "Client-server plugin factory " + boost::lexical_cast<String>( type ) +
             " is already registered", 
-            "ClientServerPluginFactoryManager::registerPluginFactory" );
+            "PluginFactoryManager::registerPluginFactory" );
     }
 }
 
-ClientServerPluginFactory& ClientServerPluginFactoryManager::getPluginFactory( 
-    ClientServerPluginTypeEnum type )
+PluginFactory& PluginFactoryManager::getPluginFactory( 
+    PluginTypeEnum type )
 {
-    ClientServerPluginFactories::iterator i = msClientServerPluginFactories.find( type );
-    if( i != msClientServerPluginFactories.end() )
+    PluginFactories::iterator i = msPluginFactories.find( type );
+    if( i != msPluginFactories.end() )
     {
         return *i->second;
     }
@@ -65,39 +65,39 @@ ClientServerPluginFactory& ClientServerPluginFactoryManager::getPluginFactory(
         DIVERSIA_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, 
             "Client-server plugin factory " + boost::lexical_cast<String>( type ) + 
             " is not registered.", 
-            "ClientServerPluginFactoryManager::getPluginFactory" );
+            "PluginFactoryManager::getPluginFactory" );
     }
 }
 
-bool ClientServerPluginFactoryManager::hasPluginFactory( ClientServerPluginTypeEnum type )
+bool PluginFactoryManager::hasPluginFactory( PluginTypeEnum type )
 {
-    return msClientServerPluginFactories.find( type ) != msClientServerPluginFactories.end();
+    return msPluginFactories.find( type ) != msPluginFactories.end();
 }
 
-void ClientServerPluginFactoryManager::unregisterPluginFactory( ClientServerPluginTypeEnum type )
+void PluginFactoryManager::unregisterPluginFactory( PluginTypeEnum type )
 {
-    ClientServerPluginFactories::iterator i = msClientServerPluginFactories.find( type );
-    if( i != msClientServerPluginFactories.end() )
+    PluginFactories::iterator i = msPluginFactories.find( type );
+    if( i != msPluginFactories.end() )
     {
-        msClientServerPluginFactories.erase( i );
+        msPluginFactories.erase( i );
     }
     else
     {
         DIVERSIA_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, 
             "Client-server plugin factory " + boost::lexical_cast<String>( type ) + 
             " is not registered.", 
-            "ClientServerPluginFactoryManager::unregisterPluginFactory" );
+            "PluginFactoryManager::unregisterPluginFactory" );
     }
 }
 
-void ClientServerPluginFactoryManager::destroyPluginFactory()
+void PluginFactoryManager::destroyPluginFactory()
 {
-    for( ClientServerPluginFactories::iterator i = msClientServerPluginFactories.begin(); 
-        i != msClientServerPluginFactories.end(); ++i )
+    for( PluginFactories::iterator i = msPluginFactories.begin(); 
+        i != msPluginFactories.end(); ++i )
     {
         delete i->second;
     }
-    msClientServerPluginFactories.clear();
+    msPluginFactories.clear();
 }
 
 //------------------------------------------------------------------------------

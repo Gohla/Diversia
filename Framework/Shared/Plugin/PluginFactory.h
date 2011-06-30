@@ -24,33 +24,33 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_SHARED_CLIENTSERVERPLUGINFACTORY_H
-#define DIVERSIA_SHARED_CLIENTSERVERPLUGINFACTORY_H
+#ifndef DIVERSIA_SHARED_PLUGINFACTORY_H
+#define DIVERSIA_SHARED_PLUGINFACTORY_H
 
 #include "Shared/Platform/Prerequisites.h"
 
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/Plugin/PluginManager.h"
 
 namespace Diversia
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_SHARED_API ClientServerPluginFactory
+class DIVERSIA_SHARED_API PluginFactory
 {
 public:
     /**
     Default constructor. 
     **/
-    ClientServerPluginFactory() {}
+    PluginFactory() {}
     /**
     Destructor. 
     **/
-    virtual ~ClientServerPluginFactory() {}
+    virtual ~PluginFactory() {}
 
     /**
     Gets the plugin type.
     **/
-    virtual ClientServerPluginTypeEnum getType() const = 0;
+    virtual PluginTypeEnum getType() const = 0;
     /**
     Gets the plugin type name.
     **/
@@ -59,19 +59,19 @@ public:
     /**
     Creates an instance of a client-server plugin.
 
-    @see ClientServerPlugin::ClientServerPlugin()
+    @see Plugin::Plugin()
     **/
-    virtual ClientServerPlugin& create( Mode mode, PluginState state, 
-        ClientServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
+    virtual Plugin& create( Mode mode, PluginState state, 
+        PluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
         RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ) = 0;
     /**
     Destroys an instance of a client-server plugin.
     **/
-    virtual void destroy( ClientServerPlugin& rPlugin ) = 0;
+    virtual void destroy( Plugin& rPlugin ) = 0;
 
 };
 
 //------------------------------------------------------------------------------
 } // Namespace Diversia
 
-#endif // DIVERSIA_SHARED_CLIENTSERVERPLUGINFACTORY_H
+#endif // DIVERSIA_SHARED_PLUGINFACTORY_H

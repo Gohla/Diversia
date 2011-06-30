@@ -29,7 +29,7 @@ THE SOFTWARE.
 
 #include "Client/Platform/Prerequisites.h"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "Shared/Lua/LuaManager.h"
 
 namespace Diversia
@@ -38,10 +38,10 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_CLIENT_API LuaPlugin : public ServerPlugin
+class DIVERSIA_CLIENT_API LuaPlugin : public ClientPlugin
 {
 public:
-    LuaPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+    LuaPlugin( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     ~LuaPlugin();
@@ -53,13 +53,13 @@ public:
     /**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return CLIENTSERVERPLUGINTYPE_LUA; }
-    static inline ClientServerPluginTypeEnum getTypeStatic() { return CLIENTSERVERPLUGINTYPE_LUA; }
+    inline PluginTypeEnum getType() const { return PLUGINTYPE_LUA; }
+    static inline PluginTypeEnum getTypeStatic() { return PLUGINTYPE_LUA; }
     /**
     Gets the plugin type name.
     **/
-    inline String getTypeName() const { return CLIENTSERVERPLUGINNAME_LUA; }
-    static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_LUA; }
+    inline String getTypeName() const { return PLUGINNAME_LUA; }
+    static inline String getTypeNameStatic() { return PLUGINNAME_LUA; }
     
 private:
     /**

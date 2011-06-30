@@ -24,18 +24,18 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_SHARED_CLIENTSERVERPLUGIN_H
-#define DIVERSIA_SHARED_CLIENTSERVERPLUGIN_H
+#ifndef DIVERSIA_SHARED_PLUGIN_H
+#define DIVERSIA_SHARED_PLUGIN_H
 
 #include "Shared/Platform/Prerequisites.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/Plugin/PluginManager.h"
 #include <RakNet/RakPeerInterface.h>
 
 namespace Diversia
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_SHARED_API ClientServerPlugin : public RakNet::Replica3
+class DIVERSIA_SHARED_API Plugin : public RakNet::Replica3
 {
 public:
     /**
@@ -48,17 +48,17 @@ public:
     @param [in,out] rReplicaManager     The replica manager.
     @param [in,out] rNetworkIDManager   The network ID manager.
     **/
-    ClientServerPlugin( Mode mode, PluginState state, ClientServerPluginManager& rPluginManager,
+    Plugin( Mode mode, PluginState state, PluginManager& rPluginManager,
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager,
         RakNet::NetworkIDManager& rNetworkIDManager );
     /**
     Destructor.
     **/
-    virtual ~ClientServerPlugin();
+    virtual ~Plugin();
     /**
     Gets the type for this plugin.
     **/
-    virtual ClientServerPluginTypeEnum getType() const = 0;
+    virtual PluginTypeEnum getType() const = 0;
     /**
     Gets the type name for this plugin.
     **/
@@ -67,7 +67,7 @@ public:
     /**
     Gets the object manager this object belongs to.
     **/
-    inline ClientServerPluginManager& getPluginManager() const { return mPluginManager; }
+    inline PluginManager& getPluginManager() const { return mPluginManager; }
     /**
     Gets the rakpeer interface.
     **/
@@ -99,18 +99,18 @@ public:
     /**
     Connects a slot to the destruction signal.
 
-    @param [in,out] rSlot   The slot (signature: void func(ClientServerPlugin& [this plugin])) to
+    @param [in,out] rSlot   The slot (signature: void func(Plugin& [this plugin])) to
                             connect.
 
     @return Connection object to block or disconnect the connection.
     **/
-    inline sigc::connection connectDestruction( const sigc::slot<void, ClientServerPlugin&>& rSlot )
+    inline sigc::connection connectDestruction( const sigc::slot<void, Plugin&>& rSlot )
     {
         return mDestructionSignal.connect( rSlot );
     }
 
 protected:
-    friend class ClientServerPluginManager;
+    friend class PluginManager;
 
     /**
 	Creates the specific part of this plugin. This is called in the tick/frame update after the
@@ -151,7 +151,7 @@ protected:
     }
 
     /**
-    Not used in ClientServerPlugin.
+    Not used in Plugin.
     **/
     inline virtual RakNet::RM3ActionOnPopConnection QueryActionOnPopConnection(
         RakNet::Connection_RM3* pDroppedConnection ) const { return RakNet::RM3AOPC_DO_NOTHING; }
@@ -183,7 +183,7 @@ private:
 	void broadcastDestruction();
 
     /**
-    Implemented by ClientServerPlugin.
+    Implemented by Plugin.
     **/
     void WriteAllocationID( RakNet::Connection_RM3* pConnection,
         RakNet::BitStream* pAllocationIdBitstream ) const;
@@ -194,12 +194,12 @@ private:
 
     Mode                            mMode;
     PluginState                     mPluginState;
-    ClientServerPluginManager&      mPluginManager;
+    PluginManager&      mPluginManager;
     RakNet::RakPeerInterface&       mRakPeer;
     RakNet::ReplicaManager3&        mReplicaManager;
     RakNet::NetworkIDManager&       mNetworkIDManager;
 
-    sigc::signal<void, ClientServerPlugin&> mDestructionSignal;
+    sigc::signal<void, Plugin&> mDestructionSignal;
 
     CAMP_RTTI()
 };
@@ -207,7 +207,7 @@ private:
 //------------------------------------------------------------------------------
 } // Namespace Diversia
 
-CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::ClientServerPlugin,
-    &Diversia::Shared::Bindings::CampBindings::bindClientServerPlugin );
+CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::Plugin,
+    &Diversia::Shared::Bindings::CampBindings::bindPlugin );
 
-#endif // DIVERSIA_SHARED_CLIENTSERVERPLUGIN_H
+#endif // DIVERSIA_SHARED_PLUGIN_H

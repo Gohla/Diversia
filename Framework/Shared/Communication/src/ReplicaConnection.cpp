@@ -26,8 +26,8 @@ THE SOFTWARE.
 
 #include "Shared/Communication/ReplicaConnection.h"
 #include "Shared/Communication/BitStream.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPlugin.h"
+#include "Shared/Plugin/PluginManager.h"
+#include "Shared/Plugin/Plugin.h"
 #include "Object/ObjectManager.h"
 #include "Object/Object.h"
 #include "Object/Component.h"
@@ -37,7 +37,7 @@ namespace Diversia
 //------------------------------------------------------------------------------
 
 ReplicaConnection::ReplicaConnection( RakNet::SystemAddress systemAddress, RakNet::RakNetGUID guid, 
-    ObjectManager* pObjectManager, ClientServerPluginManager& rPluginManager ):
+    ObjectManager* pObjectManager, PluginManager& rPluginManager ):
     Connection_RM3( systemAddress, guid ),
     mObjectManager( pObjectManager ),
     mPluginManager( rPluginManager )
@@ -109,10 +109,10 @@ RakNet::Replica3* ReplicaConnection::AllocReplica( RakNet::BitStream* pAllocatio
             }
             break;
         }
-        case REPLICATYPE_CLIENTSERVERPLUGIN:
+        case REPLICATYPE_PLUGIN:
         {
-            ClientServerPluginTypeEnum type; 
-            pAllocationIdBitstream->Read<ClientServerPluginTypeEnum>( type );
+            PluginTypeEnum type; 
+            pAllocationIdBitstream->Read<PluginTypeEnum>( type );
 
             try
             {

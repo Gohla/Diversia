@@ -26,7 +26,7 @@ THE SOFTWARE.
 
 #include "Client/Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Lua/LuaPlugin.h"
 #include "Client/Object/ClientObjectTemplate.h"
 #include "Client/Object/ClientObjectTemplateManager.h"
@@ -39,18 +39,18 @@ namespace Client
 //------------------------------------------------------------------------------
 
 ClientObjectTemplateManager::ClientObjectTemplateManager( Mode mode, PluginState state, 
-    ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
+    ClientPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     ObjectTemplateManager( mode, rRakPeer.GetMyGUID(), rRakPeer.GetGUIDFromIndex( 0 ), rReplicaManager, 
         rNetworkIDManager ),
-    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    ClientPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mPermissionManager( rPluginManager.getPlugin<PermissionManager>() )
 {
     PropertySynchronization::storeUserObject();
 
     try
     {
-        ClientServerPlugin::getPluginManager().getPlugin<LuaPlugin>().get().object( 
+        Plugin::getPluginManager().getPlugin<LuaPlugin>().get().object( 
             "ObjectTemplateManager" ) = this;
     }
     catch( Exception e )
@@ -67,7 +67,7 @@ ClientObjectTemplateManager::~ClientObjectTemplateManager()
 void ClientObjectTemplateManager::create()
 {
     // TODO: Implement real loading completed signal
-    ServerPlugin::mLoadingCompletedSignal( *this );
+    ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
 void ClientObjectTemplateManager::offlineModeChanged( bool offlineMode )

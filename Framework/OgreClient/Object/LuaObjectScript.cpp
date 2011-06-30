@@ -30,8 +30,8 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Resource/GenericResource.h"
 #include "OgreClient/Resource/GenericResourceManager.h"
 #include "OgreClient/Resource/ResourceManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPlugin.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Shared/Plugin/Plugin.h"
+#include "Shared/Plugin/PluginManager.h"
 #include <camp-lua/valuetoluavisitor.hpp>
 #include <sigc++/adaptors/lambda/lambda.h>
 

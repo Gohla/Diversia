@@ -26,14 +26,14 @@ THE SOFTWARE.
 
 #include "Shared/Platform/StableHeaders.h"
 
-#include "Shared/ClientServerPlugin/ClientServerPlugin.h"
+#include "Shared/Plugin/Plugin.h"
 
 namespace Diversia
 {
 //------------------------------------------------------------------------------
 
-ClientServerPlugin::ClientServerPlugin( Mode mode, PluginState state,
-    ClientServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer,
+Plugin::Plugin( Mode mode, PluginState state,
+    PluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer,
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     mMode( mode ),
     mPluginState( state ),
@@ -47,12 +47,12 @@ ClientServerPlugin::ClientServerPlugin( Mode mode, PluginState state,
     checkBroadcastConstruction();
 }
 
-ClientServerPlugin::~ClientServerPlugin()
+Plugin::~Plugin()
 {
 
 }
 
-void ClientServerPlugin::setState( PluginState state, PluginState prevState )
+void Plugin::setState( PluginState state, PluginState prevState )
 {
     if( state == mPluginState ) return;
 
@@ -60,7 +60,7 @@ void ClientServerPlugin::setState( PluginState state, PluginState prevState )
     stateChanged( state, prevState );
 }
 
-void ClientServerPlugin::checkBroadcastConstruction()
+void Plugin::checkBroadcastConstruction()
 {
     // Only broadcast construction on the server, clients cannot construct plugins.
     if( mMode == SERVER )
@@ -69,12 +69,12 @@ void ClientServerPlugin::checkBroadcastConstruction()
     }
 }
 
-void ClientServerPlugin::broadcastConstruction()
+void Plugin::broadcastConstruction()
 {
     mReplicaManager.Reference( this );
 }
 
-void ClientServerPlugin::checkBroadcastDestruction()
+void Plugin::checkBroadcastDestruction()
 {
     // Only broadcast destruction on the server, clients cannot destroy plugins.
     if( mMode == SERVER )
@@ -83,32 +83,32 @@ void ClientServerPlugin::checkBroadcastDestruction()
     }
 }
 
-void ClientServerPlugin::broadcastDestruction()
+void Plugin::broadcastDestruction()
 {
     Replica3::BroadcastDestruction();
 }
 
-void ClientServerPlugin::WriteAllocationID( RakNet::Connection_RM3* pConnection,
+void Plugin::WriteAllocationID( RakNet::Connection_RM3* pConnection,
     RakNet::BitStream* pAllocationIdBitstream ) const
 {
     // Write plugin replica type and plugin type.
-    pAllocationIdBitstream->Write<ReplicaType>( REPLICATYPE_CLIENTSERVERPLUGIN );
-    pAllocationIdBitstream->Write<ClientServerPluginTypeEnum>( getType() );
+    pAllocationIdBitstream->Write<ReplicaType>( REPLICATYPE_PLUGIN );
+    pAllocationIdBitstream->Write<PluginTypeEnum>( getType() );
 }
 
-void ClientServerPlugin::DeallocReplica( RakNet::Connection_RM3* pSourceConnection )
+void Plugin::DeallocReplica( RakNet::Connection_RM3* pSourceConnection )
 {
     mPluginManager.destroyPlugin( getType() );
 }
 
-RakNet::RM3ConstructionState ClientServerPlugin::QueryConstruction(
+RakNet::RM3ConstructionState Plugin::QueryConstruction(
     RakNet::Connection_RM3* pDestinationConnection, RakNet::ReplicaManager3* pReplicaManager3 )
 {
     return Replica3::QueryConstruction_ServerConstruction( pDestinationConnection,
         mMode == SERVER ? true : false );
 }
 
-bool ClientServerPlugin::QueryRemoteConstruction( RakNet::Connection_RM3* pSourceConnection )
+bool Plugin::QueryRemoteConstruction( RakNet::Connection_RM3* pSourceConnection )
 {
     return Replica3::QueryRemoteConstruction_ClientConstruction( pSourceConnection,
         mMode == SERVER ? true : false );

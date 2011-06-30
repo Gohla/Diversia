@@ -22,7 +22,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "DefaultClient/Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/Server.h"
 #include "Client/Communication/ServerAbstract.h"
@@ -62,9 +62,9 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Object/Text.h"
 #include "OgreClient/Physics/PhysicsManager.h"
 #include "OgreClient/Resource/ResourceManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
-#include "Shared/ClientServerPlugin/Factories/ObjectManagerFactory.h"
-#include "Shared/ClientServerPlugin/Factories/TemplatePluginFactory.h"
+#include "Shared/Plugin/PluginManager.h"
+#include "Shared/Plugin/Factories/ObjectManagerFactory.h"
+#include "Shared/Plugin/Factories/TemplatePluginFactory.h"
 #include "Shared/Communication/GridPosition.h"
 #include "Shared/Communication/ServerInfo.h"
 #include "Shared/Crash/CrashReporter.h"
@@ -193,28 +193,28 @@ void ClientApplication::init( int argc, char* argv[] )
         camp::classByType<Particle>();
 
         // Add plugin factories, get camp class to ensure that the class is registered.
-        TemplatePluginFactory<PermissionManager, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<PermissionManager, ClientPluginManager>::registerFactory();
         camp::classByType<PermissionManager>();
-        TemplatePluginFactory<ResourceManager, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<ResourceManager, ClientPluginManager>::registerFactory();
         camp::classByType<ResourceManager>();
-        TemplatePluginFactory<ClientObjectTemplateManager, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<ClientObjectTemplateManager, ClientPluginManager>::registerFactory();
         camp::classByType<ClientObjectTemplateManager>();
-        ObjectManagerFactory<ClientObjectManager, ServerPluginManager>::registerFactory( mUpdateSignal, mLateUpdateSignal );
+        ObjectManagerFactory<ClientObjectManager, ClientPluginManager>::registerFactory( mUpdateSignal, mLateUpdateSignal );
         camp::classByType<ClientObjectManager>();
-        TemplatePluginFactory<ServerNeighborsPlugin, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<ServerNeighborsPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<ServerNeighborsPlugin>();
-        TemplatePluginFactory<SkyPlugin, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<SkyPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<SkyPlugin>();
-        TemplatePluginFactory<Terrain, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<Terrain, ClientPluginManager>::registerFactory();
         camp::classByType<Terrain>();
-        TemplatePluginFactory<SceneManagerPlugin, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<SceneManagerPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<SceneManagerPlugin>();
-        TemplatePluginFactory<LuaPlugin, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<LuaPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<LuaPlugin>();
-        ClientServerPluginManager::addAutoCreatePlugin<LuaPlugin>();
+        PluginManager::addAutoCreatePlugin<LuaPlugin>();
 
         // Override the default game mode.
-        TemplatePluginFactory<GameModePlugin, ServerPluginManager>::registerFactory();
+        TemplatePluginFactory<GameModePlugin, ClientPluginManager>::registerFactory();
         GameModePlugin::setDefaultSlot( sigc::ptr_fun( &DefaultGameMode::createGameMode ) );
 
         // Initialize graphics
@@ -262,7 +262,7 @@ void ClientApplication::init( int argc, char* argv[] )
         {
             mGridManager->createOfflineServer();
             mStateMachine->pushState( new LoadingState() );
-            ServerPluginManager& pluginManager = mGridManager->getActiveServer().getPluginManager();
+            ClientPluginManager& pluginManager = mGridManager->getActiveServer().getPluginManager();
             pluginManager.createPlugin<PermissionManager>();
             pluginManager.createPlugin<ClientObjectTemplateManager>();
             pluginManager.createPlugin<ClientObjectManager>();

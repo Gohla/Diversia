@@ -28,7 +28,7 @@ THE SOFTWARE.
 
 #include "Client/Communication/OfflineServer.h"
 #include "Client/Communication/ServerConnection.h"
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 
 namespace Diversia
 {
@@ -43,7 +43,7 @@ OfflineServer::OfflineServer( sigc::signal<void>& rUpdateSignal ):
     mUserInfo( "Offline" ),
     mServerConnection( new ServerConnection( mServerInfo, mDummySignal ) )
 {
-    mPluginManager.reset( new ServerPluginManager( CLIENT, STOP, rUpdateSignal, *this,
+    mPluginManager.reset( new ClientPluginManager( CLIENT, STOP, rUpdateSignal, *this,
         mServerConnection->getRakPeer(), mServerConnection->getReplicaManager(), 
         mServerConnection->getNetworkIDManager(), true ) );
 

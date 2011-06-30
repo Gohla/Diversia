@@ -20,12 +20,12 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_CLIENT_SERVERPLUGIN_H
-#define DIVERSIA_CLIENT_SERVERPLUGIN_H
+#ifndef DIVERSIA_CLIENT_CLIENTPLUGIN_H
+#define DIVERSIA_CLIENT_CLIENTPLUGIN_H
 
 #include "Client/Platform/Prerequisites.h"
 
-#include "Shared/ClientServerPlugin/ClientServerPlugin.h"
+#include "Shared/Plugin/Plugin.h"
 #include "Client/Communication/ServerAbstract.h"
 #include "Shared/Camp/PropertySynchronization.h"
 
@@ -35,7 +35,7 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_CLIENT_API ServerPlugin : public ClientServerPlugin, public PropertySynchronization
+class DIVERSIA_CLIENT_API ClientPlugin : public Plugin, public PropertySynchronization
 {
 public:
     /**
@@ -48,18 +48,18 @@ public:
     @param [in,out] rReplicaManager     The replica manager. 
     @param [in,out] rNetworkIDManager   The network ID manager. 
     **/
-    ServerPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+    ClientPlugin( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     /**
     Destructor. 
     **/
-    virtual ~ServerPlugin() {}
+    virtual ~ClientPlugin() {}
 
     /**
     Gets the server plugin manager. 
     **/
-    ServerPluginManager& getServerPluginManager() const;
+    ClientPluginManager& getClientPluginManager() const;
     /**
     Gets the server that this plugin belongs to.
     **/
@@ -80,11 +80,11 @@ public:
     /**
     Connects a slot to the loading completed signal. 
     
-    @param [in,out] rSlot   The slot (signature: void func(ServerPlugin&)) to connect. 
+    @param [in,out] rSlot   The slot (signature: void func(ClientPlugin&)) to connect. 
     
     @return Connection object to block or disconnect the connection.
     **/
-    inline sigc::connection connectLoadingComplete( const sigc::slot<void, ServerPlugin&>& rSlot )
+    inline sigc::connection connectLoadingComplete( const sigc::slot<void, ClientPlugin&>& rSlot )
     {
         return mLoadingCompletedSignal.connect( rSlot );
     }
@@ -102,7 +102,7 @@ protected:
     inline virtual void offlineModeChanged( bool offlineMode ) {}
 
     /**
-    Implemented in ServerPlugin, but can be overridden. Be sure to call the function in this 
+    Implemented in ClientPlugin, but can be overridden. Be sure to call the function in this 
     class first in your overridden function before doing your own processing!
     **/
     virtual void SerializeConstruction( RakNet::BitStream* pConstructionBitstream, 
@@ -116,12 +116,12 @@ protected:
     void querySetProperty( const String& rQuery, camp::Value& rValue );
     void queryInsertProperty( const String& rQuery, camp::Value& rValue );
 
-    sigc::signal<void, ServerPlugin&> mLoadingCompletedSignal;
+    sigc::signal<void, ClientPlugin&> mLoadingCompletedSignal;
 
 private:
-    friend class ServerPluginManager;	///< ServerPluginManager may call setServerState.
+    friend class ClientPluginManager;	///< ClientPluginManager may call setServerState.
 
-    void pluginCreated( ClientServerPlugin& rPlugin, bool created );
+    void pluginCreated( Plugin& rPlugin, bool created );
 
     PermissionManager*      mPermissionManager;
     bool                    mOfflineMode;
@@ -134,7 +134,7 @@ private:
 } // Namespace Client
 } // Namespace Diversia
 
-CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::Client::ServerPlugin, 
-    &Diversia::Client::Bindings::CampBindings::bindServerPlugin );
+CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::Client::ClientPlugin, 
+    &Diversia::Client::Bindings::CampBindings::bindClientPlugin );
 
-#endif // DIVERSIA_CLIENT_SERVERPLUGIN_H
+#endif // DIVERSIA_CLIENT_CLIENTPLUGIN_H

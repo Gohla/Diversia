@@ -25,7 +25,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Graphics/GraphicsManager.h"
 #include "OgreClient/Graphics/SceneManagerPlugin.h"
 #include "OgreClient/Resource/ResourceManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPlugin.h"
+#include "Shared/Plugin/Plugin.h"
 
 namespace Diversia
 {
@@ -34,10 +34,10 @@ namespace OgreClient
 //------------------------------------------------------------------------------
 
 SceneManagerPlugin::SceneManagerPlugin( Mode mode, PluginState state, 
-    ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
+    ClientPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
-    mResourceManager( ClientServerPlugin::getPluginManager().getPlugin<ResourceManager>() ),
+    ClientPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    mResourceManager( Plugin::getPluginManager().getPlugin<ResourceManager>() ),
     mCreated( false ),
     mResourcesInitialized( false ),
     mLoaded( false ),
@@ -127,7 +127,7 @@ void SceneManagerPlugin::resourcesLoaded()
     mLoaded = true;
 
     SceneManagerPlugin::updateSky();
-    ServerPlugin::mLoadingCompletedSignal( *this );
+    ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
 void SceneManagerPlugin::updateSky()

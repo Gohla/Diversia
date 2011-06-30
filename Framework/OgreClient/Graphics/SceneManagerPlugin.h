@@ -25,7 +25,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "OgreClient/Platform/Prerequisites.h"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "Shared/Graphics/Graphics.h"
 
 namespace Diversia
@@ -34,10 +34,10 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_OGRECLIENT_API SceneManagerPlugin : public ServerPlugin
+class DIVERSIA_OGRECLIENT_API SceneManagerPlugin : public ClientPlugin
 {
 public:
-    SceneManagerPlugin( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+    SceneManagerPlugin( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
         RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
         RakNet::NetworkIDManager& rNetworkIDManager );
     ~SceneManagerPlugin();
@@ -49,13 +49,13 @@ public:
     /**
     Gets the plugin type.
     **/
-    inline ClientServerPluginTypeEnum getType() const { return CLIENTSERVERPLUGINTYPE_SCENEMANAGER; }
-    static inline ClientServerPluginTypeEnum getTypeStatic() { return CLIENTSERVERPLUGINTYPE_SCENEMANAGER; }
+    inline PluginTypeEnum getType() const { return PLUGINTYPE_SCENEMANAGER; }
+    static inline PluginTypeEnum getTypeStatic() { return PLUGINTYPE_SCENEMANAGER; }
     /**
     Gets the plugin type name.
     **/
-    inline String getTypeName() const { return CLIENTSERVERPLUGINNAME_SCENEMANAGER; }
-    static inline String getTypeNameStatic() { return CLIENTSERVERPLUGINNAME_SCENEMANAGER; }
+    inline String getTypeName() const { return PLUGINNAME_SCENEMANAGER; }
+    static inline String getTypeNameStatic() { return PLUGINNAME_SCENEMANAGER; }
 
     /**
     Sets the sky material.

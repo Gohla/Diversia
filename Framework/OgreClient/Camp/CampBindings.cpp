@@ -136,7 +136,7 @@ void CampBindings::bindResourceManager()
 {
     camp::Class::declare<ResourceManager>( "ResourceManager" )
         .tag( "QtIcon", ":/Icons/Icons/status/folder-drag-accept.png" )
-        .base<ServerPlugin>()
+        .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
         // Properties (read/write)
@@ -196,7 +196,7 @@ void CampBindings::bindSkyPlugin()
 {
     camp::Class::declare<SkyPlugin>( "Sky" )
         .tag( "QtIcon", ":/Icons/Icons/status/skype_skypeme.png" )
-        .base<ServerPlugin>()
+        .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
         // Properties (read/write)
@@ -376,7 +376,7 @@ void CampBindings::bindGameModePlugin()
 {
     camp::Class::declare<GameModePlugin>( "GameMode" )
         .tag( "QtIcon", ":/Icons/Icons/categories/applications-games.png" )
-        .base<ServerPlugin>()
+        .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
         // Properties (read/write)
@@ -445,7 +445,7 @@ void CampBindings::bindTerrain()
 {
     camp::Class::declare<Terrain>( "Terrain" )
         .tag( "QtIcon", ":/Icons/Icons/categories/gnome-globe.png" )
-        .base<ServerPlugin>()
+        .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
         // Properties (read/write)
@@ -1145,7 +1145,7 @@ void CampBindings::bindSceneManagerPlugin()
 {
     camp::Class::declare<SceneManagerPlugin>( "SceneManager" )
         .tag( "QtIcon", ":/Icons/Icons/categories/gnome-settings.png" )
-        .base<ServerPlugin>()
+        .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
         // Properties (read/write)

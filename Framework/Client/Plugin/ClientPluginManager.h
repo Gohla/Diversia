@@ -24,13 +24,13 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_CLIENT_SERVERPLUGINMANAGER_H
-#define DIVERSIA_CLIENT_SERVERPLUGINMANAGER_H
+#ifndef DIVERSIA_CLIENT_CLIENTPLUGINMANAGER_H
+#define DIVERSIA_CLIENT_CLIENTPLUGINMANAGER_H
 
 #include "Client/Platform/Prerequisites.h"
 
-#include "Client/ClientServerPlugin/ServerPlugin.h"
-#include "Shared/ClientServerPlugin/ClientServerPluginManager.h"
+#include "Client/Plugin/ClientPlugin.h"
+#include "Shared/Plugin/PluginManager.h"
 
 namespace Diversia
 {
@@ -38,7 +38,7 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-class DIVERSIA_CLIENT_API ServerPluginManager : public ClientServerPluginManager, public sigc::trackable
+class DIVERSIA_CLIENT_API ClientPluginManager : public PluginManager, public sigc::trackable
 {
 public:
     /**
@@ -53,14 +53,14 @@ public:
     @param [in,out] rNetworkIDManager   Network ID manager. 
     @param  offlineMode                 True to set offline mode. Defaults to false.
     **/
-    ServerPluginManager( Mode mode, PluginState state, sigc::signal<void>& rUpdateSignal, 
+    ClientPluginManager( Mode mode, PluginState state, sigc::signal<void>& rUpdateSignal, 
         ServerAbstract& rServer, RakNet::RakPeerInterface& rRakPeer, 
         RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager,
         bool offlineMode = false );
     /**
     Destructor. 
     **/
-    ~ServerPluginManager();
+    ~ClientPluginManager();
 
     /**
     Gets the server this plugin manager is part of.
@@ -96,13 +96,13 @@ public:
     }
     
 private:
-    friend class ServerPlugin;	///< ServerPlugin may call pluginAdded and pluginRemoved. 
+    friend class ClientPlugin;	///< ClientPlugin may call pluginAdded and pluginRemoved. 
 
-    void pluginChanged( ClientServerPlugin& rPlugin, bool created );
-    void pluginLoadingComplete( ServerPlugin& rServerPlugin );
+    void pluginChanged( Plugin& rPlugin, bool created );
+    void pluginLoadingComplete( ClientPlugin& rClientPlugin );
 
     ServerAbstract&                     mServer;
-    std::set<ClientServerPluginTypeEnum>    mLoadingPlugins;
+    std::set<PluginTypeEnum>    mLoadingPlugins;
     sigc::signal<void>                  mLoadingCompletedSignal;
     bool                                mOfflineMode;
 
@@ -114,7 +114,7 @@ private:
 } // Namespace Client
 } // Namespace Diversia
 
-CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::Client::ServerPluginManager, 
-    &Diversia::Client::Bindings::CampBindings::bindServerPluginManager );
+CAMP_AUTO_TYPE_NONCOPYABLE( Diversia::Client::ClientPluginManager, 
+    &Diversia::Client::Bindings::CampBindings::bindClientPluginManager );
 
-#endif // DIVERSIA_CLIENT_SERVERPLUGINMANAGER_H
+#endif // DIVERSIA_CLIENT_CLIENTPLUGINMANAGER_H

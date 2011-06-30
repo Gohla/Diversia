@@ -105,7 +105,7 @@ public:
     /**
     Gets the plugin manager. 
     **/
-    inline ServerPluginManager& getPluginManager() { return *mPluginManager; }
+    inline ClientPluginManager& getPluginManager() { return *mPluginManager; }
     /**
     Query if the server connected. (Server state >= HALFCONNECTED)
     
@@ -147,7 +147,7 @@ private:
 
     void connectionStateChanged( ServerConnection::State state, 
         ServerConnection& rServerConnection );
-    void pluginChange( ClientServerPlugin& rPlugin, bool created );
+    void pluginChange( Plugin& rPlugin, bool created );
     void pluginLoadingComplete();
 
     GridPosition                            mGridPosition;
@@ -156,7 +156,7 @@ private:
     ServerState                             mServerState;
     ServerState                             mTargetState;
     boost::scoped_ptr<ServerConnection>     mServerConnection;
-    boost::scoped_ptr<ServerPluginManager>  mPluginManager;
+    boost::scoped_ptr<ClientPluginManager>  mPluginManager;
 
     sigc::signal<void, ServerState, ServerAbstract&>    mStateChangedSignal;
     sigc::connection                                    mPluginChangeConnection;

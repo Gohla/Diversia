@@ -10,9 +10,9 @@ This file is part of Diversia.
 
 #include <sigc++/adaptors/hide.h>
 
-#include "Model/ClientServerPluginModel.h"
-#include "Client/ClientServerPlugin/ServerPlugin.h"
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Model/PluginModel.h"
+#include "Client/Plugin/ClientPlugin.h"
+#include "Client/Plugin/ClientPluginManager.h"
 
 namespace Diversia
 {
@@ -21,7 +21,7 @@ namespace QtOgreEditor
 
 //------------------------------------------------------------------------------
 
-PluginItem::PluginItem( ClientServerPlugin& rPlugin ):
+PluginItem::PluginItem( Plugin& rPlugin ):
     mPlugin( rPlugin )
 {
     QStandardItem::setText( QString( rPlugin.getTypeName().c_str() ) );
@@ -48,35 +48,35 @@ PluginItem::~PluginItem()
 
 //------------------------------------------------------------------------------
 
-ClientServerPluginModel::ClientServerPluginModel( QObject* pParent /*= 0 */ ):
+PluginModel::PluginModel( QObject* pParent /*= 0 */ ):
     QStandardItemModel( pParent )
 {
     QStringList headers; headers << "Name";
     QStandardItemModel::setHorizontalHeaderLabels( headers );
 }
 
-ClientServerPluginModel::~ClientServerPluginModel()
+PluginModel::~PluginModel()
 {
 
 }
 
-void ClientServerPluginModel::setPluginManager( ServerPluginManager& rPluginManager )
+void PluginModel::setPluginManager( ClientPluginManager& rPluginManager )
 {
     mPluginManager = &rPluginManager;
-    mPluginManager->connect( sigc::mem_fun( this, &ClientServerPluginModel::pluginChange ) );
+    mPluginManager->connect( sigc::mem_fun( this, &PluginModel::pluginChange ) );
 
     // Add existing plugins to model.
-    const ClientServerPlugins& plugins = mPluginManager->getPlugins();
-    for( ClientServerPlugins::const_iterator i = plugins.begin(); i != plugins.end(); ++i )
+    const Plugins& plugins = mPluginManager->getPlugins();
+    for( Plugins::const_iterator i = plugins.begin(); i != plugins.end(); ++i )
     {
-        ClientServerPlugin& plugin = mPluginManager->getPlugin( i->first );
+        Plugin& plugin = mPluginManager->getPlugin( i->first );
         PluginItem* item = new PluginItem( plugin );
         mPluginItems.insert( std::make_pair( plugin.getType(), item ) );
         QStandardItemModel::appendRow( item );
     }
 }
 
-PluginItem& ClientServerPluginModel::getPluginItem( ClientServerPluginTypeEnum type ) const
+PluginItem& PluginModel::getPluginItem( PluginTypeEnum type ) const
 {
     PluginItems::const_iterator i = mPluginItems.find( type );
     if( i != mPluginItems.end() )
@@ -85,20 +85,20 @@ PluginItem& ClientServerPluginModel::getPluginItem( ClientServerPluginTypeEnum t
     }
     else
         DIVERSIA_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, "Plugin item not found in model", 
-        "ClientServerPluginModel::getPluginItem" ); 
+        "PluginModel::getPluginItem" ); 
 }
 
-QModelIndex ClientServerPluginModel::getPluginIndex( ClientServerPlugin& rPlugin ) const
+QModelIndex PluginModel::getPluginIndex( Plugin& rPlugin ) const
 {
-    return ClientServerPluginModel::getPluginIndex( rPlugin.getType() );
+    return PluginModel::getPluginIndex( rPlugin.getType() );
 }
 
-QModelIndex ClientServerPluginModel::getPluginIndex( ClientServerPluginTypeEnum type ) const
+QModelIndex PluginModel::getPluginIndex( PluginTypeEnum type ) const
 {
-    return ClientServerPluginModel::getPluginItem( type ).index();
+    return PluginModel::getPluginItem( type ).index();
 }
 
-void ClientServerPluginModel::pluginChange( ClientServerPlugin& rPlugin, bool created )
+void PluginModel::pluginChange( Plugin& rPlugin, bool created )
 {
     if( created )
     {

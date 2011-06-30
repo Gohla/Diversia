@@ -22,7 +22,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "OgreClient/Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Communication/ServerAbstract.h"
 #include "OgreClient/Audio/AudioManager.h"
 #include "OgreClient/Graphics/GraphicsManager.h"
@@ -75,10 +75,10 @@ ResourceManager::ResourcesLoader* ResourceManager::ResourcesLoader::create(
     return new ResourceManager::ResourcesLoader( rCompletedSlot );
 }
 
-ResourceManager::ResourceManager( Mode mode, PluginState state, ServerPluginManager& rPluginManager, 
+ResourceManager::ResourceManager( Mode mode, PluginState state, ClientPluginManager& rPluginManager, 
     RakNet::RakPeerInterface& rRakPeer, RakNet::ReplicaManager3& rReplicaManager, 
     RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
+    ClientPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager ),
     mServer( rPluginManager.getServer() ),
     mRGM( Ogre::ResourceGroupManager::getSingleton() ),
     mRBQ( Ogre::ResourceBackgroundQueue::getSingleton() ),
@@ -341,7 +341,7 @@ void ResourceManager::operationCompleted( Ogre::BackgroundProcessTicket ticket,
         {
             mInitializing = false;
             mInitializedSignal( *this );
-            ServerPlugin::mLoadingCompletedSignal( *this );
+            ClientPlugin::mLoadingCompletedSignal( *this );
         }
         else
         {

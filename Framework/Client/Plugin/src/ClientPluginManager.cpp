@@ -26,7 +26,7 @@ THE SOFTWARE.
 
 #include "Client/Platform/StableHeaders.h"
 
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 
 namespace Diversia
 {
@@ -34,58 +34,58 @@ namespace Client
 {
 //------------------------------------------------------------------------------
 
-ServerPluginManager::ServerPluginManager( Mode mode, PluginState state, 
+ClientPluginManager::ClientPluginManager( Mode mode, PluginState state, 
     sigc::signal<void>& rUpdateSignal, ServerAbstract& rServer, RakNet::RakPeerInterface& rRakPeer, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager, 
     bool offlineMode /*= false*/ ):
-    ClientServerPluginManager( mode, state, rUpdateSignal, rRakPeer, rReplicaManager, 
+    PluginManager( mode, state, rUpdateSignal, rRakPeer, rReplicaManager, 
         rNetworkIDManager ),
     mServer( rServer ),
     mOfflineMode( offlineMode )
 {
-    ClientServerPluginManager::connect( sigc::mem_fun( this, &ServerPluginManager::pluginChanged ) );
+    PluginManager::connect( sigc::mem_fun( this, &ClientPluginManager::pluginChanged ) );
 }
 
-ServerPluginManager::~ServerPluginManager()
+ClientPluginManager::~ClientPluginManager()
 {
 
 }
 
-void ServerPluginManager::setServerState( ServerState serverState )
+void ClientPluginManager::setServerState( ServerState serverState )
 {
-    ClientServerPlugins& plugins = ClientServerPluginManager::getPluginsMutable();
-    for( ClientServerPlugins::iterator i = plugins.begin(); i != plugins.end(); ++i )
+    Plugins& plugins = PluginManager::getPluginsMutable();
+    for( Plugins::iterator i = plugins.begin(); i != plugins.end(); ++i )
     {
-        // Assume every plugin inherits from ServerPlugin on the client.. TODO: Find a better way.
-        ServerPlugin* plugin = static_cast<ServerPlugin*>( i->second );
+        // Assume every plugin inherits from ClientPlugin on the client.. TODO: Find a better way.
+        ClientPlugin* plugin = static_cast<ClientPlugin*>( i->second );
         plugin->setServerState( serverState );
     }
 }
 
-void ServerPluginManager::setOfflineMode( bool offlineMode )
+void ClientPluginManager::setOfflineMode( bool offlineMode )
 {
     if( mOfflineMode != offlineMode )
     {
         mOfflineMode = offlineMode;
 
-        ClientServerPlugins& plugins = ClientServerPluginManager::getPluginsMutable();
-        for( ClientServerPlugins::iterator i = plugins.begin(); i != plugins.end(); ++i )
+        Plugins& plugins = PluginManager::getPluginsMutable();
+        for( Plugins::iterator i = plugins.begin(); i != plugins.end(); ++i )
         {
-            static_cast<ServerPlugin*>( i->second )->setOfflineMode( mOfflineMode );
+            static_cast<ClientPlugin*>( i->second )->setOfflineMode( mOfflineMode );
         }
     }
 }
 
-void ServerPluginManager::pluginChanged( ClientServerPlugin& rPlugin, bool created )
+void ClientPluginManager::pluginChanged( Plugin& rPlugin, bool created )
 {
     if( created )
     {
-        ServerPlugin& serverPlugin = static_cast<ServerPlugin&>( rPlugin );
+        ClientPlugin& serverPlugin = static_cast<ClientPlugin&>( rPlugin );
 
         // Connect to loading complete signal.
         mLoadingPlugins.insert( serverPlugin.getType() );
         serverPlugin.connectLoadingComplete( sigc::mem_fun( this, 
-            &ServerPluginManager::pluginLoadingComplete ) );
+            &ClientPluginManager::pluginLoadingComplete ) );
 
         // Set plugin to offline mode if manager is in offline mode.
         serverPlugin.setOfflineMode( mOfflineMode );
@@ -96,9 +96,9 @@ void ServerPluginManager::pluginChanged( ClientServerPlugin& rPlugin, bool creat
     }
 }
 
-void ServerPluginManager::pluginLoadingComplete( ServerPlugin& rServerPlugin )
+void ClientPluginManager::pluginLoadingComplete( ClientPlugin& rClientPlugin )
 {
-    mLoadingPlugins.erase( rServerPlugin.getType() );
+    mLoadingPlugins.erase( rClientPlugin.getType() );
 
     // If the set of loading plugins is empty then all plugins are done loading, emit signal.
     if( mLoadingPlugins.empty() )

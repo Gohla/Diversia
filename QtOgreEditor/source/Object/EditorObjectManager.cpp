@@ -22,7 +22,7 @@ namespace QtOgreEditor
 
 EditorObjectManager::EditorObjectManager( Mode mode, PluginState state, 
     sigc::signal<void>& rUpdateSignal, sigc::signal<void>& rLateUpdateSignal, 
-    ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
+    ClientPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
     ClientObjectManager( mode, state, rUpdateSignal, rLateUpdateSignal, rPluginManager, rRakPeer, 
         rReplicaManager, rNetworkIDManager )

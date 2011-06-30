@@ -86,7 +86,7 @@ private:
     void mousePressEvent( QMouseEvent* pEvent );
     void dropEvent( QDropEvent* pEvent );
     void serverChange( ServerAbstract& rServer, bool created );
-    void pluginChange( ClientServerPlugin& rPlugin, bool created );
+    void pluginChange( Plugin& rPlugin, bool created );
     void clearActions();
     void clear();
 

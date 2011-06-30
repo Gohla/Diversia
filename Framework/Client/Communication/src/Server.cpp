@@ -28,8 +28,8 @@ THE SOFTWARE.
 
 #include "Client/Communication/Server.h"
 #include "Client/Object/ClientObjectManager.h"
-#include "Client/ClientServerPlugin/ServerPluginManager.h"
-#include "Shared/ClientServerPlugin/ClientServerPlugin.h"
+#include "Client/Plugin/ClientPluginManager.h"
+#include "Shared/Plugin/Plugin.h"
 #include "Shared/Communication/ReplicaManager.h"
 
 namespace Diversia
@@ -47,7 +47,7 @@ Server::Server( const GridPosition& rGridPosition, const ServerInfo& rServerInfo
     mTargetState( DISCOVERED ),
     mServerConnection( new ServerConnection( rServerInfo, rUpdateSignal ) )
 {
-    mPluginManager.reset( new ServerPluginManager( CLIENT, STOP, rUpdateSignal, *this,
+    mPluginManager.reset( new ClientPluginManager( CLIENT, STOP, rUpdateSignal, *this,
         mServerConnection->getRakPeer(), mServerConnection->getReplicaManager(), 
         mServerConnection->getNetworkIDManager() ) );
 
@@ -176,9 +176,9 @@ void Server::connectionStateChanged( ServerConnection::State state,
     }
 }
 
-void Server::pluginChange( ClientServerPlugin& rPlugin, bool created )
+void Server::pluginChange( Plugin& rPlugin, bool created )
 {
-    if( created && rPlugin.getType() == CLIENTSERVERPLUGINTYPE_OBJECTMANAGER )
+    if( created && rPlugin.getType() == PLUGINTYPE_OBJECTMANAGER )
     {
         mServerConnection->getReplicaManager().setObjectManager( 
             static_cast<ClientObjectManager&>( rPlugin ) );

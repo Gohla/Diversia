@@ -35,9 +35,9 @@ namespace Client
 //------------------------------------------------------------------------------
 
 ServerNeighborsPlugin::ServerNeighborsPlugin( Mode mode, PluginState state, 
-    ServerPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
+    ClientPluginManager& rPluginManager, RakNet::RakPeerInterface& rRakPeer, 
     RakNet::ReplicaManager3& rReplicaManager, RakNet::NetworkIDManager& rNetworkIDManager ):
-    ServerPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
+    ClientPlugin( mode, state, rPluginManager, rRakPeer, rReplicaManager, rNetworkIDManager )
 {
     PropertySynchronization::storeUserObject();
 }
@@ -63,7 +63,7 @@ void ServerNeighborsPlugin::Deserialize( RakNet::DeserializeParameters* pDeseria
 void ServerNeighborsPlugin::create()
 {
     // TODO: Implement real loading completed signal
-    ServerPlugin::mLoadingCompletedSignal( *this );
+    ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
 void ServerNeighborsPlugin::setServerState( ServerState serverState )

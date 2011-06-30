@@ -40,7 +40,7 @@ public:
     /**
     Gets the server plugin that is contained in given model index.
     **/
-    ServerPlugin& getServerPlugin( const QModelIndex& rIndex );
+    ClientPlugin& getClientPlugin( const QModelIndex& rIndex );
     /**
     Loads given model index into the property grid.
     **/
@@ -61,12 +61,12 @@ private:
     void clearActions();
     void clear();
 
-    ServerPluginManager*        mPluginManager;
-    ClientServerPluginModel*    mModel;
+    ClientPluginManager*        mPluginManager;
+    PluginModel*    mModel;
 
     QMenu*                                                  mPluginMenu;
     QAction*                                                mPluginMenuAction;
-    std::map< ClientServerPluginTypeEnum, QList<QAction*> > mPluginActions;
+    std::map< PluginTypeEnum, QList<QAction*> > mPluginActions;
 
 };
 
