@@ -291,7 +291,7 @@
 			Name="Helper"
 			>
 			<File
-				RelativePath="..\..\Framework\Util\Helper\src\ConsoleInput.cpp"
+				RelativePath="..\..\Framework\Util\Helper\ConsoleInput.cpp"
 				>
 			</File>
 			<File
@@ -303,7 +303,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Helper\src\Exception.cpp"
+				RelativePath="..\..\Framework\Util\Helper\Exception.cpp"
 				>
 			</File>
 			<File
@@ -319,7 +319,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Helper\src\StringUtil.cpp"
+				RelativePath="..\..\Framework\Util\Helper\StringUtil.cpp"
 				>
 			</File>
 			<File
@@ -335,7 +335,7 @@
 			Name="Log"
 			>
 			<File
-				RelativePath="..\..\Framework\Util\Log\src\Log.cpp"
+				RelativePath="..\..\Framework\Util\Log\Log.cpp"
 				>
 			</File>
 			<File
@@ -343,7 +343,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Log\src\Logger.cpp"
+				RelativePath="..\..\Framework\Util\Log\Logger.cpp"
 				>
 			</File>
 			<File
@@ -359,7 +359,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Math\src\BoundingBox.cpp"
+				RelativePath="..\..\Framework\Util\Math\BoundingBox.cpp"
 				>
 			</File>
 			<File
@@ -367,7 +367,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Math\src\Colour.cpp"
+				RelativePath="..\..\Framework\Util\Math\Colour.cpp"
 				>
 			</File>
 			<File
@@ -375,7 +375,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Math\src\Math.cpp"
+				RelativePath="..\..\Framework\Util\Math\Math.cpp"
 				>
 			</File>
 			<File
@@ -383,7 +383,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Math\src\Matrix3.cpp"
+				RelativePath="..\..\Framework\Util\Math\Matrix3.cpp"
 				>
 			</File>
 			<File
@@ -391,7 +391,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Math\src\Matrix4.cpp"
+				RelativePath="..\..\Framework\Util\Math\Matrix4.cpp"
 				>
 			</File>
 			<File
@@ -399,7 +399,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Math\src\Node.cpp"
+				RelativePath="..\..\Framework\Util\Math\Node.cpp"
 				>
 			</File>
 			<File
@@ -407,7 +407,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Math\src\Plane.cpp"
+				RelativePath="..\..\Framework\Util\Math\Plane.cpp"
 				>
 			</File>
 			<File
@@ -415,7 +415,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Math\src\Quaternion.cpp"
+				RelativePath="..\..\Framework\Util\Math\Quaternion.cpp"
 				>
 			</File>
 			<File
@@ -427,7 +427,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Math\src\Vector2.cpp"
+				RelativePath="..\..\Framework\Util\Math\Vector2.cpp"
 				>
 			</File>
 			<File
@@ -435,7 +435,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Math\src\Vector3.cpp"
+				RelativePath="..\..\Framework\Util\Math\Vector3.cpp"
 				>
 			</File>
 			<File
@@ -443,7 +443,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Math\src\Vector4.cpp"
+				RelativePath="..\..\Framework\Util\Math\Vector4.cpp"
 				>
 			</File>
 			<File
@@ -459,7 +459,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Platform\src\StableHeaders.cpp"
+				RelativePath="..\..\Framework\Util\Platform\StableHeaders.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -543,7 +543,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\State\src\StateMachine.cpp"
+				RelativePath="..\..\Framework\Util\State\StateMachine.cpp"
 				>
 			</File>
 			<File
@@ -555,7 +555,7 @@
 			Name="Job"
 			>
 			<File
-				RelativePath="..\..\Framework\Util\Job\src\Job.cpp"
+				RelativePath="..\..\Framework\Util\Job\Job.cpp"
 				>
 			</File>
 			<File
@@ -563,7 +563,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Job\src\Request.cpp"
+				RelativePath="..\..\Framework\Util\Job\Request.cpp"
 				>
 			</File>
 			<File
@@ -571,7 +571,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Job\src\RequestManager.cpp"
+				RelativePath="..\..\Framework\Util\Job\RequestManager.cpp"
 				>
 			</File>
 			<File
@@ -587,7 +587,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Camp\src\CampBindings.cpp"
+				RelativePath="..\..\Framework\Util\Camp\CampBindings.cpp"
 				>
 			</File>
 			<File
@@ -603,7 +603,7 @@
 			Name="Config"
 			>
 			<File
-				RelativePath="..\..\Framework\Util\Config\src\ConfigManager.cpp"
+				RelativePath="..\..\Framework\Util\Config\ConfigManager.cpp"
 				>
 			</File>
 			<File
@@ -647,7 +647,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Util\Serialization\src\XMLSerializationFile.cpp"
+				RelativePath="..\..\Framework\Util\Serialization\XMLSerializationFile.cpp"
 				>
 			</File>
 			<File

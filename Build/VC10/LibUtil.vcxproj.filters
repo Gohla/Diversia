@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Helper">
@@ -39,70 +39,70 @@
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Framework\Util\Helper\src\ConsoleInput.cpp">
+    <ClCompile Include="..\..\Framework\Util\Helper\ConsoleInput.cpp">
       <Filter>Helper</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Helper\src\Exception.cpp">
+    <ClCompile Include="..\..\Framework\Util\Helper\Exception.cpp">
       <Filter>Helper</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Helper\src\StringUtil.cpp">
+    <ClCompile Include="..\..\Framework\Util\Helper\StringUtil.cpp">
       <Filter>Helper</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Log\src\Log.cpp">
+    <ClCompile Include="..\..\Framework\Util\Log\Log.cpp">
       <Filter>Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Log\src\Logger.cpp">
+    <ClCompile Include="..\..\Framework\Util\Log\Logger.cpp">
       <Filter>Log</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Math\src\BoundingBox.cpp">
+    <ClCompile Include="..\..\Framework\Util\Math\BoundingBox.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Math\src\Colour.cpp">
+    <ClCompile Include="..\..\Framework\Util\Math\Colour.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Math\src\Math.cpp">
+    <ClCompile Include="..\..\Framework\Util\Math\Math.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Math\src\Matrix3.cpp">
+    <ClCompile Include="..\..\Framework\Util\Math\Matrix3.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Math\src\Matrix4.cpp">
+    <ClCompile Include="..\..\Framework\Util\Math\Matrix4.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Math\src\Node.cpp">
+    <ClCompile Include="..\..\Framework\Util\Math\Node.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Math\src\Plane.cpp">
+    <ClCompile Include="..\..\Framework\Util\Math\Plane.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Math\src\Quaternion.cpp">
+    <ClCompile Include="..\..\Framework\Util\Math\Quaternion.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Math\src\Vector2.cpp">
+    <ClCompile Include="..\..\Framework\Util\Math\Vector2.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Math\src\Vector3.cpp">
+    <ClCompile Include="..\..\Framework\Util\Math\Vector3.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Math\src\Vector4.cpp">
+    <ClCompile Include="..\..\Framework\Util\Math\Vector4.cpp">
       <Filter>Math</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Platform\src\StableHeaders.cpp">
+    <ClCompile Include="..\..\Framework\Util\Platform\StableHeaders.cpp">
       <Filter>Platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\State\src\StateMachine.cpp">
+    <ClCompile Include="..\..\Framework\Util\State\StateMachine.cpp">
       <Filter>State</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Job\src\Job.cpp">
+    <ClCompile Include="..\..\Framework\Util\Job\Job.cpp">
       <Filter>Job</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Job\src\Request.cpp">
+    <ClCompile Include="..\..\Framework\Util\Job\Request.cpp">
       <Filter>Job</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Job\src\RequestManager.cpp">
+    <ClCompile Include="..\..\Framework\Util\Job\RequestManager.cpp">
       <Filter>Job</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Config\src\ConfigManager.cpp">
+    <ClCompile Include="..\..\Framework\Util\Config\ConfigManager.cpp">
       <Filter>Config</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Framework\Util\Signal\DelayedCall.cpp">
@@ -111,10 +111,10 @@
     <ClCompile Include="..\..\Framework\Util\Signal\UserObjectChange.cpp">
       <Filter>Signal</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Serialization\src\XMLSerializationFile.cpp">
+    <ClCompile Include="..\..\Framework\Util\Serialization\XMLSerializationFile.cpp">
       <Filter>Serialization</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Util\Camp\src\BindingType.cpp">
+    <ClCompile Include="..\..\Framework\Util\Camp\BindingType.cpp">
       <Filter>Camp</Filter>
     </ClCompile>
   </ItemGroup>

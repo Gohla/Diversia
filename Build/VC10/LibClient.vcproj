@@ -296,7 +296,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Client\Platform\src\StableHeaders.cpp"
+				RelativePath="..\..\Framework\Client\Platform\StableHeaders.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -340,7 +340,7 @@
 			Name="Camp"
 			>
 			<File
-				RelativePath="..\..\Framework\Client\Camp\src\CampBindings.cpp"
+				RelativePath="..\..\Framework\Client\Camp\CampBindings.cpp"
 				>
 			</File>
 			<File
@@ -352,7 +352,7 @@
 			Name="ClientServerPlugin"
 			>
 			<File
-				RelativePath="..\..\Framework\Client\ClientServerPlugin\src\ServerPlugin.cpp"
+				RelativePath="..\..\Framework\Client\ClientServerPlugin\ServerPlugin.cpp"
 				>
 			</File>
 			<File
@@ -360,7 +360,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Client\ClientServerPlugin\src\ServerPluginManager.cpp"
+				RelativePath="..\..\Framework\Client\ClientServerPlugin\ServerPluginManager.cpp"
 				>
 			</File>
 			<File
@@ -372,7 +372,7 @@
 			Name="Object"
 			>
 			<File
-				RelativePath="..\..\Framework\Client\Object\src\ClientComponent.cpp"
+				RelativePath="..\..\Framework\Client\Object\ClientComponent.cpp"
 				>
 			</File>
 			<File
@@ -380,7 +380,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Client\Object\src\ClientObject.cpp"
+				RelativePath="..\..\Framework\Client\Object\ClientObject.cpp"
 				>
 			</File>
 			<File
@@ -388,7 +388,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Client\Object\src\ClientObjectManager.cpp"
+				RelativePath="..\..\Framework\Client\Object\ClientObjectManager.cpp"
 				>
 			</File>
 			<File
@@ -400,7 +400,7 @@
 			Name="Permission"
 			>
 			<File
-				RelativePath="..\..\Framework\Client\Permission\src\PermissionManager.cpp"
+				RelativePath="..\..\Framework\Client\Permission\PermissionManager.cpp"
 				>
 			</File>
 			<File
@@ -412,7 +412,7 @@
 			Name="Communication"
 			>
 			<File
-				RelativePath="..\..\Framework\Client\Communication\src\GridManager.cpp"
+				RelativePath="..\..\Framework\Client\Communication\GridManager.cpp"
 				>
 			</File>
 			<File
@@ -420,7 +420,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Client\Communication\src\OfflineServer.cpp"
+				RelativePath="..\..\Framework\Client\Communication\OfflineServer.cpp"
 				>
 			</File>
 			<File
@@ -428,7 +428,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Client\Communication\src\Server.cpp"
+				RelativePath="..\..\Framework\Client\Communication\Server.cpp"
 				>
 			</File>
 			<File
@@ -440,7 +440,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Client\Communication\src\ServerConnection.cpp"
+				RelativePath="..\..\Framework\Client\Communication\ServerConnection.cpp"
 				>
 			</File>
 			<File
@@ -448,7 +448,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Client\Communication\src\ServerNeighborsPlugin.cpp"
+				RelativePath="..\..\Framework\Client\Communication\ServerNeighborsPlugin.cpp"
 				>
 			</File>
 			<File
@@ -460,7 +460,7 @@
 			Name="Lua"
 			>
 			<File
-				RelativePath="..\..\Framework\Client\Lua\src\LuaPlugin.cpp"
+				RelativePath="..\..\Framework\Client\Lua\LuaPlugin.cpp"
 				>
 			</File>
 			<File

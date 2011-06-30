@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -128,17 +128,17 @@
     <ClCompile Include="..\..\Framework\Object\ComponentTemplate.cpp" />
     <ClCompile Include="..\..\Framework\Object\ObjectTemplate.cpp" />
     <ClCompile Include="..\..\Framework\Object\ObjectTemplateManager.cpp" />
-    <ClCompile Include="..\..\Framework\Object\Platform\src\StableHeaders.cpp">
+    <ClCompile Include="..\..\Framework\Object\Platform\StableHeaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Object\Camp\src\CampBindings.cpp" />
-    <ClCompile Include="..\..\Framework\Object\RPC3\src\RPC3.cpp" />
-    <ClCompile Include="..\..\Framework\Object\src\Component.cpp" />
-    <ClCompile Include="..\..\Framework\Object\src\ComponentFactoryManager.cpp" />
-    <ClCompile Include="..\..\Framework\Object\src\Object.cpp" />
-    <ClCompile Include="..\..\Framework\Object\src\ObjectManager.cpp" />
+    <ClCompile Include="..\..\Framework\Object\Camp\CampBindings.cpp" />
+    <ClCompile Include="..\..\Framework\Object\RPC3\RPC3.cpp" />
+    <ClCompile Include="..\..\Framework\Object\Component.cpp" />
+    <ClCompile Include="..\..\Framework\Object\ComponentFactoryManager.cpp" />
+    <ClCompile Include="..\..\Framework\Object\Object.cpp" />
+    <ClCompile Include="..\..\Framework\Object\ObjectManager.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

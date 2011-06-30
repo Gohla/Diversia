@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Platform">
@@ -153,52 +153,52 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Framework\Shared\Platform\src\StableHeaders.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Platform\StableHeaders.cpp">
       <Filter>Platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Communication\src\GridPosition.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Communication\GridPosition.cpp">
       <Filter>Communication</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Communication\src\ReplicaConnection.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Communication\ReplicaConnection.cpp">
       <Filter>Communication</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Communication\src\ServerNeighbors.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Communication\ServerNeighbors.cpp">
       <Filter>Communication</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Communication\src\ServerPosition.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Communication\ServerPosition.cpp">
       <Filter>Communication</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Camp\src\CampBindings.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Camp\CampBindings.cpp">
       <Filter>Camp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Camp\src\PropertyTransaction.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Camp\PropertyTransaction.cpp">
       <Filter>Camp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Resource\src\ResourceInfo.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Resource\ResourceInfo.cpp">
       <Filter>Resource</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Framework\Shared\Lua\LuaManager.cpp">
       <Filter>Lua</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Crash\src\CrashReporter.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Crash\CrashReporter.cpp">
       <Filter>Crash</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Crash\src\WindowsCrashReporter.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Crash\WindowsCrashReporter.cpp">
       <Filter>Crash</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Camp\src\PropertySynchronization.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Camp\PropertySynchronization.cpp">
       <Filter>Camp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Camp\src\CampStringInterpreter.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Camp\CampStringInterpreter.cpp">
       <Filter>Camp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Plugin\src\Plugin.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Plugin\Plugin.cpp">
       <Filter>Plugin</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Plugin\src\PluginFactoryManager.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Plugin\PluginFactoryManager.cpp">
       <Filter>Plugin</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Plugin\src\PluginManager.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Plugin\PluginManager.cpp">
       <Filter>Plugin</Filter>
     </ClCompile>
   </ItemGroup>

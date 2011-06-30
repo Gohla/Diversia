@@ -296,7 +296,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Shared\Platform\src\StableHeaders.cpp"
+				RelativePath="..\..\Framework\Shared\Platform\StableHeaders.cpp"
 				>
 				<FileConfiguration
 					Name="Debug|Win32"
@@ -344,7 +344,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Shared\Communication\src\GridPosition.cpp"
+				RelativePath="..\..\Framework\Shared\Communication\GridPosition.cpp"
 				>
 			</File>
 			<File
@@ -352,7 +352,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Shared\Communication\src\ReplicaConnection.cpp"
+				RelativePath="..\..\Framework\Shared\Communication\ReplicaConnection.cpp"
 				>
 			</File>
 			<File
@@ -372,7 +372,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Shared\Communication\src\ServerNeighbors.cpp"
+				RelativePath="..\..\Framework\Shared\Communication\ServerNeighbors.cpp"
 				>
 			</File>
 			<File
@@ -380,7 +380,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Shared\Communication\src\ServerPosition.cpp"
+				RelativePath="..\..\Framework\Shared\Communication\ServerPosition.cpp"
 				>
 			</File>
 			<File
@@ -412,7 +412,7 @@
 			Name="ClientServerPlugin"
 			>
 			<File
-				RelativePath="..\..\Framework\Shared\ClientServerPlugin\src\ClientServerPlugin.cpp"
+				RelativePath="..\..\Framework\Shared\ClientServerPlugin\ClientServerPlugin.cpp"
 				>
 			</File>
 			<File
@@ -424,7 +424,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Shared\ClientServerPlugin\src\ClientServerPluginFactoryManager.cpp"
+				RelativePath="..\..\Framework\Shared\ClientServerPlugin\ClientServerPluginFactoryManager.cpp"
 				>
 			</File>
 			<File
@@ -432,7 +432,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Shared\ClientServerPlugin\src\ClientServerPluginManager.cpp"
+				RelativePath="..\..\Framework\Shared\ClientServerPlugin\ClientServerPluginManager.cpp"
 				>
 			</File>
 			<File
@@ -460,7 +460,7 @@
 			Name="Camp"
 			>
 			<File
-				RelativePath="..\..\Framework\Shared\Camp\src\CampBindings.cpp"
+				RelativePath="..\..\Framework\Shared\Camp\CampBindings.cpp"
 				>
 			</File>
 			<File
@@ -480,7 +480,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Shared\Camp\src\PropertySynchronization.cpp"
+				RelativePath="..\..\Framework\Shared\Camp\PropertySynchronization.cpp"
 				>
 			</File>
 			<File
@@ -488,7 +488,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Shared\Camp\src\PropertyTransaction.cpp"
+				RelativePath="..\..\Framework\Shared\Camp\PropertyTransaction.cpp"
 				>
 			</File>
 			<File
@@ -500,7 +500,7 @@
 			Name="Resource"
 			>
 			<File
-				RelativePath="..\..\Framework\Shared\Resource\src\ResourceInfo.cpp"
+				RelativePath="..\..\Framework\Shared\Resource\ResourceInfo.cpp"
 				>
 			</File>
 			<File
@@ -544,7 +544,7 @@
 			Name="Crash"
 			>
 			<File
-				RelativePath="..\..\Framework\Shared\Crash\src\CrashReporter.cpp"
+				RelativePath="..\..\Framework\Shared\Crash\CrashReporter.cpp"
 				>
 			</File>
 			<File
@@ -552,7 +552,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\Framework\Shared\Crash\src\WindowsCrashReporter.cpp"
+				RelativePath="..\..\Framework\Shared\Crash\WindowsCrashReporter.cpp"
 				>
 			</File>
 			<File

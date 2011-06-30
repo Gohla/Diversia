@@ -448,7 +448,7 @@
 			Name="Input"
 			>
 			<File
-				RelativePath="..\..\OgreClient\source\OgreClient\Input\src\InputManager.cpp"
+				RelativePath="..\..\OgreClient\source\OgreClient\Input\InputManager.cpp"
 				>
 			</File>
 			<File
@@ -456,7 +456,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\OgreClient\source\OgreClient\Input\src\MouseController.cpp"
+				RelativePath="..\..\OgreClient\source\OgreClient\Input\MouseController.cpp"
 				>
 			</File>
 			<File
@@ -464,7 +464,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\OgreClient\source\OgreClient\Input\src\ObjectSelection.cpp"
+				RelativePath="..\..\OgreClient\source\OgreClient\Input\ObjectSelection.cpp"
 				>
 			</File>
 			<File
@@ -472,7 +472,7 @@
 				>
 			</File>
 			<File
-				RelativePath="..\..\OgreClient\source\OgreClient\Input\src\WindowsMouseController.cpp"
+				RelativePath="..\..\OgreClient\source\OgreClient\Input\WindowsMouseController.cpp"
 				>
 			</File>
 			<File

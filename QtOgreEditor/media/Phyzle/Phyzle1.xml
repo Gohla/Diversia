@@ -1,4 +1,4 @@
-<ServerPluginManager>
+<ClientPluginManager>
 	<Plugins>
 		<item>
 			<key>PermissionManager</key>
@@ -4151,5 +4151,5 @@
 			</value>
 		</item>
 	</Plugins>
-</ServerPluginManager>
+</ClientPluginManager>
 

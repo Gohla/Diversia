@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="Platform">
@@ -44,19 +44,19 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Framework\Object\Platform\src\StableHeaders.cpp">
+    <ClCompile Include="..\..\Framework\Object\Platform\StableHeaders.cpp">
       <Filter>Platform</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Object\Camp\src\CampBindings.cpp">
+    <ClCompile Include="..\..\Framework\Object\Camp\CampBindings.cpp">
       <Filter>Camp</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Object\RPC3\src\RPC3.cpp">
+    <ClCompile Include="..\..\Framework\Object\RPC3\RPC3.cpp">
       <Filter>RPC3</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Object\src\Component.cpp" />
-    <ClCompile Include="..\..\Framework\Object\src\ComponentFactoryManager.cpp" />
-    <ClCompile Include="..\..\Framework\Object\src\Object.cpp" />
-    <ClCompile Include="..\..\Framework\Object\src\ObjectManager.cpp" />
+    <ClCompile Include="..\..\Framework\Object\Component.cpp" />
+    <ClCompile Include="..\..\Framework\Object\ComponentFactoryManager.cpp" />
+    <ClCompile Include="..\..\Framework\Object\Object.cpp" />
+    <ClCompile Include="..\..\Framework\Object\ObjectManager.cpp" />
     <ClCompile Include="..\..\Framework\Object\ComponentTemplate.cpp" />
     <ClCompile Include="..\..\Framework\Object\ObjectTemplate.cpp" />
     <ClCompile Include="..\..\Framework\Object\ObjectTemplateManager.cpp" />

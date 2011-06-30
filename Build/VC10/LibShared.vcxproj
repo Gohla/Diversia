@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -146,26 +146,26 @@
     <ClInclude Include="..\..\Framework\Shared\SharedIncludes.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Framework\Shared\Camp\src\CampStringInterpreter.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Camp\src\PropertySynchronization.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Platform\src\StableHeaders.cpp">
+    <ClCompile Include="..\..\Framework\Shared\Camp\CampStringInterpreter.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Camp\PropertySynchronization.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Platform\StableHeaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Shared\Communication\src\GridPosition.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Communication\src\ReplicaConnection.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Communication\src\ServerNeighbors.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Communication\src\ServerPosition.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Camp\src\CampBindings.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Camp\src\PropertyTransaction.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Plugin\src\Plugin.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Plugin\src\PluginFactoryManager.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Plugin\src\PluginManager.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Resource\src\ResourceInfo.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Communication\GridPosition.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Communication\ReplicaConnection.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Communication\ServerNeighbors.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Communication\ServerPosition.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Camp\CampBindings.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Camp\PropertyTransaction.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Plugin\Plugin.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Plugin\PluginFactoryManager.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Plugin\PluginManager.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Resource\ResourceInfo.cpp" />
     <ClCompile Include="..\..\Framework\Shared\Lua\LuaManager.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Crash\src\CrashReporter.cpp" />
-    <ClCompile Include="..\..\Framework\Shared\Crash\src\WindowsCrashReporter.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Crash\CrashReporter.cpp" />
+    <ClCompile Include="..\..\Framework\Shared\Crash\WindowsCrashReporter.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

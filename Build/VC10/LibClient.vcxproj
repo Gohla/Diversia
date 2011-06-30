@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -141,27 +141,27 @@
     <ClInclude Include="..\..\Framework\Client\Undo\UndoStack.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\Framework\Client\Object\src\ClientComponentTemplate.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Object\src\ClientObjectTemplate.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Object\src\ClientObjectTemplateManager.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Platform\src\StableHeaders.cpp">
+    <ClCompile Include="..\..\Framework\Client\Object\ClientComponentTemplate.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Object\ClientObjectTemplate.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Object\ClientObjectTemplateManager.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Platform\StableHeaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">Create</PrecompiledHeader>
     </ClCompile>
-    <ClCompile Include="..\..\Framework\Client\Camp\src\CampBindings.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Object\src\ClientComponent.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Object\src\ClientObject.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Object\src\ClientObjectManager.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Permission\src\PermissionManager.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Communication\src\GridManager.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Communication\src\OfflineServer.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Communication\src\Server.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Communication\src\ServerConnection.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Communication\src\ServerNeighborsPlugin.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Lua\src\LuaPlugin.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Plugin\src\ClientPlugin.cpp" />
-    <ClCompile Include="..\..\Framework\Client\Plugin\src\ClientPluginManager.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Camp\CampBindings.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Object\ClientComponent.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Object\ClientObject.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Object\ClientObjectManager.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Permission\PermissionManager.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Communication\GridManager.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Communication\OfflineServer.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Communication\Server.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Communication\ServerConnection.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Communication\ServerNeighborsPlugin.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Lua\LuaPlugin.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Plugin\ClientPlugin.cpp" />
+    <ClCompile Include="..\..\Framework\Client\Plugin\ClientPluginManager.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\ComponentCommand.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\FunctionCommand.cpp" />
     <ClCompile Include="..\..\Framework\Client\Undo\ObjectCommand.cpp" />
