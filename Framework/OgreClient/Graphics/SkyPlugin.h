@@ -101,14 +101,8 @@ public:
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
-    /**
-    Creates the specific part of this plugin. This is called in the tick/frame update after the
-    plugin is created.
-    **/
     void create();
-    /**
-    Notifies the plugin about a server state change.
-    **/
+    inline void reset() {}
     void setServerState( ServerState serverState );
 
     /**

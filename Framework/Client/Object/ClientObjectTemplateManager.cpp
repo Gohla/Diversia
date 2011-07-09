@@ -70,6 +70,11 @@ void ClientObjectTemplateManager::create()
     ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
+void ClientObjectTemplateManager::reset()
+{
+    // TODO: More control over what templates get removed? Currently all templates are per game.
+}
+
 void ClientObjectTemplateManager::offlineModeChanged( bool offlineMode )
 {
     ObjectTemplateManager::offlineModeChanged( offlineMode );

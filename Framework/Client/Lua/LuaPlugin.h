@@ -62,14 +62,8 @@ public:
     static inline String getTypeNameStatic() { return PLUGINNAME_LUA; }
     
 private:
-    /**
-    Creates the specific part of this plugin. This is called in the tick/frame update after the
-    plugin is created.
-    **/
     void create();
-    /**
-    Notifies the plugin about a server state change.
-    **/
+    inline void reset() {}
     inline void setServerState( ServerState serverState ) {}
 
     LuaManager mLuaScriptingManager;

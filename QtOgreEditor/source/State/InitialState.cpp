@@ -50,9 +50,14 @@ void InitialState::wake()
     EditorGlobals::mMainWindow->mUI.listViewUndo->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionConnect->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionDisconnect->setEnabled( false );
-    EditorGlobals::mMainWindow->mUI.actionSave->setEnabled( false );
-    EditorGlobals::mMainWindow->mUI.actionSave_as->setEnabled( false );
-    EditorGlobals::mMainWindow->mUI.actionLoad->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionGame_save->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionGame_save_as->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionGame_load->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionGame_new->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionLevel_save->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionLevel_save_as->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionLevel_load->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionLevel_new->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionStop->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionPause->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionPlay->setEnabled( false );

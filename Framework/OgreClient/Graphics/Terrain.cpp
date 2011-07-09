@@ -80,17 +80,7 @@ Terrain::Terrain( Mode mode, PluginState state, ClientPluginManager& rPluginMana
 
 Terrain::~Terrain()
 {
-    if( mTerrain )
-    {
-        /*Path terrainFile = Globals::mGraphics->getRootResourceLocation() / "Ogre" / "TerrainCache" /
-            mResourceManager.getGroup();
-        boost::filesystem::create_directories( terrainFile.string() );
-        mTerrain->save( ( terrainFile / "terrain.bin" ).string() );*/
-
-        mTerrain->unload();
-        mTerrain->unprepare();
-        OGRE_DELETE mTerrain;
-    }
+    Terrain::reset();
 }
 
 Real Terrain::getHeightAt( const Vector3& rPosition )
@@ -126,6 +116,21 @@ void Terrain::create()
     }
 
     mResourceManager.loadResources( resourceList, sigc::mem_fun( this, &Terrain::resourcesLoaded ) );
+}
+
+void Terrain::reset()
+{
+    if( mTerrain )
+    {
+        /*Path terrainFile = Globals::mGraphics->getRootResourceLocation() / "Ogre" / "TerrainCache" /
+            mResourceManager.getGroup();
+        boost::filesystem::create_directories( terrainFile.string() );
+        mTerrain->save( ( terrainFile / "terrain.bin" ).string() );*/
+
+        mTerrain->unload();
+        mTerrain->unprepare();
+        OGRE_DELETE mTerrain;
+    }
 }
 
 void Terrain::resourcesLoaded()

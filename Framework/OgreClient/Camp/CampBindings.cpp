@@ -35,6 +35,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Graphics/TextCanvasBatch.h"
 #include "OgreClient/Graphics/TranslationGizmo.h"
 #include "OgreClient/Input/InputManager.h"
+#include "OgreClient/Level/LevelManager.h"
 #include "OgreClient/Object/Animation.h"
 #include "OgreClient/Object/AreaTrigger.h"
 #include "OgreClient/Object/Audio.h"
@@ -1329,6 +1330,21 @@ void CampBindings::bindTranslationGizmo()
         // Functions
         // Static functions
         // Operators
+}
+
+void CampBindings::bindLevelManager()
+{
+    camp::Class::declare<LevelManager>( "LevelManager" )
+        .tag( "QtIcon", ":/Icons/Icons/categories/gnome-settings.png" )
+        .base<ClientPlugin>()
+	    // Constructors
+	    // Properties (read-only)
+	    // Properties (read/write)
+	    .property( "DefaultLevel", &LevelManager::mDefaultLevel )
+	    .property( "LoadedPlugins", &LevelManager::mLoadedPlugins );
+	    // Functions
+	    // Static functions
+	    // Operators
 }
 
 //------------------------------------------------------------------------------

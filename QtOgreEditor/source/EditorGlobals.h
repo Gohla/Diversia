@@ -26,7 +26,8 @@ public:
     static MainWindow*      mMainWindow;
     static ConnectDialog*   mConnectDialog;
     static OgreWidget*      mOgreWidget;
-    static QString          mCurrentFile;
+    static QString          mCurrentGame;
+    static QString          mCurrentLevel;
 
 };
 

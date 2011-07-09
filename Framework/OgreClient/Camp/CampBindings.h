@@ -76,6 +76,7 @@ public:
     static void bindRotationGizmo();
     static void bindScaleGizmo();
     static void bindTranslationGizmo();
+    static void bindLevelManager();
 
 };
 

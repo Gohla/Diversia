@@ -63,6 +63,7 @@ private:
     virtual ~ClientObjectTemplateManager();
 
     void create();
+    void reset();
     inline void setServerState( ServerState serverState ) {}
     void offlineModeChanged( bool offlineMode );
 

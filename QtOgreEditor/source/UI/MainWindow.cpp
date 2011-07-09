@@ -31,6 +31,7 @@ This file is part of Diversia.
 #include <QPainter>
 #include <QSignalMapper>
 #include <sigc++/adaptors/retype_return.h>
+#include "OgreClient/Level/LevelManager.h"
 
 namespace Diversia
 {
@@ -74,8 +75,8 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     // Toolbar view action icons.
     mUI.defaultToolBar->toggleViewAction()->setIcon( 
         QIcon( ":/Icons/Icons/actions/reload.png" ) );
-    mUI.fileToolBar->toggleViewAction()->setIcon( 
-        QIcon( ":/Icons/Icons/actions/bookmark-new.png" ) );
+    /*mUI.fileToolBar->toggleViewAction()->setIcon( 
+        QIcon( ":/Icons/Icons/actions/bookmark-new.png" ) );*/
     mUI.stateToolBar->toggleViewAction()->setIcon( 
         QIcon( ":/Icons/Icons/actions/media-playback-start.png" ) );
     mUI.undoToolBar->toggleViewAction()->setIcon( 
@@ -90,14 +91,14 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     mUI.menuView->addAction( mUI.consoleDock->toggleViewAction() );
     mUI.menuView->addSeparator();
     mUI.menuView->addAction( mUI.defaultToolBar->toggleViewAction() );
-    mUI.menuView->addAction( mUI.fileToolBar->toggleViewAction() );
+    /*mUI.menuView->addAction( mUI.fileToolBar->toggleViewAction() );*/
     mUI.menuView->addAction( mUI.stateToolBar->toggleViewAction() );
     mUI.menuView->addAction( mUI.undoToolBar->toggleViewAction() );
     mUI.menuView->addAction( mUI.manipulationToolBar->toggleViewAction() );
 
     // Dialog signals
     QObject::connect( mUI.actionConnect, SIGNAL( triggered() ), &mConnectDialog, SLOT( show() ) );
-    QObject::connect( mUI.actionNew, SIGNAL( triggered() ), &mNewGameDialog, SLOT( show() ) );
+    QObject::connect( mUI.actionGame_new, SIGNAL( triggered() ), &mNewGameDialog, SLOT( show() ) );
 
     // Setup gizmo actions
     mGizmoActions = new QActionGroup( this );
@@ -266,14 +267,14 @@ void MainWindow::disconnect()
     }
 }
 
-void MainWindow::save()
+void MainWindow::saveGame()
 {
-    if( EditorGlobals::mCurrentFile.isEmpty() )
-        MainWindow::saveAs();
+    if( EditorGlobals::mCurrentGame.isEmpty() )
+        MainWindow::saveGameAs();
 
     try
     {
-        SerializationFile* file = new XMLSerializationFile( EditorGlobals::mCurrentFile.toStdString(), 
+        SerializationFile* file = new XMLSerializationFile( EditorGlobals::mCurrentGame.toStdString(), 
             "NoSerialization", false );
         file->serialize( EditorGlobals::mGrid->getActiveServer().getPluginManager(), false );
         file->save();
@@ -281,18 +282,17 @@ void MainWindow::save()
     }
     catch( Exception e )
     {
-        LOGE << "Could not save: " << e.what();	
+        LOGE << "Could not save game: " << e.what();	
     }
 }
 
-void MainWindow::saveAs()
+void MainWindow::saveGameAs()
 {
-    QString fileName = QFileDialog::getSaveFileName( this, "Game file", "", 
-        tr( "Game files (*.xml)" ) );
+    QString fileName = QFileDialog::getSaveFileName( this, "Diversia game file", "", 
+        tr( "Diversia game files (*.xml)" ) );
+
     if( !fileName.isEmpty() )
     {
-        EditorGlobals::mCurrentFile = fileName;
-
         try
         {
             SerializationFile* file = new XMLSerializationFile( fileName.toStdString(), 
@@ -300,21 +300,26 @@ void MainWindow::saveAs()
             file->serialize( EditorGlobals::mGrid->getActiveServer().getPluginManager(), false );
             file->save();
             delete file;
+
+            EditorGlobals::mCurrentGame = fileName;
         }
         catch( Exception e )
         {
-            LOGE << "Could not save: " << e.what();	
+            LOGE << "Could not save game: " << e.what();	
         }
     }
 }
 
-void MainWindow::load()
+void MainWindow::loadGame()
 {
-    QString fileName = QFileDialog::getOpenFileName( this, "Game file", "", 
-        tr( "Game files (*.xml)" ) );
+    QString fileName = QFileDialog::getOpenFileName( this, "Diversia game file", "", 
+        tr( "Diversia game files (*.xml)" ) );
 
     if( !fileName.isEmpty() )
     {
+        EditorGlobals::mCurrentGame = fileName;
+        EditorGlobals::mOffline = true;
+
         // TODO: This needs to wait 1 tick.
         EditorGlobals::mState->popTo( 1 );
 
@@ -335,11 +340,71 @@ void MainWindow::load()
         }
         catch( Exception e )
         {
-            LOGE << "Could not load: " << e.what();	
-        }
+            LOGE << "Could not load game: " << e.what();
 
-        EditorGlobals::mCurrentFile = fileName;
-        EditorGlobals::mOffline = true;
+            EditorGlobals::mCurrentGame = "";
+            EditorGlobals::mOffline = false;
+        }
+    }
+}
+
+void MainWindow::saveLevel()
+{
+    if( EditorGlobals::mCurrentLevel.isEmpty() )
+        MainWindow::saveLevelAs();
+
+    try
+    {
+        ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
+        LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
+        levelManager.store( EditorGlobals::mCurrentLevel.toStdString() );
+    }
+    catch( Exception e )
+    {
+        LOGE << "Could not save level: " << e.what();	
+    }
+}
+
+void MainWindow::saveLevelAs()
+{
+    QString fileName = QFileDialog::getSaveFileName( this, "Diversia level file", "", 
+        tr( "Diversia level files (*.lvl)" ) );
+
+    if( !fileName.isEmpty() )
+    {
+        try
+        {
+            ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
+            LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
+            levelManager.store( fileName.toStdString() );
+
+            EditorGlobals::mCurrentLevel = fileName;
+        }
+        catch( Exception e )
+        {
+            LOGE << "Could not save level: " << e.what();	
+        }
+    }
+}
+
+void MainWindow::loadLevel()
+{
+    QString fileName = QFileDialog::getOpenFileName( this, "Diversia level file", "", 
+        tr( "Diversia level files (*.lvl)" ) );
+
+    if( !fileName.isEmpty() )
+    {
+        try
+        {
+            ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
+            LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
+            levelManager.load( fileName.toStdString() );
+            EditorGlobals::mCurrentGame = fileName;
+        }
+        catch( Exception e )
+        {
+            LOGE << "Could not load level: " << e.what();	
+        }
     }
 }
 

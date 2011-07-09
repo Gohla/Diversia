@@ -57,10 +57,7 @@ SceneManagerPlugin::SceneManagerPlugin( Mode mode, PluginState state,
 
 SceneManagerPlugin::~SceneManagerPlugin()
 {
-    GlobalsBase::mScene->setSkyDome( false, "" );
-    GlobalsBase::mScene->setSkyBox( false, "" );
-
-    Ogre::RTShader::ShaderGenerator::getSingletonPtr()->removeAllShaderBasedTechniques();
+    SceneManagerPlugin::reset();
 }
 
 void SceneManagerPlugin::setSkyMaterial( const String& rMaterial )
@@ -95,6 +92,12 @@ void SceneManagerPlugin::create()
 
     mResourceManager.connectInitialized( sigc::mem_fun( this, 
         &SceneManagerPlugin::resourcesInitialized ) );
+}
+
+void SceneManagerPlugin::reset()
+{
+    GlobalsBase::mScene->setSkyDome( false, "" );
+    GlobalsBase::mScene->setSkyBox( false, "" );
 }
 
 void SceneManagerPlugin::setServerState( ServerState serverState )

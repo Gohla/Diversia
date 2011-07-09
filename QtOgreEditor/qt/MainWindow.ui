@@ -71,42 +71,6 @@
    </layout>
   </widget>
   <widget class="QStatusBar" name="statusBar"/>
-  <widget class="QMenuBar" name="menuBar">
-   <property name="geometry">
-    <rect>
-     <x>0</x>
-     <y>0</y>
-     <width>1121</width>
-     <height>21</height>
-    </rect>
-   </property>
-   <widget class="QMenu" name="menuFile">
-    <property name="title">
-     <string>File</string>
-    </property>
-    <addaction name="actionNew"/>
-    <addaction name="actionSave"/>
-    <addaction name="actionSave_as"/>
-    <addaction name="actionLoad"/>
-    <addaction name="separator"/>
-    <addaction name="actionExit"/>
-   </widget>
-   <widget class="QMenu" name="menuServer">
-    <property name="title">
-     <string>Server</string>
-    </property>
-    <addaction name="actionConnect"/>
-    <addaction name="actionDisconnect"/>
-   </widget>
-   <widget class="QMenu" name="menuView">
-    <property name="title">
-     <string>View</string>
-    </property>
-   </widget>
-   <addaction name="menuFile"/>
-   <addaction name="menuView"/>
-   <addaction name="menuServer"/>
-  </widget>
   <widget class="QToolBar" name="defaultToolBar">
    <property name="enabled">
     <bool>true</bool>
@@ -741,24 +705,6 @@
     </layout>
    </widget>
   </widget>
-  <widget class="QToolBar" name="fileToolBar">
-   <property name="windowTitle">
-    <string>File toolbar</string>
-   </property>
-   <property name="toolButtonStyle">
-    <enum>Qt::ToolButtonTextUnderIcon</enum>
-   </property>
-   <attribute name="toolBarArea">
-    <enum>TopToolBarArea</enum>
-   </attribute>
-   <attribute name="toolBarBreak">
-    <bool>false</bool>
-   </attribute>
-   <addaction name="actionNew"/>
-   <addaction name="actionLoad"/>
-   <addaction name="actionSave"/>
-   <addaction name="actionSave_as"/>
-  </widget>
   <widget class="QToolBar" name="stateToolBar">
    <property name="windowTitle">
     <string>State toolbar</string>
@@ -803,6 +749,47 @@
     <bool>false</bool>
    </attribute>
    <addaction name="actionSnap_to_grid"/>
+  </widget>
+  <widget class="QMenuBar" name="menuBar">
+   <property name="geometry">
+    <rect>
+     <x>0</x>
+     <y>0</y>
+     <width>1121</width>
+     <height>21</height>
+    </rect>
+   </property>
+   <widget class="QMenu" name="menuFile">
+    <property name="title">
+     <string>File</string>
+    </property>
+    <addaction name="actionGame_new"/>
+    <addaction name="actionGame_save"/>
+    <addaction name="actionGame_save_as"/>
+    <addaction name="actionGame_load"/>
+    <addaction name="separator"/>
+    <addaction name="actionLevel_new"/>
+    <addaction name="actionLevel_save"/>
+    <addaction name="actionLevel_save_as"/>
+    <addaction name="actionLevel_load"/>
+    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuServer">
+    <property name="title">
+     <string>Server</string>
+    </property>
+    <addaction name="actionConnect"/>
+    <addaction name="actionDisconnect"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+   </widget>
+   <addaction name="menuFile"/>
+   <addaction name="menuView"/>
+   <addaction name="menuServer"/>
   </widget>
   <action name="actionExit">
    <property name="icon">
@@ -903,34 +890,28 @@
     <string>Destroy all selected objects and components</string>
    </property>
   </action>
-  <action name="actionSave">
+  <action name="actionGame_save">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
      <normaloff>:/Icons/Icons/actions/document-save.png</normaloff>:/Icons/Icons/actions/document-save.png</iconset>
    </property>
    <property name="text">
-    <string>Save</string>
+    <string>Save game</string>
    </property>
    <property name="toolTip">
     <string>Save current game to the currently loaded file</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+S</string>
-   </property>
   </action>
-  <action name="actionLoad">
+  <action name="actionGame_load">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
      <normaloff>:/Icons/Icons/actions/reload.png</normaloff>:/Icons/Icons/actions/reload.png</iconset>
    </property>
    <property name="text">
-    <string>Load</string>
+    <string>Load game</string>
    </property>
    <property name="toolTip">
     <string>Load a game</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+O</string>
    </property>
   </action>
   <action name="actionDestroy_plugin">
@@ -945,34 +926,28 @@
     <string>Destroy selected plugin</string>
    </property>
   </action>
-  <action name="actionSave_as">
+  <action name="actionGame_save_as">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
      <normaloff>:/Icons/Icons/actions/document-save.png</normaloff>:/Icons/Icons/actions/document-save.png</iconset>
    </property>
    <property name="text">
-    <string>Save as</string>
+    <string>Save game as</string>
    </property>
    <property name="toolTip">
     <string>Save current game to a new file</string>
    </property>
-   <property name="shortcut">
-    <string>Ctrl+Shift+S</string>
-   </property>
   </action>
-  <action name="actionNew">
+  <action name="actionGame_new">
    <property name="icon">
     <iconset resource="MainWindow.qrc">
      <normaloff>:/Icons/Icons/actions/bookmark-new.png</normaloff>:/Icons/Icons/actions/bookmark-new.png</iconset>
    </property>
    <property name="text">
-    <string>New</string>
+    <string>New game</string>
    </property>
    <property name="toolTip">
     <string>Create a new game</string>
-   </property>
-   <property name="shortcut">
-    <string>Ctrl+N</string>
    </property>
   </action>
   <action name="actionUndo">
@@ -1266,6 +1241,54 @@
     <enum>Qt::WidgetShortcut</enum>
    </property>
   </action>
+  <action name="actionLevel_new">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/actions/bookmark-new.png</normaloff>:/Icons/Icons/actions/bookmark-new.png</iconset>
+   </property>
+   <property name="text">
+    <string>New level</string>
+   </property>
+   <property name="toolTip">
+    <string>New level</string>
+   </property>
+  </action>
+  <action name="actionLevel_save">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/actions/document-save.png</normaloff>:/Icons/Icons/actions/document-save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save Level</string>
+   </property>
+   <property name="toolTip">
+    <string>Save current level to the currently loaded file</string>
+   </property>
+  </action>
+  <action name="actionLevel_save_as">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/actions/document-save.png</normaloff>:/Icons/Icons/actions/document-save.png</iconset>
+   </property>
+   <property name="text">
+    <string>Save level as</string>
+   </property>
+   <property name="toolTip">
+    <string>Save current level to a new file</string>
+   </property>
+  </action>
+  <action name="actionLevel_load">
+   <property name="icon">
+    <iconset resource="MainWindow.qrc">
+     <normaloff>:/Icons/Icons/actions/reload.png</normaloff>:/Icons/Icons/actions/reload.png</iconset>
+   </property>
+   <property name="text">
+    <string>Load level</string>
+   </property>
+   <property name="toolTip">
+    <string>Load level</string>
+   </property>
+  </action>
   <zorder>propertyBrowserDock</zorder>
   <zorder>objectsDock</zorder>
   <zorder>pluginsDock</zorder>
@@ -1499,10 +1522,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionSave</sender>
+   <sender>actionGame_save</sender>
    <signal>triggered()</signal>
    <receiver>MainWindowClass</receiver>
-   <slot>save()</slot>
+   <slot>saveGame()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1515,10 +1538,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionLoad</sender>
+   <sender>actionGame_load</sender>
    <signal>triggered()</signal>
    <receiver>MainWindowClass</receiver>
-   <slot>load()</slot>
+   <slot>loadGame()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1547,10 +1570,10 @@
    </hints>
   </connection>
   <connection>
-   <sender>actionSave_as</sender>
+   <sender>actionGame_save_as</sender>
    <signal>triggered()</signal>
    <receiver>MainWindowClass</receiver>
-   <slot>saveAs()</slot>
+   <slot>saveGameAs()</slot>
    <hints>
     <hint type="sourcelabel">
      <x>-1</x>
@@ -1834,17 +1857,69 @@
     </hint>
    </hints>
   </connection>
+  <connection>
+   <sender>actionLevel_load</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>loadLevel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>560</x>
+     <y>440</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLevel_save</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>saveLevel()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>560</x>
+     <y>440</y>
+    </hint>
+   </hints>
+  </connection>
+  <connection>
+   <sender>actionLevel_save_as</sender>
+   <signal>triggered()</signal>
+   <receiver>MainWindowClass</receiver>
+   <slot>saveLevelAs()</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>560</x>
+     <y>440</y>
+    </hint>
+   </hints>
+  </connection>
  </connections>
  <slots>
   <slot>exit()</slot>
   <slot>disconnect()</slot>
-  <slot>load()</slot>
+  <slot>loadGame()</slot>
   <slot>play()</slot>
-  <slot>saveAs()</slot>
+  <slot>saveGameAs()</slot>
   <slot>logSettingsChanged()</slot>
   <slot>undo()</slot>
   <slot>redo()</slot>
   <slot>stop()</slot>
   <slot>pause(bool)</slot>
+  <slot>saveGame()</slot>
+  <slot>loadLevel()</slot>
+  <slot>saveLevel()</slot>
+  <slot>saveLevelAs()</slot>
  </slots>
 </ui>

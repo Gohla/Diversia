@@ -66,9 +66,9 @@ void ServerNeighborsPlugin::create()
     ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
-void ServerNeighborsPlugin::setServerState( ServerState serverState )
+void ServerNeighborsPlugin::reset()
 {
-
+    mServerNeighbors.clear();
 }
 
 //------------------------------------------------------------------------------

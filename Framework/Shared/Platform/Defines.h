@@ -51,7 +51,8 @@ enum PluginTypeEnum
     PLUGINTYPE_OBJECTMANAGER = 0x06,
     PLUGINTYPE_TERRAIN = 0x07,
     PLUGINTYPE_GAMEMODE = 0x08,
-    PLUGINTYPE_SCENEMANAGER = 0x09
+    PLUGINTYPE_SCENEMANAGER = 0x09,
+    PLUGINTYPE_LEVELMANAGER = 0x10
 };
 #define PLUGINNAME_PERMISSIONMANAGER "PermissionManager"
 #define PLUGINNAME_RESOURCEMANAGER "ResourceManager"
@@ -63,6 +64,7 @@ enum PluginTypeEnum
 #define PLUGINNAME_TERRAIN "Terrain"
 #define PLUGINNAME_GAMEMODE "GameMode"
 #define PLUGINNAME_SCENEMANAGER "SceneManager"
+#define PLUGINNAME_LEVELMANAGER "LevelManager"
 
 // Components, when changed also update CampBindings::bindComponentTypeEnum!
 enum ComponentTypeEnum

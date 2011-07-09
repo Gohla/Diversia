@@ -118,6 +118,10 @@ protected:
 	**/
 	virtual void create() = 0;
     /**
+    Resets the plugin to the initial state.
+    **/
+    virtual void reset() = 0;
+    /**
     Called when the state of this plugin changes.
     
     @param  state   The new state. 

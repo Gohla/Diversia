@@ -97,6 +97,7 @@ private:
 
     void resourcesLoaded();
     void create();
+    void reset();
     void destroy();
     void reload();
     void setServerState( ServerState serverState );

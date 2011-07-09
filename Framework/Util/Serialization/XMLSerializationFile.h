@@ -40,18 +40,35 @@ class DIVERSIA_UTIL_API XMLSerializationFile : public SerializationFile
 {
 public:
     /**
-    Constructor. 
+    Constructor
+
+    @param  rFile   The file to load from and save to. 
+    **/
+    XMLSerializationFile( const Path& rFile );
+    /**
+    Construct with one tag. 
     
     @param  rFile                   The file to load from and save to. 
-    @param  rTag                    The tag to include or exclude properties with. Defaults to
-                                    nothing. 
+    @param  rTag                    The tag to include or exclude properties with.
     @param  include                 True to include properties, false to exclude properties.
                                     Defaults to false. 
     @param  serializeOneDocument    True to serialize into one xml document instead of a separate
                                     xml document for saving.
     **/
-    XMLSerializationFile( const Path& rFile, const camp::Value& rTag = camp::Value::nothing,
-        bool include = false, bool serializeOneDocument = false );
+    XMLSerializationFile( const Path& rFile, const camp::Value& rTag, bool include = false, 
+        bool serializeOneDocument = false );
+    /**
+    Construct with multiple tags. 
+    
+    @param  rFile                   The file to load from and save to. 
+    @param  rTags                   The tags to include or exclude properties with.
+    @param  include                 True to include properties, false to exclude properties.
+                                    Defaults to false. 
+    @param  serializeOneDocument    True to serialize into one xml document instead of a separate
+                                    xml document for saving.
+    **/
+    XMLSerializationFile( const Path& rFile, const camp::Args& rTags, bool include = false, 
+        bool serializeOneDocument = false );
     /**
     Destructor.
     **/
@@ -92,6 +109,7 @@ private:
     std::vector<char>           mXMLData;
     rapidxml::xml_document<>    mXMLDocument;
     rapidxml::xml_document<>    mXMLSaveDocument;
+
 };
 
 //------------------------------------------------------------------------------

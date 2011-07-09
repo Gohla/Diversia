@@ -45,9 +45,12 @@ public:
 private slots:
     void exit();
     void disconnect();
-    void save();
-    void saveAs();
-    void load();
+    void saveGame();
+    void saveGameAs();
+    void loadGame();
+    void saveLevel();
+    void saveLevelAs();
+    void loadLevel();
     void logSeverityChange( QWidget* pWidget );
     void logSourceChange( QWidget* pWidget );
     void play();

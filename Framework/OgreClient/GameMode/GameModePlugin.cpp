@@ -105,6 +105,12 @@ void GameModePlugin::create()
     }
 }
 
+void GameModePlugin::reset()
+{
+    // TODO: Sometimes the gamemode might want to be retained?
+    GameModePlugin::destroy();
+}
+
 void GameModePlugin::destroy()
 {
     if( mCreated )

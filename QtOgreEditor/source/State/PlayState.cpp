@@ -39,8 +39,12 @@ void PlayState::start()
     EditorGlobals::mMainWindow->mUI.actionPlay->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionPause->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionStop->setEnabled( true );
-    EditorGlobals::mMainWindow->mUI.actionSave->setEnabled( false );
-    EditorGlobals::mMainWindow->mUI.actionSave_as->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionGame_save->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionGame_save_as->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionLevel_save->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionLevel_save_as->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionLevel_load->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionLevel_new->setEnabled( false );
 
     // Deselect all objects
     GlobalsBase::mSelection->deselectAll();

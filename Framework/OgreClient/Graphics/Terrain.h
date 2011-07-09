@@ -66,14 +66,8 @@ private:
 
     void resourcesLoaded();
 
-    /**
-    Creates the specific part of this plugin. This is called in the tick/frame update after the
-    plugin is created.
-    **/
     void create();
-    /**
-    Notifies the plugin about a server state change.
-    **/
+    void reset();
     inline void setServerState( ServerState serverState ) {}
 
     Ogre::Terrain*                      mTerrain;

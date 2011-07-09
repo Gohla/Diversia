@@ -38,10 +38,26 @@ namespace Util
 {
 //------------------------------------------------------------------------------
 
+XMLSerializationFile::XMLSerializationFile( const Path& rFile ):
+    SerializationFile( camp::Args::empty, false ),
+    mFile( rFile ),
+    mSerializeOneDocument( false )
+{
+
+}
+
 XMLSerializationFile::XMLSerializationFile( const Path& rFile, 
-    const camp::Value& rTag /*= camp::Value::nothing*/, bool include /*= false*/, 
-    bool serializeOneDocument /*= false*/ ):
+    const camp::Value& rTag, bool include /*= false*/, bool serializeOneDocument /*= false*/ ):
     SerializationFile( rTag, include ),
+    mFile( rFile ),
+    mSerializeOneDocument( serializeOneDocument )
+{
+
+}
+
+XMLSerializationFile::XMLSerializationFile( const Path& rFile, 
+    const camp::Args& rTags, bool include /*= false*/, bool serializeOneDocument /*= false*/ ):
+    SerializationFile( rTags, include ),
     mFile( rFile ),
     mSerializeOneDocument( serializeOneDocument )
 {
@@ -60,8 +76,9 @@ void XMLSerializationFile::deserialize( const camp::UserObject& rObject,
     rapidxml::xml_node<>* node = mXMLDocument.first_node( rObject.getClass().name().c_str() );
 
     // Serialize the object using data from the XML node.
+    const camp::Value& tag = mTags.count() ? mTags[0] : camp::Value::nothing;
     if( node )
-        camp::xml::deserialize( rObject, node, mTag, mInclude, throwExceptions );
+        camp::xml::deserialize( rObject, node, tag, mInclude, throwExceptions );
     else
         DIVERSIA_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, 
             "No configuration found for object " + rObject.getClass().name(), 
@@ -83,7 +100,7 @@ void XMLSerializationFile::serialize( const camp::UserObject& rObject,
     doc->append_node( node );
 
     // Deserialize the object to XML.
-    camp::xml::serialize( rObject, node, mTag, mInclude, throwExceptions );
+    camp::xml::serialize( rObject, node, mTags, mInclude, throwExceptions );
 }
 
 bool XMLSerializationFile::load()

@@ -28,6 +28,9 @@
     <Filter Include="Audio">
       <UniqueIdentifier>{a3d22fc4-bb2a-44f8-b1f7-e6d80886b286}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Level">
+      <UniqueIdentifier>{8505eebc-5eca-42e5-ab2b-a156621cc628}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\Libraries\BtOgre\BtOgreExtras.h">
@@ -194,6 +197,9 @@
     <ClInclude Include="..\..\Framework\OgreClient\Platform\Forward.h">
       <Filter>Platform</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\Framework\OgreClient\Level\LevelManager.h">
+      <Filter>Level</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\..\Libraries\BtOgre\BtOgre.cpp">
@@ -331,6 +337,9 @@
     </ClCompile>
     <ClCompile Include="..\..\Framework\OgreClient\Object\ObjectSelector.cpp">
       <Filter>Object</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Framework\OgreClient\Level\LevelManager.cpp">
+      <Filter>Level</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

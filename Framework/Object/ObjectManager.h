@@ -198,6 +198,10 @@ public:
             redirectToChilds );
     }
     /**
+    Immediately removes all all objects.
+    **/
+    void reset();
+    /**
     Gets the mode.
     **/
     inline Mode getMode() const { return mMode; }

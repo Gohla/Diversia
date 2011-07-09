@@ -187,6 +187,10 @@ public:
     Restores the last stored state.
     **/
     void restoreState();
+    /**
+    Resets all plugins to the initial state.
+    **/
+    void reset();
 
     /**
     Gets the replica manager. 

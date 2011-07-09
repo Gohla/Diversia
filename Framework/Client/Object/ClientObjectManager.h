@@ -74,21 +74,10 @@ protected:
         RakNet::RakNetGUID source );
     virtual void queryDestroyObject( Object& rObject, RakNet::RakNetGUID source );
 
-    /**
-    Creates the specific part of this plugin. This is called in the tick/frame update after the
-    plugin is created.
-    **/
-    virtual void create();
-    /**
-    Notifies the plugin about a server state change.
-    **/
-    virtual inline void setServerState( ServerState serverState ) {}
-    /**
-    Called if the offline mode is changed.
-    
-    @param  offlineMode True if set to offline mode, false if set to online mode.
-    **/
-    virtual void offlineModeChanged( bool offlineMode );
+    void create();
+    void reset();
+    inline void setServerState( ServerState serverState ) {}
+    void offlineModeChanged( bool offlineMode );
 
     PermissionManager&  mPermissionManager;
 

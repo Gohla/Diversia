@@ -19,7 +19,8 @@ namespace QtOgreEditor
 MainWindow*     EditorGlobals::mMainWindow = 0;
 ConnectDialog*  EditorGlobals::mConnectDialog = 0;
 OgreWidget*     EditorGlobals::mOgreWidget = 0;
-QString         EditorGlobals::mCurrentFile = "";
+QString         EditorGlobals::mCurrentGame = "";
+QString         EditorGlobals::mCurrentLevel = "";
 
 //------------------------------------------------------------------------------
 } // Namespace QtOgreEditor

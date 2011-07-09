@@ -123,6 +123,11 @@ void ClientObjectManager::create()
     ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
+void ClientObjectManager::reset()
+{
+    ObjectManager::reset();
+}
+
 void ClientObjectManager::offlineModeChanged( bool offlineMode )
 {
     ObjectManager::offlineModeChanged( offlineMode );

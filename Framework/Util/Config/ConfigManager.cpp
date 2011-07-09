@@ -38,7 +38,7 @@ namespace Util
 ConfigManager::ConfigManager( SerializationFile* pFile ):
     mFile( pFile )
 {
-    mFile->setTag( "Configurable" );
+    mFile->setTags( "Configurable" );
     mFile->setInclude( true );
 }
 

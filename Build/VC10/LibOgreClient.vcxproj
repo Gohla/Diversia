@@ -137,6 +137,7 @@
     <ClInclude Include="..\..\Framework\OgreClient\Input\MouseController.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Input\ObjectSelection.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Input\WindowsMouseController.h" />
+    <ClInclude Include="..\..\Framework\OgreClient\Level\LevelManager.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\Animation.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\AreaTrigger.h" />
     <ClInclude Include="..\..\Framework\OgreClient\Object\Audio.h" />
@@ -191,6 +192,7 @@
     <ClCompile Include="..\..\Framework\OgreClient\Input\MouseController.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Input\ObjectSelection.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Input\WindowsMouseController.cpp" />
+    <ClCompile Include="..\..\Framework\OgreClient\Level\LevelManager.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\Animation.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\AreaTrigger.cpp" />
     <ClCompile Include="..\..\Framework\OgreClient\Object\Audio.cpp" />

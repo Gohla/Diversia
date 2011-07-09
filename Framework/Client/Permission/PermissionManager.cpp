@@ -44,6 +44,7 @@ PermissionManager::~PermissionManager()
     {
         delete i->second;
     }
+    mPermissions.clear();
 }
 
 template <typename T> Permission& PermissionManager::addPermission( const String& rName, 

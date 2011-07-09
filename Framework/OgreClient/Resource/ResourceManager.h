@@ -180,18 +180,9 @@ private:
         SimpleResourceCallback                              mCompletedSlot;
     };
 
-    /**
-    Creates the specific part of this plugin. This is called in the tick/frame update after the
-    plugin is created.
-    **/
     void create();
-    /**
-    Destroys the resource group.
-    **/
+    inline void reset() {}
     void destroy();
-    /**
-    Notifies the plugin about a server state change.
-    **/
     inline void setServerState( ServerState serverState ) {}
 
     ServerAbstract& mServer;

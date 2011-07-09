@@ -40,12 +40,19 @@ class DIVERSIA_UTIL_API SerializationFile
 {
 public:
     /**
-    Constructor.
+    Constructor with single tag.
 
     @param  rTag    The tag to include or exclude properties with.
     @param  include True to include properties, false to exclude properties.
     **/
-    SerializationFile( const camp::Value& rTag, bool include ): mTag( rTag ), mInclude( include ) {}
+    SerializationFile( const camp::Value& rTag, bool include ): mTags( rTag ), mInclude( include ) {}
+    /**
+    Constructor with multiple tags.
+
+    @param  rTags   The tags to include or exclude properties with.
+    @param  include True to include properties, false to exclude properties.
+    **/
+    SerializationFile( const camp::Args& rTags, bool include ): mTags( rTags ), mInclude( include ) {}
     /**
     Destructor.
     **/
@@ -82,11 +89,15 @@ public:
     /**
     Gets the the tag to include or exclude properties with.
     **/
-    inline const camp::Value& getTag() const { return mTag; }
+    inline const camp::Args& getTags() const { return mTags; }
     /**
     Sets a the tag to include or exclude properties with.
     **/
-    inline void setTag( const camp::Value& rTag ) { mTag = rTag; }
+    inline void setTags( const camp::Value& rTag ) { mTags = camp::Args(rTag); }
+    /**
+    Sets a the tags to include or exclude properties with.
+    **/
+    inline void setTags( const camp::Args& rTags ) { mTags = rTags; }
     /**
     Gets is the tag is including or excluding properties.
     **/
@@ -97,8 +108,9 @@ public:
     inline void setInclude( bool include ) { mInclude = include; }
 
 protected:
-    camp::Value mTag;
+    camp::Args  mTags;
     bool        mInclude;
+
 };
 
 //------------------------------------------------------------------------------

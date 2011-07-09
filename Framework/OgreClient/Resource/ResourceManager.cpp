@@ -312,6 +312,9 @@ void ResourceManager::destroy()
             mRBQ.abortRequest( mInitializationTicket );
         }
 
+        // Remove RTShader techniques
+        Ogre::RTShader::ShaderGenerator::getSingletonPtr()->removeAllShaderBasedTechniques();
+
         mRGM.clearResourceGroup( mGroup );
         mRGM.destroyResourceGroup( mGroup );
 

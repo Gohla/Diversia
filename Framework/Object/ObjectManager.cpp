@@ -54,11 +54,7 @@ ObjectManager::ObjectManager( Mode mode, RakNet::RakNetGUID ownGUID, RakNet::Rak
 
 ObjectManager::~ObjectManager()
 {
-    for( Objects::iterator i = mObjects.begin(); i != mObjects.end(); ++i )
-    {
-        mObjectSignal( *i->second, false );
-        delete i->second;
-    }
+    ObjectManager::reset();
 }
 
 Object& ObjectManager::createObject( const String& rName, NetworkingType type /*= LOCAL*/, 
@@ -171,6 +167,18 @@ void ObjectManager::destroyWholeObjectTree( Object& rObject,
             ObjectManager::destroyWholeObjectTree( *i->second, source, true );
         }
     }
+}
+
+void ObjectManager::reset()
+{
+    for( Objects::iterator i = mObjects.begin(); i != mObjects.end(); ++i )
+    {
+        mObjectSignal( *i->second, false );
+        delete i->second;
+    }
+    mObjects.clear();
+    mDestroyedObjects.clear();
+    mUpdateConnection.block( true );
 }
 
 void ObjectManager::offlineModeChanged( bool offlineMode )

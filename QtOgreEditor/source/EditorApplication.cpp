@@ -28,6 +28,7 @@ This file is part of Diversia.
 #include "OgreClient/Graphics/SkyPlugin.h"
 #include "OgreClient/Graphics/Terrain.h"
 #include "OgreClient/Input/ObjectSelection.h"
+#include "OgreClient/Level/LevelManager.h"
 #include "OgreClient/Object/Animation.h"
 #include "OgreClient/Object/AreaTrigger.h"
 #include "OgreClient/Object/Audio.h"
@@ -44,10 +45,10 @@ This file is part of Diversia.
 #include "OgreClient/Object/Text.h"
 #include "OgreClient/Physics/PhysicsManager.h"
 #include "OgreClient/Resource/ResourceManager.h"
-#include "Shared/Plugin/Factories/ObjectManagerFactory.h"
-#include "Shared/Plugin/Factories/TemplatePluginFactory.h"
 #include "Shared/Crash/CrashReporter.h"
 #include "Shared/Object/TemplateComponentFactory.h"
+#include "Shared/Plugin/Factories/ObjectManagerFactory.h"
+#include "Shared/Plugin/Factories/TemplatePluginFactory.h"
 #include "State/InitialState.h"
 #include "UI/MainWindow.h"
 #include "Util/Config/ConfigManager.h"
@@ -178,6 +179,8 @@ void EditorApplication::init( int argc, char* argv[] )
         TemplatePluginFactory<LuaPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<LuaPlugin>();
         PluginManager::addAutoCreatePlugin<LuaPlugin>();
+        TemplatePluginFactory<LevelManager, ClientPluginManager>::registerFactory();
+        camp::classByType<LevelManager>();
 
         // Override the client's default game mode with one for the editor.
         TemplatePluginFactory<GameModePlugin, ClientPluginManager>::registerFactory();

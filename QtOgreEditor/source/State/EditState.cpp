@@ -47,9 +47,14 @@ void EditState::start()
     EditorGlobals::mMainWindow->mUI.graphicsView->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.listViewUndo->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionPlay->setEnabled( true );
-    EditorGlobals::mMainWindow->mUI.actionSave->setEnabled( true );
-    EditorGlobals::mMainWindow->mUI.actionSave_as->setEnabled( true );
-    EditorGlobals::mMainWindow->mUI.actionLoad->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionGame_save->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionGame_save_as->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionGame_load->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionGame_new->setEnabled( false );
+    EditorGlobals::mMainWindow->mUI.actionLevel_save->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionLevel_save_as->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionLevel_load->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionLevel_new->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionUndo->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionRedo->setEnabled( true );
 }
@@ -66,8 +71,12 @@ void EditState::wake()
     EditorGlobals::mMainWindow->mUI.actionStop->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionPause->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionPlay->setEnabled( true );
-    EditorGlobals::mMainWindow->mUI.actionSave->setEnabled( true );
-    EditorGlobals::mMainWindow->mUI.actionSave_as->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionGame_save->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionGame_save_as->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionLevel_save->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionLevel_save_as->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionLevel_load->setEnabled( true );
+    EditorGlobals::mMainWindow->mUI.actionLevel_new->setEnabled( true );
 }
 
 void EditState::activeServerDisconnected( ServerAbstract& rActiveServer )

@@ -47,7 +47,7 @@ void NewGameDialog::accept()
     ResourceManager& resourceManager = pluginManager.createPlugin<ResourceManager>();
     resourceManager.set( "ResourceLocation", mUI.editResourceLocation->text() );
     resourceManager.set( "Type", mUI.comboResourceType->currentText() );
-    EditorGlobals::mCurrentFile = mUI.editGameFile->text();
+    EditorGlobals::mCurrentGame = mUI.editGameFile->text();
     EditorGlobals::mOffline = true;
 
     QDialog::setVisible( false );

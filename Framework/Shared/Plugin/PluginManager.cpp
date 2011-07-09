@@ -181,6 +181,12 @@ void PluginManager::restoreState()
     }
 }
 
+void PluginManager::reset()
+{
+    for( Plugins::reverse_iterator i = mPlugins.rbegin(); i != mPlugins.rend(); ++i ) 
+        i->second->reset();
+}
+
 void PluginManager::update()
 {
     SLOGD << "PluginManager::update";

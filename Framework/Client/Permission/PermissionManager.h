@@ -197,14 +197,8 @@ public:
     void checkPermissionThrows( const String& rName, camp::Value& rValue, const String& rSrc );
     
 private:
-    /**
-    Creates the specific part of this plugin. This is called in the tick/frame update after the
-    plugin is created.
-    **/
     void create();
-    /**
-    Notifies the plugin about a server state change.
-    **/
+    inline void reset() {}
     inline void setServerState( ServerState serverState ) {}
 
     bool DeserializeConstruction( RakNet::BitStream* pConstructionBitstream, 
