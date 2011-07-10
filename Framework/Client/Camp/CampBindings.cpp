@@ -61,7 +61,7 @@ void CampBindings::bindClientPluginManager()
 void CampBindings::bindClientObjectManager()
 {
     camp::Class::declare<ClientObjectManager>( "ClientObjectManager" )
-        .tag( "NoLevelSerialization" )
+        .tag( "NoLevelSerialization", true )
         .base<ObjectManager>()
         .base<ClientPlugin>();
         // Constructors
@@ -117,7 +117,7 @@ void CampBindings::bindClientPlugin()
 void CampBindings::bindPermissionManager()
 {
     camp::Class::declare<PermissionManager>( "PermissionManager" )
-        .tag( "NoLevelSerialization" )
+        .tag( "NoLevelSerialization", true )
         .tag( "QtIcon", ":/Icons/Icons/apps/klipper.png" )
         .base<ClientPlugin>();
         // Constructors
@@ -184,7 +184,7 @@ void CampBindings::bindLuaPlugin()
 {
     camp::Class::declare<LuaPlugin>( "Lua" )
         .tag( "QtIcon", ":/Icons/Icons/mimetypes/stock_script.png" )
-        .tag( "NoLevelSerialization" )
+        .tag( "NoLevelSerialization", true )
         .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
@@ -214,7 +214,7 @@ void CampBindings::bindClientComponentTemplate()
 void CampBindings::bindClientObjectTemplateManager()
 {
     camp::Class::declare<ClientObjectTemplateManager>( "ClientObjectTemplateManager" )
-        .tag( "NoLevelSerialization" )
+        .tag( "NoLevelSerialization", true )
         .base<ObjectTemplateManager>()
         .base<ClientPlugin>();
         // Constructors
