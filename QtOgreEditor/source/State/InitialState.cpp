@@ -53,10 +53,12 @@ void InitialState::wake()
     EditorGlobals::mMainWindow->mUI.actionGame_save->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionGame_save_as->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionGame_load->setEnabled( true );
+    EditorGlobals::mMainWindow->mRecentGameGroup->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionGame_new->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionLevel_save->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionLevel_save_as->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionLevel_load->setEnabled( false );
+    EditorGlobals::mMainWindow->mLevelGroup->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionLevel_new->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionStop->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionPause->setEnabled( false );

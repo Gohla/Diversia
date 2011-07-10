@@ -44,6 +44,7 @@ void PlayState::start()
     EditorGlobals::mMainWindow->mUI.actionLevel_save->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionLevel_save_as->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionLevel_load->setEnabled( false );
+    EditorGlobals::mMainWindow->mLevelGroup->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionLevel_new->setEnabled( false );
 
     // Deselect all objects

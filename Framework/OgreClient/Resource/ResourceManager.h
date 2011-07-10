@@ -89,6 +89,10 @@ public:
     **/
     inline const String& getGroup() const { return mGroup; }
     /**
+    Gets the resource path. 
+    **/
+    inline const Path& getResourcePath() const { return mResourcePath; }
+    /**
     Gets a resource or optionally create one if it doesn't exist.
     
     @param  rResource   Resource information.
@@ -191,6 +195,7 @@ private:
 
     ResourceLocationType mType;
     String mResourceLocation;
+    Path mResourcePath;
     String mGroup;
     Ogre::BackgroundProcessTicket mInitializationTicket;
     bool mCreated;

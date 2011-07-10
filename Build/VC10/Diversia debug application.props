@@ -8,6 +8,7 @@
   <PropertyGroup />
   <PropertyGroup>
     <TargetName>Diversia-$(ProjectName)-Debug</TargetName>
+    <EmbedManifest>false</EmbedManifest>
   </PropertyGroup>
   <ItemDefinitionGroup />
   <ItemGroup />

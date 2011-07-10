@@ -8,17 +8,19 @@ This file is part of Diversia.
 
 #include "Platform/StableHeaders.h"
 
-#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/ServerAbstract.h"
 #include "Client/Object/ClientObjectManager.h"
 #include "Client/Object/ClientObjectTemplateManager.h"
 #include "Client/Permission/PermissionManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Undo/UndoStack.h"
 #include "GameMode/EditorGameMode.h"
 #include "Object/EditorObject.h"
 #include "OgreClient/Graphics/SceneManagerPlugin.h"
 #include "OgreClient/Input/ObjectSelection.h"
+#include "OgreClient/Level/LevelManager.h"
+#include "OgreClient/Resource/ResourceManager.h"
 #include "State/LoadingState.h"
 #include "State/PauseState.h"
 #include "State/PlayState.h"
@@ -31,13 +33,17 @@ This file is part of Diversia.
 #include <QPainter>
 #include <QSignalMapper>
 #include <sigc++/adaptors/retype_return.h>
-#include "OgreClient/Level/LevelManager.h"
 
 namespace Diversia
 {
 namespace QtOgreEditor 
 {
 //------------------------------------------------------------------------------
+
+inline QString strippedName( const QString &fullFileName )
+{
+    return QFileInfo( fullFileName ).fileName();
+}
 
 MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
     QMainWindow( pParent, flags )
@@ -165,6 +171,35 @@ MainWindow::MainWindow( QWidget* pParent, Qt::WFlags flags ):
 
     QObject::connect( sourcesSignalMapper, SIGNAL( mapped(QWidget*) ), this, SLOT( logSourceChange(QWidget*) ) );
 
+    // Setup recent games and levels menus.
+    mRecentGameGroup = new QActionGroup( this );
+    mRecentGameGroup->setExclusive( false );
+    for( unsigned short i = 0; i < cMaxRecentGames; ++i )
+    {
+        QAction* action = new QAction( this );
+        action->setVisible( false );
+        QObject::connect( action, SIGNAL( triggered() ), this, SLOT( loadRecentGame() ) );
+        mRecentGameActions[i] = action;
+        mUI.menuFile->insertAction( mUI.actionExit, action );
+        mRecentGameGroup->addAction( action );
+    }
+    mRecentGameSeperator = mUI.menuFile->insertSeparator( mRecentGameActions[0] );
+    mUI.menuFile->insertSeparator( mUI.actionExit );
+    MainWindow::updateRecentGames();
+
+    mLevelGroup = new QActionGroup( this );
+    mLevelGroup->setExclusive( false );
+    mUI.menuLevel->insertSeparator( 0 );
+    for( unsigned short i = 0; i < cMaxLevels; ++i )
+    {
+        QAction* action = new QAction( this );
+        action->setVisible( false );
+        QObject::connect( action, SIGNAL( triggered() ), this, SLOT( loadListLevel() ) );
+        mLevelActions[i] = action;
+        mUI.menuLevel->addAction( action );
+        mLevelGroup->addAction( action );
+    }
+
     // Restore state
     QSettings settings( "Diversia", "QtOgreEditor" );
     settings.beginGroup( "MainWindow" );
@@ -224,6 +259,36 @@ void MainWindow::init()
 
     // Disable volume selection if selection mode action is not checked.
     if( !mUI.actionSelection_mode->isChecked() ) GlobalsBase::mSelection->enableVolumeSelect( false );
+}
+
+void MainWindow::updateLevels()
+{
+    try
+    {
+        ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
+        LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
+        ResourceManager& resourceManager = pluginManager.getPlugin<ResourceManager>();
+        Ogre::StringVectorPtr levels = levelManager.list();
+
+        int numListLevels = qMin( levels->size(), (std::size_t)cMaxLevels );
+
+        for( int i = 0; i < numListLevels; ++i ) 
+        {
+            Path filePath = resourceManager.getResourcePath() / levels->at( i );
+            QString file = QString( filePath.string().c_str() );
+            QString text = tr( "&%1 %2" ).arg( i + 1 ).arg( strippedName( file ) );
+            mLevelActions[i]->setText( text );
+            mLevelActions[i]->setData( file );
+            mLevelActions[i]->setVisible( true );
+        }
+
+        for( int i = numListLevels; i < cMaxLevels; ++i )
+            mLevelActions[i]->setVisible( false );
+    }
+    catch( Exception e )
+    {
+        // Ignore error	
+    }
 }
 
 void MainWindow::exit()
@@ -317,35 +382,14 @@ void MainWindow::loadGame()
 
     if( !fileName.isEmpty() )
     {
-        EditorGlobals::mCurrentGame = fileName;
-        EditorGlobals::mOffline = true;
-
-        // TODO: This needs to wait 1 tick.
-        EditorGlobals::mState->popTo( 1 );
-
-        EditorGlobals::mGrid->createOfflineServer();
-        EditorGlobals::mState->pushState( new LoadingState() );
-        ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
-        pluginManager.createPlugin<PermissionManager>();
-        pluginManager.createPlugin<ClientObjectTemplateManager>();
-        pluginManager.createPlugin<ClientObjectManager>();
-
-        try
-        {
-            SerializationFile* file = new XMLSerializationFile( fileName.toStdString(), 
-                "NoSerialization", false );
-            file->load();
-            file->deserialize( pluginManager, false );
-            delete file;
-        }
-        catch( Exception e )
-        {
-            LOGE << "Could not load game: " << e.what();
-
-            EditorGlobals::mCurrentGame = "";
-            EditorGlobals::mOffline = false;
-        }
+        MainWindow::_loadGame( fileName );
     }
+}
+
+void MainWindow::loadRecentGame()
+{
+    QAction* action = qobject_cast<QAction*>( sender() );
+    if( action ) MainWindow::_loadGame( action->data().toString() );
 }
 
 void MainWindow::saveLevel()
@@ -367,8 +411,9 @@ void MainWindow::saveLevel()
 
 void MainWindow::saveLevelAs()
 {
-    QString fileName = QFileDialog::getSaveFileName( this, "Diversia level file", "", 
-        tr( "Diversia level files (*.lvl)" ) );
+    QSettings settings( "Diversia", "QtOgreEditor" );
+    QString fileName = QFileDialog::getSaveFileName( this, "Diversia level file", 
+        settings.value( "LastGame", QString() ).toString(), tr( "Diversia level files (*.lvl)" ) );
 
     if( !fileName.isEmpty() )
     {
@@ -378,6 +423,7 @@ void MainWindow::saveLevelAs()
             LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
             levelManager.storeLevel( fileName.toStdString() );
 
+            MainWindow::updateLevels();
             EditorGlobals::mCurrentLevel = fileName;
         }
         catch( Exception e )
@@ -389,23 +435,20 @@ void MainWindow::saveLevelAs()
 
 void MainWindow::loadLevel()
 {
-    QString fileName = QFileDialog::getOpenFileName( this, "Diversia level file", "", 
-        tr( "Diversia level files (*.lvl)" ) );
+    QSettings settings( "Diversia", "QtOgreEditor" );
+    QString fileName = QFileDialog::getOpenFileName( this, "Diversia level file", 
+        settings.value( "LastGame", QString() ).toString(), tr( "Diversia level files (*.lvl)" ) );
 
     if( !fileName.isEmpty() )
     {
-        try
-        {
-            ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
-            LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
-            levelManager.loadLevel( fileName.toStdString() );
-            EditorGlobals::mCurrentGame = fileName;
-        }
-        catch( Exception e )
-        {
-            LOGE << "Could not load level: " << e.what();	
-        }
+        MainWindow::_loadLevel( fileName );
     }
+}
+
+void MainWindow::loadListLevel()
+{
+    QAction* action = qobject_cast<QAction*>( sender() );
+    if( action ) MainWindow::_loadLevel( action->data().toString() );
 }
 
 void MainWindow::logSeverityChange( QWidget* pWidget )
@@ -495,6 +538,63 @@ void MainWindow::redo()
     GlobalsBase::mUndoStack->redo();
 }
 
+void MainWindow::_loadGame( const QString& rFile )
+{
+    EditorGlobals::mCurrentGame = rFile;
+    EditorGlobals::mOffline = true;
+
+    // TODO: This needs to wait 1 tick.
+    EditorGlobals::mState->popTo( 1 );
+
+    EditorGlobals::mGrid->createOfflineServer();
+    EditorGlobals::mState->pushState( new LoadingState() );
+    ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
+    pluginManager.createPlugin<PermissionManager>();
+    pluginManager.createPlugin<ClientObjectTemplateManager>();
+    pluginManager.createPlugin<ClientObjectManager>();
+
+    try
+    {
+        SerializationFile* file = new XMLSerializationFile( rFile.toStdString(), 
+            "NoSerialization", false );
+        file->load();
+        file->deserialize( pluginManager, false );
+        delete file;
+
+        // Update recent games and path
+        QSettings settings( "Diversia", "QtOgreEditor" );
+        QStringList games = settings.value( "RecentGames" ).toStringList();
+        games.removeAll( rFile );
+        games.prepend( rFile );
+        while( games.size() > cMaxRecentGames ) games.removeLast();
+        settings.setValue( "RecentGames", games );
+        settings.setValue( "LastGame", rFile );
+        MainWindow::updateRecentGames();
+    }
+    catch( Exception e )
+    {
+        LOGE << "Could not load game: " << e.what();
+
+        EditorGlobals::mCurrentGame = "";
+        EditorGlobals::mOffline = false;
+    }
+}
+
+void MainWindow::_loadLevel( const QString& rFile )
+{
+    try
+    {
+        ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
+        LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
+        levelManager.loadLevel( rFile.toStdString() );
+        EditorGlobals::mCurrentGame = rFile;
+    }
+    catch( Exception e )
+    {
+        LOGE << "Could not load level: " << e.what();	
+    }
+}
+
 void MainWindow::checkLogItem( const QModelIndex& rIndex )
 {
     QAbstractItemModel* model = mUI.logListWidget->model();
@@ -531,6 +631,27 @@ bool MainWindow::isSourceChecked( const String& rSource )
     else if( rSource == "Lua" ) return mUI.logSourceLuaCheckBox->isChecked();
 
     return false;
+}
+
+void MainWindow::updateRecentGames()
+{
+    QSettings settings( "Diversia", "QtOgreEditor" );
+    QStringList games = settings.value( "RecentGames" ).toStringList();
+
+    int numRecentGames = qMin( games.size(), (int)cMaxRecentGames );
+
+    for( int i = 0; i < numRecentGames; ++i ) 
+    {
+        QString text = tr( "&%1 %2" ).arg( i + 1 ).arg( strippedName( games[i] ) );
+        mRecentGameActions[i]->setText( text );
+        mRecentGameActions[i]->setData( games[i] );
+        mRecentGameActions[i]->setVisible( true );
+    }
+
+    for( int i = numRecentGames; i < cMaxRecentGames; ++i )
+        mRecentGameActions[i]->setVisible( false );
+
+    mRecentGameSeperator->setVisible( numRecentGames > 0 );
 }
 
 void MainWindow::closeEvent( QCloseEvent* pEvent )

@@ -103,7 +103,7 @@ void LevelManager::loadLevel( const Path& rFile )
 
 Ogre::StringVectorPtr LevelManager::list()
 {
-    return Ogre::ResourceGroupManager::getSingletonPtr()->findResourceLocation( 
+    return Ogre::ResourceGroupManager::getSingletonPtr()->findResourceNames( 
         mResourceManager.getGroup(), "*.lvl" );
 }
 

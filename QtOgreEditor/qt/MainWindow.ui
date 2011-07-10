@@ -767,13 +767,21 @@
     <addaction name="actionGame_save"/>
     <addaction name="actionGame_save_as"/>
     <addaction name="actionGame_load"/>
-    <addaction name="separator"/>
+    <addaction name="actionExit"/>
+   </widget>
+   <widget class="QMenu" name="menuView">
+    <property name="title">
+     <string>View</string>
+    </property>
+   </widget>
+   <widget class="QMenu" name="menuLevel">
+    <property name="title">
+     <string>Level</string>
+    </property>
     <addaction name="actionLevel_new"/>
     <addaction name="actionLevel_save"/>
     <addaction name="actionLevel_save_as"/>
     <addaction name="actionLevel_load"/>
-    <addaction name="separator"/>
-    <addaction name="actionExit"/>
    </widget>
    <widget class="QMenu" name="menuServer">
     <property name="title">
@@ -782,14 +790,10 @@
     <addaction name="actionConnect"/>
     <addaction name="actionDisconnect"/>
    </widget>
-   <widget class="QMenu" name="menuView">
-    <property name="title">
-     <string>View</string>
-    </property>
-   </widget>
    <addaction name="menuFile"/>
-   <addaction name="menuView"/>
+   <addaction name="menuLevel"/>
    <addaction name="menuServer"/>
+   <addaction name="menuView"/>
   </widget>
   <action name="actionExit">
    <property name="icon">

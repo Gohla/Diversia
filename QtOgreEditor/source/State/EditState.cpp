@@ -50,10 +50,13 @@ void EditState::start()
     EditorGlobals::mMainWindow->mUI.actionGame_save->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionGame_save_as->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionGame_load->setEnabled( false );
+    EditorGlobals::mMainWindow->mRecentGameGroup->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionGame_new->setEnabled( false );
     EditorGlobals::mMainWindow->mUI.actionLevel_save->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionLevel_save_as->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionLevel_load->setEnabled( true );
+    EditorGlobals::mMainWindow->mLevelGroup->setEnabled( true );
+    EditorGlobals::mMainWindow->updateLevels();
     EditorGlobals::mMainWindow->mUI.actionLevel_new->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionUndo->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionRedo->setEnabled( true );

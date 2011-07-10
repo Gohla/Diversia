@@ -269,18 +269,18 @@ void ResourceManager::load()
         {
             case RESOURCELOCATIONTYPE_FILESYSTEM:
             {
-                Path resourcePath = mResourceLocation;
+                mResourcePath = mResourceLocation;
 #if DIVERSIA_PLATFORM == DIVERSIA_PLATFORM_WIN32
-                if( !resourcePath.has_root_name() && !resourcePath.has_root_directory() )
+                if( !mResourcePath.has_root_name() && !mResourcePath.has_root_directory() )
 #else
-                if( !resourcePath.has_root_directory() )
+                if( !mResourcePath.has_root_directory() )
 #endif 
                 {
-                    resourcePath = GlobalsBase::mGraphics->getRootResourceLocation() / 
-                    resourcePath;
+                    mResourcePath = GlobalsBase::mGraphics->getRootResourceLocation() / 
+                    mResourcePath;
                 }
 
-                mRGM.addResourceLocation( resourcePath.string(), "FileSystem", mGroup, true );
+                mRGM.addResourceLocation( mResourcePath.string(), "FileSystem", mGroup, true );
                 break;
             }
             case RESOURCELOCATIONTYPE_URL:

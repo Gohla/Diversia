@@ -38,9 +38,15 @@ public:
     Gets the connect dialog. 
     **/
     inline ConnectDialog& getConnectDialog() { return mConnectDialog; }
+    /**
+    Updates the level quick load menu.
+    **/
+    void updateLevels();
 
     Ui::MainWindowClass mUI;
     QActionGroup* mGizmoActions;
+    QActionGroup* mRecentGameGroup;
+    QActionGroup* mLevelGroup;
 
 private slots:
     void exit();
@@ -48,9 +54,11 @@ private slots:
     void saveGame();
     void saveGameAs();
     void loadGame();
+    void loadRecentGame();
     void saveLevel();
     void saveLevelAs();
     void loadLevel();
+    void loadListLevel();
     void logSeverityChange( QWidget* pWidget );
     void logSourceChange( QWidget* pWidget );
     void play();
@@ -63,14 +71,24 @@ private slots:
 private:
     friend class QtLogger;
 
+    void _loadGame( const QString& rFile );
+    void _loadLevel( const QString& rFile );
+
     void checkLogItem( const QModelIndex& rIndex );
     bool isSeverityChecked( LogLevel logLevel );
     bool isSourceChecked( const String& rSource );
+    void updateRecentGames();
     void closeEvent( QCloseEvent* pEvent );
 
     ConnectDialog       mConnectDialog;
     NewGameDialog       mNewGameDialog;
-
+    
+    static const unsigned short cMaxRecentGames = 5;
+    static const unsigned short cMaxLevels = 20;
+    QAction*    mRecentGameActions[cMaxRecentGames];
+    QAction*    mRecentGameSeperator;
+    QAction*    mLevelActions[cMaxLevels];
+    
 };
 
 //------------------------------------------------------------------------------
