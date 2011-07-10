@@ -71,7 +71,7 @@ void SkyPlugin::setPrecipitationType( Caelum::PrecipitationType type )
         mCaelumSystem->getPrecipitationController()->setPresetType( type );
 }
 
-void SkyPlugin::create()
+void SkyPlugin::load()
 {
     if( mInstanceCounter == 1 )
         SkyPlugin::initialize();

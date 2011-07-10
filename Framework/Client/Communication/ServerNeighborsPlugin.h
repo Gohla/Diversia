@@ -71,8 +71,8 @@ public:
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
-    void create();
-    void reset();
+    void load();
+    void unload();
     inline void setServerState( ServerState serverState ) {}
 
     // TODO: Use property syncing once camp supports std::map.

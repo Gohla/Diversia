@@ -34,7 +34,7 @@ LevelManager::~LevelManager()
 
 }
 
-void LevelManager::create()
+void LevelManager::load()
 {
     ClientPluginManager& pluginManager = ClientPlugin::getClientPluginManager();
     const Plugins& plugins = pluginManager.getPlugins();
@@ -52,7 +52,7 @@ void LevelManager::setServerState( ServerState serverState )
     
 }
 
-void LevelManager::store( const Path& rFile )
+void LevelManager::storeLevel( const Path& rFile )
 {
     ClientPluginManager& pluginManager = ClientPlugin::getClientPluginManager();
 
@@ -72,14 +72,14 @@ void LevelManager::store( const Path& rFile )
     delete file;
 }
 
-void LevelManager::load( const Path& rFile )
+void LevelManager::loadLevel( const Path& rFile )
 {
     // Swap loaded plugins into last loaded plugins because these will be overridden.
     mLastLoadedPlugins.swap( mLoadedPlugins );
     mLoadedPlugins.clear();
 
-    // Reset all plugins to the initial state.
-    ClientPlugin::getClientPluginManager().reset();
+    // Unload all plugins before changing configuration.
+    ClientPlugin::getClientPluginManager().unloadAll();
 
     // Deserialize from XML
     XMLSerializationFile* file = new XMLSerializationFile( rFile, "NoLevelSerialization", false );
@@ -96,6 +96,9 @@ void LevelManager::load( const Path& rFile )
     {
         pluginManager.destroyPlugin( *i );
     }
+
+    // Load all plugins again with changed configuration
+    ClientPlugin::getClientPluginManager().loadAll();
 }
 
 Ogre::StringVectorPtr LevelManager::list()

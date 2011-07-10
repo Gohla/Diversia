@@ -62,8 +62,8 @@ private:
         RakNet::NetworkIDManager& rNetworkIDManager );
     virtual ~ClientObjectTemplateManager();
 
-    void create();
-    void reset();
+    void load();
+    void unload();
     inline void setServerState( ServerState serverState ) {}
     void offlineModeChanged( bool offlineMode );
 

@@ -64,13 +64,13 @@ ClientObjectTemplateManager::~ClientObjectTemplateManager()
 
 }
 
-void ClientObjectTemplateManager::create()
+void ClientObjectTemplateManager::load()
 {
     // TODO: Implement real loading completed signal
     ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
-void ClientObjectTemplateManager::reset()
+void ClientObjectTemplateManager::unload()
 {
     // TODO: More control over what templates get removed? Currently all templates are per game.
 }

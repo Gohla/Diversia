@@ -357,7 +357,7 @@ void MainWindow::saveLevel()
     {
         ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
         LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
-        levelManager.store( EditorGlobals::mCurrentLevel.toStdString() );
+        levelManager.storeLevel( EditorGlobals::mCurrentLevel.toStdString() );
     }
     catch( Exception e )
     {
@@ -376,7 +376,7 @@ void MainWindow::saveLevelAs()
         {
             ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
             LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
-            levelManager.store( fileName.toStdString() );
+            levelManager.storeLevel( fileName.toStdString() );
 
             EditorGlobals::mCurrentLevel = fileName;
         }
@@ -398,7 +398,7 @@ void MainWindow::loadLevel()
         {
             ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
             LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
-            levelManager.load( fileName.toStdString() );
+            levelManager.loadLevel( fileName.toStdString() );
             EditorGlobals::mCurrentGame = fileName;
         }
         catch( Exception e )

@@ -80,7 +80,7 @@ Terrain::Terrain( Mode mode, PluginState state, ClientPluginManager& rPluginMana
 
 Terrain::~Terrain()
 {
-    Terrain::reset();
+    Terrain::unload();
 }
 
 Real Terrain::getHeightAt( const Vector3& rPosition )
@@ -98,7 +98,7 @@ Real Terrain::getHeightAt( const Vector3& rPosition )
     return 0.0;
 }
 
-void Terrain::create()
+void Terrain::load()
 {
     // Load terrain resources.
     ResourceList resourceList;
@@ -118,7 +118,7 @@ void Terrain::create()
     mResourceManager.loadResources( resourceList, sigc::mem_fun( this, &Terrain::resourcesLoaded ) );
 }
 
-void Terrain::reset()
+void Terrain::unload()
 {
     if( mTerrain )
     {

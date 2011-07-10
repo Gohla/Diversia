@@ -74,8 +74,8 @@ protected:
         RakNet::RakNetGUID source );
     virtual void queryDestroyObject( Object& rObject, RakNet::RakNetGUID source );
 
-    void create();
-    void reset();
+    void load();
+    void unload();
     inline void setServerState( ServerState serverState ) {}
     void offlineModeChanged( bool offlineMode );
 

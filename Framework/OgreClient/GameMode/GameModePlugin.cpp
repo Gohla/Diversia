@@ -62,10 +62,10 @@ GameModePlugin::GameModePlugin( Mode mode, PluginState state, ClientPluginManage
 
 GameModePlugin::~GameModePlugin()
 {
-    GameModePlugin::destroy();
+    GameModePlugin::unload();
 }
 
-void GameModePlugin::create()
+void GameModePlugin::load()
 {
     if( !mCreated )
     {
@@ -105,14 +105,9 @@ void GameModePlugin::create()
     }
 }
 
-void GameModePlugin::reset()
+void GameModePlugin::unload()
 {
     // TODO: Sometimes the gamemode might want to be retained?
-    GameModePlugin::destroy();
-}
-
-void GameModePlugin::destroy()
-{
     if( mCreated )
     {
         if( !mClientScriptFiles.empty() )
@@ -147,10 +142,10 @@ void GameModePlugin::destroy()
 
 void GameModePlugin::reload()
 {
-    GameModePlugin::destroy();
+    GameModePlugin::unload();
 
     // Create in next tick.
-    DelayedCall::create( sigc::mem_fun( this, &GameModePlugin::create ), 0 );
+    DelayedCall::create( sigc::mem_fun( this, &GameModePlugin::load ), 0 );
 }
 
 void GameModePlugin::setServerState( ServerState serverState )

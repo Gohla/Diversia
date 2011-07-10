@@ -188,9 +188,13 @@ public:
     **/
     void restoreState();
     /**
-    Resets all plugins to the initial state.
+    (Re)Loads all plugins in the next tick.
     **/
-    void reset();
+    void loadAll();
+    /**
+    Unloads all plugins
+    **/
+    void unloadAll();
 
     /**
     Gets the replica manager. 

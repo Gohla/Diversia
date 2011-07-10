@@ -180,8 +180,8 @@ private:
         SimpleResourceCallback                              mCompletedSlot;
     };
 
-    void create();
-    inline void reset() {}
+    void load();
+    void unload();
     void destroy();
     inline void setServerState( ServerState serverState ) {}
 

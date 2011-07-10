@@ -62,8 +62,8 @@ public:
     static inline String getTypeNameStatic() { return PLUGINNAME_LUA; }
     
 private:
-    void create();
-    inline void reset() {}
+    void load();
+    inline void unload() {}
     inline void setServerState( ServerState serverState ) {}
 
     LuaManager mLuaScriptingManager;

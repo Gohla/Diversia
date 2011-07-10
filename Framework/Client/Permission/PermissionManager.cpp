@@ -181,7 +181,7 @@ void PermissionManager::checkPermissionThrows( const String& rName, camp::Value&
     getPermission( rName ).checkPermissionThrows( rValue, rSrc );
 }
 
-void PermissionManager::create()
+void PermissionManager::load()
 {
     ClientPlugin::mLoadingCompletedSignal( *this );
 }

@@ -57,7 +57,7 @@ SceneManagerPlugin::SceneManagerPlugin( Mode mode, PluginState state,
 
 SceneManagerPlugin::~SceneManagerPlugin()
 {
-    SceneManagerPlugin::reset();
+    SceneManagerPlugin::unload();
 }
 
 void SceneManagerPlugin::setSkyMaterial( const String& rMaterial )
@@ -86,7 +86,7 @@ void SceneManagerPlugin::setSkyMaterial( const String& rMaterial )
     }
 }
 
-void SceneManagerPlugin::create()
+void SceneManagerPlugin::load()
 {
     mCreated = true;
 
@@ -94,10 +94,13 @@ void SceneManagerPlugin::create()
         &SceneManagerPlugin::resourcesInitialized ) );
 }
 
-void SceneManagerPlugin::reset()
+void SceneManagerPlugin::unload()
 {
     GlobalsBase::mScene->setSkyDome( false, "" );
     GlobalsBase::mScene->setSkyBox( false, "" );
+    mCreated = false;
+    mResourcesInitialized = false;
+    mResourceList.clear();
 }
 
 void SceneManagerPlugin::setServerState( ServerState serverState )

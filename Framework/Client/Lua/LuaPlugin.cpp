@@ -57,7 +57,7 @@ LuaPlugin::~LuaPlugin()
 
 }
 
-void LuaPlugin::create()
+void LuaPlugin::load()
 {
     ClientPlugin::mLoadingCompletedSignal( *this );
 }

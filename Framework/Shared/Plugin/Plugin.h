@@ -113,14 +113,14 @@ protected:
     friend class PluginManager;
 
     /**
-	Creates the specific part of this plugin. This is called in the tick/frame update after the
-	plugin is created.
+	Loads the specific part of this plugin. This is called in the tick/frame update after the
+	plugin is created or after a level has loaded.
 	**/
-	virtual void create() = 0;
+	virtual void load() = 0;
     /**
     Resets the plugin to the initial state.
     **/
-    virtual void reset() = 0;
+    virtual void unload() = 0;
     /**
     Called when the state of this plugin changes.
     

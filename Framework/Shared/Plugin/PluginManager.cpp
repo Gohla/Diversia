@@ -181,10 +181,19 @@ void PluginManager::restoreState()
     }
 }
 
-void PluginManager::reset()
+void PluginManager::loadAll()
+{
+    for( Plugins::iterator i = mPlugins.begin(); i != mPlugins.end(); ++i )
+        if( !mDestroyedPlugins.count( i->first ) ) 
+            mCreatedPlugins.insert( i->first );
+
+    mUpdateConnection.block( false );
+}
+
+void PluginManager::unloadAll()
 {
     for( Plugins::reverse_iterator i = mPlugins.rbegin(); i != mPlugins.rend(); ++i ) 
-        i->second->reset();
+        i->second->unload();
 }
 
 void PluginManager::update()
@@ -196,7 +205,7 @@ void PluginManager::update()
         ++i )
     {
         // Initializes the plugin.
-        PluginManager::getPlugin( *i ).create();
+        PluginManager::getPlugin( *i ).load();
     }
     mCreatedPlugins.clear();
 

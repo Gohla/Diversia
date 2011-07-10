@@ -66,8 +66,8 @@ private:
 
     void resourcesLoaded();
 
-    void create();
-    void reset();
+    void load();
+    void unload();
     inline void setServerState( ServerState serverState ) {}
 
     Ogre::Terrain*                      mTerrain;

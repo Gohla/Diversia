@@ -60,13 +60,13 @@ void ServerNeighborsPlugin::Deserialize( RakNet::DeserializeParameters* pDeseria
     mNeighborUpdateSignal( mServerNeighbors );
 }
 
-void ServerNeighborsPlugin::create()
+void ServerNeighborsPlugin::load()
 {
     // TODO: Implement real loading completed signal
     ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
-void ServerNeighborsPlugin::reset()
+void ServerNeighborsPlugin::unload()
 {
     mServerNeighbors.clear();
 }

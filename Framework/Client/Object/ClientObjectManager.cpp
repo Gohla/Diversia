@@ -117,13 +117,13 @@ void ClientObjectManager::queryDestroyObject( Object& rObject, RakNet::RakNetGUI
     }
 }
 
-void ClientObjectManager::create()
+void ClientObjectManager::load()
 {
     // TODO: Implement real loading completed signal
     ClientPlugin::mLoadingCompletedSignal( *this );
 }
 
-void ClientObjectManager::reset()
+void ClientObjectManager::unload()
 {
     ObjectManager::reset();
 }

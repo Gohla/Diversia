@@ -74,8 +74,8 @@ public:
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
-    void create();
-    void reset();
+    void load();
+    void unload();
     void setServerState( ServerState serverState );
     void resourcesInitialized( ResourceManager& rResourceManager );
     void resourcesLoaded();

@@ -96,9 +96,8 @@ private:
     typedef std::map<LuaGameModeScriptEvent, sigc::connection> ConnectionMap;
 
     void resourcesLoaded();
-    void create();
-    void reset();
-    void destroy();
+    void load();
+    void unload();
     void reload();
     void setServerState( ServerState serverState );
     void stateChanged( PluginState state, PluginState prevState );

@@ -101,8 +101,8 @@ public:
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
-    void create();
-    inline void reset() {}
+    void load();
+    inline void unload() {}
     void setServerState( ServerState serverState );
 
     /**

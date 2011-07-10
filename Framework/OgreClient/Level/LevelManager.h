@@ -42,13 +42,13 @@ public:
     
     @param  rFile   The file to serialize to.
     **/
-    void store( const Path& rFile );
+    void storeLevel( const Path& rFile );
     /**
     Deserializes state in given file to the plugin manager.
     
     @param  rFile   The file to deserialize from.
     **/
-    void load( const Path& rFile );
+    void loadLevel( const Path& rFile );
     /**
     Returns a list of all available levels.
     
@@ -59,8 +59,8 @@ public:
 private:
     friend class Bindings::CampBindings;    ///< Allow private access for camp bindings.
 
-    void create();
-    inline void reset() {}
+    void load();
+    inline void unload() {}
     void setServerState( ServerState serverState );
 
     void pluginChange( Plugin& rPlugin, bool created );

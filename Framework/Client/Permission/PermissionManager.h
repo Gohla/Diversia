@@ -197,8 +197,8 @@ public:
     void checkPermissionThrows( const String& rName, camp::Value& rValue, const String& rSrc );
     
 private:
-    void create();
-    inline void reset() {}
+    void load();
+    inline void unload() {}
     inline void setServerState( ServerState serverState ) {}
 
     bool DeserializeConstruction( RakNet::BitStream* pConstructionBitstream, 

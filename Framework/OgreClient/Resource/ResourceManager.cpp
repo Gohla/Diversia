@@ -99,7 +99,7 @@ void ResourceManager::setResourceLocation( const String& rResourceLocation )
     if( mResourceLocation != rResourceLocation && !rResourceLocation.empty() )
     {
         mResourceLocation = rResourceLocation;
-        if( mCreated ) ResourceManager::create();
+        if( mCreated ) ResourceManager::load();
     }
 }
 
@@ -240,7 +240,7 @@ sigc::connection ResourceManager::connectInitialized( sigc::slot<void, ResourceM
     return mInitializedSignal.connect( rSlot );
 }
 
-void ResourceManager::create()
+void ResourceManager::load()
 {
     if( !mResourceLocation.empty() )
     {
@@ -301,6 +301,11 @@ void ResourceManager::create()
         mCreated = true;
         mInitializing = true;
     }
+}
+
+void ResourceManager::unload()
+{
+    mRGM.unloadUnreferencedResourcesInGroup( mGroup );
 }
 
 void ResourceManager::destroy()
