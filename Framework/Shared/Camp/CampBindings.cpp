@@ -395,6 +395,21 @@ void CampBindings::bindResourceLocationType()
         .value( "URL", RESOURCELOCATIONTYPE_URL );
 }
 
+void CampBindings::bindResourceType()
+{
+    camp::Enum::declare<ResourceType>( "ResourceType" )
+        .value( "Generic", RESOURCETYPE_GENERIC )
+        .value( "OgreMesh", RESOURCETYPE_OGREMESH )
+        .value( "BulletMesh", RESOURCETYPE_BULLETMESH )
+        .value( "Skeleton", RESOURCETYPE_SKELETON )
+        .value( "Texture", RESOURCETYPE_TEXTURE )
+        .value( "MaterialScript", RESOURCETYPE_MATERIALSCRIPT )
+        .value( "ParticleScript", RESOURCETYPE_PARTICLESCRIPT )
+        .value( "LuaScript", RESOURCETYPE_LUASCRIPT )
+        .value( "Audio", RESOURCETYPE_AUDIO )
+        .value( "Level", RESOURCETYPE_LEVEL );
+}
+
 void CampBindings::bindSkyType()
 {
     camp::Enum::declare<SkyType>( "SkyType" )

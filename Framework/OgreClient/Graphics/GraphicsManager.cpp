@@ -43,6 +43,7 @@ namespace OgreClient
 GraphicsManager::GraphicsManager():
     mRoot( 0 ),
     mSceneMgr( 0 ),
+    mPrimaryWindow( 0 ),
     mWindow( 0 ),
     mRenderSystem( 0 ),
     mFader( 0 ),
@@ -166,10 +167,9 @@ directory or set the correct directory in config.xml under 'RootResourceLocation
     mRoot->setRenderSystem( renderers.front() );
 #endif
 
-    // Initialize root, don't auto create a render window.
-    mRoot->initialise( false );
-
+    // Set up renderwindow
     Ogre::NameValuePairList ogreParams;
+    Ogre::NameValuePairList hiddenParams;
     if( mVSync )
         ogreParams["vsync"] = "Yes";
 
@@ -179,12 +179,23 @@ directory or set the correct directory in config.xml under 'RootResourceLocation
     if( !rWidgetHandle.empty() )
     {
         ogreParams["externalWindowHandle"] = rWidgetHandle;
+        hiddenParams["externalWindowHandle"] = rWidgetHandle;
         mFullscreen = false;
         mWindowWidth = width;
         mWindowHeight = height;
     }
 
-    // Create render window.
+    // Initialize root, don't auto create a render window.
+    mRoot->initialise( false );
+
+    // Create hidden renderwindow to hold the resource handles.
+    hiddenParams["border"] = "none";
+    mPrimaryWindow = Ogre::Root::getSingletonPtr()->createRenderWindow( "Primary", 1, 1, false, 
+        &hiddenParams );
+    mPrimaryWindow->setVisible( false );
+    mPrimaryWindow->setAutoUpdated( false );
+
+    // Create renderwindow that is actually used.
     mWindow = Ogre::Root::getSingleton().createRenderWindow(
         mWindowName, mWindowWidth, mWindowHeight, mFullscreen, &ogreParams );
 
@@ -270,7 +281,7 @@ ResourceSet GraphicsManager::getTextureNamesFromMaterial( const String& rMateria
     Ogre::MaterialPtr material = Ogre::MaterialManager::getSingletonPtr()->getByName( 
         rMaterialName, rGroupName );
     if( material.isNull() ) return textureNames;
-    material->load();
+    if( material->getCompilationRequired() ) material->compile();
 
     Ogre::Material::TechniqueIterator ti = material->getSupportedTechniqueIterator();
     while( ti.hasMoreElements() )

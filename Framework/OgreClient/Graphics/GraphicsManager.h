@@ -44,7 +44,7 @@ Ogre log listener.
 class OgreLogListener : public Ogre::LogListener
 {
     void messageLogged( const String& rMessage, Ogre::LogMessageLevel lml, bool maskDebug, 
-        const String &rLogName )
+        const String &rLogName, bool& skipThisMessage )
     {
         LogLevel logLevel = LOG_INFO;
         switch( lml )
@@ -168,6 +168,7 @@ private:
     
     Ogre::Root*                 mRoot;
     Ogre::SceneManager*         mSceneMgr;
+    Ogre::RenderWindow*         mPrimaryWindow;
     Ogre::RenderWindow*         mWindow;
     Ogre::RenderSystem*         mRenderSystem;
     OgreLogListener             mLogListener;

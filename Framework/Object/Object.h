@@ -46,7 +46,7 @@ Component handle consisting of the component's type and name. Unique within an o
 struct DIVERSIA_OBJECT_API ComponentHandle
 {
     /**
-    Default constructor.
+        Default constructor.
     **/
     ComponentHandle(): mType( 0 ), mName() {}
     /**
@@ -652,6 +652,7 @@ protected:
     @param  pNewParent  The new parent object, or 0 to unparent.
     @param  source      Source of the set parent request, if it was made on the client or remotely
                         created by the server.
+
     @note   Override this in a parent class to stop changing the parent object. Throw an exception
             if the parent may not be changed, the exception will be thrown back to the caller of
             parent().

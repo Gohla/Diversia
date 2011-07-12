@@ -30,6 +30,7 @@ THE SOFTWARE.
 #include "Shared/Plugin/PluginFactory.h"
 #include "Shared/Plugin/PluginFactoryManager.h"
 #include "Shared/Plugin/PluginManager.h"
+#include "Util/Serialization/MemorySerialization.h"
 #include "Util/Serialization/XMLSerializationFile.h"
 
 namespace Diversia
@@ -83,6 +84,8 @@ PluginManager::~PluginManager()
         PluginFactoryManager::getPluginFactory( i->second->getType() ).
             destroy( *i->second );
     }
+
+    if( mStoredState ) delete mStoredState;
 }
 
 Plugin& PluginManager::createPlugin( PluginTypeEnum type )

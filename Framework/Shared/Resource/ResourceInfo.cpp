@@ -86,6 +86,24 @@ std::ostream& operator<<( std::ostream& os, const ResourceInfo& rResourceInfo )
     return os << rResourceInfo.mFile << " of type " << rResourceInfo.mType;
 }
 
+ResourceType ResourceInfo::deduceResourceType( const Path& rFile )
+{
+    String ext = rFile.extension();
+
+    if( ext == ".mesh" ) return RESOURCETYPE_OGREMESH;
+    if( ext == ".bullet" ) return RESOURCETYPE_BULLETMESH;
+    else if( ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".tga" || ext == ".dds" ) 
+        return RESOURCETYPE_TEXTURE;
+    else if( ext == ".skeleton" ) return RESOURCETYPE_SKELETON;
+    else if( ext == ".material" ) return RESOURCETYPE_MATERIALSCRIPT;
+    else if( ext == ".particle" ) return RESOURCETYPE_PARTICLESCRIPT;
+    else if( ext == ".lua" ) return RESOURCETYPE_LUASCRIPT;
+    else if( ext == ".wav" || ext == ".ogg" || ext == ".mp3" ) return RESOURCETYPE_AUDIO;
+    else if( ext == ".lvl" ) return RESOURCETYPE_LEVEL;
+
+    return RESOURCETYPE_GENERIC;
+}
+
 ResourceSet ResourceInfo::toResourceSet( const ResourceList& rResourceList )
 {
     ResourceSet set;

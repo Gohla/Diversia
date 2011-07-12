@@ -64,6 +64,7 @@ public:
     static void bindPropertySynchronization();
     static void bindGraphicsShape();
     static void bindResourceLocationType();
+    static void bindResourceType();
     static void bindSkyType();
     static void bindLightType();
 

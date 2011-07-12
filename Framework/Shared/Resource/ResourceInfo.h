@@ -43,6 +43,23 @@ enum ResourceLocationType
 };
 
 /**
+Values that represent resource types. 
+**/
+enum ResourceType
+{
+    RESOURCETYPE_GENERIC,
+    RESOURCETYPE_OGREMESH,
+    RESOURCETYPE_BULLETMESH,
+    RESOURCETYPE_SKELETON,
+    RESOURCETYPE_TEXTURE,
+    RESOURCETYPE_MATERIALSCRIPT,
+    RESOURCETYPE_PARTICLESCRIPT,
+    RESOURCETYPE_LUASCRIPT,
+    RESOURCETYPE_AUDIO,
+    RESOURCETYPE_LEVEL
+};
+
+/**
 Information about a resource.
 **/
 class DIVERSIA_SHARED_API ResourceInfo
@@ -131,6 +148,14 @@ public:
     DIVERSIA_SHARED_API friend std::ostream& operator<<( std::ostream& os, const ResourceInfo& rResourceInfo );
 
     /**
+    Deduces the resource type of a given file.
+    
+    @param  rFile   The file to deduce the type for.
+    
+    @return Resource type. 
+    **/
+    static ResourceType deduceResourceType( const Path& rFile );
+    /**
     Converts a resource list to a resource set. 
     
     @param  rResourceList   List of resources. 
@@ -155,10 +180,13 @@ typedef std::set<ResourceInfo>      ResourceSet;
 //------------------------------------------------------------------------------
 } // Namespace Diversia
 
-CAMP_AUTO_TYPE( Diversia::ResourceInfo, 
-    &Diversia::Shared::Bindings::CampBindings::bindResourceInfo );
-
 CAMP_AUTO_TYPE( Diversia::ResourceLocationType, 
     &Diversia::Shared::Bindings::CampBindings::bindResourceLocationType );
+
+CAMP_AUTO_TYPE( Diversia::ResourceType, 
+    &Diversia::Shared::Bindings::CampBindings::bindResourceType );
+
+CAMP_AUTO_TYPE( Diversia::ResourceInfo, 
+    &Diversia::Shared::Bindings::CampBindings::bindResourceInfo );
 
 #endif // DIVERSIA_SHARED_RESOURCEINFO_H

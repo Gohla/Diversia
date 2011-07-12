@@ -24,10 +24,8 @@ THE SOFTWARE.
 -----------------------------------------------------------------------------
 */
 
-#ifndef DIVERSIA_UTIL_SERIALIZATIONFILE_H
-#define DIVERSIA_UTIL_SERIALIZATIONFILE_H
-
-#include "Util/Serialization/SerializationStream.h"
+#ifndef DIVERSIA_UTIL_SERIALIZATIONSTREAM_H
+#define DIVERSIA_UTIL_SERIALIZATIONSTREAM_H
 
 namespace Diversia
 {
@@ -36,9 +34,9 @@ namespace Util
 //------------------------------------------------------------------------------
 
 /**
-Interface for a serialization file.
+Interface for a serialization stream.
 **/
-class DIVERSIA_UTIL_API SerializationFile : public SerializationStream
+class DIVERSIA_UTIL_API SerializationStream
 {
 public:
     /**
@@ -47,33 +45,58 @@ public:
     @param  rTag    The tag to include or exclude properties with.
     @param  include True to include properties, false to exclude properties.
     **/
-    SerializationFile( const camp::Value& rTag, bool include ): SerializationStream( rTag, include ) {}
+    SerializationStream( const camp::Value& rTag, bool include ): mTags( rTag ), mInclude( include ) {}
     /**
     Constructor with multiple tags.
 
     @param  rTags   The tags to include or exclude properties with.
     @param  include True to include properties, false to exclude properties.
     **/
-    SerializationFile( const camp::Args& rTags, bool include ):  SerializationStream( rTags, include ) {}
+    SerializationStream( const camp::Args& rTags, bool include ): mTags( rTags ), mInclude( include ) {}
     /**
     Destructor.
     **/
-    virtual ~SerializationFile() {}
+    virtual ~SerializationStream() {}
 
     /**
-    Loads from file.
+    Deserializes an object from the stream.
 
-    @return True if it succeeds, false if it fails.
+    @param  rObject         The object to deserialize.
+    @param  throwExceptions True to throw exceptions, false to ignore exceptions. Defaults to true.
     **/
-    virtual bool load() = 0;
+    virtual void deserialize( const camp::UserObject& rObject, bool throwExceptions = true ) = 0;
     /**
-    Saves to file.
+    Serializes an object to the stream.
 
-    @param  backup  True to backup the existing file before saving. Defaults to false.
-
-    @return True if it succeeds, false if it fails.
+    @param  rObject         The object to serialize.
+    @param  throwExceptions True to throw exceptions, false to ignore exceptions. Defaults to true.
     **/
-    virtual bool save( bool backup = false ) = 0;
+    virtual void serialize( const camp::UserObject& rObject, bool throwExceptions = true ) = 0;
+
+    /**
+    Gets the the tag to include or exclude properties with.
+    **/
+    inline const camp::Args& getTags() const { return mTags; }
+    /**
+    Sets a the tag to include or exclude properties with.
+    **/
+    inline void setTags( const camp::Value& rTag ) { mTags = camp::Args(rTag); }
+    /**
+    Sets a the tags to include or exclude properties with.
+    **/
+    inline void setTags( const camp::Args& rTags ) { mTags = rTags; }
+    /**
+    Gets is the tag is including or excluding properties.
+    **/
+    inline bool getInclude() const { return mInclude; }
+    /**
+    Sets the include tag. True to include properties, false to exclude properties.
+    **/
+    inline void setInclude( bool include ) { mInclude = include; }
+
+protected:
+    camp::Args  mTags;
+    bool        mInclude;
 
 };
 
@@ -81,4 +104,4 @@ public:
 } // Namespace Util
 } // Namespace Diversia
 
-#endif // DIVERSIA_UTIL_SERIALIZATIONFILE_H
+#endif // DIVERSIA_UTIL_SERIALIZATIONSTREAM_H
