@@ -71,7 +71,7 @@ private:
     void objectDestroyed( Object& rObject );
     void parentObjectDestroyed( Object& rObject );
 
-    boost::scoped_ptr<SerializationFile>    mSerializationFile;
+    boost::scoped_ptr<SerializationStream>  mSerializationStream;
     Object*                                 mObject;
     Object*                                 mParentObject;
     ObjectManager&                          mObjectManager;

@@ -80,6 +80,7 @@ void EditState::wake()
     EditorGlobals::mMainWindow->mUI.actionLevel_save_as->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionLevel_load->setEnabled( true );
     EditorGlobals::mMainWindow->mUI.actionLevel_new->setEnabled( true );
+    EditorGlobals::mMainWindow->mLevelGroup->setEnabled( true );
 }
 
 void EditState::activeServerDisconnected( ServerAbstract& rActiveServer )

@@ -68,7 +68,7 @@ public:
 private:
     void objectDestroyed( Object& rObject );
 
-    boost::scoped_ptr<SerializationFile>    mSerializationFile;
+    boost::scoped_ptr<SerializationStream>  mSerializationStream;
     Component*                              mComponent;
     ComponentType                           mComponentType;
     String                                  mComponentName;

@@ -37,7 +37,9 @@ MemorySerialization::~MemorySerialization()
 void MemorySerialization::deserialize( const camp::UserObject& rObject, 
     bool throwExceptions /*= true */ )
 {
-
+    const camp::Value& tag = mTags.count() ? mTags[0] : camp::Value::nothing;
+    Detail::MemoryDeserializer deserializer( rObject, mMemory, tag, mInclude, throwExceptions );
+    rObject.getClass().visit( deserializer );
 }
 
 void MemorySerialization::serialize( const camp::UserObject& rObject, 

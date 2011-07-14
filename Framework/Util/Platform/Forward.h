@@ -59,8 +59,10 @@ class Vector3;
 class Vector4;
 
 // Serialization
+class SerializationStream;
 class SerializationFile;
 class XMLSerializationFile;
+class MemorySerialization;
 
 // Job
 class Job;

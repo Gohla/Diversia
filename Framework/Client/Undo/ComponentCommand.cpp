@@ -29,7 +29,7 @@ THE SOFTWARE.
 #include "Client/Undo/ComponentCommand.h"
 #include "Object/Component.h"
 #include "Object/Object.h"
-#include "Util/Serialization/XMLSerializationFile.h"
+#include "Util/Serialization/MemorySerialization.h"
 
 namespace Diversia
 {
@@ -39,7 +39,7 @@ namespace Client
 
 ComponentCommand::ComponentCommand( Component& rComponent ):
 UndoCommand( "Destroyed " + rComponent.getName() + " component" ),
-    mSerializationFile( new XMLSerializationFile( "", "NoSerialization", false, true ) ),
+    mSerializationStream( new MemorySerialization( "NoSerialization", false ) ),
     mComponent( &rComponent ),
     mComponentType( rComponent.getType() ),
     mComponentName( rComponent.getName() ),
@@ -49,7 +49,7 @@ UndoCommand( "Destroyed " + rComponent.getName() + " component" ),
 {
     try
     {
-        mSerializationFile->serialize( rComponent, false );
+        mSerializationStream->serialize( rComponent, false );
     }
     catch( Exception e )
     {
@@ -63,7 +63,7 @@ ComponentCommand::ComponentCommand( Object& rObject, ComponentType type,
     const String& rName, bool localOverride /*= false*/, 
     RakNet::RakNetGUID source /*= RakNet::RakNetGUID( 0 )*/ ):
     UndoCommand( "Created " + rName + " component" ),
-    mSerializationFile( 0 ),
+    mSerializationStream( 0 ),
     mComponent( 0 ),
     mComponentType( type ),
     mComponentName( rName ),
@@ -86,7 +86,7 @@ bool ComponentCommand::mergeWith( const UndoCommand* pCommand )
 
 void ComponentCommand::redo()
 {
-    if( !mSerializationFile )
+    if( !mSerializationStream )
     {
         try
         {
@@ -114,7 +114,7 @@ void ComponentCommand::redo()
 
 void ComponentCommand::undo()
 {
-    if( !mSerializationFile )
+    if( !mSerializationStream )
     {
         try
         {
@@ -134,7 +134,7 @@ void ComponentCommand::undo()
             {
                 mComponent = &mObject.createComponent( mComponentType, mComponentName, 
                     mComponentLocalOverride, mComponentSource );
-                mSerializationFile->deserialize( mComponent, false );
+                mSerializationStream->deserialize( mComponent, false );
             }
             catch( Exception e )
             {

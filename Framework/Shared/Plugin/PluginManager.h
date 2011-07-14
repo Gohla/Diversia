@@ -256,7 +256,7 @@ private:
     PluginState                                     mPluginState;
     PluginState                                     mPrevPluginState;
     sigc::signal<void, PluginState, PluginState>    mPluginStateChange;
-    SerializationFile*                              mStoredState;
+    SerializationStream*                            mStoredState;
     Plugins                             mPlugins;
     PluginTypes                         mDestroyedPlugins;
     PluginTypes                         mCreatedPlugins;

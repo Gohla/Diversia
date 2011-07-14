@@ -31,7 +31,6 @@ THE SOFTWARE.
 #include "Shared/Plugin/PluginFactoryManager.h"
 #include "Shared/Plugin/PluginManager.h"
 #include "Util/Serialization/MemorySerialization.h"
-#include "Util/Serialization/XMLSerializationFile.h"
 
 namespace Diversia
 {
@@ -170,7 +169,8 @@ void PluginManager::setState( PluginState state )
 void PluginManager::storeState()
 {
     if( mStoredState ) delete mStoredState;
-    mStoredState = new XMLSerializationFile( "", "NoSerialization", false, true );
+    //mStoredState = new XMLSerializationFile( "", "NoSerialization", false, true );
+    mStoredState = new MemorySerialization( "NoSerialization", false );
     mStoredState->serialize( this, false );
 }
 

@@ -33,19 +33,25 @@ typedef boost::variant< bool, long, double, String, boost::recursive_wrapper<Mem
 typedef std::map<String, MemoryItem> MemoryProperties;
 struct MemoryUserObject
 {
-    MemoryProperties mProperties;
+    MemoryUserObject();
+
+    boost::shared_ptr<MemoryProperties> mProperties;
 };
 
 typedef std::vector<MemoryItem> MemoryVector;
 struct MemoryArray
 {
-    MemoryVector mArray;
+    MemoryArray();
+
+    boost::shared_ptr<MemoryVector> mArray;
 };
 
 typedef std::map<camp::Value, MemoryItem> MemoryMap;
 struct MemoryDictionary
 {
-    MemoryMap mDictionary;
+    MemoryDictionary();
+
+    boost::shared_ptr<MemoryMap> mDictionary;
 };
 
 //------------------------------------------------------------------------------
@@ -106,6 +112,8 @@ struct MemoryDeserializer : public camp::ClassVisitor
 {
     MemoryDeserializer( const camp::UserObject& rObject, const MemoryUserObject& rMemoryObject, 
         const camp::Value& rTag, bool include, bool throwExceptions );
+    MemoryDeserializer( const camp::UserObject& rObject, const MemoryUserObject& rMemoryObject, 
+        const MemoryDeserializer& rDeserializer );
 
     void visit( const camp::SimpleProperty& property );
     void visit( const camp::ArrayProperty& property );
@@ -119,8 +127,9 @@ struct MemoryDeserializer : public camp::ClassVisitor
     camp::Value mTag;
     bool mInclude;
     bool mThrowExceptions;
-    MemoryUserObject mMemoryObject;
-    MemoryToValue mToValue;
+    const MemoryUserObject& mMemoryObject;
+    
+    static MemoryToValue mToValue;
 };
 
 //------------------------------------------------------------------------------

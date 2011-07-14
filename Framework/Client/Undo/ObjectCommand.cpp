@@ -30,7 +30,7 @@ THE SOFTWARE.
 #include "Object/Component.h"
 #include "Object/Object.h"
 #include "Object/ObjectManager.h"
-#include "Util/Serialization/XMLSerializationFile.h"
+#include "Util/Serialization/MemorySerialization.h"
 
 namespace Diversia
 {
@@ -40,7 +40,7 @@ namespace Client
 
 ObjectCommand::ObjectCommand( Object& rObject ):
     UndoCommand( "Destroyed " + rObject.getDisplayName() + " object" ),
-    mSerializationFile( new XMLSerializationFile( "", "NoSerialization", false, true ) ),
+    mSerializationStream( new MemorySerialization( "NoSerialization", false ) ),
     mObject( &rObject ),
     mParentObject( 0 ),
     mObjectManager( rObject.getObjectManager() ),
@@ -51,7 +51,7 @@ ObjectCommand::ObjectCommand( Object& rObject ):
 {
     try
     {
-        mSerializationFile->serialize( rObject, false );
+        mSerializationStream->serialize( rObject, false );
     }
     catch( Exception e )
     {
@@ -63,7 +63,7 @@ ObjectCommand::ObjectCommand( ObjectManager& rObjectManager, const String& rName
     NetworkingType type /*= LOCAL*/, const String& rDisplayName /*= ""*/, 
     Object* pParentObject /*= 0*/, RakNet::RakNetGUID source /*= RakNet::RakNetGUID( 0 )*/ ):
     UndoCommand( "Destroyed " + ( rDisplayName.empty() ? rName : rDisplayName ) + " object" ),
-    mSerializationFile( 0 ),
+    mSerializationStream( 0 ),
     mObject( 0 ),
     mParentObject( pParentObject ),
     mObjectManager( rObjectManager ),
@@ -88,7 +88,7 @@ bool ObjectCommand::mergeWith( const UndoCommand* pCommand )
 
 void ObjectCommand::redo()
 {
-    if( !mSerializationFile )
+    if( !mSerializationStream )
     {
         try
         {
@@ -121,7 +121,7 @@ void ObjectCommand::redo()
 
 void ObjectCommand::undo()
 {
-    if( !mSerializationFile )
+    if( !mSerializationStream )
     {
         try
         {
@@ -142,7 +142,7 @@ void ObjectCommand::undo()
             {
                 if( !mObject ) mObject = &mObjectManager.createObject( mObjectName, 
                     mObjectNetworkingType, mObjectDisplayName, mObjectSource );
-                mSerializationFile->deserialize( mObject, false );
+                mSerializationStream->deserialize( mObject, false );
                 mObjectConnection.disconnect();
                 mObjectConnection = mObject->connectDestruction( sigc::mem_fun( this, 
                     &ObjectCommand::objectDestroyed ) );
