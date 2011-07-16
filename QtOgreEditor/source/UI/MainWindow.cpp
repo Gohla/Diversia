@@ -536,7 +536,7 @@ void MainWindow::_saveGame( const QString& rFile )
         SerializationFile* file = new XMLSerializationFile( rFile.toStdString(), 
             camp::Args( "NoSerialization", "LevelSpecific" ), false );
         file->serialize( EditorGlobals::mGrid->getActiveServer().getPluginManager(), false );
-        file->save();
+        file->save( true );
         delete file;
 
         EditorGlobals::mCurrentGame = rFile;

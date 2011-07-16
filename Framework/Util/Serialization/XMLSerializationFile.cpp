@@ -133,7 +133,9 @@ bool XMLSerializationFile::save( bool backup /*= false*/ )
 {
     if( backup && boost::filesystem::exists( mFile ) )
     {
-        Path backupPath = mFile; backupPath.replace_extension( ".xml.bak" );
+        Path backupPath = mFile;
+        String ext = mFile.extension();
+        backupPath.replace_extension( ext + ".bak" );
         if( boost::filesystem::exists( backupPath ) ) boost::filesystem::remove( backupPath );
         boost::filesystem::copy_file( mFile, backupPath );
     }
