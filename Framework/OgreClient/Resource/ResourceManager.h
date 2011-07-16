@@ -204,6 +204,9 @@ private:
     Ogre::ResourceGroupManager& mRGM;
     Ogre::ResourceBackgroundQueue& mRBQ;
 
+    bool mBackgroundInitialise;
+    bool mBackgroundLoad;
+
     ResourceLocationType mType;
     String mResourceLocation;
     Path mResourcePath;

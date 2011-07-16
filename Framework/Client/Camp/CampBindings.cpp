@@ -61,7 +61,7 @@ void CampBindings::bindClientPluginManager()
 void CampBindings::bindClientObjectManager()
 {
     camp::Class::declare<ClientObjectManager>( "ClientObjectManager" )
-        .tag( "NoLevelSerialization", true )
+        .tag( "LevelSpecific", true )
         .base<ObjectManager>()
         .base<ClientPlugin>();
         // Constructors

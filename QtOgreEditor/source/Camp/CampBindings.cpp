@@ -67,6 +67,7 @@ void CampBindings::bindEditorObject()
 void CampBindings::bindEditorObjectManager()
 {
     camp::Class::declare<EditorObjectManager>( "EditorObjectManager" )
+        .tag( "LevelSpecific", true )
         .base<ClientObjectManager>();
         // Constructors
         // Properties (read-only)

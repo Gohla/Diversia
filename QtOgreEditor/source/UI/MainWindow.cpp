@@ -341,7 +341,7 @@ void MainWindow::saveGame()
     try
     {
         SerializationFile* file = new XMLSerializationFile( EditorGlobals::mCurrentGame.toStdString(), 
-            "NoSerialization", false );
+            camp::Args( "NoSerialization", "LevelSpecific" ), false );
         file->serialize( EditorGlobals::mGrid->getActiveServer().getPluginManager(), false );
         file->save();
         delete file;
@@ -362,7 +362,7 @@ void MainWindow::saveGameAs()
         try
         {
             SerializationFile* file = new XMLSerializationFile( fileName.toStdString(), 
-                "NoSerialization", false );
+                camp::Args( "NoSerialization", "LevelSpecific" ), false );
             file->serialize( EditorGlobals::mGrid->getActiveServer().getPluginManager(), false );
             file->save();
             delete file;
@@ -557,7 +557,7 @@ void MainWindow::_loadGame( const QString& rFile )
     try
     {
         SerializationFile* file = new XMLSerializationFile( rFile.toStdString(), 
-            "NoSerialization", false );
+            camp::Args( "NoSerialization", "LevelSpecific" ), false );
         file->load();
         file->deserialize( pluginManager, false );
         delete file;

@@ -82,6 +82,8 @@ ResourceManager::ResourceManager( Mode mode, PluginState state, ClientPluginMana
     mServer( rPluginManager.getServer() ),
     mRGM( Ogre::ResourceGroupManager::getSingleton() ),
     mRBQ( Ogre::ResourceBackgroundQueue::getSingleton() ),
+    mBackgroundInitialise( false ),
+    mBackgroundLoad( true ),
     mType( RESOURCELOCATIONTYPE_FILESYSTEM ),
     mCreated( false ),
     mInitializing( false )
@@ -325,11 +327,21 @@ void ResourceManager::load()
             }
         }
 
-        // Initialize resource group in the background.
-        mInitializationTicket = mRBQ.initialiseResourceGroup( mGroup, this );
+        // Initialize resource group.
+        if( mBackgroundInitialise )
+        {
+            mInitializationTicket = mRBQ.initialiseResourceGroup( mGroup, this );
+            mInitializing = true;
+        }
+        else
+        {
+            mRGM.initialiseResourceGroup( mGroup );
+            mInitializing = false;
+            mInitializedSignal( *this );
+            ClientPlugin::mLoadingCompletedSignal( *this );
+        }
 
         mCreated = true;
-        mInitializing = true;
     }
 }
 
@@ -342,7 +354,7 @@ void ResourceManager::destroy()
 {
     if( mCreated )
     {
-        if( mInitializing )
+        if( mInitializing && mBackgroundInitialise )
         {
             mRBQ.abortRequest( mInitializationTicket );
         }

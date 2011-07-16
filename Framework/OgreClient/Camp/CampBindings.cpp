@@ -137,10 +137,13 @@ void CampBindings::bindResourceManager()
 {
     camp::Class::declare<ResourceManager>( "ResourceManager" )
         .tag( "QtIcon", ":/Icons/Icons/status/folder-drag-accept.png" )
+        .tag( "NoLevelSerialization", true )
         .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
         // Properties (read/write)
+        .property( "BackgroundInitialise", &ResourceManager::mBackgroundInitialise )
+        .property( "BackgroundLoad", &ResourceManager::mBackgroundLoad )
         .property( "Type", &ResourceManager::mType )
         .property( "ResourceLocation", &ResourceManager::mResourceLocation, &ResourceManager::setResourceLocation )
         .property( "Group", &ResourceManager::mGroup )
@@ -197,6 +200,7 @@ void CampBindings::bindSkyPlugin()
 {
     camp::Class::declare<SkyPlugin>( "Sky" )
         .tag( "QtIcon", ":/Icons/Icons/status/skype_skypeme.png" )
+        .tag( "LevelSpecific", true )
         .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
@@ -377,6 +381,7 @@ void CampBindings::bindGameModePlugin()
 {
     camp::Class::declare<GameModePlugin>( "GameMode" )
         .tag( "QtIcon", ":/Icons/Icons/categories/applications-games.png" )
+        .tag( "LevelSpecific", true )
         .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
@@ -446,6 +451,7 @@ void CampBindings::bindTerrain()
 {
     camp::Class::declare<Terrain>( "Terrain" )
         .tag( "QtIcon", ":/Icons/Icons/categories/gnome-globe.png" )
+        .tag( "LevelSpecific", true )
         .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
@@ -1146,6 +1152,7 @@ void CampBindings::bindSceneManagerPlugin()
 {
     camp::Class::declare<SceneManagerPlugin>( "SceneManager" )
         .tag( "QtIcon", ":/Icons/Icons/categories/gnome-settings.png" )
+        .tag( "LevelSpecific", true )
         .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)

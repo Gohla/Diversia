@@ -68,7 +68,7 @@ void CampBindings::bindObjectManager()
 {
     camp::Class::declare<ObjectManager>( "ObjectManager" )
         .tag( "QtIcon", ":/Icons/Icons/mimetypes/gnome-package.png" )
-        .tag( "NoLevelSerialization", true )
+        .tag( "LevelSpecific", true )
         // Constructors
         // Member variables
         // Static member variables
