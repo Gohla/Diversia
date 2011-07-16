@@ -337,19 +337,8 @@ void MainWindow::saveGame()
 {
     if( EditorGlobals::mCurrentGame.isEmpty() )
         MainWindow::saveGameAs();
-
-    try
-    {
-        SerializationFile* file = new XMLSerializationFile( EditorGlobals::mCurrentGame.toStdString(), 
-            camp::Args( "NoSerialization", "LevelSpecific" ), false );
-        file->serialize( EditorGlobals::mGrid->getActiveServer().getPluginManager(), false );
-        file->save();
-        delete file;
-    }
-    catch( Exception e )
-    {
-        LOGE << "Could not save game: " << e.what();	
-    }
+    else
+        MainWindow::_saveGame( EditorGlobals::mCurrentGame );
 }
 
 void MainWindow::saveGameAs()
@@ -358,22 +347,7 @@ void MainWindow::saveGameAs()
         tr( "Diversia game files (*.xml)" ) );
 
     if( !fileName.isEmpty() )
-    {
-        try
-        {
-            SerializationFile* file = new XMLSerializationFile( fileName.toStdString(), 
-                camp::Args( "NoSerialization", "LevelSpecific" ), false );
-            file->serialize( EditorGlobals::mGrid->getActiveServer().getPluginManager(), false );
-            file->save();
-            delete file;
-
-            EditorGlobals::mCurrentGame = fileName;
-        }
-        catch( Exception e )
-        {
-            LOGE << "Could not save game: " << e.what();	
-        }
-    }
+        MainWindow::_saveGame( fileName );
 }
 
 void MainWindow::loadGame()
@@ -382,9 +356,7 @@ void MainWindow::loadGame()
         tr( "Diversia game files (*.xml)" ) );
 
     if( !fileName.isEmpty() )
-    {
         MainWindow::_loadGame( fileName );
-    }
 }
 
 void MainWindow::loadRecentGame()
@@ -397,59 +369,35 @@ void MainWindow::saveLevel()
 {
     if( EditorGlobals::mCurrentLevel.isEmpty() )
         MainWindow::saveLevelAs();
-
-    try
-    {
-        ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
-        LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
-        levelManager.storeLevel( EditorGlobals::mCurrentLevel.toStdString() );
-    }
-    catch( Exception e )
-    {
-        LOGE << "Could not save level: " << e.what();	
-    }
+    else
+        MainWindow::_saveLevel( EditorGlobals::mCurrentLevel );
 }
 
 void MainWindow::saveLevelAs()
 {
     QSettings settings( "Diversia", "QtOgreEditor" );
     QString fileName = QFileDialog::getSaveFileName( this, "Diversia level file", 
-        settings.value( "LastGame", QString() ).toString(), tr( "Diversia level files (*.lvl)" ) );
+        settings.value( "LastLevel", QString() ).toString(), tr( "Diversia level files (*.lvl)" ) );
 
     if( !fileName.isEmpty() )
-    {
-        try
-        {
-            ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
-            LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
-            levelManager.storeLevel( fileName.toStdString() );
-
-            MainWindow::updateLevels();
-            EditorGlobals::mCurrentLevel = fileName;
-        }
-        catch( Exception e )
-        {
-            LOGE << "Could not save level: " << e.what();	
-        }
-    }
+        MainWindow::_saveLevel( fileName );
 }
 
 void MainWindow::loadLevel()
 {
     QSettings settings( "Diversia", "QtOgreEditor" );
     QString fileName = QFileDialog::getOpenFileName( this, "Diversia level file", 
-        settings.value( "LastGame", QString() ).toString(), tr( "Diversia level files (*.lvl)" ) );
+        settings.value( "LastLevel", QString() ).toString(), tr( "Diversia level files (*.lvl)" ) );
 
     if( !fileName.isEmpty() )
-    {
         MainWindow::_loadLevel( fileName );
-    }
 }
 
 void MainWindow::loadListLevel()
 {
     QAction* action = qobject_cast<QAction*>( sender() );
-    if( action ) MainWindow::_loadLevel( action->data().toString() );
+    if( action ) 
+        MainWindow::_loadLevel( action->data().toString() );
 }
 
 void MainWindow::logSeverityChange( QWidget* pWidget )
@@ -562,14 +510,14 @@ void MainWindow::_loadGame( const QString& rFile )
         file->deserialize( pluginManager, false );
         delete file;
 
-        // Update recent games and path
+        // Update recent games and latest path.
         QSettings settings( "Diversia", "QtOgreEditor" );
         QStringList games = settings.value( "RecentGames" ).toStringList();
         games.removeAll( rFile );
         games.prepend( rFile );
         while( games.size() > cMaxRecentGames ) games.removeLast();
         settings.setValue( "RecentGames", games );
-        settings.setValue( "LastGame", rFile );
+        settings.setValue( "LastGame", QString( Path( rFile.toAscii().constData() ).directory_string().c_str() ) );
         MainWindow::updateRecentGames();
     }
     catch( Exception e )
@@ -581,6 +529,28 @@ void MainWindow::_loadGame( const QString& rFile )
     }
 }
 
+void MainWindow::_saveGame( const QString& rFile )
+{
+    try
+    {
+        SerializationFile* file = new XMLSerializationFile( rFile.toStdString(), 
+            camp::Args( "NoSerialization", "LevelSpecific" ), false );
+        file->serialize( EditorGlobals::mGrid->getActiveServer().getPluginManager(), false );
+        file->save();
+        delete file;
+
+        EditorGlobals::mCurrentGame = rFile;
+
+        // Update latest path
+        QSettings settings( "Diversia", "QtOgreEditor" );
+        settings.setValue( "LastGame", QString( Path( rFile.toAscii().constData() ).directory_string().c_str() ) );
+    }
+    catch( Exception e )
+    {
+        LOGE << "Could not save game: " << e.what();	
+    }
+}
+
 void MainWindow::_loadLevel( const QString& rFile )
 {
     try
@@ -588,11 +558,36 @@ void MainWindow::_loadLevel( const QString& rFile )
         ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
         LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
         levelManager.loadLevel( rFile.toStdString() );
-        EditorGlobals::mCurrentGame = rFile;
+        EditorGlobals::mCurrentLevel = rFile;
+
+        // Update latest path
+        QSettings settings( "Diversia", "QtOgreEditor" );
+        settings.setValue( "LastLevel", QString( Path( rFile.toAscii().constData() ).directory_string().c_str() ) );
     }
     catch( Exception e )
     {
         LOGE << "Could not load level: " << e.what();	
+    }
+}
+
+void MainWindow::_saveLevel( const QString& rFile )
+{
+    try
+    {
+        ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
+        LevelManager& levelManager = pluginManager.getPlugin<LevelManager>();
+        levelManager.storeLevel( rFile.toStdString() );
+
+        MainWindow::updateLevels();
+        EditorGlobals::mCurrentLevel = rFile;
+
+        // Update latest path
+        QSettings settings( "Diversia", "QtOgreEditor" );
+        settings.setValue( "LastLevel", QString( Path( rFile.toAscii().constData() ).directory_string().c_str() ) );
+    }
+    catch( Exception e )
+    {
+        LOGE << "Could not save level: " << e.what();	
     }
 }
 

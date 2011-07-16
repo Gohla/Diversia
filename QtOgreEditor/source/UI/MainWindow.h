@@ -72,7 +72,9 @@ private:
     friend class QtLogger;
 
     void _loadGame( const QString& rFile );
+    void _saveGame( const QString& rFile );
     void _loadLevel( const QString& rFile );
+    void _saveLevel( const QString& rFile );
 
     void checkLogItem( const QModelIndex& rIndex );
     bool isSeverityChecked( LogLevel logLevel );
