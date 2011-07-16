@@ -255,6 +255,7 @@ void MainWindow::init()
     mUI.treeViewObjects->init();
     mUI.treeViewObjectTemplates->init();
     mUI.treeViewPlugins->init();
+    mUI.treeViewResources->init();
     mConnectDialog.init();
 
     // Disable volume selection if selection mode action is not checked.

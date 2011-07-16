@@ -22,6 +22,7 @@ namespace QtOgreEditor
 //------------------------------------------------------------------------------
 
 PluginItem::PluginItem( Plugin& rPlugin ):
+    QStandardItem(),
     mPlugin( rPlugin )
 {
     QStandardItem::setText( QString( rPlugin.getTypeName().c_str() ) );
@@ -49,7 +50,8 @@ PluginItem::~PluginItem()
 //------------------------------------------------------------------------------
 
 PluginModel::PluginModel( QObject* pParent /*= 0 */ ):
-    QStandardItemModel( pParent )
+    QStandardItemModel( pParent ),
+    mPluginManager( 0 )
 {
     QStringList headers; headers << "Name";
     QStandardItemModel::setHorizontalHeaderLabels( headers );

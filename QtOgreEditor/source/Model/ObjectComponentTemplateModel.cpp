@@ -20,6 +20,7 @@ namespace QtOgreEditor
 //------------------------------------------------------------------------------
 
 ComponentTemplateItem::ComponentTemplateItem( ComponentTemplate& rComponentTemplate ):
+    QStandardItem(),
     mComponentTemplate( rComponentTemplate )
 {
     QStandardItem::setText( QString( rComponentTemplate.getName().c_str() ) );
@@ -64,6 +65,7 @@ void ComponentTemplateItem::destroyed()
 //------------------------------------------------------------------------------
 
 ObjectTemplateItem::ObjectTemplateItem( ObjectTemplate& rObjectTemplate ):
+    QStandardItem(),
     mObjectTemplate( rObjectTemplate )
 {
     QStandardItem::setText( QString( rObjectTemplate.getDisplayName().c_str() ) );

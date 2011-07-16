@@ -80,11 +80,11 @@ public:
     Constructor. 
     
     @param  rFile       Path and filename of the resource.
-    @param  rType       The type of the resource.
+    @param  type        The type of the resource.
     @param  priority    The priority this resource should get when loading multiple resources.
                         Lower number has more priority. Defaults to 0, the base priority.
     **/
-    ResourceInfo( const Path& rFile, const String& rType, int priority = 0 );
+    ResourceInfo( const Path& rFile, ResourceType type, int priority = 0 );
 
     /**
     Read from a RakNet bitstream.
@@ -101,10 +101,8 @@ public:
         out.mFile = Path( rakString.C_String() );
 
         // Read type
-        rakString.Clear();
-        success = in.Read( rakString );
-        DivAssert( success, "Reading String from bitstream failed" );
-        out.mType = String( rakString.C_String() );
+        success = in.Read( out.mType );
+        DivAssert( success, "Reading type enum from bitstream failed" );
 
         // Read priority
         success = in.Read( out.mPriority );
@@ -125,9 +123,7 @@ public:
         out.Write( rakString );
 
         // Write type
-        rakString.Clear();
-        rakString = in.mType.c_str();
-        out.Write( rakString );
+        out.Write( in.mType );
 
         // Write priority
         out.Write( in.mPriority );
@@ -137,40 +133,40 @@ public:
     /**
     Less than comparison of resource info.
     **/
-    bool operator<( const ResourceInfo& rResourceInfo ) const;
+    bool operator<( const ResourceInfo& rhs ) const;
     /**
     Equality comparison of resource info.
     **/
-    bool operator==( const ResourceInfo& rResourceInfo ) const;
+    bool operator==( const ResourceInfo& rhs ) const;
     /**
     Print resource info. 
     **/
-    DIVERSIA_SHARED_API friend std::ostream& operator<<( std::ostream& os, const ResourceInfo& rResourceInfo );
+    DIVERSIA_SHARED_API friend std::ostream& operator<<( std::ostream& os, const ResourceInfo& rhs );
 
     /**
     Deduces the resource type of a given file.
     
     @param  rFile   The file to deduce the type for.
-    
-    @return Resource type. 
     **/
-    static ResourceType deduceResourceType( const Path& rFile );
+    DIVERSIA_SHARED_API static ResourceType deduceResourceType( const Path& rFile );
     /**
     Converts a resource list to a resource set. 
     
     @param  rResourceList   List of resources. 
     **/
-    static std::set<ResourceInfo> toResourceSet( const std::vector<ResourceInfo>& rResourceList );
+    DIVERSIA_SHARED_API static std::set<ResourceInfo> toResourceSet( 
+        const std::vector<ResourceInfo>& rResourceList );
     /**
     Converts a resource set to a resource list. 
     
     @param  rResourceList   Set of resources. 
     **/
-    static std::vector<ResourceInfo> toResourceList( const std::set<ResourceInfo>& rResourceList );
+    DIVERSIA_SHARED_API static std::vector<ResourceInfo> toResourceList( 
+        const std::set<ResourceInfo>& rResourceList );
 
-    Path    mFile;
-    String  mType;
-    int     mPriority;
+    Path            mFile;
+    ResourceType    mType;
+    int             mPriority;
 
 };
 

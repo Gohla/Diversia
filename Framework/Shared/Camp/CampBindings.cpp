@@ -190,7 +190,7 @@ void CampBindings::bindResourceInfo()
         // Constructors
         .constructor0()
         .constructor1<const Path&>()
-        .constructor2<const Path&, const String&>()
+        .constructor2<const Path&, ResourceType>()
         // Properties (read-only)
         // Properties (read/write)
         .property( "File", &ResourceInfo::mFile )

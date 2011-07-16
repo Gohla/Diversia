@@ -99,6 +99,10 @@ public:
     **/
     Ogre::ResourcePtr getResource( const ResourceInfo& rResource, bool declare = false ) const;
     /**
+    Gets a list of all resources.
+    **/
+    ResourceList list();
+    /**
     Gets the plugin type.
     **/
     inline PluginTypeEnum getType() const { return PLUGINTYPE_RESOURCEMANAGER; }
@@ -155,6 +159,13 @@ public:
             the entity is already loaded.
     **/
     sigc::connection connectInitialized( sigc::slot<void, ResourceManager&> rSlot );
+
+    /**
+    Gets the resource manager name for given resource type.
+    
+    @param  type    The resource type.
+    **/
+    static const char* getResourceManagerName( ResourceType type );
 
     void operationCompleted( Ogre::BackgroundProcessTicket ticket, 
         const Ogre::BackgroundProcessResult& rResult );

@@ -41,6 +41,8 @@ class ObjectTemplateItem;
 class ComponentTemplateItem;
 class PluginModel;
 class PluginItem;
+class ResourceModel;
+class ResourceItem;
 class UndoModel;
 class UndoItem;
 
@@ -65,6 +67,7 @@ class NewGameDialog;
 class ObjectTreeView;
 class PluginTreeView;
 class PropertyBrowser;
+class ResourceTreeView;
 class UndoListView;
 
 //------------------------------------------------------------------------------

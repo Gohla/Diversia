@@ -295,12 +295,12 @@ ResourceSet GraphicsManager::getTextureNamesFromMaterial( const String& rMateria
             while( tui.hasMoreElements() )
             {
                 Ogre::TextureUnitState* textureUnitState = tui.getNext();
-                textureNames.insert( ResourceInfo( textureUnitState->getTextureName(), "Texture" ) );
+                textureNames.insert( ResourceInfo( textureUnitState->getTextureName(), RESOURCETYPE_TEXTURE ) );
 
                 for( unsigned int i = 0; i < textureUnitState->getNumFrames(); ++i )
                 {
                     textureNames.insert( ResourceInfo( textureUnitState->getFrameTextureName( i ), 
-                        "Texture" ) );
+                        RESOURCETYPE_TEXTURE ) );
                 }
             }
         }

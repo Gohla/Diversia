@@ -92,7 +92,7 @@ void LuaObjectScript::setClientScriptFile( const Path& rClientScriptFile )
         // Load script resource
         try
         {
-            mResourceManager.loadResource( ResourceInfo( mClientScriptFile, "Generic" ), 
+            mResourceManager.loadResource( ResourceInfo( mClientScriptFile, RESOURCETYPE_LUASCRIPT ), 
                 sigc::mem_fun( this, &LuaObjectScript::resourceLoaded ) );
         }
         catch( FileNotFoundException e )
@@ -159,7 +159,7 @@ void LuaObjectScript::create()
         // Load script resource
         try
         {
-            mResourceManager.loadResource( ResourceInfo( mClientScriptFile, "Generic" ), 
+            mResourceManager.loadResource( ResourceInfo( mClientScriptFile, RESOURCETYPE_LUASCRIPT ), 
                 sigc::mem_fun( this, &LuaObjectScript::resourceLoaded ) );
         }
         catch( FileNotFoundException e )
@@ -172,7 +172,7 @@ void LuaObjectScript::create()
         // Load script resource
         try
         {
-            mResourceManager.loadResource( ResourceInfo( mClientScriptFile, "Generic" ), 
+            mResourceManager.loadResource( ResourceInfo( mClientScriptFile, RESOURCETYPE_LUASCRIPT ), 
                 sigc::mem_fun( this, &LuaObjectScript::resourceLoaded ) );
         }
         catch( FileNotFoundException e )

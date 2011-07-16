@@ -111,7 +111,8 @@ void ResourceManager::setGroup( const String& rGroup )
 Ogre::ResourcePtr ResourceManager::getResource( const ResourceInfo& rResource, 
     bool create /*= false*/ ) const
 {
-    Ogre::ResourcePtr resource = mRGM._getResourceManager( rResource.mType )->getByName( 
+    Ogre::ResourcePtr resource = mRGM._getResourceManager( 
+        ResourceManager::getResourceManagerName( rResource.mType ) )->getByName( 
         rResource.mFile.string(), mGroup );
     if( !create ) return resource;
 
@@ -120,11 +121,25 @@ Ogre::ResourcePtr ResourceManager::getResource( const ResourceInfo& rResource,
         if( !mRGM.findResourceNames( mGroup, rResource.mFile.string() )->size() )
             return resource;
 
-        resource = mRGM._getResourceManager( rResource.mType )->create( 
-            rResource.mFile.string(), mGroup );
+        resource = mRGM._getResourceManager( ResourceManager::getResourceManagerName( 
+            rResource.mType ) )->create( rResource.mFile.string(), mGroup );
     }
 
     return resource;
+}
+
+ResourceList ResourceManager::list()
+{
+    ResourceList resourceList;
+
+    Ogre::StringVectorPtr resources = mRGM.findResourceNames( mGroup, "*" );
+    
+    for( Ogre::StringVector::const_iterator i = resources->begin(); i != resources->end(); ++i )
+    {
+        resourceList.push_back( Path( *i ) );
+    }
+
+    return resourceList;
 }
 
 Ogre::ResourcePtr ResourceManager::loadResource( const ResourceInfo& rResource, 
@@ -164,7 +179,8 @@ Ogre::ResourcePtr ResourceManager::loadResource( const ResourceInfo& rResource,
         // Load the resource in the background and register the callback.
         resource = ResourceManager::getResource( rResource, true );
         Ogre::BackgroundProcessTicket ticket = 
-            mRBQ.load( rResource.mType, rResource.mFile.string(), mGroup, false, 0, 0, this );
+            mRBQ.load( ResourceManager::getResourceManagerName( rResource.mType ), 
+            rResource.mFile.string(), mGroup, false, 0, 0, this );
         mTicketCallbacks.insert( TicketCallbacks::value_type( ticket, rCallbackSlot ) );
         mHandleTickets.insert( std::make_pair( std::make_pair( 
             resource->getCreator()->getResourceType(), resource->getHandle() ), ticket ) );
@@ -236,8 +252,22 @@ void ResourceManager::loadResources( const ResourceList& rResources,
 
 sigc::connection ResourceManager::connectInitialized( sigc::slot<void, ResourceManager&> rSlot )
 {
-    if( !mInitializing ) rSlot( *this );
+    if( !mInitializing && mCreated ) rSlot( *this );
     return mInitializedSignal.connect( rSlot );
+}
+
+const char* ResourceManager::getResourceManagerName( ResourceType type )
+{
+    switch( type )
+    {
+        case RESOURCETYPE_OGREMESH: return "Mesh";
+        case RESOURCETYPE_TEXTURE: return "Texture";
+        case RESOURCETYPE_SKELETON: return "Skeleton";
+        case RESOURCETYPE_MATERIALSCRIPT: return "Material";
+        case RESOURCETYPE_PARTICLESCRIPT: return "Particle";
+    }
+
+    return "Generic";
 }
 
 void ResourceManager::load()

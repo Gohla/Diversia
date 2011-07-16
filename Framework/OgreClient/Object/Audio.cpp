@@ -75,7 +75,7 @@ void Audio::setAudioFile( const Path& rAudioFile )
 
         try
         {
-            mResourceManager.loadResource( ResourceInfo( mFile, "Generic" ), sigc::mem_fun( this, 
+            mResourceManager.loadResource( ResourceInfo( mFile, RESOURCETYPE_AUDIO ), sigc::mem_fun( this, 
                 &Audio::resourceLoaded ) );
         }
         catch( FileNotFoundException e )
@@ -92,7 +92,7 @@ void Audio::create()
 
     try
     {
-        mResourceManager.loadResource( ResourceInfo( mFile, "Generic" ), sigc::mem_fun( this, 
+        mResourceManager.loadResource( ResourceInfo( mFile, RESOURCETYPE_AUDIO ), sigc::mem_fun( this, 
             &Audio::resourceLoaded ) );
     }
     catch( FileNotFoundException e )

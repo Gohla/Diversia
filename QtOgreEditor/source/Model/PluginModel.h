@@ -15,7 +15,7 @@ namespace Diversia
 {
 namespace QtOgreEditor
 {
- //------------------------------------------------------------------------------
+//------------------------------------------------------------------------------
 
 /**
 Qt model item that represents a client-server plugin in the Diversia object/component system.

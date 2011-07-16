@@ -346,6 +346,18 @@
     <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ResourceModel.cpp">
       <Filter>Generated Files\Release</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\UI\ResourceTreeView.cpp">
+      <Filter>UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Debug\moc_ResourceTreeView.cpp">
+      <Filter>Generated Files\Debug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\ReleaseDebug\moc_ResourceTreeView.cpp">
+      <Filter>Generated Files\ReleaseDebug</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\QtOgreEditor\source\Generated\Release\moc_ResourceTreeView.cpp">
+      <Filter>Generated Files\Release</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\..\QtOgreEditor\qt\Icon.ico">
@@ -424,6 +436,9 @@
     </CustomBuild>
     <CustomBuild Include="..\..\QtOgreEditor\source\Model\ResourceModel.h">
       <Filter>Model</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\QtOgreEditor\source\UI\ResourceTreeView.h">
+      <Filter>UI</Filter>
     </CustomBuild>
   </ItemGroup>
 </Project>

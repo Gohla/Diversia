@@ -86,7 +86,7 @@ void GameModePlugin::load()
             for( std::vector<Path>::iterator i = mClientScriptFiles.begin(); 
                 i != mClientScriptFiles.end(); ++i )
             {
-                resourceList.push_back( ResourceInfo( *i, "Generic" ) );
+                resourceList.push_back( ResourceInfo( *i, RESOURCETYPE_LUASCRIPT ) );
             }
 
             try

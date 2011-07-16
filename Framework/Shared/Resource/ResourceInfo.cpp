@@ -40,45 +40,37 @@ ResourceInfo::ResourceInfo()
 
 ResourceInfo::ResourceInfo( const Path& rFile ):
     mFile( rFile ),
-    mType( "Generic" ),
+    mType( ResourceInfo::deduceResourceType( rFile ) ),
     mPriority( 0 )
 {
-    // Try to deduce type.
-    String ext = rFile.extension();
-
-    if( ext == ".mesh" )
-        mType = "Mesh";
-    else if( ext == ".jpg" || ext == ".jpeg" || ext == ".png" || ext == ".tga" || ext == ".dds" ) 
-        mType = "Texture";
-    else if( ext == ".skeleton" )
+    if( mType == RESOURCETYPE_SKELETON )
     {
-        mType = "Skeleton";
         // Higher priority needed to prevent Ogre from loading .skeleton files when a .mesh file is 
         // loaded. Otherwise Ogre loads the .skeleton and the resource manager cannot detect when
         // the resource has finished loading and callback.
         mPriority = -1; 
     }
-    // TODO: Add more type detection.
 }
 
-ResourceInfo::ResourceInfo( const Path& rFile, const String& rType, int priority /*= 0*/ ):
+ResourceInfo::ResourceInfo( const Path& rFile, ResourceType type, int priority /*= 0*/ ):
     mFile( rFile ),
-    mType( rType ),
+    mType( type ),
     mPriority( priority )
 {
 
 }
 
-bool ResourceInfo::operator<( const ResourceInfo& rResourceInfo ) const
+bool ResourceInfo::operator<( const ResourceInfo& rhs ) const
 {
-    return mPriority < rResourceInfo.mPriority || !( rResourceInfo.mPriority < mPriority ) && 
-        ( mFile.string() + mType ) < ( rResourceInfo.mFile.string() + rResourceInfo.mType );
+    if( mPriority != rhs.mPriority ) return mPriority < rhs.mPriority;
+    if( mType != rhs.mType ) return mType < rhs.mType;
+    if( mFile != rhs.mFile ) return mFile < rhs.mFile;
+    return false;    
 }
 
-bool ResourceInfo::operator==( const ResourceInfo& rResourceInfo ) const
+bool ResourceInfo::operator==( const ResourceInfo& rhs ) const
 {
-    return ( mFile == rResourceInfo.mFile ) && ( mType == rResourceInfo.mType ) && 
-        ( mPriority == rResourceInfo.mPriority );
+    return ( mPriority == rhs.mPriority ) && ( mType == rhs.mType ) && ( mFile == rhs.mFile );
 }
 
 std::ostream& operator<<( std::ostream& os, const ResourceInfo& rResourceInfo )

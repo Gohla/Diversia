@@ -23,6 +23,7 @@ namespace QtOgreEditor
 //------------------------------------------------------------------------------
 
 ComponentItem::ComponentItem( Component& rComponent ):
+    QStandardItem(),
     mComponent( rComponent )
 {
     QStandardItem::setText( QString( rComponent.getName().c_str() ) );
@@ -67,6 +68,7 @@ void ComponentItem::destroyed()
 //------------------------------------------------------------------------------
 
 ObjectItem::ObjectItem( Object& rObject ):
+    QStandardItem(),
     mObject( rObject )
 {
     QStandardItem::setText( QString( rObject.getDisplayName().c_str() ) );
