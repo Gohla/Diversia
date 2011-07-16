@@ -274,6 +274,8 @@ const char* ResourceManager::getResourceManagerName( ResourceType type )
 
 void ResourceManager::load()
 {
+    if( mCreated ) return;
+
     if( !mResourceLocation.empty() )
     {
         if( mGroup.empty() )

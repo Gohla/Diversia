@@ -72,12 +72,20 @@ void ResourceModel::setResourceManager( ResourceManager& rResourceManager )
 
 void ResourceModel::resourcesInitialised( ResourceManager& rResourceManager )
 {
+    ResourceModel::clear();
+
     ResourceList resources = mResourceManager->list();
     for( ResourceList::const_iterator i = resources.begin(); i != resources.end(); ++i )
     {
         ResourceItem* item = new ResourceItem( *i );
         QStandardItemModel::appendRow( item );
     }
+}
+
+void ResourceModel::clear()
+{
+    QStandardItemModel::clear();
+    mResourceItems.clear();
 }
 
 //------------------------------------------------------------------------------

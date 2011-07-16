@@ -68,6 +68,7 @@ public:
     
 private:
     void resourcesInitialised( ResourceManager& rResourceManager );
+    void clear();
 
     ResourceManager*    mResourceManager;
     ResourceItems       mResourceItems;
