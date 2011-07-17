@@ -11,7 +11,9 @@ rules // XML printing
 	print-xml: XMLElement(name, value) -> $[<[name]>[value]</[name]>
 ]
 	print-xml: XMLNode(name) -> $[<[name]/>]
+	print-xml: XMLNode(name, []) -> $[<[name]/>]
 	print-xml: XMLNode(name, childs) -> 
 $[<[name]>
 	[<map(print-xml)> childs]
 </[name]>]
+		where not (<?[]> childs)

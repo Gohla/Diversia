@@ -16,6 +16,7 @@ imports
 	
 	codegen/lua/luagen
 	codegen/xml/xmlgen
+	codegen/xml/simplexml
 	
 	editor/complete
 	editor/hover
@@ -72,12 +73,18 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 	    	editor-init;
 	    	filename := <guarantee-extension(|"aterm")> path;
 	      	result   := <to-lua> <analyse-all-merge(|path)> ast
-	      	
+	     
+	// Transforms analysed AST to game XML. 	
 	generate-xml: (selected, position, ast, path, project-path) -> (filename, result)
 		where
 			editor-init;
 	    	filename := <guarantee-extension(|"xml")> path;
 	    	result   := <print-xml> <to-game-xml> <analyse-all-merge(|path)> ast
+	generate-xml-aterm: (selected, position, ast, path, project-path) -> (filename, result)
+		where
+			editor-init;
+	    	filename := <guarantee-extension(|"aterm")> path;
+	    	result   := <to-game-xml> <analyse-all-merge(|path)> ast
 	    	
 	// Transforms analysed AST to C++.
 	generate-cpp: (selected, position, ast, path, project-path) -> (filename, result)

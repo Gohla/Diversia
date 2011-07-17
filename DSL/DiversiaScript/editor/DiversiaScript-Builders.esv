@@ -22,4 +22,5 @@ builders
   builder                   : "Generate Lua code" = generate-lua-strings (openeditor) (realtime) (meta)
   builder                   : "Generate Lua abstract syntax" = generate-lua-aterm (openeditor) (realtime) (meta)
   builder                   : "Generate XML" = generate-xml (openeditor) (realtime) (meta)
+  builder                   : "Generate XML abstract syntax" = generate-xml-aterm (openeditor) (realtime) (meta)
   //builder                   : "Generate C++ code" = generate-cpp (openeditor) (realtime) (meta)                                                                  
