@@ -1,0 +1,16 @@
+module projection/constant
+
+imports
+	
+	include/DiversiaScript
+	
+rules // Constants
+	
+	is-constant = ?True()
+	is-constant = ?False()
+	is-constant = ?IntConst(_)
+	is-constant = ?FloatConst(_)
+	is-constant = ?StrConst(_)
+	is-constant = ?Vector2Const(_, _)
+	is-constant = ?Vector3Const(_, _, _)
+	is-constant = ?Vector4Const(_, _, _, _)
