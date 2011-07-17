@@ -1,0 +1,57 @@
+module codegen/xml/xmlgen
+
+imports
+	
+	include/DiversiaScript
+	
+	signatures
+	
+	projection/name
+	projection/type
+	projection/constant
+	
+	data/type-prop
+	data/enum
+	
+	codegen/xml/simplexml
+	
+	util
+
+rules // Structure
+	
+	to-game-xml: Start(imports, pluginDefs, objectDefs, eventDefs) ->
+		XMLNode("ClientPluginManager", [XMLNode("Plugins", <map(to-game-xml)> pluginDefs)])
+			
+rules // Plugins
+			
+	to-game-xml: PluginDef(name, type, properties) ->
+		XMLNode("item", [XMLElement("key", name), XMLNode("value", <map(to-game-xml)> properties)])
+		
+	to-game-xml: PluginProp(_, prop, exp) -> XMLElement(<crush> prop, <to-game-xml> exp)
+		where type := <type-of> exp
+		where <is-standard-type> type <+ <is-builtin-enum> type
+	to-game-xml: PluginProp(_, prop, exp) -> XMLNode(<crush> prop, <to-game-xml> exp)
+		where type := <type-of> exp
+		where not (<is-standard-type> <type-of> exp <+ <is-builtin-enum> type)
+		
+rules // Expressions
+		
+	to-game-xml: True() -> 1
+	to-game-xml: False() -> 0
+	to-game-xml: IntConst(num) -> num
+	to-game-xml: FloatConst(num) -> num
+	to-game-xml: StrConst(string) -> string'
+		where string' := <un-double-quote> string
+	to-game-xml: StrConst(string) -> string
+		where not (<un-double-quote> string)
+	to-game-xml: Vector2Const(exp1, exp2) -> 
+		[XMLElement("X", <to-game-xml> exp1), XMLElement("Y", <to-game-xml> exp2)]
+	to-game-xml: Vector3Const(exp1, exp2, exp3) -> 
+		[XMLElement("X", <to-game-xml> exp1), XMLElement("Y", <to-game-xml> exp2), XMLElement("Z", <to-game-xml> exp3)]
+	to-game-xml: Vector4Const(exp1, exp2, exp3, exp4) -> 
+		[XMLElement("X", <to-game-xml> exp1), XMLElement("Y", <to-game-xml> exp2), XMLElement("Z", <to-game-xml> exp3), XMLElement("W", <to-game-xml> exp4)]
+	to-game-xml: EnumValueRef(enum, value) -> <builtin-enum-value(|enum)> value
+	to-game-xml: New(type, params) -> 
+		<zip(\ (name, value) -> XMLElement(name, value) \)> (propertyNames, values)
+			where values := <map(to-game-xml)> params
+			where (propertyNames, _) := <split-at(|<length> values)> <map(get-name)> <builtin-type-props> type

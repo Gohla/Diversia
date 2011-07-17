@@ -1,0 +1,17 @@
+module codegen/xml/simplexml
+
+signature constructors
+	
+	XMLNode: Name * List(XMLNode) 	-> XMLNode
+	XMLNode: Name 					-> XMLNode
+	XMLElement: Name * Value		-> XMLElement
+	
+rules // XML printing
+	
+	print-xml: XMLElement(name, value) -> $[<[name]>[value]</[name]>
+]
+	print-xml: XMLNode(name) -> $[<[name]/>]
+	print-xml: XMLNode(name, childs) -> 
+$[<[name]>
+	[<map(print-xml)> childs]
+</[name]>]
