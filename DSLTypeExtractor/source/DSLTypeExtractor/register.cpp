@@ -10,7 +10,6 @@ This file is part of Diversia.
 
 #include "DSLTypeExtractor/register.hpp"
 
-#include "Client/Plugin/ClientPlugin.h"
 #include "Client/Communication/ServerNeighborsPlugin.h"
 #include "Client/Lua/LuaPlugin.h"
 #include "Client/Object/ClientComponent.h"
@@ -20,6 +19,7 @@ This file is part of Diversia.
 #include "Client/Object/ClientObjectTemplate.h"
 #include "Client/Object/ClientObjectTemplateManager.h"
 #include "Client/Permission/PermissionManager.h"
+#include "Client/Plugin/ClientPlugin.h"
 #include "Object/Component.h"
 #include "Object/ComponentTemplate.h"
 #include "Object/Object.h"
@@ -31,6 +31,7 @@ This file is part of Diversia.
 #include "OgreClient/Graphics/SkyPlugin.h"
 #include "OgreClient/Graphics/Terrain.h"
 #include "OgreClient/Input/InputManager.h"
+#include "OgreClient/Level/LevelManager.h"
 #include "OgreClient/Object/Animation.h"
 #include "OgreClient/Object/AreaTrigger.h"
 #include "OgreClient/Object/Audio.h"
@@ -46,10 +47,10 @@ This file is part of Diversia.
 #include "OgreClient/Object/SceneNode.h"
 #include "OgreClient/Object/Text.h"
 #include "OgreClient/Resource/ResourceManager.h"
-#include "Shared/Plugin/PluginManager.h"
+#include "Shared/Object/TemplateComponentFactory.h"
 #include "Shared/Plugin/Factories/ObjectManagerFactory.h"
 #include "Shared/Plugin/Factories/TemplatePluginFactory.h"
-#include "Shared/Object/TemplateComponentFactory.h"
+#include "Shared/Plugin/PluginManager.h"
 #include "Util/Camp/CampUtils.h"
 #include "Util/Log/Logger.h"
 #include "Util/Math/Node.h"
@@ -225,6 +226,8 @@ void registerCamp()
     TemplatePluginFactory<LuaPlugin, ClientPluginManager>::registerFactory();
     camp::classByType<LuaPlugin>();
     PluginManager::addAutoCreatePlugin<LuaPlugin>();
+    TemplatePluginFactory<LevelManager, ClientPluginManager>::registerFactory();
+    camp::classByType<LevelManager>();
 }
 
 //------------------------------------------------------------------------------
