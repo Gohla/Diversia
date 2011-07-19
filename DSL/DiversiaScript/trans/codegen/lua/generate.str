@@ -96,24 +96,21 @@ rules // Syntax transformation
 	// Definitions to lua syntax.
 	to-lua: Start(imports, pluginDefs, objectDefs, eventDefs) -> LuaScripts(<concat> [[<gamemode-to-lua> (pluginDefs, eventDefs)], <map(objects-to-lua)> objectDefs])
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
-		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], functions'''']))
+		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], functions''']))
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions' := <lua-createFunc-prepend> (<map(component-to-lua(|"Object"))> componenDefs, functions)
-		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua)> propAssigns, functions')
-		where functions''' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions'') 
-		where functions'''' := <states-to-lua> (<concat> [[defState], stateDefs], functions''')
+		where functions' := <lua-createFunc-prepend> (<map(propassign-to-lua)> <filter(?ObjectProp(_, _, _))> propAssigns, functions)
+		where functions'' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions') 
+		where functions''' := <states-to-lua> (<concat> [[defState], stateDefs], functions'')
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [], _, eventDefs) -> 
-		LuaObjectScript(name, <lua-flatten-all> Chunk(functions''')) 
+		LuaObjectScript(name, <lua-flatten-all> Chunk(functions'')) 
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions' := <lua-createFunc-prepend> (<map(component-to-lua(|"Object"))> componenDefs, functions)
-		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua)> propAssigns, functions')
-		where functions''' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions'')
-	gamemode-to-lua: (pluginDefs, eventDefs) -> LuaGameModeScript(<lua-flatten-all> Chunk(<concat> [functions']))
+		where functions' := <lua-createFunc-prepend> (<map(propassign-to-lua)> <filter(?ObjectProp(_, _, _))> propAssigns, functions)
+		where functions'' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions')
+	gamemode-to-lua: (pluginDefs, eventDefs) -> LuaGameModeScript(<lua-flatten-all> Chunk(<concat> [functions]))
 		where
 		{| GamemodeScript:
 			rules (GamemodeScript: _ -> True());
-			functions := <map(global-event-to-lua)> eventDefs;
-			functions' := <lua-createFunc-prepend> (<map(to-lua)> pluginDefs, functions)
+			functions := <map(global-event-to-lua)> eventDefs
 		|}
 	
 	// Variables
@@ -336,15 +333,12 @@ rules // Statements
 		where <match-type> (<type-of> exp, Object())
 	new-object-to-lua(|objectName): ObjectNew(ObjectRef(name), props) -> <concat> [
 			[
-				Assignment([VarRef(objectName)], [Call(VarRef("ObjectManager"), "CreateLocalObject", Args([String(objectName)]))]),
-				<component-to-lua(|objectName)> ComponentDef(""{luaScriptName}, LuaObjectScript(), [
-					ComponentProp(LuaObjectScript(), ClientScriptFile(), StrConst($[gen/[name].lua])),
-					ComponentProp(LuaObjectScript(), ClientSecurityLevel(), StrConst("Low"))
-				])
+				Assignment([VarRef(objectName)], [Call(VarRef("ObjectTemplateManager"), "CreateLocalObject", Args([String(name), String(objectName)]))]),
+				Assignment([VarRef(luaScriptName)], [Call(VarRef(objectName), "GetComponent", Args([String("LuaObjectScript")]))]),
+				Call(VarRef(luaScriptName), "CreateEnv", Args([]))
 			],
-			[Call(VarRef(luaScriptName), "CreateEnv", Args([]))],
 			<new-object-to-lua-replace(|luaScriptName, objectName)>,
-			<map(propassign-to-lua(|objectName))> props
+			<map(propassign-to-lua(|objectName))> <filter(?ObjectProp(_, _, _))> props
 		]
 		where luaScriptName := $[[objectName]__LuaObjectScript]
 	new-object-to-lua-replace(|luaScriptName, objectName): _ ->
