@@ -12,12 +12,10 @@ exports
     "ClientObjectManager" -> BuiltinType {cons("ClientObjectManager")}
     "ClientObjectTemplate" -> BuiltinType {cons("ClientObjectTemplate")}
     "ClientObjectTemplateManager" -> BuiltinType {cons("ClientObjectTemplateManager")}
+    "ClientPlugin" -> BuiltinType {cons("ClientPlugin")}
     "Lua" -> BuiltinType {cons("Lua")}
     "PermissionManager" -> BuiltinType {cons("PermissionManager")}
     "ServerNeighborsPlugin" -> BuiltinType {cons("ServerNeighborsPlugin")}
-    "ServerPlugin" -> BuiltinType {cons("ServerPlugin")}
-    "ClientServerPlugin" -> BuiltinType {cons("ClientServerPlugin")}
-    "ClientServerPluginManager" -> BuiltinType {cons("ClientServerPluginManager")}
     "LayerInstance" -> BuiltinType {cons("LayerInstance")}
     "Component" -> BuiltinType {cons("Component")}
     "ComponentHandle" -> BuiltinType {cons("ComponentHandle")}
@@ -37,6 +35,7 @@ exports
     "GameMode" -> BuiltinType {cons("GameMode")}
     "InputManager" -> BuiltinType {cons("InputManager")}
     "KeyboardState" -> BuiltinType {cons("KeyboardState")}
+    "LevelManager" -> BuiltinType {cons("LevelManager")}
     "Light" -> BuiltinType {cons("Light")}
     "LuaObjectScript" -> BuiltinType {cons("LuaObjectScript")}
     "Mesh" -> BuiltinType {cons("Mesh")}
@@ -49,6 +48,8 @@ exports
     "Sky" -> BuiltinType {cons("Sky")}
     "Terrain" -> BuiltinType {cons("Terrain")}
     "Text" -> BuiltinType {cons("Text")}
+    "Plugin" -> BuiltinType {cons("Plugin")}
+    "PluginManager" -> BuiltinType {cons("PluginManager")}
     "PropertySynchronization" -> BuiltinType {cons("PropertySynchronization")}
     "ResourceInfo" -> BuiltinType {cons("ResourceInfo")}
     "ServerInfo" -> BuiltinType {cons("ServerInfo")}

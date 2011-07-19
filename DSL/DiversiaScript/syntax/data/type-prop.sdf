@@ -10,14 +10,6 @@ exports
 
     "ServerNeighbors" -> BuiltinProperty {cons("ServerNeighbors")}
 
-    "Type" -> BuiltinProperty {cons("Type")}
-    "TypeName" -> BuiltinProperty {cons("TypeName")}
-    "Mode" -> BuiltinProperty {cons("Mode")}
-    "PluginManager" -> BuiltinProperty {cons("PluginManager")}
-
-    "Mode" -> BuiltinProperty {cons("Mode")}
-    "Plugins" -> BuiltinProperty {cons("Plugins")}
-
     "WorldSize" -> BuiltinProperty {cons("WorldSize")}
     "TextureNames" -> BuiltinProperty {cons("TextureNames")}
 
@@ -165,6 +157,9 @@ exports
     "WindowWidth" -> BuiltinProperty {cons("WindowWidth")}
     "WindowHeight" -> BuiltinProperty {cons("WindowHeight")}
 
+    "DefaultLevel" -> BuiltinProperty {cons("DefaultLevel")}
+    "LoadedPlugins" -> BuiltinProperty {cons("LoadedPlugins")}
+
     "LightType" -> BuiltinProperty {cons("LightType")}
     "CastShadows" -> BuiltinProperty {cons("CastShadows")}
     "DiffuseColour" -> BuiltinProperty {cons("DiffuseColour")}
@@ -202,6 +197,8 @@ exports
     "Enabled" -> BuiltinProperty {cons("Enabled")}
     "Speed" -> BuiltinProperty {cons("Speed")}
 
+    "BackgroundInitialise" -> BuiltinProperty {cons("BackgroundInitialise")}
+    "BackgroundLoad" -> BuiltinProperty {cons("BackgroundLoad")}
     "Type" -> BuiltinProperty {cons("Type")}
     "ResourceLocation" -> BuiltinProperty {cons("ResourceLocation")}
     "Group" -> BuiltinProperty {cons("Group")}
@@ -259,6 +256,14 @@ exports
     "Caption" -> BuiltinProperty {cons("Caption")}
     "Colour" -> BuiltinProperty {cons("Colour")}
 
+    "Type" -> BuiltinProperty {cons("Type")}
+    "TypeName" -> BuiltinProperty {cons("TypeName")}
+    "Mode" -> BuiltinProperty {cons("Mode")}
+    "PluginManager" -> BuiltinProperty {cons("PluginManager")}
+
+    "Mode" -> BuiltinProperty {cons("Mode")}
+    "Plugins" -> BuiltinProperty {cons("Plugins")}
+
     "File" -> BuiltinProperty {cons("File")}
     "Type" -> BuiltinProperty {cons("Type")}
     "Priority" -> BuiltinProperty {cons("Priority")}
@@ -308,10 +313,6 @@ exports
     "InheritScale" -> BuiltinProperty {cons("InheritScale")}
     "InheritScale" -> BuiltinObjectProperty {cons("InheritScale")}
 
-    "X" -> BuiltinProperty {cons("X")}
-    "Y" -> BuiltinProperty {cons("Y")}
-    "Z" -> BuiltinProperty {cons("Z")}
-    "W" -> BuiltinProperty {cons("W")}
     "XAxis" -> BuiltinProperty {cons("XAxis")}
     "YAxis" -> BuiltinProperty {cons("YAxis")}
     "ZAxis" -> BuiltinProperty {cons("ZAxis")}
@@ -327,26 +328,30 @@ exports
     "ShortestPitch" -> BuiltinProperty {cons("ShortestPitch")}
     "Yaw" -> BuiltinProperty {cons("Yaw")}
     "ShortestYaw" -> BuiltinProperty {cons("ShortestYaw")}
+    "X" -> BuiltinProperty {cons("X")}
+    "Y" -> BuiltinProperty {cons("Y")}
+    "Z" -> BuiltinProperty {cons("Z")}
+    "W" -> BuiltinProperty {cons("W")}
 
     "Degrees" -> BuiltinProperty {cons("Degrees")}
     "AngleUnits" -> BuiltinProperty {cons("AngleUnits")}
     "Radians" -> BuiltinProperty {cons("Radians")}
 
-    "X" -> BuiltinProperty {cons("X")}
-    "Y" -> BuiltinProperty {cons("Y")}
     "Length" -> BuiltinProperty {cons("Length")}
     "SquaredLength" -> BuiltinProperty {cons("SquaredLength")}
     "IsZeroLength" -> BuiltinProperty {cons("IsZeroLength")}
     "NormalisedCopy" -> BuiltinProperty {cons("NormalisedCopy")}
-
     "X" -> BuiltinProperty {cons("X")}
     "Y" -> BuiltinProperty {cons("Y")}
-    "Z" -> BuiltinProperty {cons("Z")}
+
     "Zero" -> BuiltinProperty {cons("Zero")}
     "Length" -> BuiltinProperty {cons("Length")}
     "SquaredLength" -> BuiltinProperty {cons("SquaredLength")}
     "IsZeroLength" -> BuiltinProperty {cons("IsZeroLength")}
     "NormalisedCopy" -> BuiltinProperty {cons("NormalisedCopy")}
+    "X" -> BuiltinProperty {cons("X")}
+    "Y" -> BuiltinProperty {cons("Y")}
+    "Z" -> BuiltinProperty {cons("Z")}
 
     "X" -> BuiltinProperty {cons("X")}
     "Y" -> BuiltinProperty {cons("Y")}

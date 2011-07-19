@@ -14,8 +14,9 @@ imports
 	decorate
 	import
 	
-	codegen/lua/luagen
-	codegen/xml/xmlgen
+	codegen/lua/generate
+	codegen/lua/normalise
+	codegen/xml/generate
 	codegen/xml/simplexml
 	
 	editor/complete
@@ -33,7 +34,9 @@ strategies
 	analyse-all-nostore(|path) = import-all(|path); desugar-all; decorate-all; rename-all
 	// Analysis the AST (resolve imports, desugar, decorate, rename), stores declarations from the AST and all imports and
 	// finally merges the AST's from the imported files into this AST.
-	analyse-all-merge(|path) = import-all(|path); desugar-all; decorate-all; rename-all; store-all; import-merge(|path)
+	analyse-all-merge(normalise|path) = import-all(|path); desugar-all; decorate-all; normalise; rename-all; store-all; import-merge(|path)
+	analyse-all-merge(|path) = analyse-all-merge(id|path)
+	
 
 rules // Main editor interface (defined by editor/DiversiaScript-Builders and -References.esv)
   
@@ -78,13 +81,15 @@ rules // Main editor interface (defined by editor/DiversiaScript-Builders and -R
 	generate-xml: (selected, position, ast, path, project-path) -> (filename, result)
 		where
 			editor-init;
+			dir 	 := <abspath> <dirname> path;
 	    	filename := <guarantee-extension(|"xml")> path;
-	    	result   := <print-xml> <to-game-xml> <analyse-all-merge(|path)> ast
+	    	result   := <print-xml> <to-game-xml> <analyse-all-merge(normalise-luaxml(|dir)|path)> ast
 	generate-xml-aterm: (selected, position, ast, path, project-path) -> (filename, result)
 		where
 			editor-init;
+			dir 	 := <abspath> <dirname> path;
 	    	filename := <guarantee-extension(|"aterm")> path;
-	    	result   := <to-game-xml> <analyse-all-merge(|path)> ast
+	    	result   := <to-game-xml> <analyse-all-merge(normalise-luaxml(|dir)|path)> ast
 	    	
 	// Transforms analysed AST to C++.
 	generate-cpp: (selected, position, ast, path, project-path) -> (filename, result)

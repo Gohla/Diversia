@@ -26,6 +26,8 @@ rules
 
 	builtin-type-props: ClientObjectTemplateManager() -> []
 
+	builtin-type-props: ClientPlugin() -> []
+
 	builtin-type-props: Lua() -> []
 
 	builtin-type-props: PermissionManager() -> []
@@ -34,26 +36,6 @@ rules
 	is-builtin-type-prop-writable = ?(ServerNeighborsPlugin(), ServerNeighbors())
 	builtin-type-prop-type: (ServerNeighborsPlugin(), ServerNeighbors()) -> ServerNeighbors()
 	builtin-type-props: ServerNeighborsPlugin() -> [Property(ServerNeighbors(), ServerNeighbors(), True())]
-
-	builtin-type-props: ServerPlugin() -> []
-
-	has-builtin-type-prop = ?(ClientServerPlugin(), Type())
-	builtin-type-prop-type: (ClientServerPlugin(), Type()) -> ClientServerPluginType()
-	has-builtin-type-prop = ?(ClientServerPlugin(), TypeName())
-	builtin-type-prop-type: (ClientServerPlugin(), TypeName()) -> StringType()
-	has-builtin-type-prop = ?(ClientServerPlugin(), Mode())
-	builtin-type-prop-type: (ClientServerPlugin(), Mode()) -> Mode()
-	has-builtin-type-prop = ?(ClientServerPlugin(), PluginManager())
-	is-builtin-type-prop-writable = ?(ClientServerPlugin(), PluginManager())
-	builtin-type-prop-type: (ClientServerPlugin(), PluginManager()) -> ClientServerPluginManager()
-	builtin-type-props: ClientServerPlugin() -> [Property(Type(), ClientServerPluginType(), False()), Property(TypeName(), StringType(), False()), Property(Mode(), Mode(), False()), Property(PluginManager(), ClientServerPluginManager(), True())]
-
-	has-builtin-type-prop = ?(ClientServerPluginManager(), Mode())
-	builtin-type-prop-type: (ClientServerPluginManager(), Mode()) -> Mode()
-	has-builtin-type-prop = ?(ClientServerPluginManager(), Plugins())
-	is-builtin-type-prop-writable = ?(ClientServerPluginManager(), Plugins())
-	builtin-type-prop-type: (ClientServerPluginManager(), Plugins()) -> VoidType()
-	builtin-type-props: ClientServerPluginManager() -> [Property(Mode(), Mode(), False()), Property(Plugins(), VoidType(), True())]
 
 	has-builtin-type-prop = ?(LayerInstance(), WorldSize())
 	is-builtin-type-prop-writable = ?(LayerInstance(), WorldSize())
@@ -387,6 +369,14 @@ rules
 
 	builtin-type-props: KeyboardState() -> []
 
+	has-builtin-type-prop = ?(LevelManager(), DefaultLevel())
+	is-builtin-type-prop-writable = ?(LevelManager(), DefaultLevel())
+	builtin-type-prop-type: (LevelManager(), DefaultLevel()) -> StringType()
+	has-builtin-type-prop = ?(LevelManager(), LoadedPlugins())
+	is-builtin-type-prop-writable = ?(LevelManager(), LoadedPlugins())
+	builtin-type-prop-type: (LevelManager(), LoadedPlugins()) -> VoidType()
+	builtin-type-props: LevelManager() -> [Property(DefaultLevel(), StringType(), True()), Property(LoadedPlugins(), VoidType(), True())]
+
 	has-builtin-type-prop = ?(Light(), LightType())
 	is-builtin-type-prop-writable = ?(Light(), LightType())
 	builtin-type-prop-type: (Light(), LightType()) -> LightType()
@@ -493,6 +483,12 @@ rules
 	builtin-type-prop-type: (Particle(), Speed()) -> RealType()
 	builtin-type-props: Particle() -> [Property(Name(), StringType(), True()), Property(Quota(), IntType(), True()), Property(Enabled(), BoolType(), True()), Property(Speed(), RealType(), True())]
 
+	has-builtin-type-prop = ?(ResourceManager(), BackgroundInitialise())
+	is-builtin-type-prop-writable = ?(ResourceManager(), BackgroundInitialise())
+	builtin-type-prop-type: (ResourceManager(), BackgroundInitialise()) -> BoolType()
+	has-builtin-type-prop = ?(ResourceManager(), BackgroundLoad())
+	is-builtin-type-prop-writable = ?(ResourceManager(), BackgroundLoad())
+	builtin-type-prop-type: (ResourceManager(), BackgroundLoad()) -> BoolType()
 	has-builtin-type-prop = ?(ResourceManager(), Type())
 	is-builtin-type-prop-writable = ?(ResourceManager(), Type())
 	builtin-type-prop-type: (ResourceManager(), Type()) -> ResourceLocationType()
@@ -502,7 +498,7 @@ rules
 	has-builtin-type-prop = ?(ResourceManager(), Group())
 	is-builtin-type-prop-writable = ?(ResourceManager(), Group())
 	builtin-type-prop-type: (ResourceManager(), Group()) -> StringType()
-	builtin-type-props: ResourceManager() -> [Property(Type(), ResourceLocationType(), True()), Property(ResourceLocation(), StringType(), True()), Property(Group(), StringType(), True())]
+	builtin-type-props: ResourceManager() -> [Property(BackgroundInitialise(), BoolType(), True()), Property(BackgroundLoad(), BoolType(), True()), Property(Type(), ResourceLocationType(), True()), Property(ResourceLocation(), StringType(), True()), Property(Group(), StringType(), True())]
 
 	has-builtin-type-prop = ?(RigidBody(), PhysicsType())
 	is-builtin-type-prop-writable = ?(RigidBody(), PhysicsType())
@@ -660,6 +656,24 @@ rules
 	builtin-type-prop-type: (Text(), Colour()) -> Colour()
 	builtin-type-props: Text() -> [Property(Caption(), StringType(), True()), Property(Colour(), Colour(), True())]
 
+	has-builtin-type-prop = ?(Plugin(), Type())
+	builtin-type-prop-type: (Plugin(), Type()) -> PluginType()
+	has-builtin-type-prop = ?(Plugin(), TypeName())
+	builtin-type-prop-type: (Plugin(), TypeName()) -> StringType()
+	has-builtin-type-prop = ?(Plugin(), Mode())
+	builtin-type-prop-type: (Plugin(), Mode()) -> Mode()
+	has-builtin-type-prop = ?(Plugin(), PluginManager())
+	is-builtin-type-prop-writable = ?(Plugin(), PluginManager())
+	builtin-type-prop-type: (Plugin(), PluginManager()) -> PluginManager()
+	builtin-type-props: Plugin() -> [Property(Type(), PluginType(), False()), Property(TypeName(), StringType(), False()), Property(Mode(), Mode(), False()), Property(PluginManager(), PluginManager(), True())]
+
+	has-builtin-type-prop = ?(PluginManager(), Mode())
+	builtin-type-prop-type: (PluginManager(), Mode()) -> Mode()
+	has-builtin-type-prop = ?(PluginManager(), Plugins())
+	is-builtin-type-prop-writable = ?(PluginManager(), Plugins())
+	builtin-type-prop-type: (PluginManager(), Plugins()) -> VoidType()
+	builtin-type-props: PluginManager() -> [Property(Mode(), Mode(), False()), Property(Plugins(), VoidType(), True())]
+
 	builtin-type-props: PropertySynchronization() -> []
 
 	has-builtin-type-prop = ?(ResourceInfo(), File())
@@ -667,11 +681,11 @@ rules
 	builtin-type-prop-type: (ResourceInfo(), File()) -> StringType()
 	has-builtin-type-prop = ?(ResourceInfo(), Type())
 	is-builtin-type-prop-writable = ?(ResourceInfo(), Type())
-	builtin-type-prop-type: (ResourceInfo(), Type()) -> StringType()
+	builtin-type-prop-type: (ResourceInfo(), Type()) -> ResourceType()
 	has-builtin-type-prop = ?(ResourceInfo(), Priority())
 	is-builtin-type-prop-writable = ?(ResourceInfo(), Priority())
 	builtin-type-prop-type: (ResourceInfo(), Priority()) -> IntType()
-	builtin-type-props: ResourceInfo() -> [Property(File(), StringType(), True()), Property(Type(), StringType(), True()), Property(Priority(), IntType(), True())]
+	builtin-type-props: ResourceInfo() -> [Property(File(), StringType(), True()), Property(Type(), ResourceType(), True()), Property(Priority(), IntType(), True())]
 
 	has-builtin-type-prop = ?(ServerInfo(), AddressMerged())
 	builtin-type-prop-type: (ServerInfo(), AddressMerged()) -> StringType()
@@ -759,18 +773,6 @@ rules
 	builtin-type-prop-type: (Node(), InheritScale()) -> BoolType()
 	builtin-type-props: Node() -> [Property(LocalAxes(), Matrix3(), False()), Property(FullTransform(), Matrix4(), False()), Property(DerivedScale(), Vector3(), False()), Property(InitialPosition(), Vector3(), False()), Property(InitialOrientation(), Quaternion(), False()), Property(InitialScale(), Vector3(), False()), Property(Position(), Vector3(), True()), Property(DerivedPosition(), Vector3(), True()), Property(Orientation(), Quaternion(), True()), Property(DerivedOrientation(), Quaternion(), True()), Property(Scale(), Vector3(), True()), Property(InheritOrientation(), BoolType(), True()), Property(InheritScale(), BoolType(), True())]
 
-	has-builtin-type-prop = ?(Quaternion(), X())
-	is-builtin-type-prop-writable = ?(Quaternion(), X())
-	builtin-type-prop-type: (Quaternion(), X()) -> RealType()
-	has-builtin-type-prop = ?(Quaternion(), Y())
-	is-builtin-type-prop-writable = ?(Quaternion(), Y())
-	builtin-type-prop-type: (Quaternion(), Y()) -> RealType()
-	has-builtin-type-prop = ?(Quaternion(), Z())
-	is-builtin-type-prop-writable = ?(Quaternion(), Z())
-	builtin-type-prop-type: (Quaternion(), Z()) -> RealType()
-	has-builtin-type-prop = ?(Quaternion(), W())
-	is-builtin-type-prop-writable = ?(Quaternion(), W())
-	builtin-type-prop-type: (Quaternion(), W()) -> RealType()
 	has-builtin-type-prop = ?(Quaternion(), XAxis())
 	builtin-type-prop-type: (Quaternion(), XAxis()) -> Vector3()
 	has-builtin-type-prop = ?(Quaternion(), YAxis())
@@ -801,7 +803,19 @@ rules
 	builtin-type-prop-type: (Quaternion(), Yaw()) -> Radian()
 	has-builtin-type-prop = ?(Quaternion(), ShortestYaw())
 	builtin-type-prop-type: (Quaternion(), ShortestYaw()) -> Radian()
-	builtin-type-props: Quaternion() -> [Property(X(), RealType(), True()), Property(Y(), RealType(), True()), Property(Z(), RealType(), True()), Property(W(), RealType(), True()), Property(XAxis(), Vector3(), False()), Property(YAxis(), Vector3(), False()), Property(ZAxis(), Vector3(), False()), Property(NormalizedCopy(), RealType(), False()), Property(Inverse(), Quaternion(), False()), Property(UnitInverse(), Quaternion(), False()), Property(Exp(), Quaternion(), False()), Property(Log(), Quaternion(), False()), Property(IsNaN(), BoolType(), False()), Property(Roll(), Radian(), False()), Property(ShortestRoll(), Radian(), False()), Property(Pitch(), Radian(), False()), Property(ShortestPitch(), Radian(), False()), Property(Yaw(), Radian(), False()), Property(ShortestYaw(), Radian(), False())]
+	has-builtin-type-prop = ?(Quaternion(), X())
+	is-builtin-type-prop-writable = ?(Quaternion(), X())
+	builtin-type-prop-type: (Quaternion(), X()) -> RealType()
+	has-builtin-type-prop = ?(Quaternion(), Y())
+	is-builtin-type-prop-writable = ?(Quaternion(), Y())
+	builtin-type-prop-type: (Quaternion(), Y()) -> RealType()
+	has-builtin-type-prop = ?(Quaternion(), Z())
+	is-builtin-type-prop-writable = ?(Quaternion(), Z())
+	builtin-type-prop-type: (Quaternion(), Z()) -> RealType()
+	has-builtin-type-prop = ?(Quaternion(), W())
+	is-builtin-type-prop-writable = ?(Quaternion(), W())
+	builtin-type-prop-type: (Quaternion(), W()) -> RealType()
+	builtin-type-props: Quaternion() -> [Property(XAxis(), Vector3(), False()), Property(YAxis(), Vector3(), False()), Property(ZAxis(), Vector3(), False()), Property(NormalizedCopy(), RealType(), False()), Property(Inverse(), Quaternion(), False()), Property(UnitInverse(), Quaternion(), False()), Property(Exp(), Quaternion(), False()), Property(Log(), Quaternion(), False()), Property(IsNaN(), BoolType(), False()), Property(Roll(), Radian(), False()), Property(ShortestRoll(), Radian(), False()), Property(Pitch(), Radian(), False()), Property(ShortestPitch(), Radian(), False()), Property(Yaw(), Radian(), False()), Property(ShortestYaw(), Radian(), False()), Property(X(), RealType(), True()), Property(Y(), RealType(), True()), Property(Z(), RealType(), True()), Property(W(), RealType(), True())]
 
 	has-builtin-type-prop = ?(Radian(), Degrees())
 	builtin-type-prop-type: (Radian(), Degrees()) -> RealType()
@@ -812,12 +826,6 @@ rules
 	builtin-type-prop-type: (Radian(), Radians()) -> RealType()
 	builtin-type-props: Radian() -> [Property(Degrees(), RealType(), False()), Property(AngleUnits(), RealType(), False()), Property(Radians(), RealType(), True())]
 
-	has-builtin-type-prop = ?(Vector2(), X())
-	is-builtin-type-prop-writable = ?(Vector2(), X())
-	builtin-type-prop-type: (Vector2(), X()) -> RealType()
-	has-builtin-type-prop = ?(Vector2(), Y())
-	is-builtin-type-prop-writable = ?(Vector2(), Y())
-	builtin-type-prop-type: (Vector2(), Y()) -> RealType()
 	has-builtin-type-prop = ?(Vector2(), Length())
 	builtin-type-prop-type: (Vector2(), Length()) -> RealType()
 	has-builtin-type-prop = ?(Vector2(), SquaredLength())
@@ -826,17 +834,14 @@ rules
 	builtin-type-prop-type: (Vector2(), IsZeroLength()) -> BoolType()
 	has-builtin-type-prop = ?(Vector2(), NormalisedCopy())
 	builtin-type-prop-type: (Vector2(), NormalisedCopy()) -> Vector2()
-	builtin-type-props: Vector2() -> [Property(X(), RealType(), True()), Property(Y(), RealType(), True()), Property(Length(), RealType(), False()), Property(SquaredLength(), RealType(), False()), Property(IsZeroLength(), BoolType(), False()), Property(NormalisedCopy(), Vector2(), False())]
+	has-builtin-type-prop = ?(Vector2(), X())
+	is-builtin-type-prop-writable = ?(Vector2(), X())
+	builtin-type-prop-type: (Vector2(), X()) -> RealType()
+	has-builtin-type-prop = ?(Vector2(), Y())
+	is-builtin-type-prop-writable = ?(Vector2(), Y())
+	builtin-type-prop-type: (Vector2(), Y()) -> RealType()
+	builtin-type-props: Vector2() -> [Property(Length(), RealType(), False()), Property(SquaredLength(), RealType(), False()), Property(IsZeroLength(), BoolType(), False()), Property(NormalisedCopy(), Vector2(), False()), Property(X(), RealType(), True()), Property(Y(), RealType(), True())]
 
-	has-builtin-type-prop = ?(Vector3(), X())
-	is-builtin-type-prop-writable = ?(Vector3(), X())
-	builtin-type-prop-type: (Vector3(), X()) -> RealType()
-	has-builtin-type-prop = ?(Vector3(), Y())
-	is-builtin-type-prop-writable = ?(Vector3(), Y())
-	builtin-type-prop-type: (Vector3(), Y()) -> RealType()
-	has-builtin-type-prop = ?(Vector3(), Z())
-	is-builtin-type-prop-writable = ?(Vector3(), Z())
-	builtin-type-prop-type: (Vector3(), Z()) -> RealType()
 	has-builtin-type-prop = ?(Vector3(), Zero())
 	builtin-type-prop-type: (Vector3(), Zero()) -> Vector3()
 	has-builtin-type-prop = ?(Vector3(), Length())
@@ -847,7 +852,16 @@ rules
 	builtin-type-prop-type: (Vector3(), IsZeroLength()) -> BoolType()
 	has-builtin-type-prop = ?(Vector3(), NormalisedCopy())
 	builtin-type-prop-type: (Vector3(), NormalisedCopy()) -> Vector3()
-	builtin-type-props: Vector3() -> [Property(X(), RealType(), True()), Property(Y(), RealType(), True()), Property(Z(), RealType(), True()), Property(Zero(), Vector3(), False()), Property(Length(), RealType(), False()), Property(SquaredLength(), RealType(), False()), Property(IsZeroLength(), BoolType(), False()), Property(NormalisedCopy(), Vector3(), False())]
+	has-builtin-type-prop = ?(Vector3(), X())
+	is-builtin-type-prop-writable = ?(Vector3(), X())
+	builtin-type-prop-type: (Vector3(), X()) -> RealType()
+	has-builtin-type-prop = ?(Vector3(), Y())
+	is-builtin-type-prop-writable = ?(Vector3(), Y())
+	builtin-type-prop-type: (Vector3(), Y()) -> RealType()
+	has-builtin-type-prop = ?(Vector3(), Z())
+	is-builtin-type-prop-writable = ?(Vector3(), Z())
+	builtin-type-prop-type: (Vector3(), Z()) -> RealType()
+	builtin-type-props: Vector3() -> [Property(Zero(), Vector3(), False()), Property(Length(), RealType(), False()), Property(SquaredLength(), RealType(), False()), Property(IsZeroLength(), BoolType(), False()), Property(NormalisedCopy(), Vector3(), False()), Property(X(), RealType(), True()), Property(Y(), RealType(), True()), Property(Z(), RealType(), True())]
 
 	has-builtin-type-prop = ?(Vector4(), X())
 	is-builtin-type-prop-writable = ?(Vector4(), X())

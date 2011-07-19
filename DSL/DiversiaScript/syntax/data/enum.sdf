@@ -19,20 +19,6 @@ exports
     "SmallHail" -> PrecipitationTypeValue {cons("SmallHail")}
     "Custom" -> PrecipitationTypeValue {cons("Custom")}
 
-    "ClientServerPluginType" -> ClientServerPluginTypeEnumType {cons("ClientServerPluginType")}
-    ClientServerPluginTypeEnumType -> EnumType
-    ClientServerPluginTypeEnumType "." ClientServerPluginTypeValue -> Exp {prefer, cons("EnumValueRef")}
-    "PermissionManager" -> ClientServerPluginTypeValue {cons("PermissionManager")}
-    "ResourceManager" -> ClientServerPluginTypeValue {cons("ResourceManager")}
-    "Lua" -> ClientServerPluginTypeValue {cons("Lua")}
-    "ServerNeighbors" -> ClientServerPluginTypeValue {cons("ServerNeighbors")}
-    "Sky" -> ClientServerPluginTypeValue {cons("Sky")}
-    "ObjectTemplateManager" -> ClientServerPluginTypeValue {cons("ObjectTemplateManager")}
-    "ObjectManager" -> ClientServerPluginTypeValue {cons("ObjectManager")}
-    "Terrain" -> ClientServerPluginTypeValue {cons("Terrain")}
-    "GameMode" -> ClientServerPluginTypeValue {cons("GameMode")}
-    "SceneManager" -> ClientServerPluginTypeValue {cons("SceneManager")}
-
     "ComponentType" -> ComponentTypeEnumType {cons("ComponentType")}
     ComponentTypeEnumType -> EnumType
     ComponentTypeEnumType "." ComponentTypeValue -> Exp {prefer, cons("EnumValueRef")}
@@ -325,11 +311,40 @@ exports
     "Kinematic" -> PhysicsTypeValue {cons("Kinematic")}
     "Dynamic" -> PhysicsTypeValue {cons("Dynamic")}
 
+    "PluginType" -> PluginTypeEnumType {cons("PluginType")}
+    PluginTypeEnumType -> EnumType
+    PluginTypeEnumType "." PluginTypeValue -> Exp {prefer, cons("EnumValueRef")}
+    "PermissionManager" -> PluginTypeValue {cons("PermissionManager")}
+    "ResourceManager" -> PluginTypeValue {cons("ResourceManager")}
+    "Lua" -> PluginTypeValue {cons("Lua")}
+    "ServerNeighbors" -> PluginTypeValue {cons("ServerNeighbors")}
+    "Sky" -> PluginTypeValue {cons("Sky")}
+    "ObjectTemplateManager" -> PluginTypeValue {cons("ObjectTemplateManager")}
+    "ObjectManager" -> PluginTypeValue {cons("ObjectManager")}
+    "Terrain" -> PluginTypeValue {cons("Terrain")}
+    "GameMode" -> PluginTypeValue {cons("GameMode")}
+    "SceneManager" -> PluginTypeValue {cons("SceneManager")}
+    "LevelManager" -> PluginTypeValue {cons("LevelManager")}
+
     "ResourceLocationType" -> ResourceLocationTypeEnumType {cons("ResourceLocationType")}
     ResourceLocationTypeEnumType -> EnumType
     ResourceLocationTypeEnumType "." ResourceLocationTypeValue -> Exp {prefer, cons("EnumValueRef")}
     "FileSystem" -> ResourceLocationTypeValue {cons("FileSystem")}
     "URL" -> ResourceLocationTypeValue {cons("URL")}
+
+    "ResourceType" -> ResourceTypeEnumType {cons("ResourceType")}
+    ResourceTypeEnumType -> EnumType
+    ResourceTypeEnumType "." ResourceTypeValue -> Exp {prefer, cons("EnumValueRef")}
+    "Generic" -> ResourceTypeValue {cons("Generic")}
+    "OgreMesh" -> ResourceTypeValue {cons("OgreMesh")}
+    "BulletMesh" -> ResourceTypeValue {cons("BulletMesh")}
+    "Skeleton" -> ResourceTypeValue {cons("Skeleton")}
+    "Texture" -> ResourceTypeValue {cons("Texture")}
+    "MaterialScript" -> ResourceTypeValue {cons("MaterialScript")}
+    "ParticleScript" -> ResourceTypeValue {cons("ParticleScript")}
+    "LuaScript" -> ResourceTypeValue {cons("LuaScript")}
+    "Audio" -> ResourceTypeValue {cons("Audio")}
+    "Level" -> ResourceTypeValue {cons("Level")}
 
     "SkyType" -> SkyTypeEnumType {cons("SkyType")}
     SkyTypeEnumType -> EnumType

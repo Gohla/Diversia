@@ -24,17 +24,13 @@ rules
 
 	builtin-type-ops: ClientObjectTemplateManager() -> []
 
+	builtin-type-ops: ClientPlugin() -> []
+
 	builtin-type-ops: Lua() -> []
 
 	builtin-type-ops: PermissionManager() -> []
 
 	builtin-type-ops: ServerNeighborsPlugin() -> []
-
-	builtin-type-ops: ServerPlugin() -> []
-
-	builtin-type-ops: ClientServerPlugin() -> []
-
-	builtin-type-ops: ClientServerPluginManager() -> []
 
 	builtin-type-ops: LayerInstance() -> []
 
@@ -74,6 +70,8 @@ rules
 
 	builtin-type-ops: KeyboardState() -> []
 
+	builtin-type-ops: LevelManager() -> []
+
 	builtin-type-ops: Light() -> []
 
 	builtin-type-ops: LuaObjectScript() -> []
@@ -97,6 +95,10 @@ rules
 	builtin-type-ops: Terrain() -> []
 
 	builtin-type-ops: Text() -> []
+
+	builtin-type-ops: Plugin() -> []
+
+	builtin-type-ops: PluginManager() -> []
 
 	builtin-type-ops: PropertySynchronization() -> []
 

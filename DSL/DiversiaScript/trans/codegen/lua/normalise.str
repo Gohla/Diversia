@@ -1,0 +1,34 @@
+module codegen/lua/normalise
+
+imports
+	
+	include/DiversiaScript
+	
+	signatures
+	
+rules // Normalisation rules that add plugins and components to objects to make them work with lua/game xml.
+	
+	normalise-luaxml(|mediaDir): Start(imports, pluginDefs, objectDefs, eventDefs) -> 
+		Start(imports, pluginDefs', <map(normalise-luaxml)> objectDefs, eventDefs)
+			where pluginDefs' := <concat> [ // Add PermissionManager, ResourceManager and Lua plugin.
+				pluginDefs,
+			 	[	
+				 	PluginDef("ResourceManager", ResourceManager(), [
+				 		PluginProp(ResourceManager(), Type(), EnumValueRef(ResourceLocationType(), FileSystem())),
+				 		PluginProp(ResourceManager(), ResourceLocation(), StrConst(mediaDir))
+				 	]),
+				 	PluginDef("LevelManager", LevelManager(), [])
+				 ]
+			]
+	
+	normalise-luaxml: ObjectDef(name, propAssigns, propDefs, componentDefs, varDefs, defaultStateDef, stateDefs, eventDefs) -> 
+		ObjectDef(name, propAssigns, propDefs, componentDefs', varDefs, defaultStateDef, stateDefs, eventDefs)
+			where componentDefs' := <concat> [ // Add LuaObjectScript component.
+				componentDefs,
+				[
+					ComponentDef("LuaObjectScript", LuaObjectScript(), [
+						ComponentProp(LuaObjectScript(), ClientScriptFile(), StrConst($[gen/[name].lua])),
+						ComponentProp(LuaObjectScript(), ClientSecurityLevel(), StrConst("Low"))
+					])
+				]
+			]

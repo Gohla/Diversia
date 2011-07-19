@@ -20,33 +20,29 @@ rules
 	builtin-type-bases: ClientObject() -> [Object()]
 
 	is-builtin-type-base = ?(ClientObjectManager(), ObjectManager())
-	is-builtin-type-base = ?(ClientObjectManager(), ServerPlugin())
-	builtin-type-bases: ClientObjectManager() -> [ObjectManager(), ServerPlugin()]
+	is-builtin-type-base = ?(ClientObjectManager(), ClientPlugin())
+	builtin-type-bases: ClientObjectManager() -> [ObjectManager(), ClientPlugin()]
 
 	is-builtin-type-base = ?(ClientObjectTemplate(), ObjectTemplate())
 	is-builtin-type-base = ?(ClientObjectTemplate(), PropertySynchronization())
 	builtin-type-bases: ClientObjectTemplate() -> [ObjectTemplate(), PropertySynchronization()]
 
 	is-builtin-type-base = ?(ClientObjectTemplateManager(), ObjectTemplateManager())
-	is-builtin-type-base = ?(ClientObjectTemplateManager(), ServerPlugin())
-	builtin-type-bases: ClientObjectTemplateManager() -> [ObjectTemplateManager(), ServerPlugin()]
+	is-builtin-type-base = ?(ClientObjectTemplateManager(), ClientPlugin())
+	builtin-type-bases: ClientObjectTemplateManager() -> [ObjectTemplateManager(), ClientPlugin()]
 
-	is-builtin-type-base = ?(Lua(), ServerPlugin())
-	builtin-type-bases: Lua() -> [ServerPlugin()]
+	is-builtin-type-base = ?(ClientPlugin(), Plugin())
+	is-builtin-type-base = ?(ClientPlugin(), PropertySynchronization())
+	builtin-type-bases: ClientPlugin() -> [Plugin(), PropertySynchronization()]
 
-	is-builtin-type-base = ?(PermissionManager(), ServerPlugin())
-	builtin-type-bases: PermissionManager() -> [ServerPlugin()]
+	is-builtin-type-base = ?(Lua(), ClientPlugin())
+	builtin-type-bases: Lua() -> [ClientPlugin()]
 
-	is-builtin-type-base = ?(ServerNeighborsPlugin(), ServerPlugin())
-	builtin-type-bases: ServerNeighborsPlugin() -> [ServerPlugin()]
+	is-builtin-type-base = ?(PermissionManager(), ClientPlugin())
+	builtin-type-bases: PermissionManager() -> [ClientPlugin()]
 
-	is-builtin-type-base = ?(ServerPlugin(), ClientServerPlugin())
-	is-builtin-type-base = ?(ServerPlugin(), PropertySynchronization())
-	builtin-type-bases: ServerPlugin() -> [ClientServerPlugin(), PropertySynchronization()]
-
-	builtin-type-bases: ClientServerPlugin() -> []
-
-	builtin-type-bases: ClientServerPluginManager() -> []
+	is-builtin-type-base = ?(ServerNeighborsPlugin(), ClientPlugin())
+	builtin-type-bases: ServerNeighborsPlugin() -> [ClientPlugin()]
 
 	builtin-type-bases: LayerInstance() -> []
 
@@ -89,12 +85,15 @@ rules
 	is-builtin-type-base = ?(ForceField(), ClientComponent())
 	builtin-type-bases: ForceField() -> [ClientComponent()]
 
-	is-builtin-type-base = ?(GameMode(), ServerPlugin())
-	builtin-type-bases: GameMode() -> [ServerPlugin()]
+	is-builtin-type-base = ?(GameMode(), ClientPlugin())
+	builtin-type-bases: GameMode() -> [ClientPlugin()]
 
 	builtin-type-bases: InputManager() -> []
 
 	builtin-type-bases: KeyboardState() -> []
+
+	is-builtin-type-base = ?(LevelManager(), ClientPlugin())
+	builtin-type-bases: LevelManager() -> [ClientPlugin()]
 
 	is-builtin-type-base = ?(Light(), ClientComponent())
 	builtin-type-bases: Light() -> [ClientComponent()]
@@ -110,26 +109,30 @@ rules
 	is-builtin-type-base = ?(Particle(), ClientComponent())
 	builtin-type-bases: Particle() -> [ClientComponent()]
 
-	is-builtin-type-base = ?(ResourceManager(), ServerPlugin())
-	builtin-type-bases: ResourceManager() -> [ServerPlugin()]
+	is-builtin-type-base = ?(ResourceManager(), ClientPlugin())
+	builtin-type-bases: ResourceManager() -> [ClientPlugin()]
 
 	is-builtin-type-base = ?(RigidBody(), ClientComponent())
 	builtin-type-bases: RigidBody() -> [ClientComponent()]
 
-	is-builtin-type-base = ?(SceneManager(), ServerPlugin())
-	builtin-type-bases: SceneManager() -> [ServerPlugin()]
+	is-builtin-type-base = ?(SceneManager(), ClientPlugin())
+	builtin-type-bases: SceneManager() -> [ClientPlugin()]
 
 	is-builtin-type-base = ?(SceneNode(), ClientComponent())
 	builtin-type-bases: SceneNode() -> [ClientComponent()]
 
-	is-builtin-type-base = ?(Sky(), ServerPlugin())
-	builtin-type-bases: Sky() -> [ServerPlugin()]
+	is-builtin-type-base = ?(Sky(), ClientPlugin())
+	builtin-type-bases: Sky() -> [ClientPlugin()]
 
-	is-builtin-type-base = ?(Terrain(), ServerPlugin())
-	builtin-type-bases: Terrain() -> [ServerPlugin()]
+	is-builtin-type-base = ?(Terrain(), ClientPlugin())
+	builtin-type-bases: Terrain() -> [ClientPlugin()]
 
 	is-builtin-type-base = ?(Text(), ClientComponent())
 	builtin-type-bases: Text() -> [ClientComponent()]
+
+	builtin-type-bases: Plugin() -> []
+
+	builtin-type-bases: PluginManager() -> []
 
 	builtin-type-bases: PropertySynchronization() -> []
 

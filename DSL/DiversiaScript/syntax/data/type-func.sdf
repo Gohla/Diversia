@@ -6,14 +6,9 @@ exports
 
   context-free syntax
 
-    "Run_garbage_collection" -> BuiltinFunction {cons("Run_garbage_collection")}
-
     "ForceSerialize" -> BuiltinFunction {cons("ForceSerialize")}
 
-    "CreatePlugin" -> BuiltinFunction {cons("CreatePlugin")}
-    "GetPlugin" -> BuiltinFunction {cons("GetPlugin")}
-    "HasPlugin" -> BuiltinFunction {cons("HasPlugin")}
-    "DestroyPlugin" -> BuiltinFunction {cons("DestroyPlugin")}
+    "Run_garbage_collection" -> BuiltinFunction {cons("Run_garbage_collection")}
 
     "IsCreatedBy" -> BuiltinFunction {cons("IsCreatedBy")}
     "IsCreatedBySource" -> BuiltinFunction {cons("IsCreatedBySource")}
@@ -114,6 +109,11 @@ exports
     "ApplyImpulse" -> BuiltinFunction {cons("ApplyImpulse")}
     "ApplyCentralImpulse" -> BuiltinFunction {cons("ApplyCentralImpulse")}
     "ApplyTorque" -> BuiltinFunction {cons("ApplyTorque")}
+
+    "CreatePlugin" -> BuiltinFunction {cons("CreatePlugin")}
+    "GetPlugin" -> BuiltinFunction {cons("GetPlugin")}
+    "HasPlugin" -> BuiltinFunction {cons("HasPlugin")}
+    "DestroyPlugin" -> BuiltinFunction {cons("DestroyPlugin")}
 
     "AddServer" -> BuiltinFunction {cons("AddServer")}
     "GetServer" -> BuiltinFunction {cons("GetServer")}

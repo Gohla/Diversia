@@ -38,39 +38,6 @@ rules
 	builtin-enum-name(|param0) = ?8; <?PrecipitationType()> param0; !Custom()
 	builtin-enum-values: PrecipitationType() -> [(Drizzle(), 0), (Rain(), 1), (Snow(), 2), (Snowgrains(), 3), (Icecrystals(), 4), (Icepellets(), 5), (Hail(), 6), (SmallHail(), 7), (Custom(), 8)]
 
-	is-builtin-enum = ?ClientServerPluginType()
-	has-builtin-enum-valueName(|param0) = ?PermissionManager(); <?ClientServerPluginType()> param0
-	builtin-enum-value(|param0) = ?PermissionManager(); <?ClientServerPluginType()> param0; !0
-	builtin-enum-name(|param0) = ?0; <?ClientServerPluginType()> param0; !PermissionManager()
-	has-builtin-enum-valueName(|param0) = ?ResourceManager(); <?ClientServerPluginType()> param0
-	builtin-enum-value(|param0) = ?ResourceManager(); <?ClientServerPluginType()> param0; !1
-	builtin-enum-name(|param0) = ?1; <?ClientServerPluginType()> param0; !ResourceManager()
-	has-builtin-enum-valueName(|param0) = ?Lua(); <?ClientServerPluginType()> param0
-	builtin-enum-value(|param0) = ?Lua(); <?ClientServerPluginType()> param0; !2
-	builtin-enum-name(|param0) = ?2; <?ClientServerPluginType()> param0; !Lua()
-	has-builtin-enum-valueName(|param0) = ?ServerNeighbors(); <?ClientServerPluginType()> param0
-	builtin-enum-value(|param0) = ?ServerNeighbors(); <?ClientServerPluginType()> param0; !3
-	builtin-enum-name(|param0) = ?3; <?ClientServerPluginType()> param0; !ServerNeighbors()
-	has-builtin-enum-valueName(|param0) = ?Sky(); <?ClientServerPluginType()> param0
-	builtin-enum-value(|param0) = ?Sky(); <?ClientServerPluginType()> param0; !4
-	builtin-enum-name(|param0) = ?4; <?ClientServerPluginType()> param0; !Sky()
-	has-builtin-enum-valueName(|param0) = ?ObjectTemplateManager(); <?ClientServerPluginType()> param0
-	builtin-enum-value(|param0) = ?ObjectTemplateManager(); <?ClientServerPluginType()> param0; !5
-	builtin-enum-name(|param0) = ?5; <?ClientServerPluginType()> param0; !ObjectTemplateManager()
-	has-builtin-enum-valueName(|param0) = ?ObjectManager(); <?ClientServerPluginType()> param0
-	builtin-enum-value(|param0) = ?ObjectManager(); <?ClientServerPluginType()> param0; !6
-	builtin-enum-name(|param0) = ?6; <?ClientServerPluginType()> param0; !ObjectManager()
-	has-builtin-enum-valueName(|param0) = ?Terrain(); <?ClientServerPluginType()> param0
-	builtin-enum-value(|param0) = ?Terrain(); <?ClientServerPluginType()> param0; !7
-	builtin-enum-name(|param0) = ?7; <?ClientServerPluginType()> param0; !Terrain()
-	has-builtin-enum-valueName(|param0) = ?GameMode(); <?ClientServerPluginType()> param0
-	builtin-enum-value(|param0) = ?GameMode(); <?ClientServerPluginType()> param0; !8
-	builtin-enum-name(|param0) = ?8; <?ClientServerPluginType()> param0; !GameMode()
-	has-builtin-enum-valueName(|param0) = ?SceneManager(); <?ClientServerPluginType()> param0
-	builtin-enum-value(|param0) = ?SceneManager(); <?ClientServerPluginType()> param0; !9
-	builtin-enum-name(|param0) = ?9; <?ClientServerPluginType()> param0; !SceneManager()
-	builtin-enum-values: ClientServerPluginType() -> [(PermissionManager(), 0), (ResourceManager(), 1), (Lua(), 2), (ServerNeighbors(), 3), (Sky(), 4), (ObjectTemplateManager(), 5), (ObjectManager(), 6), (Terrain(), 7), (GameMode(), 8), (SceneManager(), 9)]
-
 	is-builtin-enum = ?ComponentType()
 	has-builtin-enum-valueName(|param0) = ?SceneNode(); <?ComponentType()> param0
 	builtin-enum-value(|param0) = ?SceneNode(); <?ComponentType()> param0; !0
@@ -821,6 +788,42 @@ rules
 	builtin-enum-name(|param0) = ?2; <?PhysicsType()> param0; !Dynamic()
 	builtin-enum-values: PhysicsType() -> [(Static(), 0), (Kinematic(), 1), (Dynamic(), 2)]
 
+	is-builtin-enum = ?PluginType()
+	has-builtin-enum-valueName(|param0) = ?PermissionManager(); <?PluginType()> param0
+	builtin-enum-value(|param0) = ?PermissionManager(); <?PluginType()> param0; !0
+	builtin-enum-name(|param0) = ?0; <?PluginType()> param0; !PermissionManager()
+	has-builtin-enum-valueName(|param0) = ?ResourceManager(); <?PluginType()> param0
+	builtin-enum-value(|param0) = ?ResourceManager(); <?PluginType()> param0; !1
+	builtin-enum-name(|param0) = ?1; <?PluginType()> param0; !ResourceManager()
+	has-builtin-enum-valueName(|param0) = ?Lua(); <?PluginType()> param0
+	builtin-enum-value(|param0) = ?Lua(); <?PluginType()> param0; !2
+	builtin-enum-name(|param0) = ?2; <?PluginType()> param0; !Lua()
+	has-builtin-enum-valueName(|param0) = ?ServerNeighbors(); <?PluginType()> param0
+	builtin-enum-value(|param0) = ?ServerNeighbors(); <?PluginType()> param0; !3
+	builtin-enum-name(|param0) = ?3; <?PluginType()> param0; !ServerNeighbors()
+	has-builtin-enum-valueName(|param0) = ?Sky(); <?PluginType()> param0
+	builtin-enum-value(|param0) = ?Sky(); <?PluginType()> param0; !4
+	builtin-enum-name(|param0) = ?4; <?PluginType()> param0; !Sky()
+	has-builtin-enum-valueName(|param0) = ?ObjectTemplateManager(); <?PluginType()> param0
+	builtin-enum-value(|param0) = ?ObjectTemplateManager(); <?PluginType()> param0; !5
+	builtin-enum-name(|param0) = ?5; <?PluginType()> param0; !ObjectTemplateManager()
+	has-builtin-enum-valueName(|param0) = ?ObjectManager(); <?PluginType()> param0
+	builtin-enum-value(|param0) = ?ObjectManager(); <?PluginType()> param0; !6
+	builtin-enum-name(|param0) = ?6; <?PluginType()> param0; !ObjectManager()
+	has-builtin-enum-valueName(|param0) = ?Terrain(); <?PluginType()> param0
+	builtin-enum-value(|param0) = ?Terrain(); <?PluginType()> param0; !7
+	builtin-enum-name(|param0) = ?7; <?PluginType()> param0; !Terrain()
+	has-builtin-enum-valueName(|param0) = ?GameMode(); <?PluginType()> param0
+	builtin-enum-value(|param0) = ?GameMode(); <?PluginType()> param0; !8
+	builtin-enum-name(|param0) = ?8; <?PluginType()> param0; !GameMode()
+	has-builtin-enum-valueName(|param0) = ?SceneManager(); <?PluginType()> param0
+	builtin-enum-value(|param0) = ?SceneManager(); <?PluginType()> param0; !9
+	builtin-enum-name(|param0) = ?9; <?PluginType()> param0; !SceneManager()
+	has-builtin-enum-valueName(|param0) = ?LevelManager(); <?PluginType()> param0
+	builtin-enum-value(|param0) = ?LevelManager(); <?PluginType()> param0; !16
+	builtin-enum-name(|param0) = ?16; <?PluginType()> param0; !LevelManager()
+	builtin-enum-values: PluginType() -> [(PermissionManager(), 0), (ResourceManager(), 1), (Lua(), 2), (ServerNeighbors(), 3), (Sky(), 4), (ObjectTemplateManager(), 5), (ObjectManager(), 6), (Terrain(), 7), (GameMode(), 8), (SceneManager(), 9), (LevelManager(), 16)]
+
 	is-builtin-enum = ?ResourceLocationType()
 	has-builtin-enum-valueName(|param0) = ?FileSystem(); <?ResourceLocationType()> param0
 	builtin-enum-value(|param0) = ?FileSystem(); <?ResourceLocationType()> param0; !0
@@ -829,6 +832,39 @@ rules
 	builtin-enum-value(|param0) = ?URL(); <?ResourceLocationType()> param0; !1
 	builtin-enum-name(|param0) = ?1; <?ResourceLocationType()> param0; !URL()
 	builtin-enum-values: ResourceLocationType() -> [(FileSystem(), 0), (URL(), 1)]
+
+	is-builtin-enum = ?ResourceType()
+	has-builtin-enum-valueName(|param0) = ?Generic(); <?ResourceType()> param0
+	builtin-enum-value(|param0) = ?Generic(); <?ResourceType()> param0; !0
+	builtin-enum-name(|param0) = ?0; <?ResourceType()> param0; !Generic()
+	has-builtin-enum-valueName(|param0) = ?OgreMesh(); <?ResourceType()> param0
+	builtin-enum-value(|param0) = ?OgreMesh(); <?ResourceType()> param0; !1
+	builtin-enum-name(|param0) = ?1; <?ResourceType()> param0; !OgreMesh()
+	has-builtin-enum-valueName(|param0) = ?BulletMesh(); <?ResourceType()> param0
+	builtin-enum-value(|param0) = ?BulletMesh(); <?ResourceType()> param0; !2
+	builtin-enum-name(|param0) = ?2; <?ResourceType()> param0; !BulletMesh()
+	has-builtin-enum-valueName(|param0) = ?Skeleton(); <?ResourceType()> param0
+	builtin-enum-value(|param0) = ?Skeleton(); <?ResourceType()> param0; !3
+	builtin-enum-name(|param0) = ?3; <?ResourceType()> param0; !Skeleton()
+	has-builtin-enum-valueName(|param0) = ?Texture(); <?ResourceType()> param0
+	builtin-enum-value(|param0) = ?Texture(); <?ResourceType()> param0; !4
+	builtin-enum-name(|param0) = ?4; <?ResourceType()> param0; !Texture()
+	has-builtin-enum-valueName(|param0) = ?MaterialScript(); <?ResourceType()> param0
+	builtin-enum-value(|param0) = ?MaterialScript(); <?ResourceType()> param0; !5
+	builtin-enum-name(|param0) = ?5; <?ResourceType()> param0; !MaterialScript()
+	has-builtin-enum-valueName(|param0) = ?ParticleScript(); <?ResourceType()> param0
+	builtin-enum-value(|param0) = ?ParticleScript(); <?ResourceType()> param0; !6
+	builtin-enum-name(|param0) = ?6; <?ResourceType()> param0; !ParticleScript()
+	has-builtin-enum-valueName(|param0) = ?LuaScript(); <?ResourceType()> param0
+	builtin-enum-value(|param0) = ?LuaScript(); <?ResourceType()> param0; !7
+	builtin-enum-name(|param0) = ?7; <?ResourceType()> param0; !LuaScript()
+	has-builtin-enum-valueName(|param0) = ?Audio(); <?ResourceType()> param0
+	builtin-enum-value(|param0) = ?Audio(); <?ResourceType()> param0; !8
+	builtin-enum-name(|param0) = ?8; <?ResourceType()> param0; !Audio()
+	has-builtin-enum-valueName(|param0) = ?Level(); <?ResourceType()> param0
+	builtin-enum-value(|param0) = ?Level(); <?ResourceType()> param0; !9
+	builtin-enum-name(|param0) = ?9; <?ResourceType()> param0; !Level()
+	builtin-enum-values: ResourceType() -> [(Generic(), 0), (OgreMesh(), 1), (BulletMesh(), 2), (Skeleton(), 3), (Texture(), 4), (MaterialScript(), 5), (ParticleScript(), 6), (LuaScript(), 7), (Audio(), 8), (Level(), 9)]
 
 	is-builtin-enum = ?SkyType()
 	has-builtin-enum-valueName(|param0) = ?Box(); <?SkyType()> param0

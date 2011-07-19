@@ -1,4 +1,4 @@
-module codegen/xml/xmlgen
+module codegen/xml/generate
 
 imports
 	
@@ -19,7 +19,7 @@ imports
 
 rules // Structure
 	
-	to-game-xml: Start(imports, pluginDefs, objectDefs, eventDefs) ->
+	to-game-xml: Start(_, pluginDefs, objectDefs, _) ->
 		XMLNode("ClientPluginManager", [XMLNode("Plugins", <concat> [
 			<map(to-game-xml)> pluginDefs,
 			[XMLNode("item", [
@@ -52,7 +52,7 @@ rules // Object definitions (object templates)
 rules // Components (component templates)
 	
 	to-game-xml: ComponentDef(name, type, properties) -> XMLNode("item", [
-		XMLNode("key", [XMLElement("type", <builtin-enum-value(|ComponentType())> type), XMLElement("name", name)]),
+		XMLNode("key", [XMLElement("Type", <builtin-enum-value(|ComponentType())> type), XMLElement("Name", name)]),
 		XMLNode("value", [XMLNode("Properties", <map(to-game-xml)> properties)])
 	])
 		
@@ -94,17 +94,17 @@ rules // Expressions (no type info)
 	to-game-xml: New(type, params) -> 
 		<zip(\ (name, value) -> XMLElement(name, value) \)> (propertyNames, values)
 			where values := <map(to-game-xml)> params
-			where (propertyNames, _) := <split-at(|<length> values)> <map(get-name)> <builtin-type-props> type
+			where (propertyNames, _) := <split-at(|<length> values)> <map(get-name)> <filter(?Property(_, _, True()))> <builtin-type-props> type
 			
 rules // Expressions (with type info)
 		
-	to-game-xml-typeinfo: True() -> XMLElement("bool", 1)
-	to-game-xml-typeinfo: False() -> XMLElement("bool", 0)
-	to-game-xml-typeinfo: IntConst(num) -> XMLElement("int", num)
-	to-game-xml-typeinfo: FloatConst(num) -> XMLElement("float", num)
-	to-game-xml-typeinfo: StrConst(string) -> XMLElement("string", string')
+	to-game-xml-typeinfo: exp@True() -> XMLElement("bool", <to-game-xml> exp)
+	to-game-xml-typeinfo: exp@False() -> XMLElement("bool", <to-game-xml> exp)
+	to-game-xml-typeinfo: exp@IntConst(num) -> XMLElement("int", <to-game-xml> exp)
+	to-game-xml-typeinfo: exp@FloatConst(num) -> XMLElement("float", <to-game-xml> exp)
+	to-game-xml-typeinfo: exp@StrConst(string) -> XMLElement("string", <to-game-xml> exp)
 		where string' := <un-double-quote> string
-	to-game-xml-typeinfo: StrConst(string) -> XMLElement("string", string)
+	to-game-xml-typeinfo: exp@StrConst(string) -> XMLElement("string", <to-game-xml> exp)
 		where not (<un-double-quote> string)
 	to-game-xml-typeinfo: Vector2Const(exp1, exp2) -> 
 		<to-game-xml-typeinfo> New(Vector2(), [exp1, exp2])
@@ -112,9 +112,7 @@ rules // Expressions (with type info)
 		<to-game-xml-typeinfo> New(Vector3(), [exp1, exp2, exp3])
 	to-game-xml-typeinfo: Vector4Const(exp1, exp2, exp3, exp4) -> 
 		<to-game-xml-typeinfo> New(Vector4(), [exp1, exp2, exp3, exp4])
-	to-game-xml-typeinfo: EnumValueRef(enum, value) -> 
-		XMLNode("enum", [XMLElement(<crush> enum, <builtin-enum-value(|enum)> value)])
-	to-game-xml-typeinfo: New(type, params) -> 
-		XMLNode("object", [XMLNode(<crush> type, <zip(\ (name, value) -> XMLElement(name, value) \)> (propertyNames, values))])
-			where values := <map(to-game-xml)> params
-			where (propertyNames, _) := <split-at(|<length> values)> <map(get-name)> <builtin-type-props> type
+	to-game-xml-typeinfo: exp@EnumValueRef(enum, value) -> 
+		XMLNode("enum", [XMLElement(<crush> enum, <to-game-xml> exp)])
+	to-game-xml-typeinfo: exp@New(type, params) -> 
+		XMLNode("object", [XMLNode(<crush> type, <to-game-xml> exp)])

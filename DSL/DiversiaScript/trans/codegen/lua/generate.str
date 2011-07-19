@@ -1,4 +1,4 @@
-module codegen/lua/luagen
+module codegen/lua/generate
 
 imports
 	
@@ -6,7 +6,6 @@ imports
 	libstratego-gpp
 	include/DiversiaScript
 	include/Lua
-	lib/namespaces
 	
 	namespace
 	signatures

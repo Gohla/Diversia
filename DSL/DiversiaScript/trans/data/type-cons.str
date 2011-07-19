@@ -23,7 +23,7 @@ rules
 
 	has-builtin-type-cons = ?(ResourceInfo(), [])
 	has-builtin-type-cons = ?(ResourceInfo(), [StringType()])
-	has-builtin-type-cons = ?(ResourceInfo(), [StringType(), StringType()])
+	has-builtin-type-cons = ?(ResourceInfo(), [StringType(), ResourceType()])
 
 	has-builtin-type-cons = ?(Angle(), [RealType()])
 

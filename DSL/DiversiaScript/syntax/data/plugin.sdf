@@ -10,3 +10,4 @@ exports
     "Sky" -> PluginType {cons("Sky")}
     "Terrain" -> PluginType {cons("Terrain")}
     "SceneManager" -> PluginType {cons("SceneManager")}
+    "LevelManager" -> PluginType {cons("LevelManager")}

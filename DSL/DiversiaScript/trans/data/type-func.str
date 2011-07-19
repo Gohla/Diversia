@@ -23,6 +23,11 @@ rules
 
 	builtin-type-funcs: ClientObjectTemplateManager() -> []
 
+	has-builtin-type-func = ?(ClientPlugin(), ForceSerialize())
+	builtin-type-func-return: (ClientPlugin(), ForceSerialize()) -> VoidType()
+	builtin-type-func-params: (ClientPlugin(), ForceSerialize()) -> []
+	builtin-type-funcs: ClientPlugin() -> [Function(ForceSerialize(), VoidType(), [])]
+
 	has-builtin-type-func = ?(Lua(), Run_garbage_collection())
 	builtin-type-func-return: (Lua(), Run_garbage_collection()) -> VoidType()
 	builtin-type-func-params: (Lua(), Run_garbage_collection()) -> []
@@ -31,27 +36,6 @@ rules
 	builtin-type-funcs: PermissionManager() -> []
 
 	builtin-type-funcs: ServerNeighborsPlugin() -> []
-
-	has-builtin-type-func = ?(ServerPlugin(), ForceSerialize())
-	builtin-type-func-return: (ServerPlugin(), ForceSerialize()) -> VoidType()
-	builtin-type-func-params: (ServerPlugin(), ForceSerialize()) -> []
-	builtin-type-funcs: ServerPlugin() -> [Function(ForceSerialize(), VoidType(), [])]
-
-	builtin-type-funcs: ClientServerPlugin() -> []
-
-	has-builtin-type-func = ?(ClientServerPluginManager(), CreatePlugin())
-	builtin-type-func-return: (ClientServerPluginManager(), CreatePlugin()) -> ClientServerPlugin()
-	builtin-type-func-params: (ClientServerPluginManager(), CreatePlugin()) -> [ClientServerPluginType()]
-	has-builtin-type-func = ?(ClientServerPluginManager(), GetPlugin())
-	builtin-type-func-return: (ClientServerPluginManager(), GetPlugin()) -> ClientServerPlugin()
-	builtin-type-func-params: (ClientServerPluginManager(), GetPlugin()) -> [ClientServerPluginType()]
-	has-builtin-type-func = ?(ClientServerPluginManager(), HasPlugin())
-	builtin-type-func-return: (ClientServerPluginManager(), HasPlugin()) -> BoolType()
-	builtin-type-func-params: (ClientServerPluginManager(), HasPlugin()) -> [ClientServerPluginType()]
-	has-builtin-type-func = ?(ClientServerPluginManager(), DestroyPlugin())
-	builtin-type-func-return: (ClientServerPluginManager(), DestroyPlugin()) -> VoidType()
-	builtin-type-func-params: (ClientServerPluginManager(), DestroyPlugin()) -> [ClientServerPluginType()]
-	builtin-type-funcs: ClientServerPluginManager() -> [Function(CreatePlugin(), ClientServerPlugin(), [ClientServerPluginType()]), Function(GetPlugin(), ClientServerPlugin(), [ClientServerPluginType()]), Function(HasPlugin(), BoolType(), [ClientServerPluginType()]), Function(DestroyPlugin(), VoidType(), [ClientServerPluginType()])]
 
 	builtin-type-funcs: LayerInstance() -> []
 
@@ -277,6 +261,8 @@ rules
 	builtin-type-func-params: (KeyboardState(), Clear()) -> []
 	builtin-type-funcs: KeyboardState() -> [Function(IsButtonDown(), BoolType(), [KeyboardButton()]), Function(Clear(), VoidType(), [])]
 
+	builtin-type-funcs: LevelManager() -> []
+
 	builtin-type-funcs: Light() -> []
 
 	has-builtin-type-func = ?(LuaObjectScript(), Reload_script())
@@ -369,6 +355,22 @@ rules
 	builtin-type-funcs: Terrain() -> []
 
 	builtin-type-funcs: Text() -> []
+
+	builtin-type-funcs: Plugin() -> []
+
+	has-builtin-type-func = ?(PluginManager(), CreatePlugin())
+	builtin-type-func-return: (PluginManager(), CreatePlugin()) -> Plugin()
+	builtin-type-func-params: (PluginManager(), CreatePlugin()) -> [PluginType()]
+	has-builtin-type-func = ?(PluginManager(), GetPlugin())
+	builtin-type-func-return: (PluginManager(), GetPlugin()) -> Plugin()
+	builtin-type-func-params: (PluginManager(), GetPlugin()) -> [PluginType()]
+	has-builtin-type-func = ?(PluginManager(), HasPlugin())
+	builtin-type-func-return: (PluginManager(), HasPlugin()) -> BoolType()
+	builtin-type-func-params: (PluginManager(), HasPlugin()) -> [PluginType()]
+	has-builtin-type-func = ?(PluginManager(), DestroyPlugin())
+	builtin-type-func-return: (PluginManager(), DestroyPlugin()) -> VoidType()
+	builtin-type-func-params: (PluginManager(), DestroyPlugin()) -> [PluginType()]
+	builtin-type-funcs: PluginManager() -> [Function(CreatePlugin(), Plugin(), [PluginType()]), Function(GetPlugin(), Plugin(), [PluginType()]), Function(HasPlugin(), BoolType(), [PluginType()]), Function(DestroyPlugin(), VoidType(), [PluginType()])]
 
 	builtin-type-funcs: PropertySynchronization() -> []
 
