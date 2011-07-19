@@ -102,13 +102,24 @@ rules // Child object
 
 	desugar-object: Start(imports, pluginDefs, objectDefs, eventDefs) -> Start(imports, pluginDefs, objectDefs', eventDefs)
 		where 
-			<map(desugar-object)> <collect-all(?ObjectDef(_, _, _, _, _, _, _, _, _))> objectDefs => objectDefs'
+			<map(desugar-object)> <collect-all(?ObjectDef(_, _, _, _, _, _, _, _, _))> <map(add-parent-name)> objectDefs => objectDefs'
 			
+	// Add parent name as a property to every object definition with a parent.
+	add-parent-name: ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs) ->
+		ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs', varDefs, defaultStateDef, stateDefs, eventDefs)
+		where
+			<map(add-parent-name(|name))> objectDefs => objectDefs'
+	add-parent-name(|parentName): ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs, eventDefs) ->
+		ObjectDef(name, propAssigns', propDefs, componentDefs, objectDefs', varDefs, defaultStateDef, stateDefs, eventDefs)
+		where
+			<conc> ([BuiltinObjectProp(ParentName(), StrConst(parentName))], propAssigns) => propAssigns';
+			<map(add-parent-name(|name))> objectDefs => objectDefs'
+	add-parent-name: obj@ObjectDef(_, _, _, _, _, _, _, _) -> obj
+	
 	desugar-object: ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs, varDefs, defaultStateDef, stateDefs,  eventDefs) -> 
 					ObjectDef(name, propAssigns, propDefs, componentDefs,             varDefs', defaultStateDef, stateDefs, eventDefs)
 		where
 			<conc> (<map(object-to-var)> objectDefs, varDefs) => varDefs'
-	
 	object-to-var: ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs , varDefs, defaultStateDef, stateDefs, eventDefs) ->
 		PropDef(name, CustomType(name), ObjectNew(ObjectRef(name), [BuiltinObjectProp(Parent(), This())]))
 	
