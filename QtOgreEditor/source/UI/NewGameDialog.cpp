@@ -41,10 +41,7 @@ void NewGameDialog::accept()
 {
     EditorGlobals::mGrid->createOfflineServer();
     ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
-    pluginManager.createPlugin<PermissionManager>();
-    pluginManager.createPlugin<ClientObjectTemplateManager>();
-    pluginManager.createPlugin<ClientObjectManager>();
-    ResourceManager& resourceManager = pluginManager.createPlugin<ResourceManager>();
+    ResourceManager& resourceManager = pluginManager.getPlugin<ResourceManager>();
     resourceManager.set( "ResourceLocation", mUI.editResourceLocation->text() );
     resourceManager.set( "Type", mUI.comboResourceType->currentText() );
     EditorGlobals::mCurrentGame = mUI.editGameFile->text();

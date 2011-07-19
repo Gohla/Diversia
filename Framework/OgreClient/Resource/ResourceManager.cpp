@@ -36,6 +36,37 @@ namespace OgreClient
 {
 //------------------------------------------------------------------------------
 
+boost::filesystem::path naive_uncomplete(boost::filesystem::path const path, 
+    boost::filesystem::path const base) {
+    if (path.has_root_path()){
+        if (path.root_path() != base.root_path()) {
+            return path;
+        } else {
+            return naive_uncomplete(path.relative_path(), base.relative_path());
+        }
+    } else {
+        if (base.has_root_path()) {
+            throw "cannot uncomplete a path relative path from a rooted base";
+        } else {
+            typedef boost::filesystem::path::const_iterator path_iterator;
+            path_iterator path_it = path.begin();
+            path_iterator base_it = base.begin();
+            while ( path_it != path.end() && base_it != base.end() ) {
+                if (*path_it != *base_it) break;
+                ++path_it; ++base_it;
+            }
+            boost::filesystem::path result;
+            for (; base_it != base.end(); ++base_it) {
+                result /= "..";
+            }
+            for (; path_it != path.end(); ++path_it) {
+                result /= *path_it;
+            }
+            return result;
+        }
+    }
+}
+
 ResourceManager::ResourcesLoader::ResourcesLoader()
 {
 
@@ -101,7 +132,11 @@ void ResourceManager::setResourceLocation( const String& rResourceLocation )
     if( mResourceLocation != rResourceLocation && !rResourceLocation.empty() )
     {
         mResourceLocation = rResourceLocation;
-        if( mCreated ) ResourceManager::load();
+        if( mCreated ) 
+        {
+            ResourceManager::destroy();
+            ResourceManager::load();
+        }
     }
 }
 
@@ -314,7 +349,10 @@ void ResourceManager::load()
                     mResourcePath;
                 }
 
-                mRGM.addResourceLocation( mResourcePath.string(), "FileSystem", mGroup, true );
+                mResourcePath = naive_uncomplete( mResourcePath, boost::filesystem::current_path() );
+                mResourceLocation = mResourcePath.string();
+
+                mRGM.addResourceLocation( mResourceLocation, "FileSystem", mGroup, true );
                 break;
             }
             case RESOURCELOCATIONTYPE_URL:

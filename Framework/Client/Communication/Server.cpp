@@ -195,6 +195,11 @@ void Server::pluginLoadingComplete()
     }
 }
 
+void Server::create()
+{
+    mPluginManager->autoCreatePlugins();
+}
+
 //------------------------------------------------------------------------------
 } // Namespace Client
 } // Namespace Diversia

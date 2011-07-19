@@ -74,6 +74,7 @@
       <AdditionalOptions>-Zm311 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>DSLTypeExtractor\Platform\StableHeaders.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\DSLTypeExtractor\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <ProjectReference />
     <Link>
@@ -85,6 +86,7 @@
       <AdditionalOptions>-Zm311 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>DSLTypeExtractor\Platform\StableHeaders.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\DSLTypeExtractor\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LibUtil.lib;LibObject.lib;LibShared.lib;LibClient.lib;LibOgreClient.lib;BulletCollision.lib;BulletDynamics.lib;BulletFileLoader.lib;BulletWorldImporter.lib;caelum.lib;cAudio.lib;camp-lua.lib;dbghelp.lib;freetype2311.lib;libcurl.lib;LinearMath.lib;lua.lib;MyGUI.OgrePlatform.lib;MyGUIEngine.lib;OgreMain.lib;OgreProcedural.lib;OgreRTShaderSystem.lib;OgreTerrain.lib;OpenAL32.lib;OIS.lib;RakNetDLL.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -96,6 +98,7 @@
       <AdditionalOptions>-Zm311 %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>DSLTypeExtractor\Platform\StableHeaders.h</PrecompiledHeaderFile>
+      <AdditionalIncludeDirectories>$(SolutionDir)..\..\DSLTypeExtractor\source;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <AdditionalDependencies>LibUtil_rd.lib;LibObject_rd.lib;LibShared_rd.lib;LibClient_rd.lib;LibOgreClient_rd.lib;BulletCollision.lib;BulletDynamics.lib;BulletFileLoader.lib;BulletWorldImporter.lib;caelum.lib;cAudio.lib;camp-lua.lib;dbghelp.lib;freetype2311.lib;libcurl.lib;LinearMath.lib;lua.lib;MyGUI.OgrePlatform.lib;MyGUIEngine.lib;OgreMain.lib;OgreProcedural.lib;OgreRTShaderSystem.lib;OgreTerrain.lib;OpenAL32.lib;OIS.lib;RakNetDLL.lib;%(AdditionalDependencies)</AdditionalDependencies>

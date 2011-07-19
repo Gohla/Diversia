@@ -125,6 +125,8 @@ public:
     **/
     inline bool isConnecting() { return mServerState == CONNECTING; }
 
+    void create();
+
     /**
     Connects a slot to the server state changed signal. 
     

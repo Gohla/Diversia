@@ -238,6 +238,11 @@ public:
         return mPluginStateChange.connect( rSlot ); 
     }
 
+    /**
+    Create all plugins in the auto create plugins list.
+    **/
+    void autoCreatePlugins();
+
 protected:
     /**
     Gets the map of client-server plugins.

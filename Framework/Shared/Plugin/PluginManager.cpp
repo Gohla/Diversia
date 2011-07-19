@@ -52,13 +52,6 @@ PluginManager::PluginManager( Mode mode, PluginState state,
 {
     mUpdateConnection = mUpdateSignal.connect( sigc::mem_fun( this, 
         &PluginManager::update ) );
-
-    // Create auto create plugins.
-    for( PluginTypes::iterator i = mAutoCreatePlugins.begin(); 
-        i != mAutoCreatePlugins.end(); ++i )
-    {
-        PluginManager::createPlugin( *i );
-    }
 }
 
 PluginManager::~PluginManager()
@@ -149,6 +142,11 @@ void PluginManager::addAutoCreatePlugin( PluginTypeEnum type )
     mAutoCreatePlugins.insert( type );
 }
 
+bool PluginManager::hasAutoCreatePlugin( PluginTypeEnum type )
+{
+    return mAutoCreatePlugins.find( type ) != mAutoCreatePlugins.end();
+}
+
 void PluginManager::setState( PluginState state )
 {
     if( state == mPluginState ) return;
@@ -199,6 +197,16 @@ void PluginManager::unloadAll()
         i->second->unload();
 }
 
+void PluginManager::autoCreatePlugins()
+{
+    // Create auto create plugins.
+    for( PluginTypes::iterator i = mAutoCreatePlugins.begin(); 
+        i != mAutoCreatePlugins.end(); ++i )
+    {
+        PluginManager::createPlugin( *i );
+    }
+}
+
 void PluginManager::update()
 {
     SLOGD << "PluginManager::update";
@@ -226,11 +234,6 @@ void PluginManager::update()
 
     // Block updates until a plugin must be added or destroyed.
     mUpdateConnection.block( true );
-}
-
-bool PluginManager::hasAutoCreatePlugin( PluginTypeEnum type )
-{
-    return mAutoCreatePlugins.find( type ) != mAutoCreatePlugins.end();
 }
 
 //------------------------------------------------------------------------------

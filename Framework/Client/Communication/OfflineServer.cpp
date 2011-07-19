@@ -65,6 +65,11 @@ void OfflineServer::pluginLoadingComplete()
     mLoadingConnection.disconnect();
 }
 
+void OfflineServer::create()
+{
+    mPluginManager->autoCreatePlugins();
+}
+
 //------------------------------------------------------------------------------
 } // Namespace Client
 } // Namespace Diversia

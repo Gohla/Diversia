@@ -162,12 +162,16 @@ void EditorApplication::init( int argc, char* argv[] )
         // Add plugin factories, get camp class to ensure that the class is registered.
         TemplatePluginFactory<PermissionManager, ClientPluginManager>::registerFactory();
         camp::classByType<PermissionManager>();
+        PluginManager::addAutoCreatePlugin<PermissionManager>();
         TemplatePluginFactory<ResourceManager, ClientPluginManager>::registerFactory();
         camp::classByType<ResourceManager>();
+        PluginManager::addAutoCreatePlugin<ResourceManager>();
         TemplatePluginFactory<ClientObjectTemplateManager, ClientPluginManager>::registerFactory();
         camp::classByType<ClientObjectTemplateManager>();
+        PluginManager::addAutoCreatePlugin<ClientObjectTemplateManager>();
         ObjectManagerFactory<EditorObjectManager, ClientPluginManager>::registerFactory( mUpdateSignal, mLateUpdateSignal );
         camp::classByType<EditorObjectManager>();
+        PluginManager::addAutoCreatePlugin<EditorObjectManager>();
         TemplatePluginFactory<ServerNeighborsPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<ServerNeighborsPlugin>();
         TemplatePluginFactory<SkyPlugin, ClientPluginManager>::registerFactory();
@@ -186,6 +190,7 @@ void EditorApplication::init( int argc, char* argv[] )
         TemplatePluginFactory<GameModePlugin, ClientPluginManager>::registerFactory();
         camp::classByType<GameModePlugin>();
         GameModePlugin::setDefaultSlot( sigc::ptr_fun( &EditorGameMode::createGameMode ) );
+        PluginManager::addAutoCreatePlugin<GameModePlugin>();
 
         // Initialize graphics
         mGraphicsManager.reset( new GraphicsManager() );

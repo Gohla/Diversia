@@ -70,6 +70,7 @@ ServerAbstract& GridManager::createOfflineServer()
     mActiveServer = server;
     server->connect( sigc::mem_fun( this, &GridManager::serverStateChanged ) );
     mServerChangeSignal( *server, true );
+    server->create();
     return *server;
 }
 
@@ -80,6 +81,8 @@ ServerAbstract& GridManager::createServer( const GridPosition& rGridPosition,
     {
         Server* server = new Server( rGridPosition, rServerInfo, rUserInfo, mUpdateSignal );
         mServerGrid.insert( std::make_pair( rGridPosition, server ) );
+        mServerChangeSignal( *server, true );
+        server->create();
 
         // If the active server hasn't been set, set the first created server to the active server.
         if( !mActiveServer )
@@ -90,7 +93,6 @@ ServerAbstract& GridManager::createServer( const GridPosition& rGridPosition,
 
         server->connect( sigc::mem_fun( this, &GridManager::serverStateChanged ) );
         mLoadingServers.insert( rGridPosition );
-        mServerChangeSignal( *server, true );
         return *server;
     }
     else

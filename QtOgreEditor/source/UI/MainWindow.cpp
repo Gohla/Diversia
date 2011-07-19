@@ -498,9 +498,6 @@ void MainWindow::_loadGame( const QString& rFile )
     EditorGlobals::mGrid->createOfflineServer();
     EditorGlobals::mState->pushState( new LoadingState() );
     ClientPluginManager& pluginManager = EditorGlobals::mGrid->getActiveServer().getPluginManager();
-    pluginManager.createPlugin<PermissionManager>();
-    pluginManager.createPlugin<ClientObjectTemplateManager>();
-    pluginManager.createPlugin<ClientObjectManager>();
 
     try
     {

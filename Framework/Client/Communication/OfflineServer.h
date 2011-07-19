@@ -78,6 +78,8 @@ public:
     **/
     inline ClientPluginManager& getPluginManager() { return *mPluginManager; }
 
+    void create();
+
     /**
     Connects a slot to the server state changed signal. 
     
