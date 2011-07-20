@@ -17,6 +17,20 @@ imports
 	
 	util
 
+strategies
+	
+	/**
+	 * Converts simple XML AST to a string.
+	 */
+	game-xml-tostring = print-xml
+	/**
+	 * Writes simple XML AST to a file.
+	 */
+	game-xml-tofile(|path): ast -> ast
+		where dir := <abspath> $[[<dirname> path]/]
+		where <debug> $[Writing game xml file to [dir]Game.xml]
+		where <fclose> <fputs> ( <game-xml-tostring> ast, <fopen> ( $[[dir]Game.xml], "w" ) )
+
 rules // Structure
 	
 	to-game-xml: Start(_, pluginDefs, objectDefs, _) ->
@@ -51,7 +65,7 @@ rules // Object definitions (object templates)
 	
 rules // Components (component templates)
 	
-	to-game-xml: ComponentDef(name, type, properties) -> XMLNode("item", [
+	to-game-xml: ComponentDef(_{name}, type, properties) -> XMLNode("item", [
 		XMLNode("key", [XMLElement("Type", <builtin-enum-value(|ComponentType())> type), XMLElement("Name", name)]),
 		XMLNode("value", [XMLNode("Properties", <map(to-game-xml)> properties)])
 	])

@@ -15,6 +15,8 @@ imports
 	
 	data/event
 	
+	codegen/lua/normalise
+	
 	util
 	
 signature constructors
@@ -96,16 +98,18 @@ rules // Syntax transformation
 	// Definitions to lua syntax.
 	to-lua: Start(imports, pluginDefs, objectDefs, eventDefs) -> LuaScripts(<concat> [[<gamemode-to-lua> (pluginDefs, eventDefs)], <map(objects-to-lua)> objectDefs])
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
-		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], functions''']))
+		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], functions'''']))
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions' := <lua-createFunc-prepend> (<map(propassign-to-lua)> <filter(?ObjectProp(_, _, _))> propAssigns, functions)
-		where functions'' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions') 
-		where functions''' := <states-to-lua> (<concat> [[defState], stateDefs], functions'')
+		where functions' := <lua-createFunc-prepend> (<map(get-component-to-lua)> componenDefs, functions)
+		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua)> <filter(?ObjectProp(_, _, _))> propAssigns, functions')
+		where functions''' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions'') 
+		where functions'''' := <states-to-lua> (<concat> [[defState], stateDefs], functions''')
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [], _, eventDefs) -> 
-		LuaObjectScript(name, <lua-flatten-all> Chunk(functions'')) 
+		LuaObjectScript(name, <lua-flatten-all> Chunk(functions''')) 
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
-		where functions' := <lua-createFunc-prepend> (<map(propassign-to-lua)> <filter(?ObjectProp(_, _, _))> propAssigns, functions)
-		where functions'' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions')
+		where functions' := <lua-createFunc-prepend> (<map(get-component-to-lua)> componenDefs, functions)
+		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua)> <filter(?ObjectProp(_, _, _))> propAssigns, functions')
+		where functions''' := <lua-createFunc-prepend> (<map(to-lua)> <object-vars> obj, functions'')
 	gamemode-to-lua: (pluginDefs, eventDefs) -> LuaGameModeScript(<lua-flatten-all> Chunk(<concat> [functions]))
 		where
 		{| GamemodeScript:
@@ -164,6 +168,7 @@ rules // Syntax transformation
 	]
 	componentprop-to-lua(|componentName): ComponentProp(_, prop, exp) -> Assignment([Access(VarRef(componentName), <crush> prop)], <to-lua> exp)
 	destroy-component-to-lua: name -> Call(VarRef(name), "Destroy", Args([]))
+	get-component-to-lua: ComponentDef(_{name}, type, _) -> Assignment([VarRef(name)], [Call(VarRef("Object"), "GetComponent", Args(String(name)))])
 	
 	// Object properties
 	propassign-to-lua: ObjectProp(_, name, exp) -> 
@@ -334,7 +339,7 @@ rules // Statements
 	new-object-to-lua(|objectName): ObjectNew(ObjectRef(name), props) -> <concat> [
 			[
 				Assignment([VarRef(objectName)], [Call(VarRef("ObjectTemplateManager"), "CreateLocalObject", Args([String(name), String(objectName)]))]),
-				Assignment([VarRef(luaScriptName)], [Call(VarRef(objectName), "GetComponent", Args([String("LuaObjectScript")]))]),
+				Assignment([VarRef(luaScriptName)], [Call(VarRef(objectName), "GetComponent", Args([String(<normalise-luaxml-luascript>)]))]),
 				Call(VarRef(luaScriptName), "CreateEnv", Args([]))
 			],
 			<new-object-to-lua-replace(|luaScriptName, objectName)>,
@@ -353,7 +358,7 @@ rules // Statements
 	to-lua: Assign(VarRef(_{varName}), n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n 
 	to-lua: PropDef(_, objectName, _, ObjectGet(ObjectRef(name))) -> [
 			Assignment([VarRef(objectName)], [Call(VarRef("Object"), "ChildObjectByDisplayName", Args([String(name)]))]),
-			Assignment([VarRef(luaScriptName)], [Call(VarRef(name), "GetComponent", Args([String("LuaObjectScript")]))]),
+			Assignment([VarRef(luaScriptName)], [Call(VarRef(name), "GetComponent", Args([String(<normalise-luaxml-luascript>)]))]),
 			Call(VarRef(luaScriptName), "CreateEnv", Args([])),
 			Call(VarRef(luaScriptName), "ReplaceVarWithThisEnv", Args([Access(VarRef("Script"), "ClientEnvironmentName"), String(objectName)]))
 		]

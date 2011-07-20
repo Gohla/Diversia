@@ -12,16 +12,16 @@ imports
 	
 strategies
 	
-	import-all(|path) = topdown(try(import-file(|path)))
+	import-all(normalise|path, type) = topdown(try(import-file(normalise|path, type)))
 	
 rules
 	
-	my-open-import(resolve-path, parse-file, analysis, record-declarations):
+	my-open-import(resolve-path, parse-file, analysis, record-declarations|type):
 		import -> import
    	 	where
       		if not(!import => COMPLETION(_)) then
         		path       := <resolve-path> import;
-        		cache-path := <import-cache-path> path;
+        		cache-path := $[[<import-cache-path> path]-[type]];
 	        	if not(<IsImported> path) then
 	          		rules(
 	            		IsImported: path
@@ -42,12 +42,12 @@ rules
 	
 rules
 	
-	import-file(|path): Import(name) -> Import(name)
-		where <my-open-import(import-file-path(|path), parse-file, analyse-all-nostore(|path), store-all)> name
+	import-file(normalise|path, type): Import(name) -> Import(name)
+		where <my-open-import(import-file-path(|path), parse-file, analyse-all-nostore(normalise|path, type), store-all|type)> name
 	import-file-path(|path): name -> $[[<dirname> path]/[<try(guarantee-extension(|"div"))> name]]
 	
-    import-merge(|path): Start(imports, pluginDefs, objectDefs, eventDefs) -> Start(imports, pluginDefs, objectDefs', eventDefs) 
-    	where objectDefs' := <concat> [<mapconcat(get-cached-ast(|path); import-merge(|path); get-ast-objectDefs)> imports, objectDefs]
-	get-cached-ast(|p): Import(name) -> <ReadFromFile> <import-cache-path> <import-file-path(|p)> name
+    import-merge(|path, type): Start(imports, pluginDefs, objectDefs, eventDefs) -> Start(imports, pluginDefs, objectDefs', eventDefs) 
+    	where objectDefs' := <concat> [<mapconcat(get-cached-ast(|path, type); import-merge(|path, type); get-ast-objectDefs)> imports, objectDefs]
+	get-cached-ast(|p, type): Import(name) -> <ReadFromFile> $[[<import-cache-path> <import-file-path(|p)> name]-[type]]
     get-ast-objectDefs: Start(imports, pluginDefs, objectDefs, eventDefs) -> objectDefs
     

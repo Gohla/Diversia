@@ -8,6 +8,9 @@ imports
 	
 rules // Normalisation rules that add plugins and components to objects to make them work with lua/game xml.
 	
+	// Defines what the state vardef is
+	normalise-luaxml-luascript = !"GeneratedLuaObjectScript"
+	
 	normalise-luaxml(|mediaDir): Start(imports, pluginDefs, objectDefs, eventDefs) -> 
 		Start(imports, pluginDefs', <map(normalise-luaxml)> objectDefs, eventDefs)
 			where pluginDefs' := <concat> [ // Add PermissionManager, ResourceManager and Lua plugin.
@@ -26,9 +29,9 @@ rules // Normalisation rules that add plugins and components to objects to make 
 			where componentDefs' := <concat> [ // Add LuaObjectScript component.
 				componentDefs,
 				[
-					ComponentDef("LuaObjectScript", LuaObjectScript(), [
+					ComponentDef(<normalise-luaxml-luascript>, LuaObjectScript(), [
 						ComponentProp(LuaObjectScript(), ClientScriptFile(), StrConst($[gen/[name].lua])),
 						ComponentProp(LuaObjectScript(), ClientSecurityLevel(), StrConst("Low"))
-					])
+					]){"NoRename"}
 				]
 			]

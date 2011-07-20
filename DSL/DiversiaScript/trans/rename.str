@@ -91,9 +91,13 @@ rules // Definitions
 		where
 			<rename-declaration(|Vars())> name => name'		
 	rename-def:
-		ComponentDef(name, type, props)-> ComponentDef(name', type, props)
+		d@ComponentDef(name, type, props) -> ComponentDef(name', type, props)
+		where not (<has-annos> d)
 		where
 			<rename-declaration(|Components())> name => name'
+	rename-def:
+		ComponentDef(name, type, props){"NoRename"} -> ComponentDef(name{name}, type, props)
+			
 	rename-def:
 		PluginDef(name, type, props)-> PluginDef(name', type, props)
 		where
