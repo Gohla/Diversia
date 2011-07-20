@@ -35,10 +35,13 @@ signature constructors // Structure
 	
 	StateDef: Id * List(ObjectProp) * List(ComponentDef) * List(VarDef) * List(EventDef) -> StateDef
 	DefaultStateDef: Id * List(ObjectProp) * List(ComponentDef) * List(VarDef) * List(EventDef) -> StateDef
+	
+signature constructors // Object get instruction
+	
+	ObjectGet: ObjectRef -> ObjectGet
 
 signature constructors // Types
 
-	//EnumType: Id -> Type
 	NullType: Type
 
 signature constructors // Variables & properties

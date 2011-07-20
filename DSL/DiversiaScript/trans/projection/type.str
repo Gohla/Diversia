@@ -128,6 +128,7 @@ rules  // Expressions
 	type-of: ObjectBuiltinCall(objectProp, func, _) -> <get-function-type(|func)> type
 		where type := <get-property-type(|objectProp)> ClientObject()
 	type-of: ObjectNew(objectRef, _) -> <type-of> objectRef
+	type-of: ObjectGet(objectRef) -> <type-of> objectRef
 	type-of: ObjectRef(name) -> <type-of> <get-object> name
 	type-of: ComponentRef(name) -> <type-of> <get-component> name
 	type-of: PluginRef(name) -> <type-of> <get-plugin> name

@@ -28,6 +28,7 @@ THE SOFTWARE.
 
 #include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Lua/LuaPlugin.h"
+#include "Client/Object/ClientObjectManager.h"
 #include "Client/Object/ClientObjectTemplate.h"
 #include "Client/Object/ClientObjectTemplateManager.h"
 #include "Client/Permission/PermissionManager.h"
@@ -62,6 +63,13 @@ ClientObjectTemplateManager::ClientObjectTemplateManager( Mode mode, PluginState
 ClientObjectTemplateManager::~ClientObjectTemplateManager()
 {
 
+}
+
+Object& ClientObjectTemplateManager::createObject( const String& rTemplateName, 
+    const String& rObjectName, NetworkingType type )
+{
+    return ObjectTemplateManager::getObjectTemplate( rTemplateName ).createObject( 
+        Plugin::getPluginManager().getPlugin<ClientObjectManager>(), rObjectName, type );
 }
 
 void ClientObjectTemplateManager::load()

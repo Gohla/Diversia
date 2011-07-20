@@ -121,10 +121,10 @@ rules // Child object
 		where
 			<conc> (<map(object-to-var)> objectDefs, varDefs) => varDefs'
 	object-to-var: ObjectDef(name, propAssigns, propDefs, componentDefs, objectDefs , varDefs, defaultStateDef, stateDefs, eventDefs) ->
-		PropDef(name, CustomType(name), ObjectNew(ObjectRef(name), [BuiltinObjectProp(Parent(), This())]))
+		PropDef(name, CustomType(name), ObjectGet(ObjectRef(name)))
 	
 	object-to-var: ExternalObjectDef(name) ->  
-		PropDef(name, CustomType(name), ObjectNew(ObjectRef(name), [BuiltinObjectProp(Parent(), This())]))                                                                     
+		PropDef(name, CustomType(name), ObjectGet(ObjectRef(name)))                                                                     
 	
 	/*
 	// TODO need to following type rules to do type inf.

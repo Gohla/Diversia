@@ -53,6 +53,18 @@ public:
     **/
     inline String getTypeName() const { return PLUGINNAME_OBJECTTEMPLATEMANAGER; }
     static inline String getTypeNameStatic() { return PLUGINNAME_OBJECTTEMPLATEMANAGER; }
+
+    /**
+    Creates an object with the parameters and component templates from given object template name.
+    
+    @param  rTemplateName   The name of the object template to instantiate.
+    @param  rObjectName     The name of the object.
+    @param  type            If the object should be a remote or local object.
+    
+    @return The created object.
+    **/
+    Object& createObject( const String& rTemplateName, const String& rObjectName, 
+        NetworkingType type );
 	
 private:
     friend class TemplatePluginFactory<ClientObjectTemplateManager, ClientPluginManager>;

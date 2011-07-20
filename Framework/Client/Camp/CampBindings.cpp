@@ -216,11 +216,13 @@ void CampBindings::bindClientObjectTemplateManager()
     camp::Class::declare<ClientObjectTemplateManager>( "ClientObjectTemplateManager" )
         .tag( "NoLevelSerialization", true )
         .base<ObjectTemplateManager>()
-        .base<ClientPlugin>();
+        .base<ClientPlugin>()
         // Constructors
         // Properties (read-only)
         // Properties (read/write)
         // Functions
+        .function( "CreateLocalObject", boost::function<Object&(ClientObjectTemplateManager&, const String&, const String&)>( boost::bind( &ClientObjectTemplateManager::createObject, _1, _2, _3, LOCAL ) ) )
+        .function( "CreateRemoteObject", boost::function<Object&(ClientObjectTemplateManager&, const String&, const String&)>( boost::bind( &ClientObjectTemplateManager::createObject, _1, _2, _3, REMOTE ) ) );
         // Static functions
         // Operators
 }

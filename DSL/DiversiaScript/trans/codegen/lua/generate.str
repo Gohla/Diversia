@@ -350,7 +350,14 @@ rules // Statements
 	to-lua: Expression(n@ObjectNew(ObjectRef(name), _)) -> <new-object-to-lua(|$[__[<newname> name]])> n
 	to-lua: VarDef(_, _{varName}, _, n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n
 	to-lua: PropDef(_, varName, _, n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n
-	to-lua: Assign(VarRef(_{varName}), n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n  
+	to-lua: Assign(VarRef(_{varName}), n@ObjectNew(_, _)) -> <new-object-to-lua(|varName)> n 
+	to-lua: PropDef(_, objectName, _, ObjectGet(ObjectRef(name))) -> [
+			Assignment([VarRef(objectName)], [Call(VarRef("Object"), "ChildObjectByDisplayName", Args([String(name)]))]),
+			Assignment([VarRef(luaScriptName)], [Call(VarRef(name), "GetComponent", Args([String("LuaObjectScript")]))]),
+			Call(VarRef(luaScriptName), "CreateEnv", Args([])),
+			Call(VarRef(luaScriptName), "ReplaceVarWithThisEnv", Args([Access(VarRef("Script"), "ClientEnvironmentName"), String(objectName)]))
+		]
+		where luaScriptName := $[[objectName]__LuaObjectScript]
 	to-lua: StateChange(StateRef(name)) -> [exitCall, change, enterCall]
 		where exitCall := Call(TableVarRef(VarRef("_G"), Concat(String("StateExit_"), <lua-stateref>)), Args([]))
 		where change := Assignment([<lua-stateref>], [String(name)])

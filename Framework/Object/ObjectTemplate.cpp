@@ -268,8 +268,8 @@ void ObjectTemplate::createComponentTemplates( const Object& rObject )
     Node::setScale( rObject.getScale() );
 
     // Recursively go trough all child objects.
-    ObjectChilds childs = rObject.getChildObjects();
-    for( ObjectChilds::iterator i = childs.begin(); i != childs.end(); ++i )
+    ObjectHashMap childs = rObject.getChildObjects();
+    for( ObjectHashMap::iterator i = childs.begin(); i != childs.end(); ++i )
     {
         mObjectTemplateManager.createObjectTemplate( *i->second, 
             mObjectTemplateManager.generateName(), mType ).parent( this );

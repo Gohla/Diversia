@@ -158,8 +158,8 @@ void Object::setNetworkingType( NetworkingType type, bool redirectToChilds /*=fa
         // type for all childs.
         if( !Node::hasParent() || redirectToChilds )
         {
-            ObjectChilds childs = Object::getChildObjects();
-            for( ObjectChilds::iterator i = childs.begin(); i != childs.end(); ++i )
+            ObjectHashMap childs = Object::getChildObjects();
+            for( ObjectHashMap::iterator i = childs.begin(); i != childs.end(); ++i )
             {
                 // Set redirectToChilds to true so that the networking type will be set across the
                 // whole tree of objects.
@@ -212,8 +212,8 @@ void Object::querySetNetworkingType( NetworkingType type, bool redirectToChilds 
         // type can be changed for all childs.
         if( !Node::hasParent() || redirectToChilds )
         {
-            ObjectChilds childs = Object::getChildObjects();
-            for( ObjectChilds::iterator j = childs.begin(); j != childs.end(); ++j )
+            ObjectHashMap childs = Object::getChildObjects();
+            for( ObjectHashMap::iterator j = childs.begin(); j != childs.end(); ++j )
             {
                 // Set redirectToChilds to true so that the networking type will be set across the
                 // whole tree of objects.
@@ -260,8 +260,8 @@ Object& Object::duplicate( const String& rName /*= ""*/ )
     object.setScale( Node::getScale() );
 
     // Duplicate child objects
-    ObjectChilds childs = Object::getChildObjects();
-    for( ObjectChilds::iterator i = childs.begin(); i != childs.end(); ++i )
+    ObjectHashMap childs = Object::getChildObjects();
+    for( ObjectHashMap::iterator i = childs.begin(); i != childs.end(); ++i )
     {
         i->second->duplicate().parent( &object );
     }
@@ -530,6 +530,20 @@ String Object::getParentName() const
         return getParentObject()->getName();
 
     return String();
+}
+
+Object& Object::childObjectByDisplayName( const String& rDisplayName )
+{
+    ChildNodeMap childs = Node::getChildren();
+    for( ChildNodeMap::iterator i = childs.begin(); i != childs.end(); ++i )
+    {
+        Object* object = static_cast<Object*>( i->second );
+        if( object->getDisplayName() == rDisplayName ) return *object;
+    }
+    
+    DIVERSIA_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, 
+        "Child object with display name " + rDisplayName + " does not exist in object " + mName, 
+	    "Object::childObjectByDisplayName" );
 }
 
 void Object::setTemplate( ObjectTemplate* pTemplate )
