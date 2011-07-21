@@ -115,7 +115,7 @@ rules // Expressions (with type info)
 	to-game-xml-typeinfo: exp@True() -> XMLElement("bool", <to-game-xml> exp)
 	to-game-xml-typeinfo: exp@False() -> XMLElement("bool", <to-game-xml> exp)
 	to-game-xml-typeinfo: exp@IntConst(num) -> XMLElement("int", <to-game-xml> exp)
-	to-game-xml-typeinfo: exp@FloatConst(num) -> XMLElement("float", <to-game-xml> exp)
+	to-game-xml-typeinfo: exp@FloatConst(num) -> XMLElement("real", <to-game-xml> exp)
 	to-game-xml-typeinfo: exp@StrConst(string) -> XMLElement("string", <to-game-xml> exp)
 		where string' := <un-double-quote> string
 	to-game-xml-typeinfo: exp@StrConst(string) -> XMLElement("string", <to-game-xml> exp)
