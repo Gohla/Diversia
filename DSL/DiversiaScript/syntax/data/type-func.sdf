@@ -6,6 +6,9 @@ exports
 
   context-free syntax
 
+    "CreateLocalObject" -> BuiltinFunction {cons("CreateLocalObject")}
+    "CreateRemoteObject" -> BuiltinFunction {cons("CreateRemoteObject")}
+
     "ForceSerialize" -> BuiltinFunction {cons("ForceSerialize")}
 
     "Run_garbage_collection" -> BuiltinFunction {cons("Run_garbage_collection")}
@@ -22,6 +25,7 @@ exports
     "IsCreatedBy" -> BuiltinFunction {cons("IsCreatedBy")}
     "IsCreatedBySource" -> BuiltinFunction {cons("IsCreatedBySource")}
     "CreateChildObject" -> BuiltinFunction {cons("CreateChildObject")}
+    "ChildObjectByDisplayName" -> BuiltinFunction {cons("ChildObjectByDisplayName")}
     "CreateComponent" -> BuiltinFunction {cons("CreateComponent")}
     "CreateComponentByHandle" -> BuiltinFunction {cons("CreateComponentByHandle")}
     "GetComponent" -> BuiltinFunction {cons("GetComponent")}

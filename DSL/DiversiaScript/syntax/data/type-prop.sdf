@@ -75,6 +75,8 @@ exports
     "ParentName" -> BuiltinObjectProperty {cons("ParentName")}
     "TemplateName" -> BuiltinProperty {cons("TemplateName")}
     "TemplateName" -> BuiltinObjectProperty {cons("TemplateName")}
+    "Runtime" -> BuiltinProperty {cons("Runtime")}
+    "Runtime" -> BuiltinObjectProperty {cons("Runtime")}
     "Components" -> BuiltinProperty {cons("Components")}
     "Components" -> BuiltinObjectProperty {cons("Components")}
 
@@ -95,6 +97,7 @@ exports
     "DisplayName" -> BuiltinProperty {cons("DisplayName")}
     "NetworkingType" -> BuiltinProperty {cons("NetworkingType")}
     "ParentName" -> BuiltinProperty {cons("ParentName")}
+    "Runtime" -> BuiltinProperty {cons("Runtime")}
     "ComponentTemplates" -> BuiltinProperty {cons("ComponentTemplates")}
 
     "Mode" -> BuiltinProperty {cons("Mode")}

@@ -612,6 +612,7 @@ private:
     NetworkingType 		                mType;
     sigc::signal<void, ObjectTemplate&> mDestructionSignal;
     bool                                mBroadcastingDestruction;
+    bool                                mRuntime;
 
     ObjectTemplateManager&		                    mObjectTemplateManager;
     ComponentTemplatesByType                        mComponentTemplatesByType;

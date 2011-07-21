@@ -11,6 +11,8 @@ plugin SceneManager {
 
 // Ball object definition
 def Ball {
+	Runtime = true
+	
     // Ball components
     component Mesh { 							// Visual representation of the ball.
         ShapeType = GraphicsShape.Sphere      	// Sphere is a predefined shape type.
@@ -83,11 +85,6 @@ def Ball {
 
 // Global event, the 'main' function
 on Create() {
-    // Create an object of type Floor at position 0, 0, 0.
-    new Floor {
-        Position = [0, 0, 0]
-    };
-    
     var Ball : Ball = new Ball {
         Position = [0, 50, -50]
         Speed = 10

@@ -198,6 +198,11 @@ public:
             redirectToChilds );
     }
     /**
+    Destroys all objects with the runtime variable set to true. These are objects that are created
+    by scripts and should be removed after the script is unloaded.
+    **/
+    void destroyRuntimeObjects();
+    /**
     Immediately removes all all objects.
     **/
     void reset();

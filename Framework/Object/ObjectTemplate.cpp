@@ -52,6 +52,7 @@ ObjectTemplate::ObjectTemplate( const String& rName, Mode mode, NetworkingType t
     mSourceGUID( source ),
     mType( type ),
     mBroadcastingDestruction( false ),
+    mRuntime( false ),
     mObjectTemplateManager( rObjectTemplateManager ),
     mParentChanged( false ),
     mReplicaManager( rReplicaManager ),
@@ -397,6 +398,7 @@ Object& ObjectTemplate::createObject( ObjectManager& rObjectManager, const Strin
     object.setPosition( Node::getPosition() );
     object.setOrientation( Node::getOrientation() );
     object.setScale( Node::getScale() );
+    object.setRuntimeObject( mRuntime );
 
     // Recursively go trough all child object templates.
     ObjectTemplateChilds childs = ObjectTemplate::getChildObjectTemplates();

@@ -154,10 +154,13 @@ rules
 	has-builtin-type-prop = ?(Object(), TemplateName())
 	is-builtin-type-prop-writable = ?(Object(), TemplateName())
 	builtin-type-prop-type: (Object(), TemplateName()) -> StringType()
+	has-builtin-type-prop = ?(Object(), Runtime())
+	is-builtin-type-prop-writable = ?(Object(), Runtime())
+	builtin-type-prop-type: (Object(), Runtime()) -> BoolType()
 	has-builtin-type-prop = ?(Object(), Components())
 	is-builtin-type-prop-writable = ?(Object(), Components())
 	builtin-type-prop-type: (Object(), Components()) -> VoidType()
-	builtin-type-props: Object() -> [Property(Name(), StringType(), False()), Property(ObjectManager(), ObjectManager(), True()), Property(IsDelayedDestroying(), BoolType(), False()), Property(Mode(), Mode(), False()), Property(Source(), Mode(), False()), Property(SourceGUID(), RakNetGUID(), False()), Property(OwnGUID(), RakNetGUID(), False()), Property(ServerGUID(), RakNetGUID(), False()), Property(IsCreatedByOwnGUID(), BoolType(), False()), Property(IsCreatedByServer(), BoolType(), False()), Property(DisplayName(), StringType(), True()), Property(NetworkingType(), NetworkingType(), True()), Property(Parent(), Object(), True()), Property(ParentName(), StringType(), True()), Property(TemplateName(), StringType(), True()), Property(Components(), VoidType(), True())]
+	builtin-type-props: Object() -> [Property(Name(), StringType(), False()), Property(ObjectManager(), ObjectManager(), True()), Property(IsDelayedDestroying(), BoolType(), False()), Property(Mode(), Mode(), False()), Property(Source(), Mode(), False()), Property(SourceGUID(), RakNetGUID(), False()), Property(OwnGUID(), RakNetGUID(), False()), Property(ServerGUID(), RakNetGUID(), False()), Property(IsCreatedByOwnGUID(), BoolType(), False()), Property(IsCreatedByServer(), BoolType(), False()), Property(DisplayName(), StringType(), True()), Property(NetworkingType(), NetworkingType(), True()), Property(Parent(), Object(), True()), Property(ParentName(), StringType(), True()), Property(TemplateName(), StringType(), True()), Property(Runtime(), BoolType(), True()), Property(Components(), VoidType(), True())]
 
 	has-builtin-type-prop = ?(ObjectManager(), Mode())
 	builtin-type-prop-type: (ObjectManager(), Mode()) -> Mode()
@@ -198,10 +201,13 @@ rules
 	has-builtin-type-prop = ?(ObjectTemplate(), ParentName())
 	is-builtin-type-prop-writable = ?(ObjectTemplate(), ParentName())
 	builtin-type-prop-type: (ObjectTemplate(), ParentName()) -> StringType()
+	has-builtin-type-prop = ?(ObjectTemplate(), Runtime())
+	is-builtin-type-prop-writable = ?(ObjectTemplate(), Runtime())
+	builtin-type-prop-type: (ObjectTemplate(), Runtime()) -> BoolType()
 	has-builtin-type-prop = ?(ObjectTemplate(), ComponentTemplates())
 	is-builtin-type-prop-writable = ?(ObjectTemplate(), ComponentTemplates())
 	builtin-type-prop-type: (ObjectTemplate(), ComponentTemplates()) -> VoidType()
-	builtin-type-props: ObjectTemplate() -> [Property(Name(), StringType(), False()), Property(ObjectTemplateManager(), ObjectTemplateManager(), True()), Property(Mode(), Mode(), False()), Property(Source(), Mode(), False()), Property(SourceGUID(), RakNetGUID(), False()), Property(OwnGUID(), RakNetGUID(), False()), Property(ServerGUID(), RakNetGUID(), False()), Property(IsCreatedByOwnGUID(), BoolType(), False()), Property(IsCreatedByServer(), BoolType(), False()), Property(DisplayName(), StringType(), True()), Property(NetworkingType(), NetworkingType(), True()), Property(ParentName(), StringType(), True()), Property(ComponentTemplates(), VoidType(), True())]
+	builtin-type-props: ObjectTemplate() -> [Property(Name(), StringType(), False()), Property(ObjectTemplateManager(), ObjectTemplateManager(), True()), Property(Mode(), Mode(), False()), Property(Source(), Mode(), False()), Property(SourceGUID(), RakNetGUID(), False()), Property(OwnGUID(), RakNetGUID(), False()), Property(ServerGUID(), RakNetGUID(), False()), Property(IsCreatedByOwnGUID(), BoolType(), False()), Property(IsCreatedByServer(), BoolType(), False()), Property(DisplayName(), StringType(), True()), Property(NetworkingType(), NetworkingType(), True()), Property(ParentName(), StringType(), True()), Property(Runtime(), BoolType(), True()), Property(ComponentTemplates(), VoidType(), True())]
 
 	has-builtin-type-prop = ?(ObjectTemplateManager(), Mode())
 	builtin-type-prop-type: (ObjectTemplateManager(), Mode()) -> Mode()

@@ -21,7 +21,13 @@ rules
 
 	builtin-type-funcs: ClientObjectTemplate() -> []
 
-	builtin-type-funcs: ClientObjectTemplateManager() -> []
+	has-builtin-type-func = ?(ClientObjectTemplateManager(), CreateLocalObject())
+	builtin-type-func-return: (ClientObjectTemplateManager(), CreateLocalObject()) -> Object()
+	builtin-type-func-params: (ClientObjectTemplateManager(), CreateLocalObject()) -> [StringType(), StringType()]
+	has-builtin-type-func = ?(ClientObjectTemplateManager(), CreateRemoteObject())
+	builtin-type-func-return: (ClientObjectTemplateManager(), CreateRemoteObject()) -> Object()
+	builtin-type-func-params: (ClientObjectTemplateManager(), CreateRemoteObject()) -> [StringType(), StringType()]
+	builtin-type-funcs: ClientObjectTemplateManager() -> [Function(CreateLocalObject(), Object(), [StringType(), StringType()]), Function(CreateRemoteObject(), Object(), [StringType(), StringType()])]
 
 	has-builtin-type-func = ?(ClientPlugin(), ForceSerialize())
 	builtin-type-func-return: (ClientPlugin(), ForceSerialize()) -> VoidType()
@@ -75,6 +81,9 @@ rules
 	has-builtin-type-func = ?(Object(), CreateChildObject())
 	builtin-type-func-return: (Object(), CreateChildObject()) -> Object()
 	builtin-type-func-params: (Object(), CreateChildObject()) -> [StringType()]
+	has-builtin-type-func = ?(Object(), ChildObjectByDisplayName())
+	builtin-type-func-return: (Object(), ChildObjectByDisplayName()) -> Object()
+	builtin-type-func-params: (Object(), ChildObjectByDisplayName()) -> [StringType()]
 	has-builtin-type-func = ?(Object(), CreateComponent())
 	builtin-type-func-return: (Object(), CreateComponent()) -> Component()
 	builtin-type-func-params: (Object(), CreateComponent()) -> [IntType(), StringType(), BoolType()]
@@ -93,7 +102,7 @@ rules
 	has-builtin-type-func = ?(Object(), Destroy())
 	builtin-type-func-return: (Object(), Destroy()) -> VoidType()
 	builtin-type-func-params: (Object(), Destroy()) -> []
-	builtin-type-funcs: Object() -> [Function(IsCreatedBy(), BoolType(), [RakNetGUID()]), Function(IsCreatedBySource(), BoolType(), [RakNetGUID()]), Function(CreateChildObject(), Object(), [StringType()]), Function(CreateComponent(), Component(), [IntType(), StringType(), BoolType()]), Function(CreateComponentByHandle(), Component(), [ComponentHandle()]), Function(GetComponent(), Component(), [StringType()]), Function(HasComponent(), BoolType(), [StringType()]), Function(DestroyComponent(), VoidType(), [StringType()]), Function(Destroy(), VoidType(), [])]
+	builtin-type-funcs: Object() -> [Function(IsCreatedBy(), BoolType(), [RakNetGUID()]), Function(IsCreatedBySource(), BoolType(), [RakNetGUID()]), Function(CreateChildObject(), Object(), [StringType()]), Function(ChildObjectByDisplayName(), Object(), [StringType()]), Function(CreateComponent(), Component(), [IntType(), StringType(), BoolType()]), Function(CreateComponentByHandle(), Component(), [ComponentHandle()]), Function(GetComponent(), Component(), [StringType()]), Function(HasComponent(), BoolType(), [StringType()]), Function(DestroyComponent(), VoidType(), [StringType()]), Function(Destroy(), VoidType(), [])]
 
 	has-builtin-type-func = ?(ObjectManager(), CreateLocalObject())
 	builtin-type-func-return: (ObjectManager(), CreateLocalObject()) -> Object()

@@ -133,6 +133,14 @@ void ClientObjectManager::offlineModeChanged( bool offlineMode )
     ObjectManager::offlineModeChanged( offlineMode );
 }
 
+void ClientObjectManager::stateChanged( PluginState state, PluginState prevState )
+{
+    if( state == STOP && prevState == PLAY )
+    {
+        ObjectManager::destroyRuntimeObjects();
+    }
+}
+
 //------------------------------------------------------------------------------
 } // Namespace Client
 } // Namespace Diversia

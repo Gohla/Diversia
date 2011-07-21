@@ -1,10 +1,13 @@
 // Camera object definition
 def OrbitCamera {
+	Runtime = true
     Position = [0, 0.5, 0] // Standard position offset
 
     // Child objects
     def CameraPitch {
+    	Runtime = true
         def Camera {
+        	Runtime = true
             Position = [0, 0, 5]
             component Camera {
                 Active = true

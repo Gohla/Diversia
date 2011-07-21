@@ -169,6 +169,14 @@ void ObjectManager::destroyWholeObjectTree( Object& rObject,
     }
 }
 
+void ObjectManager::destroyRuntimeObjects()
+{
+    for( Objects::const_iterator i = mObjects.begin(); i != mObjects.end(); ++i )
+    {
+        if( i->second->isRuntimeObject() ) ObjectManager::destroyObjectTree( *i->second );
+    }
+}
+
 void ObjectManager::reset()
 {
     for( Objects::iterator i = mObjects.begin(); i != mObjects.end(); ++i )

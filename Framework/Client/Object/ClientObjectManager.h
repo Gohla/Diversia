@@ -81,6 +81,9 @@ protected:
 
     PermissionManager&  mPermissionManager;
 
+private:
+    void stateChanged( PluginState state, PluginState prevState );
+
     CAMP_CLASS(ClientObjectManager)
 
 };
