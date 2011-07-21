@@ -201,7 +201,7 @@ void ComponentTemplate::setTemplateProperties( const Component& rComponent )
 Component& ComponentTemplate::createComponent( Object& rObject )
 {
     // Create unique component name.
-    String componentName = mFactory.getTypeName();
+    String componentName = mName;
     if( mFactory.multiple() )
     {
         std::size_t count = rObject.componentCount( mType );
