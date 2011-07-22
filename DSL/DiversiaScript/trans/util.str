@@ -3,6 +3,7 @@ module util
 rules // Utilities
 	
 	take-1: [elem|rest] -> (elem, rest)
+	take-rev-1: [elem|rest] -> (rest, elem)
 	get-1: [elem|_] -> elem
 	take-2: [elem1|[elem2|rest]] -> (elem1, elem2, rest)
 	crush: cons -> str where <?str#(_)> cons

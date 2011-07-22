@@ -22,6 +22,8 @@ exports
     "[" Exp "," Exp "]"                 		-> Exp {cons("Vector2Const")}
     "[" Exp "," Exp "," Exp "]"         		-> Exp {cons("Vector3Const")}
     "[" Exp "," Exp "," Exp "," Exp "]" 		-> Exp {cons("Vector4Const")}
+    "{" {Exp ","}+ "}"							-> Exp {cons("ArrayConst")}
+    "{" {(Exp "=" Exp) ","}+ "}"				-> Exp {cons("DictConst")}
     Id                                  		-> Exp {cons("VarRef")}
     BuiltinObjectProperty						-> Exp {cons("ObjectBuiltinRef"), prefer} %% Desugared into BuiltinAccess(This(), _)
     "this"                              		-> Exp {cons("This")}

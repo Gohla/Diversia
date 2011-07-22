@@ -15,6 +15,8 @@ imports
 	data/type-func
 	data/type-op
 	data/event
+	
+	util
 
 rules // Definitions
 	
@@ -216,6 +218,16 @@ rules // Types
 			<get-property-type(|prop)> component => type;
 			<type-of> exp => type2;
 			not (<match-type> (type, type2))
+			
+	editor-error: e@ArrayConst(exps) -> (e, $[Inconsistent types in Array.])
+		where
+			not (<foldl(match-type)> <take-rev-1> <map(type-of)> exps)
+			
+	editor-error: e@DictConst(exps) -> (e, $[Inconsistent types in Dict.])
+		where
+			<unzip> exps => (keys, values);
+			(not (<foldl(match-type)> <take-rev-1> <map(type-of)> keys) <+
+			not (<foldl(match-type)> <take-rev-1> <map(type-of)> values))
 
 rules // References
 	

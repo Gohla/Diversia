@@ -245,6 +245,8 @@ rules // Expressions
 	to-lua: Vector2Const(exp1, exp2) -> <to-lua> New(Vector2(), [exp1, exp2])
 	to-lua: Vector3Const(exp1, exp2, exp3) -> <to-lua> New(Vector3(), [exp1, exp2, exp3])
 	to-lua: Vector4Const(exp1, exp2, exp3, exp4) -> <to-lua> New(Vector4(), [exp1, exp2, exp3, exp4])
+	to-lua: ArrayConst(exps) -> Table(<map(\ exp -> Field(<to-lua> exp) \)> exps)
+	to-lua: DictConst(exps) -> Table(<map(\ (key, val) -> Field(<to-lua> key, <to-lua> val) \)> exps)
 	to-lua: Null() -> LuaNil()
 	to-lua: This(_) -> VarRef("Object")
 		

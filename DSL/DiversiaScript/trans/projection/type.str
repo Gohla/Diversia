@@ -25,6 +25,8 @@ rules // Utility
 			case StringType() : !"String"
 			case VoidType() : !"Void"
 			case NullType() : !"Void*"
+			case ArrayType(?type) : !$[Array<[<printable> type]>]
+			case DictType(?key, ?value) : !$[Dict<[<printable> key], [<printable> value]>]
 			case CustomType(?name) : !$[[name]]
 			case [?type|[]] : <printable> type
 			case [?type|?types]; not (<?[]> types) : !$[[<printable> type], [<printable> types]] 
@@ -54,14 +56,18 @@ rules // Utility
 rules // Type matching (compatibility)
 	
 	// Matches if types are the same or if the second type is a parent type of the first.
-	match-type = ?(type1, type2); (<?type1> type2 <+ <get-type-parent> (type2, type1)) 
+	match-type = ?(type1, type2); (<?type1> type2 <+ <get-type-parent> (type2, type1))
+	
+	// Matches containers
+	match-type = ?(ArrayType(type1), ArrayType(type2)); <match-type> (type1, type2)
+	match-type = ?(DictType(type1Key, type1Val), DictType(type2Key, type2Val)); <match-type> (type1Key, type2Key); <match-type> (type1Val, type2Val)
 		
 	// Matches reals and integers.
-	match-type = ?(RealType(), IntType())
-	match-type = ?(IntType(), RealType())
+	match-type: (RealType(), IntType()) -> RealType()
+	match-type: (IntType(), RealType()) -> IntType()
 	
 	// Matches everything with null.
-	match-type = ?(_, NullType())
+	match-type: (type, NullType()) -> type
 		
 	// Matches lists of types.
 	match-types = ?([], [])
@@ -111,6 +117,8 @@ rules  // Expressions
 	type-of: FloatConst(_) -> RealType()
 	type-of: StrConst(_) -> StringType()
 	type-of: Null() -> NullType()
+	type-of: ArrayConst([exp|_]) -> ArrayType(<type-of> exp)
+	type-of: DictConst([(key, val)|_]) -> DictType(<type-of> key, <type-of> val)
 	type-of: Vector2Const(_, _) -> Vector2()
 	type-of: Vector3Const(_, _, _) -> Vector3()
 	type-of: Vector4Const(_, _, _, _) -> Vector4()
@@ -189,6 +197,10 @@ rules // Type projections
 	
 rules // Type checks
 	
+	// Checks if given type is of container type.
+	is-container-type = ?ArrayType(_)
+	is-container-type = ?DictType(_, _)
+	
 	// Checks if given type is of standard (POD) type.
 	is-standard-type = ?VoidType()
 	is-standard-type = ?BoolType()
@@ -196,6 +208,7 @@ rules // Type checks
 	is-standard-type = ?RealType()
 	is-standard-type = ?StringType()
 	is-standard-type = ?NullType()
+	is-standard-type = is-container-type
 	
 	// Checks if given type is of object type.
 	is-object-type = ?CustomType(_)

@@ -19,6 +19,8 @@ exports
     "Bool" -> Type {cons("BoolType")}
     "String" -> Type {cons("StringType")}
     "Void" -> Type {cons("VoidType")}
+    "Array" "<" Type ">" -> Type {cons("ArrayType")}
+    "Map" "<" Type "," Type ">" -> Type {cons("DictType")}
     BuiltinType -> Type
     EnumType -> Type
     ComponentType -> Type {prefer}
