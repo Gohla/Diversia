@@ -30,6 +30,9 @@ exports
     "if" "(" Exp ")" Statement "else" Statement   									-> Statement {cons("If")}
     "if" "(" Exp ")" Statement    													-> Statement {cons("If")}
     "while" "(" Exp ")" Statement                       							-> Statement {cons("While")}
+    "for" "(" {VarDef ","}* ";" Exp ";" Statement ")" Statement			 			-> Statement {cons("For")} 
+    "for" "(" VarDef "in" Exp ")" Statement											-> Statement {cons("ForArray")}
+    "for" "(" VarDef "," VarDef "in" Exp ")" Statement								-> Statement {cons("ForDict")}
     Exp "=" Exp ";"                                     							-> Statement {cons("Assign")}
     "setstate" StateRef ";"                                   						-> Statement {cons("StateChange")}
     "switch" "(" Exp ")" "{" Case* "}"                  							-> Statement {cons("Switch")}

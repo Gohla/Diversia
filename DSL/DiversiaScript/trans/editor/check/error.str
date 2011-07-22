@@ -294,6 +294,39 @@ rules // Statements
 			<type-of> exp => type;
 			not (<match-type> (StringType(), type))
 			
+	editor-error: ForArray(varDef, array, _) -> (varDef, $[Expected [<printable> valType] but found [<printable> varType].])
+		where
+			<type-of> varDef => varType;
+			<type-of> array => ArrayType(valType);
+			not (<match-type> (varType, valType))
+			
+	editor-error: ForArray(_, array, _) -> (array, $[Expected Array but found [<printable> arrayType].])
+		where 
+			<type-of> array => arrayType;
+			not (<?ArrayType(_)> arrayType)
+			
+	editor-error: ForDict(keyVarDef, _, dict, _) -> (keyVarDef, $[Expected [<printable> keyType] but found [<printable> keyVarType].])
+		where
+			<type-of> keyVarDef => keyVarType;
+			<type-of> dict => DictType(keyType, _);
+			not (<match-type> (keyVarType, keyType))
+			
+	editor-error: ForDict(_, valVarDef, dict, _) -> (valVarDef, $[Expected [<printable> valType] but found [<printable> valVarType].])
+		where
+			<type-of> valVarDef => valVarType;
+			<type-of> dict => DictType(_, valType);
+			not (<match-type> (valVarType, valType))
+			
+	editor-error: ForDict(_, _, dict, _) -> (dict, $[Expected Dict but found [<printable> dictType].])
+		where 
+			<type-of> dict => dictType;
+			not (<?DictType(_, _)> dictType)
+			
+	editor-error: For(_, exp, _, _) -> (exp, $[Expected Boolean (convertable) type but found [<printable> type].])
+		where
+			<type-of> exp => type;
+			not (<bool-convertable> type)
+			
 rules // Debug
 	
 	editor-error: e@ComponentProp(name, exp) -> (e, $[Decorate failed])

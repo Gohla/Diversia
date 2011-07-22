@@ -332,6 +332,11 @@ rules // Statements
 	to-lua: If(condition, statements) -> If(<to-lua> condition, Chunk([<to-lua> statements]))
 	to-lua: If(condition, trueStatements, falseStatements) -> If(<to-lua> condition, Chunk([<to-lua> trueStatements]), Chunk([<to-lua> falseStatements]))
 	to-lua: While(condition, statements) -> While(<to-lua> condition, Chunk(<map(to-lua)> statements))
+	to-lua: ForArray(VarDef(_, _{name}, _, _), array, statement) -> 
+		ForIn(["__dummy", name], [Call(VarRef("ipairs"), Args([<to-lua> array]))], Chunk([<to-lua> statement]))
+	to-lua: ForDict(VarDef(_, _{keyName}, _, _), VarDef(_, _{valName}, _, _), dict, statement) ->
+		ForIn([keyName, valName], [Call(VarRef("pairs"), Args([<to-lua> dict]))], Chunk([<to-lua> statement]))
+	to-lua: For(varDefs, condition, incrementer, statement) -> [<map(to-lua)> varDefs, While(<to-lua> condition, Chunk([<to-lua> statement, <to-lua> incrementer]))]
 	to-lua: Assign(exp, val) -> Assignment([<to-lua> exp], [<to-lua> val])
 		where not (<?ObjectNew(_, _)> val)
 		where not (<match-type> (<type-of> exp, Object()))
