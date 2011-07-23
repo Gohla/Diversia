@@ -37,7 +37,7 @@ exports
     "setstate" StateRef ";"                                   						-> Statement {cons("StateChange")}
     "switch" "(" Exp ")" "{" Case* "}"                  							-> Statement {cons("Switch")}
     "case" Exp ":" Statement                       									-> Case {cons("Case")}
-    "in" Exp TimeUnit "{" Statement* "}"    										-> Statement {cons("Delay")}
+    "in" Exp TimeUnit Statement    													-> Statement {cons("Delay")}
     "interpolate" Exp InterpolationType? "from" Exp "to" Exp "over" Exp TimeUnit ";"-> Statement {cons("Interpolation")}
     "print" Exp ";"																	-> Statement {cons("Print")}
     Exp ";"																			-> Statement {cons("Expression")}    

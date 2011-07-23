@@ -85,7 +85,45 @@ rules // Definitions
 				<rename-all-defs> statements => statements';
 				<rename-all-refs> statements' => statements''
 			)
+	rename-def :
+		ForArray(var, array, statements) -> ForArray(var', array, statements'') 
+		where 
+			new-scope (
+				<rename-all-defs> var => var';
+				<rename-all-defs> statements => statements';
+				<rename-all-refs> statements' => statements''
+			)
+	rename-def :
+		ForDict(key, var, array, statements) -> ForDict(key', var', array, statements'') 
+		where 
+			new-scope (
+				<rename-all-defs> key => key';
+				<rename-all-defs> var => var';
+				<rename-all-defs> statements => statements';
+				<rename-all-refs> statements' => statements''
+			)
+	rename-def :
+		ForDict(key, var, array, statements) -> ForDict(key', var', array, statements'') 
+		where 
+			new-scope (
+				<rename-all-defs> key => key';
+				<rename-all-defs> var => var';
+				<rename-all-defs> statements => statements';
+				<rename-all-refs> statements' => statements''
+			)
 	
+	rename-def :		
+		For(varDefs, condition, updates, statements) -> For(varDefs', condition', updates'', statements'')
+		where
+			new-scope (
+				<rename-all-defs> varDefs => varDefs';
+				<rename-all-defs> updates => updates';
+				<rename-all-defs> statements => statements';
+				<rename-all-refs> updates' => updates'';
+				<rename-all-refs> statements' => statements'';
+				<rename-all-refs> condition => condition'
+			)	
+			
 	rename-def :
 		Param(name, type) -> Param(name', type)
 		where
