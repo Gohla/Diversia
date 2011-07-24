@@ -77,7 +77,7 @@ private:
     void create();
     void parentChange( Object* pParent );
     void transformChange( const Node& rNode );
-    void setSelected( bool selected );
+    void selected( bool selected );
 
     Ogre::SceneNode* mNode;
 

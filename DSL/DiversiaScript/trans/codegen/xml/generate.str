@@ -65,7 +65,7 @@ rules // Object definitions (object templates)
 	
 rules // Components (component templates)
 	
-	to-game-xml: ComponentDef(_{name}, type, properties) -> XMLNode("item", [
+	to-game-xml: ComponentDef(name, type, properties) -> XMLNode("item", [
 		XMLNode("key", [XMLElement("Type", <builtin-enum-value(|ComponentType())> type), XMLElement("Name", name)]),
 		XMLNode("value", [XMLNode("Properties", <map(to-game-xml)> properties)])
 	])

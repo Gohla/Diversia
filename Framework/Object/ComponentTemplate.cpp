@@ -202,13 +202,10 @@ Component& ComponentTemplate::createComponent( Object& rObject )
 {
     // Create unique component name.
     String componentName = mName;
-    if( mFactory.multiple() )
+    if( rObject.hasComponent( mName ) )
     {
         std::size_t count = rObject.componentCount( mType );
-        if( count )
-        {
-            componentName += boost::lexical_cast<String>( count + 1 );
-        }
+        componentName += boost::lexical_cast<String>( count + 1 );
     }
 
     // Create component

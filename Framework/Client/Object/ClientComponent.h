@@ -85,9 +85,29 @@ protected:
     virtual ~ClientComponent();
 
     /**
-    Notification when object is selected.
+    Called when parent object is hovered in or out.
+    
+    @param  hoverIn True when hovered in, false when hovered out.
     **/
-    inline virtual void setSelected( bool selected ) {}
+    inline virtual void hovered( bool hoverIn ) {}
+    /**
+    Called when parent object is selected or deselected.
+    
+    @param  selected    True if selected, false if deselected.
+    **/
+    inline virtual void selected( bool selected ) {}
+    /**
+    Called when parent object is clicked.
+    **/
+    inline virtual void clicked() {}
+    /**
+    Called when parent object is dragged or dropped.
+    
+    @param  dragStart   True if dragged, false if dropped.
+    @param  rPosition   The drag or drop position. Must be copied if used outside of this
+                        function call.
+    **/
+    inline virtual void dragged( bool dragStart, const Vector3& rPosition ) {}
 
     /**
     Implemented in ClientComponent, but can be overridden.

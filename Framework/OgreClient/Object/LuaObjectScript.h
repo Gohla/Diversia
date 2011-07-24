@@ -54,7 +54,10 @@ enum LuaObjectScriptEvent
     LUAOBJECTSCRIPTEVENT_MOUSERELEASED,
     LUAOBJECTSCRIPTEVENT_MOUSEMOVED,
     LUAOBJECTSCRIPTEVENT_KEYPRESSED,
-    LUAOBJECTSCRIPTEVENT_KEYRELEASED
+    LUAOBJECTSCRIPTEVENT_KEYRELEASED,
+    LUAOBJECTSCRIPTEVENT_HOVERED,
+    LUAOBJECTSCRIPTEVENT_CLICKED,
+    LUAOBJECTSCRIPTEVENT_DRAGGED
 };
 
 /**
@@ -95,6 +98,7 @@ private:
     typedef std::map<LuaObjectScriptEvent, sigc::connection> ConnectionMap;
 
     void createEnv();
+    void destroyEnv();
     void create();
     void destroy();
     void reload();
@@ -113,6 +117,11 @@ private:
     inline int getKeyboardPriority() const { return mKeyboardPriority; }
     void subscribeKeyboard();
     void unsubscribeKeyboard();
+
+    void hovered( bool hoverIn );
+    void selected( bool selected );
+    void clicked();
+    void dragged( bool dragStart, const Vector3& rPosition );
 
     String getEventName( LuaObjectScriptEvent event );
     void disconnect( LuaObjectScriptEvent event );
@@ -134,7 +143,6 @@ private:
     Path                mServerScriptFile;
     String              mServerEnvironmentName;
     LuaSecurityLevel    mServerSecurityLevel;
-    bool                mLoaded;
     bool                mEnvCreated;
     bool                mCreated;
 
@@ -147,6 +155,10 @@ private:
     sigc::signal<void, const MouseState&>   mMouseMovedSignal;
     sigc::signal<void, KeyboardButton, unsigned int> mKeyPressedSignal;
     sigc::signal<void, KeyboardButton, unsigned int> mKeyReleasedSignal;
+    sigc::signal<void, bool>                    mHoverSignal;
+    sigc::signal<void, bool>                    mSelectedSignal;
+    sigc::signal<void>                          mClickedSignal;
+    sigc::signal<void, bool, Vector3>           mDraggedSignal;
 
     ConnectionMap       mConnections;
     LuaManager&         mLuaManager;

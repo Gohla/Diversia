@@ -69,7 +69,17 @@ ClientObject::~ClientObject()
     }
 }
 
-void ClientObject::setSelected( bool selected )
+void ClientObject::hovered( bool hoverIn )
+{
+    // Notify components
+    for( ComponentsByName::const_iterator i = Object::getComponentsByName().begin(); 
+        i != Object::getComponentsByName().end(); ++i )
+    {
+        static_cast<ClientComponent*>( i->second )->hovered( hoverIn );
+    }
+}
+
+void ClientObject::selected( bool selected )
 {
     if( selected == mSelected ) return;
 
@@ -79,7 +89,27 @@ void ClientObject::setSelected( bool selected )
     for( ComponentsByName::const_iterator i = Object::getComponentsByName().begin(); 
         i != Object::getComponentsByName().end(); ++i )
     {
-        static_cast<ClientComponent*>( i->second )->setSelected( selected );
+        static_cast<ClientComponent*>( i->second )->selected( selected );
+    }
+}
+
+void ClientObject::clicked()
+{
+    // Notify components
+    for( ComponentsByName::const_iterator i = Object::getComponentsByName().begin(); 
+        i != Object::getComponentsByName().end(); ++i )
+    {
+        static_cast<ClientComponent*>( i->second )->clicked();
+    }
+}
+
+void ClientObject::dragged( bool dragStart, const Vector3& rPosition )
+{
+    // Notify components
+    for( ComponentsByName::const_iterator i = Object::getComponentsByName().begin(); 
+        i != Object::getComponentsByName().end(); ++i )
+    {
+        static_cast<ClientComponent*>( i->second )->dragged( dragStart, rPosition );
     }
 }
 

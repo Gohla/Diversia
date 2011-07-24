@@ -40,7 +40,10 @@ rules
 			Event("ComponentChange", [Component(), BoolType()]),
 			Event("TransformChange", [Node()]),
 			Event("AreaChange", [ClientObject(), BoolType()]),
-			Event("CollisionWith", [ClientObject()])
+			Event("CollisionWith", [ClientObject()]),
+			Event("Hovered", [BoolType()]),
+			Event("Clicked", []),
+			Event("Dragged", [BoolType(), Vector3()])
 		] 
 	]
 	global-events = <concat> [ 

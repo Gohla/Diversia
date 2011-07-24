@@ -52,10 +52,23 @@ public:
     Query if this object is selected. 
     **/
     inline bool isSelected() const { return mSelected; }
+
+    /**
+    Called when object is hovered in or out.
+    **/
+    void hovered( bool hoverIn );
     /**
     Selects or unselects this object.
     **/
-    virtual void setSelected( bool selected );
+    virtual void selected( bool selected );
+    /**
+    Called when object is clicked.
+    **/
+    void clicked();
+    /**
+    Called when object is dragged or dropped.
+    **/
+    void dragged( bool dragStart, const Vector3& rPosition );
 
 protected:
     friend class ClientObjectManager;	///< Only the ClientObjectManager class may construct objects. 

@@ -54,7 +54,10 @@ public:
     
 private:
     void objectChange( Object& rObject, bool created );
-    void objectSelected( bool select, ClientObject& rObject );
+    void hovered( bool hoverIn, int param, ClientObject& rObject );
+    void selected( bool select, ClientObject& rObject );
+    void clicked( ClientObject& rObject );
+    void dragged( bool dragStart, int param, const Vector3& rPosition, ClientObject& rObject );
 
     ClientObjectManager& mObjectManager;
 

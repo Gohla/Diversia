@@ -392,7 +392,6 @@ Object& ObjectTemplate::createObject( ObjectManager& rObjectManager, const Strin
 {
     // Create object for this object template.
     Object& object = rObjectManager.createObject( rName, type, mDisplayName );
-    object.setTemplate( this );
 
     // Set transform to object.
     object.setPosition( Node::getPosition() );
@@ -413,6 +412,8 @@ Object& ObjectTemplate::createObject( ObjectManager& rObjectManager, const Strin
     {
         if( !Object::hasAutoCreateComponent( i->first ) ) i->second->createComponent( object );
     }
+
+    object.setTemplate( this );
 
     return object;
 }

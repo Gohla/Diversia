@@ -50,7 +50,6 @@ LuaObjectScript::LuaObjectScript( const String& rName, Mode mode, NetworkingType
         localOverride, rObject ),
     mClientSecurityLevel( LUASEC_HIGH ),
     mServerSecurityLevel( LUASEC_HIGH ),
-    mLoaded( false ),
     mEnvCreated( false ),
     mCreated( false ),
     mMousePriority( 100 ),
@@ -147,61 +146,58 @@ void LuaObjectScript::createEnv()
     mEnvCreated = true;
 }
 
+void LuaObjectScript::destroyEnv()
+{
+    if( !mEnvCreated ) return;
+
+    // TODO: Destroy environment.
+    //mLuaManager.execute( "Global." + mClientEnvironmentName + " = nil" ); < crashes.
+
+    mEnvCreated = false;
+}
+
 void LuaObjectScript::create()
 { 
-    if( !mCreated )
+    if( mCreated ) return;
+
+    LuaObjectScript::createEnv();
+
+    mCreated = true;
+    if( mClientScriptFile.empty() ) return;
+
+    // Load script resource
+    try
     {
-        LuaObjectScript::createEnv();
-
-        mCreated = true;
-        if( mClientScriptFile.empty() ) return;
-
-        // Load script resource
-        try
-        {
-            mResourceManager.loadResource( ResourceInfo( mClientScriptFile, RESOURCETYPE_LUASCRIPT ), 
-                sigc::mem_fun( this, &LuaObjectScript::resourceLoaded ) );
-        }
-        catch( FileNotFoundException e )
-        {
-            CLOGE << "Could not load resource for lua script component: " << e.what();
-        }
+        mResourceManager.loadResource( ResourceInfo( mClientScriptFile, RESOURCETYPE_LUASCRIPT ), 
+            sigc::mem_fun( this, &LuaObjectScript::resourceLoaded ) );
     }
-    else if( !mLoaded )
+    catch( FileNotFoundException e )
     {
-        // Load script resource
-        try
-        {
-            mResourceManager.loadResource( ResourceInfo( mClientScriptFile, RESOURCETYPE_LUASCRIPT ), 
-                sigc::mem_fun( this, &LuaObjectScript::resourceLoaded ) );
-        }
-        catch( FileNotFoundException e )
-        {
-            CLOGE << "Could not load resource for lua script component: " << e.what();
-        }
+        CLOGE << "Could not load resource for lua script component: " << e.what();
     }
 }
 
 void LuaObjectScript::destroy()
 {
-    if( mCreated && mLoaded )
+    if( !mCreated ) return;
+
+    // Call Destroy function if the lua script has one.
+    if( mLuaManager.functionExists( "Destroy", mClientEnvironmentName, "Global" ) )
     {
-        // Call Destroy function if the lua script has one.
-        if( mLuaManager.functionExists( "Destroy", mClientEnvironmentName, "Global" ) )
-        {
-            mLuaManager.call( "Destroy", mClientEnvironmentName, "Global" );
-        }
-
-        LuaObjectScript::disconnectAll();
-        LuaObjectScript::unsubscribeKeyboard();
-        LuaObjectScript::unsubscribeMouse();
-        mConnections.clear();
-
-        // Unload script resource
-        GenericResourceManager::getSingletonPtr()->unload( mClientScriptFile.string() );
-
-        mLoaded = false;
+        mLuaManager.call( "Destroy", mClientEnvironmentName, "Global" );
     }
+
+    LuaObjectScript::disconnectAll();
+    LuaObjectScript::unsubscribeKeyboard();
+    LuaObjectScript::unsubscribeMouse();
+    mConnections.clear();
+
+    // Unload script resource
+    GenericResourceManager::getSingletonPtr()->unload( mClientScriptFile.string() );
+
+    LuaObjectScript::destroyEnv();
+
+    mCreated = false;
 }
 
 void LuaObjectScript::reload()
@@ -214,12 +210,13 @@ void LuaObjectScript::reload()
 
 void LuaObjectScript::resourceLoaded( Ogre::ResourcePtr pResource )
 {
+    if( !mCreated ) return;
+
     GenericResourcePtr resource = pResource;
     String lua = resource->getCache()->getAsString();
 
     // Load script
     mLuaManager.execute( lua, mClientEnvironmentName, "Global", mClientSecurityLevel );
-    mLoaded = true;
 
     // Connect signals to lua functions.
     LuaObjectScript::connectAll();
@@ -308,6 +305,26 @@ void LuaObjectScript::unsubscribeKeyboard()
         GlobalsBase::mInput->unsubscribeKeyboard( *this );
         mKeyboardSubscribed = false;
     }
+}
+
+void LuaObjectScript::hovered( bool hoverIn )
+{
+    mHoverSignal( hoverIn );
+}
+
+void LuaObjectScript::selected( bool selected )
+{
+    mSelectedSignal( selected );
+}
+
+void LuaObjectScript::clicked()
+{
+    mClickedSignal();
+}
+
+void LuaObjectScript::dragged( bool dragStart, const Vector3& rPosition )
+{
+    mDraggedSignal( dragStart, rPosition );
 }
 
 String LuaObjectScript::getEventName( LuaObjectScriptEvent event )
@@ -462,6 +479,26 @@ template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPT
         sigc::ref( mClientEnvironmentName ), "Global", sigc::_1, sigc::_2 ) );
 }
 
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_HOVERED>()
+{
+    return mHoverSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call<bool> ), "Hovered", sigc::ref( mClientEnvironmentName ), "Global", 
+        sigc::_1 ) );
+}
+
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_CLICKED>()
+{
+    return mClickedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call ), "Clicked", sigc::ref( mClientEnvironmentName ), "Global" ) );
+}
+
+template <> inline sigc::connection LuaObjectScript::connectImpl<LUAOBJECTSCRIPTEVENT_DRAGGED>()
+{
+    return mDraggedSignal.connect( sigc::group( sigc::mem_fun( mLuaManager, 
+        &LuaManager::call<bool, Vector3> ), "Dragged", sigc::ref( mClientEnvironmentName ), 
+        "Global", sigc::_1, sigc::_2 ) );
+}
+
 void LuaObjectScript::connect( LuaObjectScriptEvent event )
 {
     switch( event )
@@ -496,6 +533,12 @@ void LuaObjectScript::connect( LuaObjectScriptEvent event )
             LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_KEYPRESSED>(); return;
         case LUAOBJECTSCRIPTEVENT_KEYRELEASED: 
             LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_KEYRELEASED>(); return;
+        case LUAOBJECTSCRIPTEVENT_HOVERED: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_HOVERED>(); return;
+        case LUAOBJECTSCRIPTEVENT_CLICKED: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_CLICKED>(); return;
+        case LUAOBJECTSCRIPTEVENT_DRAGGED: 
+            LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_DRAGGED>(); return;
     }
 }
 
@@ -546,6 +589,9 @@ void LuaObjectScript::connectAll()
     LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_MOUSEMOVED>();
     LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_KEYPRESSED>();
     LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_KEYRELEASED>();
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_HOVERED>();
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_CLICKED>();
+    LuaObjectScript::connectTemplate<LUAOBJECTSCRIPTEVENT_DRAGGED>();
 }
 
 void LuaObjectScript::blockAll( bool blocked )

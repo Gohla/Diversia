@@ -27,6 +27,7 @@ THE SOFTWARE.
 #include "Object/Component.h"
 #include "Object/ComponentFactory.h"
 #include "Object/ComponentFactoryManager.h"
+#include "Object/ComponentTemplate.h"
 #include "Object/Object.h"
 #include "Object/ObjectManager.h"
 #include "Object/ObjectTemplate.h"
@@ -254,7 +255,6 @@ Object& Object::duplicate( const String& rName /*= ""*/ )
     // Duplicate object
     Object& object = mObjectManager.createObject( rName.empty() ? mName + 
         boost::lexical_cast<String>( count++ ) : rName, mType, mDisplayName );
-    if( mTemplate ) object.setTemplate( mTemplate );
     object.setPosition( Node::getPosition() );
     object.setOrientation( Node::getOrientation() );
     object.setScale( Node::getScale() );
@@ -272,6 +272,8 @@ Object& Object::duplicate( const String& rName /*= ""*/ )
     {
         if( !Object::hasAutoCreateComponent( i->first ) ) i->second->duplicate( object );
     }
+
+    if( mTemplate ) object.setTemplate( mTemplate );
 
     return object;
 }
@@ -549,6 +551,15 @@ Object& Object::childObjectByDisplayName( const String& rDisplayName )
 void Object::setTemplate( ObjectTemplate* pTemplate )
 {
     mTemplate = pTemplate;
+
+    if( !mTemplate ) return;
+
+    const ComponentTemplatesByName& componentTemplates = mTemplate->getComponentTemplatesByName();
+    for( ComponentTemplatesByName::const_iterator i = componentTemplates.begin(); 
+        i != componentTemplates.end(); ++i )
+    {
+        if( !Object::hasComponent( i->first ) ) i->second->createComponent( *this );
+    }
 }
 
 void Object::setTemplate( const String& rName )

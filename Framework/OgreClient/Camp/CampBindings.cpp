@@ -801,7 +801,10 @@ void CampBindings::bindLuaObjectScriptEvent()
         .value( "KeyReleased", LUAOBJECTSCRIPTEVENT_KEYRELEASED )
         .value( "MousePressed", LUAOBJECTSCRIPTEVENT_MOUSEPRESSED )
         .value( "MouseReleased", LUAOBJECTSCRIPTEVENT_MOUSERELEASED )
-        .value( "MouseMoved", LUAOBJECTSCRIPTEVENT_MOUSEMOVED );
+        .value( "MouseMoved", LUAOBJECTSCRIPTEVENT_MOUSEMOVED )
+        .value( "Hovered", LUAOBJECTSCRIPTEVENT_HOVERED )
+        .value( "Clicked", LUAOBJECTSCRIPTEVENT_CLICKED )
+        .value( "Dragged", LUAOBJECTSCRIPTEVENT_DRAGGED );
 }
 
 void CampBindings::bindParticle()

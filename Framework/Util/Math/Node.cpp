@@ -701,6 +701,7 @@ void Node::needUpdate(bool forceParentUpdate)
     for( ChildNodeIterator i = mChildren.begin(); i != mChildren.end(); ++i )
     {
         i->second->mNeedParentUpdate = true;
+        i->second->mTransformChangeSignal( *i->second );
     }
 
     mLocalTransformChangeSignal( *this );

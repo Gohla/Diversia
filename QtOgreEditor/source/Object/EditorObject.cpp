@@ -99,7 +99,7 @@ void MultiSelection::gizmoChange( EditorObject* pObject )
     if( pObject->mGizmo ) 
     {
         mControlledGizmos.insert( pObject->mGizmo );
-        if( mSelectedObjects.size() ) pObject->mGizmo->setVisible( false );
+        if( mSelectedObjects.size() > 1 ) pObject->mGizmo->setVisible( false );
     }
 
     if( mMultiGizmo ) mMultiGizmo->setControlledGizmos( mControlledGizmos );
@@ -107,7 +107,7 @@ void MultiSelection::gizmoChange( EditorObject* pObject )
 
 void MultiSelection::gizmoModeChange( QAction* action )
 {
-    if( !mSelectedObjects.size() ) return;
+    if( mSelectedObjects.size() < 2 ) return;
 
     Vector3 position = Vector3::ZERO;
     if( mMultiGizmo ) 
@@ -117,7 +117,9 @@ void MultiSelection::gizmoModeChange( QAction* action )
         mMultiGizmo = 0;
     }
 
-    if( EditorObject::getGizmoMode( action ) == EditorObject::NONE ) return;
+    mMultiGizmo = EditorObject::createGizmo( EditorObject::getGizmoMode( action ), 0, 
+        "MultiSelectGizmo" );
+    if( !mMultiGizmo ) return;
 
     if( position == Vector3::ZERO )
     {
@@ -130,7 +132,6 @@ void MultiSelection::gizmoModeChange( QAction* action )
         position /= mSelectedObjects.size();
     }
 
-    mMultiGizmo = EditorObject::createGizmo( EditorObject::mGizmoMode, 0, "MultiSelectGizmo" );
     mMultiGizmo->setControlledGizmos( mControlledGizmos );
     mMultiGizmo->getSceneNode()->setPosition( toVector3<Ogre::Vector3>( position ) );
     mMultiGizmo->transformChanged();
@@ -181,9 +182,9 @@ EditorObject::~EditorObject()
     if( mGizmo ) delete mGizmo;
 }
 
-void EditorObject::setSelected( bool selected )
+void EditorObject::selected( bool selected )
 {
-    ClientObject::setSelected( selected );
+    ClientObject::selected( selected );
 
     mSelected = selected;
 

@@ -129,7 +129,7 @@ void SceneNode::transformChange( const Node& rNode )
     SceneNode::setTransform( rNode );
 }
 
-void SceneNode::setSelected( bool selected )
+void SceneNode::selected( bool selected )
 {
     mNode->showBoundingBox( selected );
 }

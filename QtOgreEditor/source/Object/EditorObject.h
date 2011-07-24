@@ -62,7 +62,7 @@ public:
     /**
     Selects or unselects this object.
     **/
-    void setSelected( bool selected );
+    void selected( bool selected );
     
 private slots:
     void gizmoModeChange( QAction* action );

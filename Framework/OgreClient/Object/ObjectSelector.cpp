@@ -54,20 +54,44 @@ void ObjectSelector::objectChange( Object& rObject, bool created )
 
     if( created )
     {
-        GlobalsBase::mSelection->setSelectSlot( rObject, 
-            sigc::bind( sigc::mem_fun( this, &ObjectSelector::objectSelected ), sigc::ref( 
-            object ) ), true );
+        GlobalsBase::mSelection->setHoverSlot( object, sigc::bind( sigc::mem_fun( this, 
+            &ObjectSelector::hovered ), sigc::ref( object ) ) );
+        GlobalsBase::mSelection->setSelectSlot( object, sigc::bind( sigc::mem_fun( this, 
+            &ObjectSelector::selected ), sigc::ref( object ) ), true );
+        GlobalsBase::mSelection->setClickSlot( object, sigc::bind( sigc::mem_fun( this, 
+            &ObjectSelector::clicked ), sigc::ref( object ) ) );
+        GlobalsBase::mSelection->setDragSlot( object, sigc::bind( sigc::mem_fun( this, 
+            &ObjectSelector::dragged ), sigc::ref( object ) ) );
     }
     else 
     {
-        GlobalsBase::mSelection->deselect( rObject );
-        GlobalsBase::mSelection->removeSelectSlot( rObject );
+        GlobalsBase::mSelection->deselect( object );
+        GlobalsBase::mSelection->removeHoverSlot( object );
+        GlobalsBase::mSelection->removeSelectSlot( object );
+        GlobalsBase::mSelection->removeClickSlot( object );
+        GlobalsBase::mSelection->removeDragSlot( object );
     }
 }
 
-void ObjectSelector::objectSelected( bool select, ClientObject& rObject )
+void ObjectSelector::hovered( bool hoverIn, int param, ClientObject& rObject )
 {
-    rObject.setSelected( select );
+    rObject.hovered( hoverIn );
+}
+
+void ObjectSelector::selected( bool select, ClientObject& rObject )
+{
+    rObject.selected( select );
+}
+
+void ObjectSelector::clicked( ClientObject& rObject )
+{
+    rObject.clicked();
+}
+
+void ObjectSelector::dragged( bool dragStart, int param, const Vector3& rPosition, 
+    ClientObject& rObject )
+{
+    rObject.dragged( dragStart, rPosition );
 }
 
 //------------------------------------------------------------------------------
