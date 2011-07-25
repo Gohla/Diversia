@@ -61,7 +61,16 @@ Mesh::~Mesh()
 
 void Mesh::setMeshFile( const Path& rFile )
 {
-    if( rFile.empty() || mMeshFile == rFile ) return;
+    if( mMeshFile == rFile ) return;
+
+    if( rFile.empty() )
+    {
+        if( mShapeType == GRAPHICSSHAPE_MESH ) mShapeType = GRAPHICSSHAPE_BOX;
+
+        Mesh::meshParametersSet();
+        return;
+    }
+
     mMeshFile = rFile;
     mShapeParameters = Vector3::UNIT_SCALE;
     mShapeParametersSet = false;
