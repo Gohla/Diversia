@@ -213,7 +213,8 @@ void EditorApplication::init( int argc, char* argv[] )
         mCameraManager.reset( new CameraManager() );
 
         // Initialize object selection
-        mObjectSelection.reset( new ObjectSelection( QueryFlags_Entity | QueryFlags_Particle | QueryFlags_Gizmo ) );
+        mObjectSelection.reset( new ObjectSelection( 
+            QueryFlags_Entity | QueryFlags_Particle | QueryFlags_Gizmo, QueryFlags_Gizmo ) );
 
         // Initialize grid manager
         mGridManager.reset( new GridManager( mUpdateSignal ) );

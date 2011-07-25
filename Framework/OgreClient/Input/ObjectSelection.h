@@ -94,11 +94,13 @@ class DIVERSIA_OGRECLIENT_API ObjectSelection : public MouseListener, public sig
 {
 public:
     /**
-    Default constructor. 
+    Default constructor.
     
-    @param  queryMask   The query mask to use when doing (volume) selections.
+    @param  queryMask           The query mask to use when doing (volume) selections.
+    @param  priorityQueryMask   Query mask that gets priority over other ones.
     **/
-    ObjectSelection( unsigned int queryMask = QueryFlags_Entity );
+    ObjectSelection( unsigned int queryMask = QueryFlags_Entity, 
+        unsigned int priorityQueryMask = QueryFlags_Gizmo );
     /**
     Destructor. 
     **/
@@ -328,6 +330,7 @@ private:
     SelectionRectangle*                     mRectangle;
     bool                                    mDoVolumeQuery;
     unsigned int                            mQueryMask;
+    unsigned int                            mPriorityQueryMask;
 
     camp::UserObject*                       mObjectUnderMouse;
     int                                     mParamUnderMouse;

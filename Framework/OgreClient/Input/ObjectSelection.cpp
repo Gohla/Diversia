@@ -72,7 +72,8 @@ void SelectionRectangle::setCorners( float left, float top, float right, float b
 
 //------------------------------------------------------------------------------
 
-ObjectSelection::ObjectSelection( unsigned int queryMask /*= QueryFlags_Entity*/ ):
+ObjectSelection::ObjectSelection( unsigned int queryMask /*= QueryFlags_Entity*/, 
+    unsigned int priorityQueryMask /*= QueryFlags_Gizmo*/ ):
     mCamera( GlobalsBase::mCamera->getActiveCamera() ),
     mCollisionTools( new MOC::CollisionTools( GlobalsBase::mScene ) ),
     mClick( false ),
@@ -85,7 +86,8 @@ ObjectSelection::ObjectSelection( unsigned int queryMask /*= QueryFlags_Entity*/
     mDraggingParam( std::numeric_limits<int>::min() ),
     mRectangle( new SelectionRectangle( "Selection" ) ),
     mDoVolumeQuery( false ),
-    mQueryMask( queryMask )
+    mQueryMask( queryMask ),
+    mPriorityQueryMask( priorityQueryMask )
 {
     GlobalsBase::mScene->getRootSceneNode()->createChildSceneNode()->attachObject( mRectangle );
     mVolumeQuery = GlobalsBase::mScene->createPlaneBoundedVolumeQuery( 
@@ -310,6 +312,9 @@ void ObjectSelection::update()
 
     // Find object under the mouse.
     if ( mCollisionTools->raycastFromCamera( GlobalsBase::mGraphics->getWindow(), mCamera, 
+        Ogre::Vector2( mMouseState.x.abs, mMouseState.y.abs ), result, entity, distToColl, 
+        mPriorityQueryMask ) 
+        || mCollisionTools->raycastFromCamera( GlobalsBase::mGraphics->getWindow(), mCamera, 
         Ogre::Vector2( mMouseState.x.abs, mMouseState.y.abs ), result, entity, distToColl, 
         mQueryMask ) )
     {

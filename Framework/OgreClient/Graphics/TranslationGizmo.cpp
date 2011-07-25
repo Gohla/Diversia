@@ -80,7 +80,7 @@ TranslationGizmo::TranslationGizmo( ClientObject* pControlledObject /*= 0*/ ):
     Gizmo::getSceneNode()->setInheritOrientation( false );
 
     // Set render queues
-    mLineX->setRenderQueueGroup( Ogre::RENDER_QUEUE_9);
+    mLineX->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
     mLineY->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
     mLineZ->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
     mConeX->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );

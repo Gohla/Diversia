@@ -65,6 +65,14 @@ RotationGizmo::RotationGizmo( ClientObject* pControlledObject /*= 0*/, const Str
 {
     mUserObject = this;
 
+    // Set render queues
+    mCircleX->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
+    mCircleY->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
+    mCircleZ->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
+    mDiscX->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
+    mDiscY->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
+    mDiscZ->setRenderQueueGroup( Ogre::RENDER_QUEUE_9 );
+
     // Setup axis geometry
     Gizmo::getSceneNode()->attachObject( mCircleX );
     Gizmo::getSceneNode()->attachObject( mCircleY );
