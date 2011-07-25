@@ -90,15 +90,20 @@ rules // Utility
 	// Flattens the statements inside a lua statement block
 	lua-flatten-chunk: Chunk(statements) -> Chunk(<flatten-list> statements)
 	
-	// Defines what the state vardef is
+	// Defines what the state and exit function vardef is.
 	lua-stateref = !VarRef("__State")
-		
+	lua-stateexitref = !VarRef("__StateExit")
+	
 rules // Syntax transformation
 		
 	// Definitions to lua syntax.
 	to-lua: Start(imports, pluginDefs, objectDefs, eventDefs) -> LuaScripts(<concat> [[<gamemode-to-lua> (pluginDefs, eventDefs)], <map(objects-to-lua)> objectDefs])
 	objects-to-lua: obj@ObjectDef(name, propAssigns, propDefs, componenDefs, varDefs, [ defState@DefaultStateDef(defaultStateName, _, _, _, _) ], stateDefs, eventDefs) -> 
-		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [[Assignment([<lua-stateref>], [String(defaultStateName)])], functions'''']))
+		LuaObjectScript(name, <lua-flatten-all> Chunk(<concat> [
+		    [Assignment([<lua-stateref>], [String(defaultStateName)])], 
+		    functions'''', 
+		    [Assignment([<lua-stateexitref>], [VarRef($[StateExit_[defaultStateName]])])]
+	    ]))
 		where functions := <map(events-to-lua)> <filter(events-to-lua-filter)> <map(object-events(|name))> <object-events>
 		where functions' := <lua-createFunc-prepend> (<map(get-component-to-lua)> componenDefs, functions)
 		where functions'' := <lua-createFunc-prepend> (<map(propassign-to-lua)> <filter(?ObjectProp(_, _, _))> propAssigns, functions')
@@ -370,9 +375,10 @@ rules // Statements
 			Call(VarRef(luaScriptName), "ReplaceVarWithThisEnv", Args([Access(VarRef("Script"), "ClientEnvironmentName"), String(objectName)]))
 		]
 		where luaScriptName := $[[objectName]__LuaObjectScript]
-	to-lua: StateChange(StateRef(name)) -> [exitCall, change, enterCall]
-		where exitCall := Call(TableVarRef(VarRef("_G"), Concat(String("StateExit_"), <lua-stateref>)), Args([]))
-		where change := Assignment([<lua-stateref>], [String(name)])
+	to-lua: StateChange(StateRef(name)) -> [exitCall, change1, change2, enterCall]
+		where exitCall := Call(<lua-stateexitref>, Args([]))
+		where change1 := Assignment([<lua-stateref>], [String(name)])
+		where change2 := Assignment([<lua-stateexitref>], [VarRef($[StateExit_[name]])])
 		where enterCall := Call(VarRef($[StateEnter_[name]]), Args([]))
 	to-lua: Switch(exp, []) -> []
 	to-lua: Switch(exp, [Case(cond, statement)|[]]) -> 
