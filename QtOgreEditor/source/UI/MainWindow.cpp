@@ -538,9 +538,15 @@ void MainWindow::_saveGame( const QString& rFile )
 
         EditorGlobals::mCurrentGame = rFile;
 
-        // Update latest path
+        // Update recent games and latest path.
         QSettings settings( "Diversia", "QtOgreEditor" );
+        QStringList games = settings.value( "RecentGames" ).toStringList();
+        games.removeAll( rFile );
+        games.prepend( rFile );
+        while( games.size() > cMaxRecentGames ) games.removeLast();
+        settings.setValue( "RecentGames", games );
         settings.setValue( "LastGame", QString( Path( rFile.toAscii().constData() ).directory_string().c_str() ) );
+        MainWindow::updateRecentGames();
     }
     catch( Exception e )
     {
@@ -633,6 +639,18 @@ void MainWindow::updateRecentGames()
 
     int numRecentGames = qMin( games.size(), (int)cMaxRecentGames );
 
+    // Filter game files that do not exist.
+    QStringList newGames;
+    for( int i = 0; i < numRecentGames; ++i ) 
+    {
+        if( boost::filesystem::exists( games[i].toAscii().constData() ) )
+            newGames.push_back( QString( games[i] ) );
+    }
+    games = newGames;
+    settings.setValue( "RecentGames", games );
+    numRecentGames = qMin( games.size(), (int)cMaxRecentGames );
+
+    // Show and hide actions.
     for( int i = 0; i < numRecentGames; ++i ) 
     {
         QString text = tr( "&%1 %2" ).arg( i + 1 ).arg( strippedName( games[i] ) );
@@ -640,7 +658,6 @@ void MainWindow::updateRecentGames()
         mRecentGameActions[i]->setData( games[i] );
         mRecentGameActions[i]->setVisible( true );
     }
-
     for( int i = numRecentGames; i < cMaxRecentGames; ++i )
         mRecentGameActions[i]->setVisible( false );
 
