@@ -64,17 +64,18 @@ RigidBody::~RigidBody()
 
 void RigidBody::setMass( Real mass )
 {
-    if( mMass != mass )
-    {
-        mMass = mass;
+    if( mMass == mass ) return;
 
-        if( mRigidBody && mCollisionShape && mCreated )
-        {
-            btVector3 inertia;
-            mCollisionShape->calculateLocalInertia( mMass, inertia );
-            mRigidBody->setMassProps( mMass, inertia );
-            RigidBody::createRigidBody();
-        }
+    mMass = mass;
+
+    // Cannot set mass for kinematic and static objects.
+    if( mRigidBody && mCollisionShape && mCreated && !( mPhysicsType == PHYSICSTYPE_KINEMATIC || 
+        mPhysicsType == PHYSICSTYPE_STATIC ) )
+    {
+        btVector3 inertia;
+        mCollisionShape->calculateLocalInertia( mMass, inertia );
+        mRigidBody->setMassProps( mMass, inertia );
+        RigidBody::createRigidBody();
     }
 }
 
@@ -118,12 +119,17 @@ void RigidBody::createRigidBody()
             RigidBody::destroyRigidBody();
         }
 
+        // Set mass to 0 for kinematic and static objects
+        Real mass = mMass;
+        if( mPhysicsType == PHYSICSTYPE_KINEMATIC || mPhysicsType == PHYSICSTYPE_STATIC )
+            mass = 0;
+
         // Calculate inertia
         btVector3 inertia;
-        mCollisionShape->calculateLocalInertia( mMass, inertia );
+        mCollisionShape->calculateLocalInertia( mass, inertia );
 
         // Create the rigid body.
-        mRigidBody = new btRigidBody( mMass, this, mCollisionShape, inertia );
+        mRigidBody = new btRigidBody( mass, this, mCollisionShape, inertia );
         mRigidBody->setUserPointer( this );
 
         // If physics type is kinematic set the body to be kinematic.
