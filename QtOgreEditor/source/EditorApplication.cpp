@@ -287,62 +287,39 @@ void EditorApplication::update()
 
 bool EditorApplication::notify( QObject* pObject, QEvent* pEvent )
 {
+#ifndef DIVERSIA_DEBUG
     try
     {
+#endif
         return QApplication::notify( pObject, pEvent );
+#ifndef DIVERSIA_DEBUG
     }
     catch( const Exception& e )
     {
         e.log( Diversia::QtOgreEditor::Log::lg, true );
-
-#ifdef DIVERSIA_DEBUG
-        DivAssert( 0, "DIVERSIA UNHANDLED EXCEPTION" );
-#else
         EditorApplication::unhandledException( e.what() );
-#endif
     }
     catch( const Ogre::Exception& e )
     {
         LOGC << "OGRE UNHANDLED EXCEPTION: " << e.what();
-
-#ifdef DIVERSIA_DEBUG
-        DivAssert( 0, "OGRE UNHANDLED EXCEPTION" );
-#else
         EditorApplication::unhandledException( e.what() );
-#endif
     }
     catch( const camp::Error& e )
     {
         LOGC << "CAMP UNHANDLED EXCEPTION: " << e.what();
-
-#ifdef DIVERSIA_DEBUG
-        DivAssert( 0, "CAMP UNHANDLED EXCEPTION" );
-#else
         EditorApplication::unhandledException( e.what() );
-#endif
     }
     catch( const std::exception& e )
     {
         LOGC << "OTHER UNHANDLED EXCEPTION: " << e.what();
-
-#ifdef DIVERSIA_DEBUG
-        DivAssert( 0, "OTHER UNHANDLED EXCEPTION" );
-#else
         EditorApplication::unhandledException( e.what() );
-#endif
     }
     catch( ... )
     {
         LOGC << "UNKNOWN UNHANDLED EXCEPTION";
-
-#ifdef DIVERSIA_DEBUG
-        DivAssert( 0, "UNKNOWN UNHANDLED EXCEPTION" );
-#else
         EditorApplication::unhandledException( "Unknown unhandled exception." );
-#endif
     }
-    return QApplication::notify( pObject, pEvent );
-    return false;
+#endif
 }
 
 void EditorApplication::unhandledException( const String& rExceptionString )

@@ -68,21 +68,12 @@ void ForceField::setEnabled( bool enabled )
     mUpdateConnection.block( !enabled );
 }
 
-void ForceField::setForce( const Vector3& rForce )
-{
-    mForce = toVector3<btVector3>( rForce );
-}
-
-Diversia::Util::Vector3 ForceField::getForce() const
-{
-    return toVector3<Vector3>( mForce );
-}
-
 void ForceField::update()
 {
+    btVector3 force = toVector3<btVector3>( Component::getObject()._getDerivedOrientation() * mForce );
     for( ObjectsInArea::const_iterator i = mObjectsInArea->begin(); i != mObjectsInArea->end(); ++i )
     {
-        i->second->getComponent<RigidBody>().getRigidBody()->applyCentralForce( mForce );
+        i->second->getComponent<RigidBody>().getRigidBody()->applyCentralForce( force );
     }
 }
 
@@ -92,7 +83,8 @@ void ForceField::componentChange( Component& rComponent, bool created )
     {
         if( created )
         {
-            mObjectsInArea = &Component::getObject().getComponent<AreaTrigger>().getObjectsInArea();
+            const AreaTrigger& areaTrigger = Component::getObject().getComponent<AreaTrigger>();
+            mObjectsInArea = &areaTrigger.getObjectsInArea();
             if( mEnabled ) mUpdateConnection.block( false ); else mUpdateConnection.block( true );
         }
         else

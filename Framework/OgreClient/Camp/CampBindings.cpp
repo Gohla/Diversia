@@ -1227,7 +1227,7 @@ void CampBindings::bindForceField()
 	    // Properties (read-only)
 	    // Properties (read/write)
         .property( "Enabled", &ForceField::mEnabled, &ForceField::setEnabled )
-        .property( "Force", &ForceField::getForce, &ForceField::setForce )
+        .property( "Force", &ForceField::mForce )
             .tag( "DeserializeCopySet" );
 	    // Functions
 	    // Static functions

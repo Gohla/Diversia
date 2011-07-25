@@ -53,16 +53,6 @@ public:
     **/
     inline bool isEnabled() const { return mEnabled; }
     /**
-    Sets the force to apply to all bodies in the area.
-    
-    @param  rForce  The force to apply. 
-    **/
-    void setForce( const Vector3& rForce );
-    /**
-    Gets the force that is to applied to all bodies in the area.
-    **/
-    Vector3 getForce() const;
-    /**
     Gets the component type.
     **/
     inline ComponentType getType() const { return COMPONENTTYPE_FORCEFIELD; }
@@ -84,8 +74,8 @@ private:
 
     const ObjectsInArea* mObjectsInArea;
 
-    bool        mEnabled;
-    btVector3   mForce;
+    bool    mEnabled;
+    Vector3 mForce;
 
     sigc::connection mUpdateConnection;
 
