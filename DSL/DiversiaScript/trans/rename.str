@@ -122,8 +122,50 @@ rules // Definitions
 				<rename-all-refs> updates' => updates'';
 				<rename-all-refs> statements' => statements'';
 				<rename-all-refs> condition => condition'
-			)	
+			)
 			
+	rename-def :
+		If(exp, statements) -> If(exp, statements'')
+		where
+			new-scope (
+				<rename-all-defs> statements => statements';
+				<rename-all-refs> statements' => statements''
+			)
+				
+	rename-def :
+		If(exp, statements1, statements2) -> If(exp, statements1'', statements2'')
+		where
+			new-scope (
+				<rename-all-defs> statements1 => statements1';
+				<rename-all-refs> statements1' => statements1''
+			);
+			new-scope (
+				<rename-all-defs> statements2 => statements2';
+				<rename-all-refs> statements2' => statements2''
+			)
+		
+	rename-def :
+		While(exp, statements) -> While(exp, statements'')
+		where
+			new-scope (
+				<rename-all-defs> statements => statements';
+				<rename-all-refs> statements' => statements''
+			)
+	rename-def :
+		Statements(statements) -> Statements(statements'')
+		where
+			new-scope (
+				<rename-all-defs> statements => statements';
+				<rename-all-refs> statements' => statements''
+			)
+	rename-def :
+		Delay(exp, unit, statements) -> Delay(exp, unit, statements'')
+		where
+			new-scope (
+				<rename-all-defs> statements => statements';
+				<rename-all-refs> statements' => statements''
+			)		
+
 	rename-def :
 		Param(name, type) -> Param(name', type)
 		where

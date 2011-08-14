@@ -1,0 +1,62 @@
+
+
+def Obj{
+
+	default state bob{
+
+		on Frame(i:Real){
+			
+			/*for(var i : String in {"1", "2", "3", "4"}){
+				print(i);
+			}
+				
+			for(var key : String, var val : Int in {"1"=1, "2"=2, "3"=3, "4"=4}){
+				print(key);
+			}*/
+
+			//var array : Array<Int> = {1, 2, 3};
+			var array : Array<Bool> = {true,true};
+			var size : Int = 54;
+			var total : Int = 0;
+			var str : String = "asf";
+			var dic : Map<String, String> = { "A"="a", "B"="b"};
+			
+			var array2 : Array<String> = {"1", "2", "3"};
+	
+			for(var val : String in array2) print(val);
+			
+			for(var val : Bool in array) print("lol");
+			
+			for(var val : String, var val1 : String in dic) print("lol");
+			
+			for(var val : Int; val<size; val++;) total = total+val ;
+			
+			if( size == 54 ) print("bob");
+			if( str == "54" ) {
+				var str:String = "bob";
+				print(str);
+			} else {
+				print(str); // uses def below..still kind of a bug.
+				var str:String = "bob";
+				print(str);
+			}
+			print(str);
+
+			while(str){
+				var str:String = "bob";
+				print str;
+			}
+			in 3 seconds {
+				var str:String = "bob";
+				print str;
+			}
+			in 3 seconds var str:String = "bob";
+			{
+				var str:String = "bob";
+				print str;
+			}
+		}
+	}
+}
+
+
