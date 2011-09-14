@@ -95,8 +95,11 @@ rules // Structural
 			<filter(isVarDef)> defs => varDefs;
 			<filter(isDefaultStateDef)> defs => defaultStateDef;
 			<filter(isStateDef)> defs => stateDefs;
-			<filter(isPropDef)> defs => propDefs;
+			<concat> [<filter(isPropDef)> defs, <map(componentToProp)> componentDefs] => propDefs;
 			<filter(isEventDef)> defs => eventDefs
+	
+	componentToProp: ComponentDef(name, type, props) -> PropDef(name, type, Null())
+		
 
 rules // Child object
 
