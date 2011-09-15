@@ -43,9 +43,11 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Graphics/CameraManager.h"
 #include "OgreClient/Graphics/Fader.h"
 #include "OgreClient/Graphics/GraphicsManager.h"
+#include "OgreClient/Graphics/QueryFlags.h"
 #include "OgreClient/Graphics/SceneManagerPlugin.h"
 #include "OgreClient/Graphics/SkyPlugin.h"
 #include "OgreClient/Graphics/Terrain.h"
+#include "OgreClient/Input/ObjectSelection.h"
 #include "OgreClient/Level/LevelManager.h"
 #include "OgreClient/Object/Animation.h"
 #include "OgreClient/Object/AreaTrigger.h"
@@ -246,6 +248,10 @@ void ClientApplication::init( int argc, char* argv[] )
 
         // Initialize input
         mInputManager.reset( new OISInputManager() );
+
+        // Initialize object selection
+        mObjectSelection.reset( new ObjectSelection( 
+            QueryFlags_Entity | QueryFlags_Particle | QueryFlags_Gizmo, QueryFlags_Gizmo ) );
 
         // Initialize GUI
         mGUIManager.reset( new GUIManager() );

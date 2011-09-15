@@ -265,7 +265,7 @@ private:
     bool mouseMoved( const MouseState& rState );
     bool mousePressed( const MouseButton button );
     void mouseReleased( const MouseButton button );
-    inline int getMousePriority() const { return 2; }
+    inline int getMousePriority() const { return 20; }
 
     void update();
     void cameraChange( Ogre::Camera* pCamera );

@@ -58,6 +58,7 @@ private:
     boost::scoped_ptr<AudioManager>     mAudioManager;
     boost::scoped_ptr<CameraManager>    mCameraManager;
     boost::scoped_ptr<InputManager>     mInputManager;
+    boost::scoped_ptr<ObjectSelection>  mObjectSelection;
     boost::scoped_ptr<GUIManager>       mGUIManager;
     boost::scoped_ptr<GridManager>      mGridManager;
     boost::scoped_ptr<StateMachine>     mStateMachine;
