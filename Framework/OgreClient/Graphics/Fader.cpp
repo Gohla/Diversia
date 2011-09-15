@@ -48,8 +48,8 @@ void Fader::startFadeIn( Ogre::Real duration )
 
 	if ( duration < 0 )
 		duration = -duration;
-	if ( duration < 0.000001 )
-		duration = 1.0;
+	/*if ( duration < 0.000001 )
+		duration = 1.0;*/
 
 	mAlpha = 1.0;
 	mTotalDuration = duration;
@@ -62,12 +62,19 @@ void Fader::startFadeIn( Ogre::Real duration )
 
 void Fader::startFadeOut( Ogre::Real duration )
 {
+    if ( duration <= 0.000001 )
+    {
+        mTextureUnit->setAlphaOperation(
+            Ogre::LBX_MODULATE, Ogre::LBS_MANUAL, Ogre::LBS_TEXTURE, 1.0 );
+        return;
+    }
+
     CLOGD << "[Fader] Fading screen out";
 
 	if ( duration < 0 )
 		duration = -duration;
-	if ( duration < 0.000001 )
-		duration = 1.0;
+	/*if ( duration < 0.000001 )
+		duration = 1.0;*/
 
 	mAlpha = 0.0;
 	mTotalDuration = duration;

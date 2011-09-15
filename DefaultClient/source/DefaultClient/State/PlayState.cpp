@@ -50,12 +50,10 @@ PlayState::~PlayState()
 
 void PlayState::start()
 {
-    LOGI << "Entering play state.";
-    GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PLAY );
+    //LOGI << "Entering play state.";
+    //GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PLAY );
 
-    // Fade the scene in for 3.0 seconds, after 1.0 seconds have passed.
-    DelayedCall::create( sigc::bind( sigc::mem_fun( ClientGlobals::mGraphics->getFader(), 
-        &Fader::startFadeIn ), 3.0 ), 1.0 );
+    ClientGlobals::mGraphics->getFader()->startFadeIn();
 
     ClientGlobals::mMenu->setButtonEnabled( "Logout", true );
 }

@@ -281,6 +281,8 @@ void ClientApplication::init( int argc, char* argv[] )
 
             if( vm.count( "offline-file" ) ) 
             {
+                ClientGlobals::mGraphics->getFader()->startFadeOut( 0.1 );
+
                 SerializationFile* file = new XMLSerializationFile( 
                     mAddMedia / mOfflineFile, "NoSerialization", 
                     false );
