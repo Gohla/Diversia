@@ -115,8 +115,6 @@ void LevelManager::loadLevel( const Path& rFile )
 
     // Load all plugins again with changed configuration
     ClientPlugin::getClientPluginManager().loadAll();
-
-    if( !GlobalsBase::mEditor ) ClientPlugin::getClientPluginManager().setState( PLAY );
 }
 
 Ogre::StringVectorPtr LevelManager::list()

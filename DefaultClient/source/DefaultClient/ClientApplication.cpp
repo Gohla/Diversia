@@ -307,12 +307,12 @@ void ClientApplication::init( int argc, char* argv[] )
             }
         }
     }
-    /*catch( const Exception& e )
+    catch( const Exception& e )
     {
         LOGC << e.what();
         ClientApplication::exit();
         throw e;
-    }*/
+    }
     catch( const Ogre::Exception& e )
     {
         LOGC << e.what();

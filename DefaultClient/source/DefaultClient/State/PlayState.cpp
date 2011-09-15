@@ -50,8 +50,8 @@ PlayState::~PlayState()
 
 void PlayState::start()
 {
-    //LOGI << "Entering play state.";
-    //GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PLAY );
+    LOGI << "Entering play state.";
+    GlobalsBase::mGrid->getActiveServer().getPluginManager().setState( PLAY );
 
     ClientGlobals::mGraphics->getFader()->startFadeIn();
 
