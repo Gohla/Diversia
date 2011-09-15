@@ -48,6 +48,7 @@ public:
     static ObjectSelection*         mSelection;
     static UndoStack*               mUndoStack;
     static bool                     mOffline;
+    static bool                     mEditor;
 
     static sigc::signal<void>*          mEarlyUpdateSignal;
     static sigc::signal<void, Real>*    mEarlyFrameSignal;

@@ -270,7 +270,10 @@ rules
 	builtin-type-func-params: (KeyboardState(), Clear()) -> []
 	builtin-type-funcs: KeyboardState() -> [Function(IsButtonDown(), BoolType(), [KeyboardButton()]), Function(Clear(), VoidType(), [])]
 
-	builtin-type-funcs: LevelManager() -> []
+	has-builtin-type-func = ?(LevelManager(), LoadLevel())
+	builtin-type-func-return: (LevelManager(), LoadLevel()) -> VoidType()
+	builtin-type-func-params: (LevelManager(), LoadLevel()) -> [StringType()]
+	builtin-type-funcs: LevelManager() -> [Function(LoadLevel(), VoidType(), [StringType()])]
 
 	builtin-type-funcs: Light() -> []
 

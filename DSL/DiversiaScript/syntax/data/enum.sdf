@@ -280,6 +280,9 @@ exports
     "MousePressed" -> ObjectScriptEventValue {cons("MousePressed")}
     "MouseReleased" -> ObjectScriptEventValue {cons("MouseReleased")}
     "MouseMoved" -> ObjectScriptEventValue {cons("MouseMoved")}
+    "Hovered" -> ObjectScriptEventValue {cons("Hovered")}
+    "Clicked" -> ObjectScriptEventValue {cons("Clicked")}
+    "Dragged" -> ObjectScriptEventValue {cons("Dragged")}
 
     "MouseButton" -> MouseButtonEnumType {cons("MouseButton")}
     MouseButtonEnumType -> EnumType

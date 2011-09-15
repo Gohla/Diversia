@@ -62,7 +62,7 @@ LuaManager::LuaManager():
         "Vector2", "Vector3", "Vector4", "Quaternion", "Matrix3", "Matrix4", "Colour", "Radian",
         "Degree", "Angle",
 
-        "Sky", "ObjectManager", "Application",
+        "Sky", "ObjectManager", "LevelManager", "Application",
 
         "pairs", "ipairs", "print", "type", "tostring"
     );

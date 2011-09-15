@@ -1351,8 +1351,9 @@ void CampBindings::bindLevelManager()
 	    // Properties (read-only)
 	    // Properties (read/write)
 	    .property( "DefaultLevel", &LevelManager::mDefaultLevel )
-	    .property( "LoadedPlugins", &LevelManager::mLoadedPlugins );
+	    .property( "LoadedPlugins", &LevelManager::mLoadedPlugins )
 	    // Functions
+        .function( "LoadLevel", &LevelManager::loadLevel );
 	    // Static functions
 	    // Operators
 }

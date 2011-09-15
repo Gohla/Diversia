@@ -46,6 +46,7 @@ InputManager*               GlobalsBase::mInput = 0;
 ObjectSelection*            GlobalsBase::mSelection = 0;
 UndoStack*                  GlobalsBase::mUndoStack = 0;
 bool                        GlobalsBase::mOffline = false;
+bool                        GlobalsBase::mEditor = false;
 
 sigc::signal<void>*         GlobalsBase::mEarlyUpdateSignal = 0;
 sigc::signal<void, Real>*   GlobalsBase::mEarlyFrameSignal = 0;

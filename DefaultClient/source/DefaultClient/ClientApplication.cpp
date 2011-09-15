@@ -22,7 +22,6 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 
 #include "DefaultClient/Platform/StableHeaders.h"
 
-#include "Client/Plugin/ClientPluginManager.h"
 #include "Client/Communication/GridManager.h"
 #include "Client/Communication/Server.h"
 #include "Client/Communication/ServerAbstract.h"
@@ -32,6 +31,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "Client/Object/ClientObjectManager.h"
 #include "Client/Object/ClientObjectTemplateManager.h"
 #include "Client/Permission/PermissionManager.h"
+#include "Client/Plugin/ClientPluginManager.h"
 #include "DefaultClient/ClientApplication.h"
 #include "DefaultClient/GUI/GUIManager.h"
 #include "DefaultClient/GUI/LoginGUI.h"
@@ -46,6 +46,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Graphics/SceneManagerPlugin.h"
 #include "OgreClient/Graphics/SkyPlugin.h"
 #include "OgreClient/Graphics/Terrain.h"
+#include "OgreClient/Level/LevelManager.h"
 #include "OgreClient/Object/Animation.h"
 #include "OgreClient/Object/AreaTrigger.h"
 #include "OgreClient/Object/Audio.h"
@@ -62,13 +63,13 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "OgreClient/Object/Text.h"
 #include "OgreClient/Physics/PhysicsManager.h"
 #include "OgreClient/Resource/ResourceManager.h"
-#include "Shared/Plugin/PluginManager.h"
-#include "Shared/Plugin/Factories/ObjectManagerFactory.h"
-#include "Shared/Plugin/Factories/TemplatePluginFactory.h"
 #include "Shared/Communication/GridPosition.h"
 #include "Shared/Communication/ServerInfo.h"
 #include "Shared/Crash/CrashReporter.h"
 #include "Shared/Object/TemplateComponentFactory.h"
+#include "Shared/Plugin/Factories/ObjectManagerFactory.h"
+#include "Shared/Plugin/Factories/TemplatePluginFactory.h"
+#include "Shared/Plugin/PluginManager.h"
 #include "State/LoadingState.h"
 #include "Util/Config/ConfigManager.h"
 #include "Util/Serialization/XMLSerializationFile.h"
@@ -195,12 +196,16 @@ void ClientApplication::init( int argc, char* argv[] )
         // Add plugin factories, get camp class to ensure that the class is registered.
         TemplatePluginFactory<PermissionManager, ClientPluginManager>::registerFactory();
         camp::classByType<PermissionManager>();
+        PluginManager::addAutoCreatePlugin<PermissionManager>();
         TemplatePluginFactory<ResourceManager, ClientPluginManager>::registerFactory();
         camp::classByType<ResourceManager>();
+        PluginManager::addAutoCreatePlugin<ResourceManager>();
         TemplatePluginFactory<ClientObjectTemplateManager, ClientPluginManager>::registerFactory();
         camp::classByType<ClientObjectTemplateManager>();
+        PluginManager::addAutoCreatePlugin<ClientObjectTemplateManager>();
         ObjectManagerFactory<ClientObjectManager, ClientPluginManager>::registerFactory( mUpdateSignal, mLateUpdateSignal );
         camp::classByType<ClientObjectManager>();
+        PluginManager::addAutoCreatePlugin<ClientObjectManager>();
         TemplatePluginFactory<ServerNeighborsPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<ServerNeighborsPlugin>();
         TemplatePluginFactory<SkyPlugin, ClientPluginManager>::registerFactory();
@@ -212,10 +217,13 @@ void ClientApplication::init( int argc, char* argv[] )
         TemplatePluginFactory<LuaPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<LuaPlugin>();
         PluginManager::addAutoCreatePlugin<LuaPlugin>();
+        TemplatePluginFactory<LevelManager, ClientPluginManager>::registerFactory();
+        camp::classByType<LevelManager>();
 
         // Override the default game mode.
         TemplatePluginFactory<GameModePlugin, ClientPluginManager>::registerFactory();
         GameModePlugin::setDefaultSlot( sigc::ptr_fun( &DefaultGameMode::createGameMode ) );
+        PluginManager::addAutoCreatePlugin<GameModePlugin>();
 
         // Initialize graphics
         mGraphicsManager.reset( new GraphicsManager() );
@@ -263,13 +271,10 @@ void ClientApplication::init( int argc, char* argv[] )
             mGridManager->createOfflineServer();
             mStateMachine->pushState( new LoadingState() );
             ClientPluginManager& pluginManager = mGridManager->getActiveServer().getPluginManager();
-            pluginManager.createPlugin<PermissionManager>();
-            pluginManager.createPlugin<ClientObjectTemplateManager>();
-            pluginManager.createPlugin<ClientObjectManager>();
 
             if( vm.count( "media" ) )
             {
-                ResourceManager& resourceManager = pluginManager.createPlugin<ResourceManager>();
+                ResourceManager& resourceManager = pluginManager.getPlugin<ResourceManager>();
                 resourceManager.setGroup( mAddMedia.leaf() );
                 resourceManager.setResourceLocation( mAddMedia.string() );
             }
@@ -277,7 +282,7 @@ void ClientApplication::init( int argc, char* argv[] )
             if( vm.count( "offline-file" ) ) 
             {
                 SerializationFile* file = new XMLSerializationFile( 
-                    mGraphicsManager->getRootResourceLocation() / mOfflineFile, "NoSerialization", 
+                    mAddMedia / mOfflineFile, "NoSerialization", 
                     false );
                 file->load();
                 file->deserialize( pluginManager, false );
@@ -300,12 +305,12 @@ void ClientApplication::init( int argc, char* argv[] )
             }
         }
     }
-    catch( const Exception& e )
+    /*catch( const Exception& e )
     {
         LOGC << e.what();
         ClientApplication::exit();
         throw e;
-    }
+    }*/
     catch( const Ogre::Exception& e )
     {
         LOGC << e.what();

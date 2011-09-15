@@ -258,7 +258,7 @@ rules // Expressions
 	// References
 	to-lua: VarRef(_{name}) -> VarRef(name)
 	to-lua: ComponentRef(name) -> VarRef(name)
-	to-lua: PluginRef(_{name}) -> VarRef(name)
+	to-lua: PluginRef(name{_}) -> VarRef(name)
 	to-lua: ObjectRef(_) -> VarRef("Object")
 	to-lua: PropRef(prop, objectName) -> Access(VarRef("Object"), prop)
 		where <type-has-function(|prop)> objectName

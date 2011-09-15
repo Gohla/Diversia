@@ -19,8 +19,7 @@ rules // Normalisation rules that add plugins and components to objects to make 
 				 	PluginDef("ResourceManager", ResourceManager(), [
 				 		PluginProp(ResourceManager(), Type(), EnumValueRef(ResourceLocationType(), FileSystem())),
 				 		PluginProp(ResourceManager(), ResourceLocation(), StrConst(mediaDir))
-				 	]),
-				 	PluginDef("LevelManager", LevelManager(), [])
+				 	])
 				 ]
 			]
 	

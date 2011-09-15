@@ -87,6 +87,8 @@ exports
     "IsButtonDown" -> BuiltinFunction {cons("IsButtonDown")}
     "Clear" -> BuiltinFunction {cons("Clear")}
 
+    "LoadLevel" -> BuiltinFunction {cons("LoadLevel")}
+
     "Reload_script" -> BuiltinFunction {cons("Reload_script")}
     "Destroy_script" -> BuiltinFunction {cons("Destroy_script")}
     "Create_script" -> BuiltinFunction {cons("Create_script")}

@@ -100,23 +100,30 @@ GraphicsManager::~GraphicsManager()
 }
 
 void GraphicsManager::init( unsigned int width /*= 0*/, unsigned int height /*= 0*/, 
-    const String& rWidgetHandle /*= ""*/ )
+    const String& rWidgetHandle /*= ""*/, const String& rRootResourceLocation /*= ""*/ )
 {
     // Root resource location
-    if( boost::filesystem::exists( "media" ) )
+    if( rRootResourceLocation.empty() ) 
     {
-        mRootResourceLocation = "media";
+        if( boost::filesystem::exists( "media" ) )
+        {
+            mRootResourceLocation = "media";
+        }
+        else if( boost::filesystem::exists( "../../media" ) )
+        {
+            mRootResourceLocation = "../../media";
+        }
+        else
+        {
+            DIVERSIA_EXCEPT( Exception::ERR_FILE_NOT_FOUND, 
+                "Media directory cannot be found at 'media' or '../../media', please get the media \
+    directory or set the correct directory in config.xml under 'RootResourceLocation'.", 
+                "GraphicsManager::init" );
+        }
     }
-    else if( boost::filesystem::exists( "../../media" ) )
+    else 
     {
-        mRootResourceLocation = "../../media";
-    }
-    else
-    {
-        DIVERSIA_EXCEPT( Exception::ERR_FILE_NOT_FOUND, 
-            "Media directory cannot be found at 'media' or '../../media', please get the media \
-directory or set the correct directory in config.xml under 'RootResourceLocation'.", 
-            "GraphicsManager::init" );
+        mRootResourceLocation = rRootResourceLocation;
     }
 
     mRoot = new Ogre::Root( "", "", "" );

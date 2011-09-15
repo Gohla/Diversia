@@ -79,7 +79,7 @@ void XMLSerializationFile::deserialize( const camp::UserObject& rObject,
     const camp::Value& tag = mTags.count() ? mTags[0] : camp::Value::nothing;
     if( node )
         camp::xml::deserialize( rObject, node, tag, mInclude, throwExceptions );
-    else
+    else if( throwExceptions )
         DIVERSIA_EXCEPT( Exception::ERR_ITEM_NOT_FOUND, 
             "No configuration found for object " + rObject.getClass().name(), 
         	"XMLSerializationFile::deserialize" );

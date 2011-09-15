@@ -72,6 +72,7 @@ EditorApplication::EditorApplication( int argc, char* argv[] ):
         QResource::registerResource( "MainWindow.rcc" );
     }
 
+    EditorGlobals::mEditor = true;
     EditorGlobals::mApp = this;
     EditorGlobals::mEarlyUpdateSignal = &mEarlyUpdateSignal;
     EditorGlobals::mEarlyFrameSignal = &mEarlyFrameSignal;

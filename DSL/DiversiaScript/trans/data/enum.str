@@ -723,7 +723,16 @@ rules
 	has-builtin-enum-valueName(|param0) = ?MouseMoved(); <?ObjectScriptEvent()> param0
 	builtin-enum-value(|param0) = ?MouseMoved(); <?ObjectScriptEvent()> param0; !12
 	builtin-enum-name(|param0) = ?12; <?ObjectScriptEvent()> param0; !MouseMoved()
-	builtin-enum-values: ObjectScriptEvent() -> [(EarlyUpdate(), 0), (Update(), 1), (LateUpdate(), 2), (EarlyFrame(), 3), (Frame(), 4), (LateFrame(), 5), (ComponentChange(), 6), (TransformChange(), 7), (AreaChange(), 8), (CollisionWith(), 9), (KeyPressed(), 13), (KeyReleased(), 14), (MousePressed(), 10), (MouseReleased(), 11), (MouseMoved(), 12)]
+	has-builtin-enum-valueName(|param0) = ?Hovered(); <?ObjectScriptEvent()> param0
+	builtin-enum-value(|param0) = ?Hovered(); <?ObjectScriptEvent()> param0; !15
+	builtin-enum-name(|param0) = ?15; <?ObjectScriptEvent()> param0; !Hovered()
+	has-builtin-enum-valueName(|param0) = ?Clicked(); <?ObjectScriptEvent()> param0
+	builtin-enum-value(|param0) = ?Clicked(); <?ObjectScriptEvent()> param0; !16
+	builtin-enum-name(|param0) = ?16; <?ObjectScriptEvent()> param0; !Clicked()
+	has-builtin-enum-valueName(|param0) = ?Dragged(); <?ObjectScriptEvent()> param0
+	builtin-enum-value(|param0) = ?Dragged(); <?ObjectScriptEvent()> param0; !17
+	builtin-enum-name(|param0) = ?17; <?ObjectScriptEvent()> param0; !Dragged()
+	builtin-enum-values: ObjectScriptEvent() -> [(EarlyUpdate(), 0), (Update(), 1), (LateUpdate(), 2), (EarlyFrame(), 3), (Frame(), 4), (LateFrame(), 5), (ComponentChange(), 6), (TransformChange(), 7), (AreaChange(), 8), (CollisionWith(), 9), (KeyPressed(), 13), (KeyReleased(), 14), (MousePressed(), 10), (MouseReleased(), 11), (MouseMoved(), 12), (Hovered(), 15), (Clicked(), 16), (Dragged(), 17)]
 
 	is-builtin-enum = ?MouseButton()
 	has-builtin-enum-valueName(|param0) = ?Left(); <?MouseButton()> param0

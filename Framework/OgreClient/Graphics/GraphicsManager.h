@@ -93,7 +93,8 @@ public:
     /**
     Initialises the graphics.
     **/
-    void init( unsigned int width = 0, unsigned int height = 0, const String& rWidgetHandle = "" );
+    void init( unsigned int width = 0, unsigned int height = 0, const String& rWidgetHandle = "", 
+        const String& rRootResourceLocation = "" );
     /**
     Adds a resource location to the settings. Doesn't add it to Ogre!
     
