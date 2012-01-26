@@ -38,7 +38,7 @@ class CampBindings
 public:
     static void bindClientApplication();
     static void bindLoginGUISettings();
-
+    static void bindDefaultClientObjectManager();
 };
 
 //------------------------------------------------------------------------------

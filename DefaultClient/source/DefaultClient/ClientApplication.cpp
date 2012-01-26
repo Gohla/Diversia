@@ -28,7 +28,6 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "Client/Communication/ServerConnection.h"
 #include "Client/Communication/ServerNeighborsPlugin.h"
 #include "Client/Lua/LuaPlugin.h"
-#include "Client/Object/ClientObjectManager.h"
 #include "Client/Object/ClientObjectTemplateManager.h"
 #include "Client/Permission/PermissionManager.h"
 #include "Client/Plugin/ClientPluginManager.h"
@@ -72,6 +71,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "Shared/Plugin/Factories/ObjectManagerFactory.h"
 #include "Shared/Plugin/Factories/TemplatePluginFactory.h"
 #include "Shared/Plugin/PluginManager.h"
+#include "Object/DefaultClientObjectManager.h"
 #include "State/LoadingState.h"
 #include "Util/Config/ConfigManager.h"
 #include "Util/Serialization/XMLSerializationFile.h"
@@ -205,9 +205,9 @@ void ClientApplication::init( int argc, char* argv[] )
         TemplatePluginFactory<ClientObjectTemplateManager, ClientPluginManager>::registerFactory();
         camp::classByType<ClientObjectTemplateManager>();
         PluginManager::addAutoCreatePlugin<ClientObjectTemplateManager>();
-        ObjectManagerFactory<ClientObjectManager, ClientPluginManager>::registerFactory( mUpdateSignal, mLateUpdateSignal );
-        camp::classByType<ClientObjectManager>();
-        PluginManager::addAutoCreatePlugin<ClientObjectManager>();
+        ObjectManagerFactory<DefaultClientObjectManager, ClientPluginManager>::registerFactory( mUpdateSignal, mLateUpdateSignal );
+        camp::classByType<DefaultClientObjectManager>();
+        PluginManager::addAutoCreatePlugin<DefaultClientObjectManager>();
         TemplatePluginFactory<ServerNeighborsPlugin, ClientPluginManager>::registerFactory();
         camp::classByType<ServerNeighborsPlugin>();
         TemplatePluginFactory<SkyPlugin, ClientPluginManager>::registerFactory();

@@ -25,6 +25,7 @@ You may contact the author of Diversia by e-mail at: equabyte@sonologic.nl
 #include "DefaultClient/Camp/CampBindings.h"
 #include "DefaultClient/ClientApplication.h"
 #include "DefaultClient/GUI/LoginGUI.h"
+#include "DefaultClient/Object/DefaultClientObjectManager.h"
 
 namespace Diversia
 {
@@ -37,33 +38,45 @@ namespace Bindings
 void CampBindings::bindClientApplication()
 {
     camp::Class::declare<ClientApplication>( "ClientApplication" )
-    // Constructors
-    // Properties (read-only)
-    // Properties (read/write)
-    .property( "LogLevel", &ClientApplication::mLogLevel )
-    .tag( "Configurable" );
-    // Functions
-    // Static functions
-    // Operators
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        .property( "LogLevel", &ClientApplication::mLogLevel )
+        .tag( "Configurable" );
+        // Functions
+        // Static functions
+        // Operators
 }
 
 void CampBindings::bindLoginGUISettings()
 {
     camp::Class::declare<LoginGUI::Settings>( "LoginGUISettings" )
-    // Constructors
-    // Properties (read-only)
-    // Properties (read/write)
-    .property( "Servers", &LoginGUI::Settings::mServers )
-    .tag( "Configurable" )
-    .property( "LastServer", &LoginGUI::Settings::mLastServer )
-    .tag( "Configurable" )
-    .property( "LastUserName", &LoginGUI::Settings::mLastUserName )
-    .tag( "Configurable" )
-    .property( "LastNickname", &LoginGUI::Settings::mLastNickname )
-    .tag( "Configurable" );
-    // Functions
-    // Static functions
-    // Operators
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        .property( "Servers", &LoginGUI::Settings::mServers )
+        .tag( "Configurable" )
+        .property( "LastServer", &LoginGUI::Settings::mLastServer )
+        .tag( "Configurable" )
+        .property( "LastUserName", &LoginGUI::Settings::mLastUserName )
+        .tag( "Configurable" )
+        .property( "LastNickname", &LoginGUI::Settings::mLastNickname )
+        .tag( "Configurable" );
+        // Functions
+        // Static functions
+        // Operators
+}
+
+void CampBindings::bindDefaultClientObjectManager()
+{
+    camp::Class::declare<DefaultClientObjectManager>( "DefaultClientObjectManager" )
+        .base<ClientObjectManager>();
+        // Constructors
+        // Properties (read-only)
+        // Properties (read/write)
+        // Functions
+        // Static functions
+        // Operators
 }
 
 //------------------------------------------------------------------------------
