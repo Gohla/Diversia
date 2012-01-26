@@ -151,4 +151,7 @@ Global
 		{7CED3404-A267-4441-9E78-EC55C063C997} = {4C2DFE9D-41D8-484F-892A-2DF4CACA9812}
 		{9A163E30-0F4B-4CEC-8854-6A32CA4AF961} = {A6BF076B-D443-4BA1-A5E6-D9E9C8F94E3C}
 	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		QtVersion = qt
+	EndGlobalSection
 EndGlobal

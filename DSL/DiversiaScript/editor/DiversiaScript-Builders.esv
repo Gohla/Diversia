@@ -17,6 +17,7 @@ builders
   
   builder                   : "Show analysed abstract syntax" = generate-analysed-aterm (openeditor) (realtime) (meta) (source)
   builder                   : "Show abstract syntax" = generate-aterm (openeditor) (realtime) (meta) (source)
+  builder                   : "Generate and run in DefaultClient" = generate-and-run
   builder                   : "Run in DefaultClient" = run
   builder                   : "Generate Lua files" = generate-lua-files (meta)                                                                                                                                      
   builder                   : "Generate Lua code" = generate-lua-strings (openeditor) (realtime) (meta)

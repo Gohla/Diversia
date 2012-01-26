@@ -108,6 +108,9 @@
     </Link>
     <ProjectReference />
     <ProjectReference />
+    <ProjectReference>
+      <UseLibraryDependencyInputs>true</UseLibraryDependencyInputs>
+    </ProjectReference>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ProjectReference Include="LibClient.vcxproj">

@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -70,7 +70,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zm300 /MP %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Client\Platform\StableHeaders.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>DIVERSIA_CLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -84,7 +84,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zm300 /MP %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Client\Platform\StableHeaders.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>DIVERSIA_CLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -97,7 +97,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">
     <ClCompile>
-      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zm300 /MP %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Client\Platform\StableHeaders.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>DIVERSIA_CLIENT_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>

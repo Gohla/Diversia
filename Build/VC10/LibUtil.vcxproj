@@ -70,7 +70,7 @@
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
-      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zm300 /MP %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Util\Platform\StableHeaders.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>DIVERSIA_UTIL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -78,7 +78,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zm300 /MP %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>Util\Platform\StableHeaders.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>DIVERSIA_UTIL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
@@ -86,7 +86,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">
     <ClCompile>
-      <AdditionalOptions>-Zm300 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalOptions>-Zm300 /MP %(AdditionalOptions)</AdditionalOptions>
       <PrecompiledHeaderFile>Util\Platform\StableHeaders.h</PrecompiledHeaderFile>
       <PreprocessorDefinitions>DIVERSIA_UTIL_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PrecompiledHeader>Use</PrecompiledHeader>

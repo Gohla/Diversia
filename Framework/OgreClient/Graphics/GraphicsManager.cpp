@@ -69,7 +69,7 @@ GraphicsManager::GraphicsManager():
 #   ifdef DIVERSIA_PLATFORM_WIN32
     mPlugins.push_back( "RenderSystem_Direct3D9" );
 #   endif
-    mPlugins.push_back( "RenderSystem_GL" );
+    //mPlugins.push_back( "RenderSystem_GL" );
     mPlugins.push_back( "Plugin_ParticleFX" );
     mPlugins.push_back( "Plugin_CgProgramManager" );
     mPlugins.push_back( "Plugin_OctreeSceneManager" );
@@ -196,11 +196,11 @@ void GraphicsManager::init( unsigned int width /*= 0*/, unsigned int height /*= 
     mRoot->initialise( false );
 
     // Create hidden renderwindow to hold the resource handles.
-    hiddenParams["border"] = "none";
+    /*hiddenParams["border"] = "none";
     mPrimaryWindow = Ogre::Root::getSingletonPtr()->createRenderWindow( "Primary", 1, 1, false, 
         &hiddenParams );
     mPrimaryWindow->setVisible( false );
-    mPrimaryWindow->setAutoUpdated( false );
+    mPrimaryWindow->setAutoUpdated( false );*/
 
     // Create renderwindow that is actually used.
     mWindow = Ogre::Root::getSingleton().createRenderWindow(
