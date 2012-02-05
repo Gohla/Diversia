@@ -12,18 +12,8 @@ EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "3. Testing", "3. Testing", "{A6BF076B-D443-4BA1-A5E6-D9E9C8F94E3C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "BtOgre", "BtOgre", "{80C98D43-750A-4592-9A5A-94F2F79DC733}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\Libraries\BtOgre\BtOgre.cpp = ..\..\Libraries\BtOgre\BtOgre.cpp
-		..\..\Libraries\BtOgre\BtOgreExtras.h = ..\..\Libraries\BtOgre\BtOgreExtras.h
-		..\..\Libraries\BtOgre\BtOgreGP.h = ..\..\Libraries\BtOgre\BtOgreGP.h
-		..\..\Libraries\BtOgre\BtOgrePG.h = ..\..\Libraries\BtOgre\BtOgrePG.h
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "MOC", "MOC", "{09D6B988-A63B-4124-B904-48705248F38E}"
-	ProjectSection(SolutionItems) = preProject
-		..\..\Libraries\MOC\CollisionTools.cpp = ..\..\Libraries\MOC\CollisionTools.cpp
-		..\..\Libraries\MOC\CollisionTools.h = ..\..\Libraries\MOC\CollisionTools.h
-	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "camp-xml", "camp-xml", "{8AA6D236-8C05-4781-8AD6-C77C50381BC8}"
 	ProjectSection(SolutionItems) = preProject

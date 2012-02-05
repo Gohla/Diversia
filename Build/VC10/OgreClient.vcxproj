@@ -144,6 +144,7 @@
     <ClCompile Include="..\..\DefaultClient\source\DefaultClient\GUI\MenuGUI.cpp" />
     <ClCompile Include="..\..\DefaultClient\source\DefaultClient\Input\OISInputManager.cpp" />
     <ClCompile Include="..\..\DefaultClient\source\DefaultClient\main.cpp" />
+    <ClCompile Include="..\..\DefaultClient\source\DefaultClient\Object\DefaultClientObjectManager.cpp" />
     <ClCompile Include="..\..\DefaultClient\source\DefaultClient\Platform\StableHeaders.cpp">
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='ReleaseDebug|Win32'">Create</PrecompiledHeader>
@@ -162,6 +163,7 @@
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\GUI\LoginGUI.h" />
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\GUI\MenuGUI.h" />
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Input\OISInputManager.h" />
+    <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Object\DefaultClientObjectManager.h" />
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Platform\Forward.h" />
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Platform\Prerequisites.h" />
     <ClInclude Include="..\..\DefaultClient\source\DefaultClient\Platform\StableHeaders.h" />
